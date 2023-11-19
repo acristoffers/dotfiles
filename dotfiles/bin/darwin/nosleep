@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+if ENV["USER"] != "root"
+  exec("sudo #{File.expand_path(__FILE__)} #{ARGV.join(' ')}")
+end
+
+s = `pmset -g`
+
+$sleep     = s.match(/[^a-z]sleep[ ]+([0-9]+)/)[1].to_i
+$disksleep = s.match(/disksleep[ ]+([0-9]+)/)[1].to_i
+
+puts "Current sleep is #{$sleep} and disksleep is #{$disksleep}"
+puts "Setting both to 0..."
+
+`pmset sleep 0`
+`pmset disksleep 0`
+
+def restore
+  puts "Restoring sleep to #{$sleep} and diskleep to #{$disksleep}"
+  `pmset disksleep #{$disksleep}`
+  `pmset sleep #{$sleep}`
+end
+
+trap 'SIGTERM' do
+  restore
+end
+
+trap 'SIGINT' do
+  restore
+end
+
+trap 'SIGQUIT' do
+  restore
+end
+
+trap 'SIGHUP' do
+  restore
+end
+
+puts
+puts "Press enter to exit..."
+
+gets
+restore

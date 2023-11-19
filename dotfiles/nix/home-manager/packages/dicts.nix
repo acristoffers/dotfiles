@@ -1,0 +1,50 @@
+pkgs:
+
+with pkgs.hunspellDicts; [
+  cs_CZ
+  da_DK
+  de_AT
+  de_CH
+  de_DE
+  en_AU-large
+  en_CA-large
+  en_GB-large
+  en_US-large
+  es_ANY
+  es_AR
+  es_BO
+  es_CL
+  es_CO
+  es_CR
+  es_CU
+  es_DO
+  es_EC
+  es_ES
+  es_GT
+  es_HN
+  es_MX
+  es_NI
+  es_PA
+  es_PE
+  es_PR
+  es_PY
+  es_SV
+  es_UY
+  es_VE
+  eu_ES
+  fr-moderne
+  he_IL
+  hr_HR
+  hu_HU
+  it_IT
+  nb_NO
+  nl_NL
+  nn_NO
+  pt_BR
+  ru_RU
+  sk_SK
+  sv_FI
+  sv_SE
+  th_TH
+  uk_UA
+]

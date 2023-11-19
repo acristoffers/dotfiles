@@ -1,0 +1,55 @@
+{ lib, pkgs, ... }:
+
+with lib;
+rec {
+  imports = [
+    ./common.nix
+    ../hardware-configuration/steamdeck.nix
+  ];
+
+  networking.hostName = "Alan-NixOS-SteamDeck";
+
+  jovian.devices.steamdeck.enable = true;
+  jovian.steam.enable = true;
+  jovian.steam.autoStart = true;
+  jovian.steam.user = "alan";
+  jovian.steam.desktopSession = "gnome-wayland";
+
+  services.xserver = {
+    displayManager = {
+      gdm.enable = mkForce (!jovian.steam.autoStart);
+    };
+  };
+
+  environment.systemPackages = with pkgs; [
+    steamdeck-firmware
+    jupiter-dock-updater-bin
+    steamPackages.steam
+  ];
+
+  # Remote build
+  nix.distributedBuilds = false;
+  nix.buildMachines = [{
+    hostName = "builder";
+    # if the builder supports building for multiple architectures,
+    # replace the previous line by, e.g.,
+    # systems = ["x86_64-linux" "aarch64-linux"];
+    system = "x86_64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 8;
+    speedFactor = 2;
+    supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    mandatoryFeatures = [ ];
+    publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUpCV2N4Yi9CbGFxdDFhdU90RStGOFFVV3JVb3RpQzVxQkorVXVFV2RWQ2Igcm9vdEBuaXhvcwo=";
+  }];
+  # optional, useful when the builder has a faster internet connection than yours
+  nix.extraOptions = "builders-use-substitutes = true";
+  programs.ssh.extraConfig = ''
+    Host builder
+    HostName 10.145.25.67
+    Port 31022
+    User builder
+    IdentitiesOnly yes
+    IdentityFile /root/.ssh/builder_ed25519
+  '';
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "path": "~/bin",
+    "exclude": ["tree-sitter-grammars"]
+  },
+  {
+    "path": "~/.config/global-python",
+    "exclude": ["result"]
+  },
+  "~/.config/fish",
+  "~/.config/hunspell",
+  "~/.config/nix",
+  "~/.config/nixpkgs",
+  "~/.config/run-or-raise/shortcuts.conf"
+]

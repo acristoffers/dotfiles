@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+
+import datetime
+import sys
+import unidecode
+
+from dateutil.parser import parse
+from xml.etree import ElementTree
+
+filename = sys.argv[1]
+
+metadata = ElementTree.parse(filename).getroot()[0]
+
+dc_tag = r'{http://purl.org/dc/elements/1.1/}'
+opf_tag = r'{http://www.idpf.org/2007/opf}'
+
+find = metadata.find
+findall = metadata.findall
+
+title = find(f'{dc_tag}title').text
+authors = [author.text for author in findall(f'{dc_tag}creator')]
+date = find(f'{dc_tag}date').text
+publisher = find(f'{dc_tag}publisher').text
+isbn = [i.text for i in findall(f'{dc_tag}identifier')
+        if i.attrib.get(f'{opf_tag}scheme', '') == 'ISBN']
+
+print(f'title: {title}')
+print(f'authors: {authors}')
+print(f'date: {date}')
+print(f'publisher: {publisher}')
+print(f'ISBN: {isbn}\n')
+
+key = input('Type the entry key: ')
+
+authors = ' and '.join(authors)
+year = parse(date).year
+today = str(datetime.datetime.now())
+
+
+def lp(string):
+    """ Returns a string with characteres escaped for LaTeX """
+    CHARS = {
+        '&':  r'\&',
+        '%':  r'\%',
+        '$':  r'\$',
+        '#':  r'\#',
+        '_':  r'\letterunderscore{}',
+        '{':  r'\letteropenbrace{}',
+        '}':  r'\letterclosebrace{}',
+        '~':  r'\lettertilde{}',
+        '^':  r'\letterhat{}',
+        '\\': r'\letterbackslash{}'
+    }
+    for c in 'Çç':
+        CHARS[c] = r'\%s{%s}' % (r'c', unidecode.unidecode(c))
+    for c in 'ÁÉÍÓÚáéíóú':
+        CHARS[c] = r'\%s{%s}' % (r"'", unidecode.unidecode(c))
+    for c in 'ÄËÏÖÜäëïöü':
+        CHARS[c] = r'\%s{%s}' % (r'"', unidecode.unidecode(c))
+    for c in 'ÂÊÎÔÛâêîôû':
+        CHARS[c] = r'\%s{%s}' % (r'^', unidecode.unidecode(c))
+    for c in 'ÀÈÌÒÙàèìòù':
+        CHARS[c] = r'\%s{%s}' % (r'`', unidecode.unidecode(c))
+    for c in 'ÃÕãõ':
+        CHARS[c] = r'\%s{%s}' % (r'~', unidecode.unidecode(c))
+    return r''.join([CHARS.get(char, char) for char in string])
+
+
+bib = '''@book{book:%s,
+    Author = {%s},
+    Date-Added = {%s},
+    Date-Modified = {%s},
+    Publisher = {%s},
+    Title = {%s},
+    Year = {%s}}
+''' % (key, lp(authors), today, today, lp(publisher), lp(title), year)
+
+print(bib)

@@ -1,0 +1,7 @@
+include "%L"
+
+<dead_acute> <c> : "ç" ccedilla
+<dead_acute> <C> : "Ç" ccedilla
+<Multi_key> <l> <l>	: "¬"	notsign # NOT SIGN
+<Multi_key> <O> <a>	: "ª"	ordfeminine # FEMININE ORDINAL INDICATOR
+<Multi_key> <O> <o>	: "º"	masculine # MASCULINE ORDINAL INDICATOR

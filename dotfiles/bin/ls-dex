@@ -1,0 +1,32 @@
+#!/usr/bin/env fish
+
+if string match -qr -- "--help" "$argv"
+    printf "ls-dex [desktop-file]\n\n"
+    printf "Finds desktop-file in \$XDG_DATA_DIRS.\n"
+    printf "If not desktop-file is given, list all desktop files"
+    exit 0
+end
+
+set -la SEARCH_PATH $XDG_DATA_DIRS /usr/local/share/applications
+
+if test (count $argv) -lt 1
+    for dir in $SEARCH_PATH
+        if test -d $dir/applications
+            for f in $dir/applications/*.desktop
+                echo $f
+            end
+        end
+    end
+    exit 0
+end
+
+set df $argv[1]
+
+for dir in $SEARCH_PATH
+    if test -d $dir/applications && test -f $dir/applications/$df
+        echo $dir/applications/$df
+        exit 0
+    end
+end
+
+exit 1

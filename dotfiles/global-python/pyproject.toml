@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "global"
+version = "1.0.0"
+description = "Global PIP Staging."
+authors = ["Álan Crístoffer <acristoffers@startmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+dictor = "^0.1.11"
+hererocks = "^0.25.1"
+pip = "^23.3.1"
+poetry = "^1.7.0"
+poetry-plugin-up = "^0.4.0"
+poetry-plugin-export = "^1.6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
