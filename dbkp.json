@@ -11,5 +11,6 @@
   "~/.config/hunspell",
   "~/.config/nix",
   "~/.config/nixpkgs",
+  "~/.config/peaclock",
   "~/.config/run-or-raise/shortcuts.conf"
 ]
