@@ -28,7 +28,6 @@ with pkgs; [
   python311Packages.jupyter
   stdenv.cc.cc.lib
   texlive.combined.scheme-full
-  tty-clock
   wl-clipboard
   wl-clipboard-x11
   xdg-ninja

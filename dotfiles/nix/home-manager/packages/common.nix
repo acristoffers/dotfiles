@@ -60,6 +60,7 @@ let
       emacsPackages.cask
       epstool
       erlang
+      fastfetch
       fd
       ffmpeg
       file
@@ -92,6 +93,7 @@ let
       imagemagick
       ispell
       jq
+      killall
       kotlin-language-server
       lazygit
       ledger
@@ -104,7 +106,6 @@ let
       moreutils
       mysql
       ncurses
-      neofetch
       nix
       nixpkgs-fmt
       nodePackages_latest.bash-language-server
@@ -124,6 +125,7 @@ let
       openssl_3
       p7zip
       pandoc
+      peaclock
       perl5
       pipenv
       poetry

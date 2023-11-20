@@ -14,7 +14,7 @@ alias tree  "ls --tree"
 alias clc   "clear" # fuck matlab
 alias steam "eval 'fd steam-bwrap /nix/store | rg -v drv'"
 
-abbr ncfg  "nvim ~/.config/nix/home-manager/packages.nix"
+abbr ncfg  "nvim ~/.config/nix/home-manager/packages/common.nix"
 abbr nfcfg "nvim ~/.config/nix/home-manager/flake.nix"
 abbr nhcfg "nvim ~/.config/nix/home-manager/home.nix"
 abbr fcfg  "nvim ~/.config/fish/config.fish"

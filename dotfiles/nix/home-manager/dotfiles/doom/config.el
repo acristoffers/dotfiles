@@ -35,8 +35,6 @@
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Code" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Articles" . 1)))
 
-(set-formatter! 'ledger "hledger print -f-" :modes '(ledger-mode))
-
 ;;; Load Packages
 (use-package! evil-matchit
   :config (global-evil-matchit-mode 1))

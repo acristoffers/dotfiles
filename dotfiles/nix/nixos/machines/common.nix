@@ -64,14 +64,19 @@ rec {
   location.provider = "geoclue2";
 
   # Enable networking
-  networking.networkmanager.enable = true;
-  networking.enableIPv6 = false;
-  networking.networkmanager.appendNameservers = [ "9.9.9.9" "1.1.1.1" ];
-
-  networking.firewall.allowedTCPPorts = [ 22 ];
-  networking.firewall.allowedUDPPorts = [ ];
-
-  networking.nameservers = networking.networkmanager.appendNameservers;
+  networking = {
+    networkmanager = {
+      enable = true;
+      appendNameservers = [ "9.9.9.9" "1.1.1.1" ];
+    };
+    enableIPv6 = false;
+    nameservers = networking.networkmanager.appendNameservers;
+    firewall = {
+      enable = mkForce true;
+      allowedTCPPorts = [ 22 ];
+      allowedUDPPorts = [ ];
+    };
+  };
 
   services.xserver = {
     enable = true;
