@@ -160,11 +160,10 @@ rec {
     libsForQt5.breeze-icons
     libsForQt5.konsole
     libsForQt5.okular
+    libsForQt5.qtstyleplugin-kvantum
     lsb-release
     parted
     pulseaudioFull
-    qgnomeplatform
-    qgnomeplatform-qt6
     sirikali
     wget
     xorg.xhost
@@ -190,8 +189,7 @@ rec {
   programs.virt-manager.enable = true;
 
   qt.enable = true;
-  qt.platformTheme = "gnome";
-  qt.style = "adwaita-dark";
+  qt.platformTheme = "qt5ct";
 
   # List services that you want to enable:
 
