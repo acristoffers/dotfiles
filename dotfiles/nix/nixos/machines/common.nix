@@ -151,6 +151,7 @@ rec {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    cloud-utils
     coreutils-full
     evolution-data-server-gtk4
     gnome3.gnome-tweaks
