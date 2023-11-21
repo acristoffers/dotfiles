@@ -160,6 +160,7 @@ rec {
     libsForQt5.konsole
     libsForQt5.okular
     lsb-release
+    parted
     pulseaudioFull
     qgnomeplatform
     qgnomeplatform-qt6

@@ -17,9 +17,12 @@
     zig.inputs.flake-utils.follows = "flake-utils";
 
     zls.url = github:acristoffers/zls;
-    zls.inputs.nixpkgs.follows = "nixpkgs";
-    zls.inputs.flake-utils.follows = "flake-utils";
-    zls.inputs.zig-overlay.follows = "zig";
+    # zls.inputs.nixpkgs.follows = "nixpkgs";
+    # zls.inputs.flake-utils.follows = "flake-utils";
+    # zls.inputs.zig-overlay.follows = "zig";
+
+    zon2nix.url = github:nix-community/zon2nix;
+    zon2nix.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = github:acristoffers/nvim-flake;
     nvim.inputs.nixpkgs.follows = "nixpkgs";

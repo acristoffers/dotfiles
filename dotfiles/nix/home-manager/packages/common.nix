@@ -28,6 +28,7 @@ let
     void.packages.${system}.default
     zig.packages.${system}.master
     zls.packages.${system}.default
+    zon2nix.packages.${system}.default
   ] ++ (if isLinux then with inputs; [
     moirai.packages.${system}.default
     webots.packages.${system}.default
