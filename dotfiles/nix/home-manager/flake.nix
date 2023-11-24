@@ -17,8 +17,8 @@
     zig.inputs.flake-utils.follows = "flake-utils";
 
     zls.url = github:acristoffers/zls;
-    # zls.inputs.nixpkgs.follows = "nixpkgs";
-    # zls.inputs.flake-utils.follows = "flake-utils";
+    zls.inputs.nixpkgs.follows = "nixpkgs";
+    zls.inputs.flake-utils.follows = "flake-utils";
     # zls.inputs.zig-overlay.follows = "zig";
 
     zon2nix.url = github:nix-community/zon2nix;

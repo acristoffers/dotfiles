@@ -103,6 +103,7 @@ let
       luarocks
       man-pages
       marksman
+      mdcat
       mediainfo
       moreutils
       mysql
@@ -135,6 +136,7 @@ let
       python3
       rage
       rebar3
+      renameutils
       ripgrep
       rnix-lsp
       rsync
