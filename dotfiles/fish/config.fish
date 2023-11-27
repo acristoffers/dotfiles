@@ -136,6 +136,7 @@ bind \es fish_prepend_sudo
 bind \cl fish_prepend_clear
 bind \cb backward-bigword
 bind \cf forward-bigword
+bind \cg nextd-or-forward-word
 bind \en fish_append_null_redirect
 bind \cq "commandline -rt ''"
 bind \ek "commandline -r  ''"

@@ -167,6 +167,7 @@ let
       yamlfmt
       youtube-dl
       yq
+      zip
       zlib
     ] ++ dicts ++ flakes ++ (if isLinux then linux else darwin);
 in
