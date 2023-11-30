@@ -72,7 +72,7 @@ rec {
     enableIPv6 = false;
     nameservers = networking.networkmanager.appendNameservers;
     firewall = {
-      enable = mkForce true;
+      enable = mkForce false;
       allowedTCPPorts = [ 22 ];
       allowedUDPPorts = [ ];
     };
