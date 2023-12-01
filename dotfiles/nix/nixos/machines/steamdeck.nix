@@ -11,7 +11,7 @@ rec {
 
   jovian.devices.steamdeck.enable = true;
   jovian.steam.enable = true;
-  jovian.steam.autoStart = true;
+  jovian.steam.autoStart = false;
   jovian.steam.user = "alan";
   jovian.steam.desktopSession = "gnome-wayland";
 
