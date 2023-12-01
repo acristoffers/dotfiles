@@ -41,13 +41,9 @@ in
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
   };
 
-  # qt.enable = true;
-  # qt.platformTheme = "gnome";
-  # qt.style.name = "adwaita-dark";
-
-  qt.enable = true;
+  qt.enable = isLinux;
   qt.platformTheme = "qtct";
 
-  gtk.enable = true;
+  gtk.enable = isLinux;
   gtk.theme.name = "Adwaita-dark";
 }
