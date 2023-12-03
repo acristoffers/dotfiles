@@ -19,7 +19,7 @@ rec {
     EDITOR = "nvim";
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
-    LD_LIBRARY_EXTRA_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
+    # LD_LIBRARY_EXTRA_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
   };
 
   fonts.enableDefaultPackages = true;

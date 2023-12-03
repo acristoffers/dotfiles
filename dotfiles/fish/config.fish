@@ -125,7 +125,6 @@ else
 end
 
 if status --is-interactive; and not set -q IN_NIX_SHELL; and not set -q FULL_NIX_SHELL
-    # set -x LD_LIBRARY_PATH ~/.nix-profile/lib* ~/.nix-profile/lib/gcc/*/*
     set -e SSH_ASKPASS
 end
 

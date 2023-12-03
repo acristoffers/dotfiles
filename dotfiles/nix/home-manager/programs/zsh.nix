@@ -47,8 +47,7 @@
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_DATA_DIRS = "";
     GNUPGHOME = "${config.xdg.dataHome}/gnupg";
-    LD_LIBRARY_PATH = "$LD_LIBRARY_EXTRA_PATH:$LD_LIBRARY_PATH";
-    # MOZ_ENABLE_WAYLAND = 1;
+    # LD_LIBRARY_PATH = "$LD_LIBRARY_EXTRA_PATH:$LD_LIBRARY_PATH";
   };
   shellAliases = {
     ls = "ls --color=auto";
