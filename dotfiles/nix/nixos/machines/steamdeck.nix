@@ -11,13 +11,25 @@ rec {
 
   jovian.devices.steamdeck.enable = true;
   jovian.steam.enable = true;
-  jovian.steam.autoStart = true;
+  jovian.steam.autoStart = false;
   jovian.steam.user = "alan";
   jovian.steam.desktopSession = "gnome-wayland";
 
   services.xserver = {
+    desktopManager.plasma5.enable = mkForce true;
     displayManager = {
-      gdm.enable = mkForce (!jovian.steam.autoStart);
+      defaultSession = "gamescope-wayland";
+      gdm.enable = mkForce false;
+      sddm = {
+        enable = mkForce (!jovian.steam.autoStart);
+        theme = "breeze";
+        wayland.enable = true;
+        autoLogin.relogin = false;
+      };
+      autoLogin = {
+        enable = true;
+        user = "alan";
+      };
     };
   };
 

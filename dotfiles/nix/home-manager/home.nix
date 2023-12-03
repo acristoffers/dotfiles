@@ -39,6 +39,7 @@ in
     nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
+    tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
   };
 
   qt.enable = isLinux;

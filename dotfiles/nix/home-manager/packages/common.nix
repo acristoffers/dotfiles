@@ -148,7 +148,6 @@ let
       stylua
       stylua
       taplo
-      tealdeer # tldr
       termdown
       texlab
       tmatrix
