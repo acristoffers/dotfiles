@@ -11,6 +11,7 @@ function update -d "Updates many package managers."
     end
 
     command remove-trash ~ >/dev/null &>/dev/null &
+    rm -rf ~/.cache/nix
     if which cancel &>/dev/null
         cancel -a -x # Deletes cups temp files (it leaves shit around ¬¬)
     end

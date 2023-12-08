@@ -107,6 +107,11 @@
   ;; (ispell-hunspell-add-multi-dic "en,pt,de,fr,es,it,ru")
   (unless (file-exists-p ispell-personal-dictionary)
     (write-region "" nil ispell-personal-dictionary nil 0)))
+(with-eval-after-load 'evil
+  (defadvice forward-evil-paragraph (around default-values activate)
+    (let ((paragraph-start (default-value 'paragraph-start))
+          (paragraph-separate (default-value 'paragraph-separate)))
+      ad-do-it)))
 
 ;;; Keybindings
 (map! :desc "ё" :i "M-е" (lambda (&rest _) (interactive) (insert "ё"))
@@ -127,8 +132,6 @@
        :desc "Format code"                         "g =" #'lsp-format-buffer
        :desc "Spell action menu"                   "z =" #'flyspell-correct-word-before-point
        :desc "Clears search highlight"             "s c" #'evil-ex-nohighlight
-       :desc "Go to previous empty line"           "{"   #'go-prev-empty-line
-       :desc "Go to next empty line"               "}"   #'go-next-empty-line
        :desc "Toggle Popup"                        "C-˜" #'+popup/toggle
        :desc "Window Hydra"                        "wi"  #'+hydra/window-nav/body
        :desc "Delete surrounding FCall"            "dSF" #'delete-surrounding-fcall

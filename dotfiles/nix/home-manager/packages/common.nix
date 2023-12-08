@@ -148,6 +148,7 @@ let
       stylua
       stylua
       taplo
+      tectonic
       termdown
       texlab
       tmatrix
