@@ -8,6 +8,7 @@
     size = 13;
   };
   settings = {
+    cursor_blink_interval = 0;
     cursor_shape = "block";
     enable_audio_bell = false;
     hide_window_decorations = true;
