@@ -22,6 +22,8 @@ rec {
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = true;
 
+  services.mbpfan.enable = true;
+
   security.unprivilegedUsernsClone = true;
 
   # Disable XHC1 wakeup signal to avoid resume getting triggered some time
