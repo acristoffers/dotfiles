@@ -9,6 +9,8 @@ rec {
 
   networking.hostName = "Alan-NixOS-MacBookPro";
 
+  boot.kernelPackages = pkgs.linuxPackages_zen;
+
   boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
   };
