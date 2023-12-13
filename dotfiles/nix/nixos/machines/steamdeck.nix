@@ -16,7 +16,7 @@ rec {
   jovian.steam.desktopSession = "gnome-wayland";
 
   services.xserver = {
-    desktopManager.plasma5.enable = mkForce true;
+    desktopManager.plasma5.enable = mkForce false;
     displayManager = {
       defaultSession = "gamescope-wayland";
       gdm.enable = mkForce false;
@@ -34,9 +34,16 @@ rec {
   };
 
   environment.systemPackages = with pkgs; [
-    steamdeck-firmware
     jupiter-dock-updater-bin
+    libsForQt5.kconfig
+    libsForQt5.kconfigwidgets
+    libsForQt5.kdeclarative
+    libsForQt5.kirigami-addons
+    libsForQt5.kirigami2
+    libsForQt5.plasma-framework
+    libsForQt5.plasma-workspace
     steamPackages.steam
+    steamdeck-firmware
   ];
 
   # Remote build

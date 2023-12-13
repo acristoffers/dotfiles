@@ -145,6 +145,7 @@ let
       shellcheck
       shfmt
       silver-searcher
+      speechd
       stylua
       stylua
       taplo
