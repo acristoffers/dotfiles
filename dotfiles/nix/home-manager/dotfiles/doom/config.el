@@ -601,6 +601,9 @@
 
 ;;; Code to be run during startup
 
+;; Loads the custom custom.el file
+(load custom-file)
+
 ;; Sets up Centaur shortcuts
 (dotimes (n 9) (global-set-key (kbd (format "M-%d" n)) #'centaur-tabs-select-visible-tab))
 (global-set-key (kbd "M-H" ) #'centaur-tabs-move-current-tab-to-left)
@@ -638,3 +641,6 @@
 ;; necessary.
 (when (not (executable-find "texlua"))
   (doom-load-envvars-file doom-env-file))
+
+;; Switch to the first workspace after loading a session
+(advice-add 'doom/quickload-session :after (lambda (a) (+workspace/switch-to-0)))
