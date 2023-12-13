@@ -9,6 +9,7 @@
        doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font Mono")
        doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font")
        doom-theme 'doom-dracula
+       custom-file (expand-file-name "~/.config/emacs/custom.el")
        confirm-kill-emacs nil
        org-directory (expand-file-name "~/.org/")
        display-line-numbers-type 'visual
@@ -31,6 +32,7 @@
        pretty-symbols-active nil
        projectile-project-search-path '("~/.org"
                                         ("~/Developer" . 2)
+                                        ("~/Documents/Dropbox/Documents/CV" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Presentations" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Code" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Articles" . 1)))
