@@ -773,6 +773,17 @@ files = [
 ]
 
 [[package]]
+name = "pycode-similar"
+version = "1.4"
+description = "A simple plagiarism detection tool for python code"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pycode_similar-1.4-py2.py3-none-any.whl", hash = "sha256:d3f8cb2dc7233147af6b70a0aea009b541e1dc13e608b6e2bfba6b3c5f1e677a"},
+    {file = "pycode_similar-1.4.tar.gz", hash = "sha256:41c25bc9804a80c750fcbed1be6b8acc25cf88939933779d2d0f9ef47a2a99db"},
+]
+
+[[package]]
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
@@ -1128,4 +1139,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "a02c7bb5495bf59202f0d5d4d5c41b91bbb35ef8148fd041feeb13d8eb95494e"
+content-hash = "4d0cc599579f7b2dcdddb4ff36eed441df2d0e05fc18bbe95d4620d171c9b166"
