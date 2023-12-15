@@ -26,6 +26,7 @@ with pkgs; [
   nix-matlab.packages.${pkgs.system}.matlab-mlint
   openjdk19
   python311Packages.jupyter
+  speechd
   stdenv.cc.cc.lib
   texlive.combined.scheme-full
   wl-clipboard
