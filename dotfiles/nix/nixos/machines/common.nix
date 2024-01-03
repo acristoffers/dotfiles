@@ -19,7 +19,6 @@ rec {
     EDITOR = "nvim";
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
-    # LD_LIBRARY_EXTRA_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
   };
 
   fonts.enableDefaultPackages = true;
@@ -168,10 +167,6 @@ rec {
     wget
     xorg.xhost
   ];
-
-  services.xserver.excludePackages = with pkgs; [ xorg.xorgserver ];
-  environment.gnome.excludePackages = with pkgs; [ xorg.xorgserver ];
-  environment.plasma5.excludePackages = with pkgs; [ xorg.xorgserver ];
 
   programs.dconf.enable = true;
   programs.gnupg.agent = {

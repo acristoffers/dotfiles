@@ -13,4 +13,5 @@ let
     };
   };
 in
-[ gnome-sessions-overlay ]
+# [ gnome-sessions-overlay ]
+[]
