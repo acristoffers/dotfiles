@@ -26,7 +26,6 @@ function update -d "Updates many package managers."
     update-rustup
     update-flutter
     update-doom
-    # update-nvim
 
     rm -rf $RUSTUP_HOME
     rustup default stable
@@ -34,5 +33,6 @@ function update -d "Updates many package managers."
 
     if test (date -u +%u) = 1
         nix-collect-garbage -d
+        sudo journalctl --flush --rotate --vacuum-time=1s
     end
 end
