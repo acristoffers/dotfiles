@@ -26,7 +26,7 @@ let
     nvim.packages.${system}.default
     remove-trash.packages.${system}.default
     void.packages.${system}.default
-    zig.packages.${system}.master 
+    zig.packages.${system}.master
     zls.packages.${system}.default
     zon2nix.packages.${system}.default
   ] ++ (if isLinux then with inputs; [
