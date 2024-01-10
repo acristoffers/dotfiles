@@ -156,6 +156,7 @@ let
       tokei # counts code lines
       tree
       tree-sitter
+      tridactyl-native
       uncrustify
       unzip
       upx

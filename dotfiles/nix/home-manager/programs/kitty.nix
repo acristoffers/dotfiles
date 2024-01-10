@@ -5,7 +5,7 @@
   theme = "Dracula";
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";
-    size = 13;
+    size = 12;
   };
   settings = {
     cursor_blink_interval = 0;
