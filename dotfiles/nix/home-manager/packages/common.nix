@@ -34,8 +34,7 @@ let
     webots.packages.${system}.default
   ] else [ ]);
 
-  packages = with pkgs;
-    [
+  packages = with pkgs; [
       (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
       (pkgs.hiPrio fish-fzf-fix)
       any-nix-shell
@@ -109,6 +108,7 @@ let
       mysql
       ncurses
       nix
+      nix-index
       nixpkgs-fmt
       nodePackages_latest.bash-language-server
       nodePackages_latest.js-beautify
