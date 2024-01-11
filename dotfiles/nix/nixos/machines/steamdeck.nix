@@ -10,6 +10,7 @@ rec {
   networking.hostName = "Alan-NixOS-SteamDeck";
 
   jovian.devices.steamdeck.enable = true;
+  jovian.devices.steamdeck.enableSoundSupport = false;
   jovian.steam.enable = true;
   jovian.steam.autoStart = false;
   jovian.steam.user = "alan";

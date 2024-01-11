@@ -37,6 +37,7 @@ let
   packages = with pkgs; [
       (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
       (pkgs.hiPrio fish-fzf-fix)
+      albert
       any-nix-shell
       bibtool
       bitwarden-cli
