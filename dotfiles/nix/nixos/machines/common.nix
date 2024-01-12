@@ -162,6 +162,7 @@ rec {
     libsForQt5.qtstyleplugin-kvantum
     lsb-release
     parted
+    plocate
     pulseaudioFull
     sirikali
     wget
@@ -190,7 +191,12 @@ rec {
 
   services.avahi.enable = true;
   services.flatpak.enable = true;
-  services.locate.enable = true;
+  services.locate = {
+    enable = true;
+    interval = "hourly";
+    localuser = null;
+    package = pkgs.plocate;
+  };
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
