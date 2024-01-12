@@ -32,10 +32,12 @@ with pkgs; [
   xdg-ninja
   xdg-utils
   xorg.libXtst # For JavaFX
-] ++ (if pkgs.lib.hasPrefix "x86_64" pkgs.system then
-  with pkgs; [
-    (pkgs.hiPrio nix-matlab.packages.${pkgs.system}.matlab-mex)
-    matlab
-  ]
-else
-  [ ])
+] ++ (
+  if pkgs.lib.hasPrefix "x86_64" pkgs.system then
+    [
+      (pkgs.hiPrio nix-matlab.packages.${pkgs.system}.matlab-mex)
+      matlab
+    ]
+  else
+    [ ]
+)
