@@ -21,7 +21,6 @@ with pkgs; [
   julia-bin
   jumpapp
   lfs # Better du
-  nix-matlab.packages.${pkgs.system}.matlab-mlint
   openjdk19
   python311Packages.jupyter
   speechd
@@ -37,6 +36,7 @@ with pkgs; [
     [
       (pkgs.hiPrio nix-matlab.packages.${pkgs.system}.matlab-mex)
       matlab
+      nix-matlab.packages.${pkgs.system}.matlab-mlint
     ]
   else
     [ ]
