@@ -1,18 +1,13 @@
 {
   description = "Manage Python Packages";
 
-  inputs =
-    {
-      nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
-      flake-utils.url = github:numtide/flake-utils;
-    };
+  inputs = {
+    nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
+    flake-utils.url = github:numtide/flake-utils;
+  };
 
   outputs =
-    inputs@{ self
-    , nixpkgs
-    , flake-utils
-    , ...
-    }:
+    inputs@{ self, nixpkgs, flake-utils, ... }:
     let
       mkOutputsFor = system:
         let
@@ -44,6 +39,6 @@
           };
         };
     in
-    flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ] mkOutputsFor;
+    flake-utils.lib.eachDefaultSystem mkOutputsFor;
 }
 
