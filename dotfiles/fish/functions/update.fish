@@ -32,7 +32,14 @@ function update -d "Updates many package managers."
     rustup component add rust-analyzer
 
     if test (date -u +%u) = 1
-        nix-collect-garbage -d
-        sudo journalctl --flush --rotate --vacuum-time=1s
+        if not test -e ~/.local/state/nixgc
+            nix-collect-garbage -d
+            sudo journalctl --flush --rotate --vacuum-time=1s
+            touch ~/.local/state/nixgc
+        end
+    else
+        if test -e ~/.local/state/nixgc
+            rm ~/.local/state/nixgc
+        end
     end
 end
