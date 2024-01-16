@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: bmatrix environment (LaTeX)
-# uuid: bm
-# key: bm
-# --
-
-\begin{bmatrix}
-  $0
-\end{bmatrix}

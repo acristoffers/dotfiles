@@ -1,5 +1,0 @@
-complete -c matlab-beautifier -l sparse-math -d 'Prints spaces around math operators'
-complete -c matlab-beautifier -l sparse-add -d 'Prints spaces around addition/subtraction operators only'
-complete -c matlab-beautifier -l inplace -d 'Whether files should be formatted inplace instead of printing to stdout'
-complete -c matlab-beautifier -s h -l help -d 'Print help'
-complete -c matlab-beautifier -s V -l version -d 'Print version'
