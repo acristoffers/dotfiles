@@ -1,0 +1,35 @@
+EncryptionSalt = ["", ""]
+
+[[Files]]
+  Name = "bin"
+  Path = "~/bin"
+  Exclude = ["tree-sitter-grammars"]
+
+[[Files]]
+  Name = "global-python"
+  Path = "~/.config/global-python"
+  Exclude = ["result"]
+
+[[Files]]
+  Name = "fish"
+  Path = "~/.config/fish"
+
+[[Files]]
+  Name = "hunspell"
+  Path = "~/.config/hunspell"
+
+[[Files]]
+  Name = "nix"
+  Path = "~/.config/nix"
+
+[[Files]]
+  Name = "nixpkgs"
+  Path = "~/.config/nixpkgs"
+
+[[Files]]
+  Name = "peaclock"
+  Path = "~/.config/peaclock"
+
+[[Files]]
+  Name = "run-or-raise"
+  Path = "~/.config/run-or-raise"

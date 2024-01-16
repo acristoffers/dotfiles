@@ -1,0 +1,29 @@
+pkgs:
+
+with pkgs; (python311.withPackages (p: with p; [
+  argcomplete
+  autopep8
+  black-macchiato
+  flake8
+  git-filter-repo
+  ipython
+  isort
+  matplotlib
+  mdformat
+  mysql
+  neovim
+  nose
+  numpy
+  opencv
+  openpyxl
+  pandas
+  picos
+  pip
+  pytest
+  scipy
+  sympy
+  termdown
+  twine
+  wheel
+  yapf
+]))

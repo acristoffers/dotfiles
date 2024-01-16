@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import sys
+import shutil
+
+text = " ".join(sys.argv[1:])
+
+wall_width = 3
+min_width = 2 * wall_width + len(text) + 2
+max_width = max(min(shutil.get_terminal_size().columns, 80), min_width)
+middle_width = max_width - 2 * wall_width
+
+s = (middle_width - len(text)) // 2
+t = (s * " ") + text + (s * " ")
+
+if len(t) < middle_width:
+    t += " "
+
+print(max_width * "#")
+print((wall_width * "#") + (middle_width * " ") + (wall_width * "#"))
+print((wall_width * "#") + t + (wall_width * "#"))
+print((wall_width * "#") + (middle_width * " ") + (wall_width * "#"))
+print(max_width * "#")
