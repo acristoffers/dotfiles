@@ -8,6 +8,7 @@ with pkgs; (python311.withPackages (p: with p; [
   git-filter-repo
   ipython
   isort
+  jupyter
   matplotlib
   mdformat
   mysql

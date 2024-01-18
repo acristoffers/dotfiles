@@ -1,8 +1,10 @@
 function update -d "Updates many package managers."
+    argparse --name=update-nix 'd/debug' -- $argv
+
     if test (count $argv) -gt 0
         for command in $argv
             if type -q "update-$command"
-                fish -c "update-$command"
+                fish -c "update-$command $_flag_debug"
             else
                 echo $command is not recognized >&2
             end
@@ -19,17 +21,13 @@ function update -d "Updates many package managers."
     update-apt
     update-dnf
     update-flatpak
-    update-nix
+    update-nix $_flag_debug
     update-brew
     update-pip3
     update-tlmgr
     update-rustup
     update-flutter
     update-doom
-
-    rm -rf $RUSTUP_HOME
-    rustup default stable
-    rustup component add rust-analyzer
 
     if test (date -u +%u) = 1
         if not test -e ~/.local/state/nixgc
@@ -42,4 +40,6 @@ function update -d "Updates many package managers."
             rm ~/.local/state/nixgc
         end
     end
+
+    wait
 end

@@ -13,24 +13,18 @@ in
 with pkgs; [
   bibutils
   dex # Excutes .desktop files
-  droidcam
-  flutter
-  gcc
   gnupatch
   gource # version control visualization
-  julia-bin
-  jumpapp
-  lfs # Better du
-  openjdk19
-  python311Packages.jupyter
+  libnotify
+  openjdk21
   speechd
-  stdenv.cc.cc.lib
+  # stdenv.cc.cc.lib
   texlive.combined.scheme-full
   wl-clipboard
   wl-clipboard-x11
   xdg-ninja
   xdg-utils
-  xorg.libXtst # For JavaFX
+  # xorg.libXtst # For JavaFX
 ] ++ (
   if pkgs.lib.hasPrefix "x86_64" pkgs.system then
     [

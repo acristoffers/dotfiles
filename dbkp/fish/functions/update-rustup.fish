@@ -1,10 +1,8 @@
 function update-rustup
-	title Updating Rust
-
-	if not type -q rustup
-		echo "rustup not installed!"
-		exit 1
-	end
-
-	rustup update
+    if type -q rustup
+        title Updating Rust
+        rm -rf $RUSTUP_HOME
+        rustup default stable
+        rustup component add rust-analyzer
+    end
 end

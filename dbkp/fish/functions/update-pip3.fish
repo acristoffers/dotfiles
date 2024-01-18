@@ -1,5 +1,6 @@
 function update-pip3
     if not set -q IN_NIX_SHELL
+        title Updating Python
         pushd ~/.config/global-python
         rm flake.lock
         rm result
@@ -9,8 +10,6 @@ function update-pip3
         popd
         return
     end
-
-    title Updating Python
 
     if not type -q pip3
         echo "pip3 not found"
@@ -36,7 +35,7 @@ function update-pip3
     echo Updating with poetry...
     poetry up --latest -qn
     poetry update --lock -q
-    poetry export --without-hashes --format=requirements.txt > requirements.txt
+    poetry export --without-hashes --format=requirements.txt >requirements.txt
     rm -rf ~/.local/share/pip
     echo ...updating pip...
     pip3 install -qq --ignore-installed --upgrade pip

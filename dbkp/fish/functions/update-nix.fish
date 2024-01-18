@@ -7,13 +7,19 @@ function update-nix
     # nix build ~/.config/nix/home-manager\#darwinConfigurations.recherche75.system
     # ./result/sw/bin/darwin-rebuild switch --flake ~/.config/nix/home-manager
 
+    argparse --name=update-nix 'd/debug' -- $argv
+
     nix-channel --update
     nix flake update $XDG_CONFIG_HOME/nix/home-manager
 
     if test (uname -s) = "Darwin"
         darwin-rebuild switch --flake $XDG_CONFIG_HOME/nix/home-manager
     else
-        home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager
+        if test -z "$_flag_debug"
+            home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager
+        else
+            home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager --show-trace
+        end
     end
 
     if test (uname -s) = "Darwin" && test -d ~/.nix-profile/Applications

@@ -128,8 +128,10 @@ if status --is-interactive; and not set -q IN_NIX_SHELL; and not set -q FULL_NIX
     set -e SSH_ASKPASS
 end
 
+set -a fish_complete_path $HOME/.nix-profile/share/fish/completions
+
 fix-path-wrappers
-vardedup PATH XDG_DATA_DIRS LD_LIBRARY_PATH
+vardedup PATH XDG_DATA_DIRS LD_LIBRARY_PATH fish_complete_path
 
 bind \es fish_prepend_sudo
 bind \cl fish_prepend_clear
