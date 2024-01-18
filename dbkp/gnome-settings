@@ -1,0 +1,942 @@
+[apps/seahorse]
+last-search-text='acristoffers@startmail.com'
+
+[apps/seahorse/listing]
+item-filter='any'
+keyrings-selected=['pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust']
+
+[apps/seahorse/windows/key-manager]
+height=465
+width=948
+
+[ca/desrt/dconf-editor]
+saved-pathbar-path='/org/gnome/shell/extensions/apps-menu/'
+saved-view='/org/gnome/shell/extensions/apps-menu/'
+show-warning=false
+window-height=985
+window-is-maximized=false
+window-width=1267
+
+[desktop/ibus/general]
+preload-engines=@as []
+version='1.5.27'
+
+[desktop/ibus/panel/emoji]
+favorites=['º']
+
+[org/fedorahosted/background-logo-extension]
+logo-position='bottom-right'
+
+[org/fedoraproject/FirewallConfig]
+show-active-bindings=true
+show-ipsets=true
+
+[org/freedesktop/folks]
+primary-store='eds:system-address-book'
+
+[org/freedesktop/ibus/engine/m17n/ru/yawerty]
+lookup-table-orientation=2
+preedit-background='none'
+preedit-foreground='none'
+preedit-underline=0
+use-us-layout=false
+
+[org/freedesktop/tracker/miner/files]
+index-recursive-directories=['&MUSIC', '&DOCUMENTS', '&PICTURES', '&DOWNLOAD', '&VIDEOS', '/home/alan/Documents/Dropbox/Universidade/Doutorado', '/home/alan/Documents/Dropbox']
+index-single-directories=['&DOWNLOAD', '$HOME']
+
+[org/gnome/Connections]
+first-run=false
+
+[org/gnome/Console]
+last-window-size=(1267, 1032)
+
+[org/gnome/Contacts]
+did-initial-setup=true
+window-fullscreen=false
+window-height=1392
+window-maximized=false
+window-width=2544
+
+[org/gnome/GWeather4]
+temperature-unit='centigrade'
+
+[org/gnome/Geary]
+compose-as-html=true
+formatting-toolbar-visible=false
+migrated-config=true
+window-height=1032
+window-width=1904
+
+[org/gnome/Music]
+window-size=[1904, 1032]
+
+[org/gnome/Snapshot]
+is-maximized=false
+window-height=640
+window-width=800
+
+[org/gnome/TextEditor]
+custom-font='JetBrainsMonoNL Nerd Font Medium 11'
+highlight-current-line=true
+indent-style='space'
+last-save-directory='file:///home/alan/Downloads'
+restore-session=false
+show-grid=false
+show-line-numbers=true
+show-map=false
+style-scheme='peninsula-dark'
+tab-width=uint32 2
+use-system-font=false
+
+[org/gnome/Totem]
+active-plugins=['vimeo', 'variable-rate', 'skipto', 'screenshot', 'screensaver', 'save-file', 'rotation', 'recent', 'movie-properties', 'open-directory', 'mpris', 'autoload-subtitles', 'apple-trailers']
+subtitle-encoding='UTF-8'
+
+[org/gnome/Weather]
+locations=[<(uint32 2, <('Reims', 'LFOW', false, [(0.869464861519606, 0.055850536063818547)], [(0.869464861519606, 0.055850536063818547)])>)>]
+window-height=515
+window-maximized=false
+window-width=992
+
+[org/gnome/baobab/ui]
+is-maximized=false
+window-size=(960, 600)
+
+[org/gnome/boxes]
+first-run=false
+view='icon-view'
+window-maximized=false
+window-position=[26, 23]
+window-size=[948, 512]
+
+[org/gnome/calculator]
+accuracy=9
+angle-units='degrees'
+base=10
+button-mode='basic'
+number-format='automatic'
+show-thousands=false
+show-zeroes=false
+source-currency='DZD'
+source-units='degree'
+target-currency='DZD'
+target-units='radian'
+word-size=64
+
+[org/gnome/calendar]
+active-view='month'
+window-maximized=false
+window-size=(1904, 1032)
+
+[org/gnome/cheese]
+burst-delay=1000
+camera='Apple Facetime HD (V4L2)'
+photo-x-resolution=1280
+photo-y-resolution=720
+video-x-resolution=1280
+video-y-resolution=720
+
+[org/gnome/clocks]
+world-clocks=[{'location': <(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1496638678574467)], [(0.85841109795478021, -2.1496638678574467)])>)>}, {'location': <(uint32 2, <('São Paulo', 'SBMT', true, [(-0.41044326824509736, -0.8139052020289248)], [(-0.41073414481823473, -0.81361432545578749)])>)>}]
+
+[org/gnome/clocks/state/window]
+maximized=false
+panel-id='world'
+size=(843, 459)
+
+[org/gnome/control-center]
+last-panel='network'
+window-state=(1693, 1392, false)
+
+[org/gnome/desktop/a11y/applications]
+screen-keyboard-enabled=false
+screen-reader-enabled=false
+
+[org/gnome/desktop/a11y/keyboard]
+enable=false
+
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'YaST']
+
+[org/gnome/desktop/app-folders/folders/Utilities]
+apps=['gnome-abrt.desktop', 'gnome-system-log.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Connections.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.eog.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Usage.desktop', 'vinagre.desktop']
+categories=['X-GNOME-Utilities']
+name='X-GNOME-Utilities.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/YaST]
+categories=['X-SuSE-YaST']
+name='suse-yast.directory'
+translate=true
+
+[org/gnome/desktop/background]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/alan/.local/share/backgrounds/2023-11-16-08-32-29-software-you-can-love-2022.png'
+picture-uri-dark='file:///home/alan/.local/share/backgrounds/2023-11-16-08-32-29-software-you-can-love-2022.png'
+primary-color='#000000000000'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/input-sources]
+current=uint32 0
+mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
+show-all-sources=true
+sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
+xkb-options=['caps:escape', 'shift:both_capslock', 'compose:rwin']
+
+[org/gnome/desktop/interface]
+clock-show-weekday=true
+color-scheme='prefer-dark'
+cursor-blink=true
+cursor-size=24
+cursor-theme='Adwaita'
+enable-animations=true
+font-antialiasing='rgba'
+font-hinting='slight'
+font-name='Noto Sans,  10'
+gtk-key-theme='Emacs'
+gtk-theme='Adwaita-dark'
+icon-theme='Adwaita'
+monospace-font-name='JetBrainsMonoNL Nerd Font Mono 10'
+show-battery-percentage=true
+text-scaling-factor=1.0
+toolbar-style='text'
+toolkit-accessibility=false
+
+[org/gnome/desktop/media-handling]
+autorun-never=true
+autorun-x-content-ignore=['x-content/unix-software']
+autorun-x-content-open-folder=@as []
+autorun-x-content-start-app=['x-content/ostree-repository']
+
+[org/gnome/desktop/notifications]
+application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles']
+
+[org/gnome/desktop/notifications/application/com-brave-browser]
+application-id='com.brave.Browser.desktop'
+
+[org/gnome/desktop/notifications/application/com-discordapp-discord]
+application-id='com.discordapp.Discord.desktop'
+
+[org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager-desktop]
+application-id='com.mattjakeman.ExtensionManager.desktop.desktop'
+
+[org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager]
+application-id='com.mattjakeman.ExtensionManager.desktop'
+
+[org/gnome/desktop/notifications/application/com-usebottles-bottles]
+application-id='com.usebottles.bottles.desktop'
+
+[org/gnome/desktop/notifications/application/com-valvesoftware-steam]
+application-id='com.valvesoftware.Steam.desktop'
+
+[org/gnome/desktop/notifications/application/emacs]
+application-id='emacs.desktop'
+
+[org/gnome/desktop/notifications/application/emacsclient]
+application-id='emacsclient.desktop'
+
+[org/gnome/desktop/notifications/application/eu-betterbird-betterbird]
+application-id='eu.betterbird.Betterbird.desktop'
+
+[org/gnome/desktop/notifications/application/firefox]
+application-id='firefox.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-network-panel]
+application-id='gnome-network-panel.desktop'
+
+[org/gnome/desktop/notifications/application/gnome-power-panel]
+application-id='gnome-power-panel.desktop'
+
+[org/gnome/desktop/notifications/application/kitty]
+application-id='kitty.desktop'
+
+[org/gnome/desktop/notifications/application/org-freedesktop-problems-applet]
+application-id='org.freedesktop.problems.applet.desktop'
+
+[org/gnome/desktop/notifications/application/org-gimp-gimp]
+application-id='org.gimp.GIMP.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-boxes]
+application-id='org.gnome.Boxes.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-calendar]
+application-id='org.gnome.Calendar.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-console]
+application-id='org.gnome.Console.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-epiphany]
+application-id='org.gnome.Epiphany.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-extensions-desktop]
+application-id='org.gnome.Extensions.desktop.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-fractal]
+application-id='org.gnome.Fractal.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-nautilus]
+application-id='org.gnome.Nautilus.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-settings]
+application-id='org.gnome.Settings.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-shell-extensions]
+application-id='org.gnome.Shell.Extensions.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-software]
+application-id='org.gnome.Software.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-terminal]
+application-id='org.gnome.Terminal.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-totem]
+application-id='org.gnome.Totem.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-tweaks]
+application-id='org.gnome.tweaks.desktop'
+
+[org/gnome/desktop/notifications/application/org-kde-drkonqi]
+application-id='org.kde.drkonqi.desktop'
+
+[org/gnome/desktop/notifications/application/org-kde-kmail2]
+enable=false
+
+[org/gnome/desktop/notifications/application/org-kde-konsole]
+application-id='org.kde.konsole.desktop'
+
+[org/gnome/desktop/notifications/application/org-kde-okular]
+application-id='org.kde.okular.desktop'
+
+[org/gnome/desktop/notifications/application/org-libreoffice-libreoffice-writer]
+application-id='org.libreoffice.LibreOffice.writer.desktop'
+
+[org/gnome/desktop/notifications/application/org-mozilla-firefox]
+application-id='org.mozilla.firefox.desktop'
+
+[org/gnome/desktop/notifications/application/org-mozilla-thunderbird]
+application-id='org.mozilla.Thunderbird.desktop'
+
+[org/gnome/desktop/notifications/application/org-rncbc-qpwgraph]
+application-id='org.rncbc.qpwgraph.desktop'
+
+[org/gnome/desktop/notifications/application/org-signal-signal]
+application-id='org.signal.Signal.desktop'
+
+[org/gnome/desktop/notifications/application/org-telegram-desktop]
+application-id='org.telegram.desktop.desktop'
+
+[org/gnome/desktop/notifications/application/org-videolan-vlc]
+application-id='org.videolan.VLC.desktop'
+
+[org/gnome/desktop/notifications/application/thunderbird]
+application-id='thunderbird.desktop'
+
+[org/gnome/desktop/notifications/application/us-zoom-zoom]
+application-id='us.zoom.Zoom.desktop'
+
+[org/gnome/desktop/peripherals/keyboard]
+numlock-state=true
+
+[org/gnome/desktop/peripherals/touchpad]
+two-finger-scrolling-enabled=true
+
+[org/gnome/desktop/privacy]
+old-files-age=uint32 30
+recent-files-max-age=-1
+remember-recent-files=false
+report-technical-problems=true
+
+[org/gnome/desktop/screensaver]
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/alan/.local/share/backgrounds/2023-11-16-08-32-29-software-you-can-love-2022.png'
+primary-color='#000000000000'
+secondary-color='#000000000000'
+
+[org/gnome/desktop/search-providers]
+disabled=@as []
+enabled=['org.gnome.Weather.desktop']
+sort-order=['org.gnome.Contacts.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/desktop/session]
+idle-delay=uint32 300
+
+[org/gnome/desktop/sound]
+event-sounds=true
+theme-name='freedesktop'
+
+[org/gnome/desktop/wm/keybindings]
+close=['<Super>w']
+minimize=['<Super>x']
+move-to-workspace-1=['<Shift><Control>F1']
+move-to-workspace-2=['<Shift><Control>F2']
+move-to-workspace-3=['<Shift><Control>F3']
+move-to-workspace-4=['<Shift><Control>F4']
+switch-input-source=@as []
+switch-input-source-backward=@as []
+switch-to-workspace-1=['<Control>F1']
+switch-to-workspace-2=['<Control>F2']
+switch-to-workspace-3=['<Control>F3']
+switch-to-workspace-4=['<Control>F4']
+toggle-fullscreen=['<Control><Alt>f']
+
+[org/gnome/desktop/wm/preferences]
+auto-raise=true
+button-layout='icon:minimize,maximize,close'
+mouse-button-modifier='<Super>'
+
+[org/gnome/epiphany]
+ask-for-default=false
+
+[org/gnome/epiphany/state]
+is-maximized=false
+window-size=(1904, 1032)
+
+[org/gnome/evince/default]
+continuous=true
+dual-page=false
+dual-page-odd-left=true
+enable-spellchecking=true
+fullscreen=false
+inverted-colors=false
+show-sidebar=false
+sidebar-page='links'
+sidebar-size=226
+sizing-mode='automatic'
+window-ratio=(2.1284101599247411, 1.2258133485372198)
+
+[org/gnome/evolution-data-server]
+migrated=true
+
+[org/gnome/evolution-data-server/calendar]
+reminders-past=@as []
+
+[org/gnome/evolution]
+default-address-book='system-address-book'
+default-calendar='c34be7b1f6ed4c31f8919ec81271f52d92e62492'
+version='3.48.4'
+
+[org/gnome/evolution/calendar]
+allow-direct-summary-edit=false
+confirm-purge=true
+date-navigator-pane-position=167
+primary-calendar='42c6eda3a943419cdb7fbdb437c07acfc9e4c030'
+primary-memos='system-memo-list'
+primary-tasks='system-task-list'
+tag-vpane-position=0.00082034454470880647
+time-divisions=30
+use-24hour-format=true
+week-start-day-name='monday'
+work-day-friday=true
+work-day-monday=true
+work-day-saturday=false
+work-day-sunday=false
+work-day-thursday=true
+work-day-tuesday=true
+work-day-wednesday=true
+
+[org/gnome/evolution/mail]
+browser-close-on-reply-policy='ask'
+forward-style-name='attached'
+image-loading-policy='never'
+junk-check-custom-header=true
+junk-empty-on-exit-days=0
+junk-lookup-addressbook=false
+paned-size=1381460
+reply-style-name='quoted'
+send-recv-all-on-start=true
+to-do-bar-width=1150000
+trash-empty-date=19574
+trash-empty-on-exit=true
+trash-empty-on-exit-days=0
+use-custom-font=false
+
+[org/gnome/evolution/plugin/autocontacts]
+addressbook-source='system-address-book'
+gaim-addressbook-source='system-address-book'
+
+[org/gnome/evolution/shell]
+default-component-id='calendar'
+folder-bar-width=249
+menubar-visible=false
+toolbar-icon-size='default'
+
+[org/gnome/evolution/shell/window]
+height=1345
+maximized=false
+width=2544
+x=26
+y=23
+
+[org/gnome/file-roller/dialogs/extract]
+recreate-folders=true
+skip-newer=false
+
+[org/gnome/file-roller/listing]
+list-mode='as-folder'
+name-column-width=250
+show-path=false
+sort-method='name'
+sort-type='ascending'
+
+[org/gnome/file-roller/ui]
+sidebar-width=200
+window-height=480
+window-width=600
+
+[org/gnome/gnome-system-monitor]
+current-tab='resources'
+maximized=false
+network-total-in-bits=false
+show-dependencies=false
+show-whose-processes='user'
+window-state=(2385, 1305, 26, 23)
+
+[org/gnome/gnome-system-monitor/disktreenew]
+col-6-visible=true
+col-6-width=0
+
+[org/gnome/libgnomekbd/preview]
+height=60
+width=1944
+x=320
+y=180
+
+[org/gnome/login-screen]
+enable-fingerprint-authentication=true
+enable-password-authentication=true
+enable-smartcard-authentication=false
+
+[org/gnome/maps]
+last-viewed-location=[47.327409000000003, 5.0383712999999997]
+map-type='MapsStreetSource'
+transportation-type='pedestrian'
+window-maximized=false
+window-size=[2385, 1305]
+zoom-level=19
+
+[org/gnome/mutter]
+center-new-windows=true
+dynamic-workspaces=false
+
+[org/gnome/nautilus/compression]
+default-compression-format='zip'
+
+[org/gnome/nautilus/icon-view]
+default-zoom-level='small-plus'
+
+[org/gnome/nautilus/preferences]
+click-policy='double'
+default-folder-viewer='icon-view'
+migrated-gtk-settings=true
+search-filter-time-type='last_modified'
+search-view='icon-view'
+show-delete-permanently=true
+
+[org/gnome/nautilus/window-state]
+initial-size=(948, 512)
+maximized=false
+
+[org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/4e5000a7-254a-41f4-b20e-96e5466b8f3f]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/88a5bcf5-f96f-4432-9616-fa3931fd7187]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/b5672d7a-a827-4f89-91b7-fff72dbc89d9]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/photos]
+window-maximized=false
+window-position=[26, 23]
+window-size=[1904, 1032]
+
+[org/gnome/portal/filechooser/com.brave.Browser]
+last-folder-path='/home/alan/Downloads/titre'
+
+[org/gnome/portal/filechooser/com.discordapp.Discord]
+last-folder-path='/home/alan/Documents/Dropbox/Documents/CV'
+
+[org/gnome/portal/filechooser/com.spotify.Client]
+last-folder-path='/home/alan/Music/Steam'
+
+[org/gnome/portal/filechooser/com.usebottles.bottles]
+last-folder-path='/home/alan/.var/app/com.usebottles.bottles/data/bottles/bottles/Acrobat-Reader/drive_c/Program Files/Adobe/Acrobat DC/Acrobat'
+
+[org/gnome/portal/filechooser/com.valvesoftware.Steam]
+last-folder-path='/var/lib/flatpak/exports/share/applications'
+
+[org/gnome/portal/filechooser/eu.betterbird.Betterbird]
+last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5kb7f.default-default'
+
+[org/gnome/portal/filechooser/io.github.mhogomchungu.sirikali]
+last-folder-path='/home/alan/Documents/Vault/bl'
+
+[org/gnome/portal/filechooser/me.acristoffers.Lachesis]
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Graduação/Iniciação Científica/Tanques'
+
+[org/gnome/portal/filechooser/okular]
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Classes/TP-ROS/sujet/build'
+
+[org/gnome/portal/filechooser/org.gnome.Settings]
+last-folder-path='/home/alan/Downloads'
+
+[org/gnome/portal/filechooser/org.gnome.seahorse.Application]
+last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
+
+[org/gnome/portal/filechooser/org.mozilla.Thunderbird]
+last-folder-path='/home/alan/Downloads'
+
+[org/gnome/portal/filechooser/org.mozilla.firefox]
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
+
+[org/gnome/portal/filechooser/org.signal.Signal]
+last-folder-path='/home/alan/Downloads'
+
+[org/gnome/portal/filechooser/org.telegram.desktop]
+last-folder-path='/home/alan/Downloads/TrigaServer'
+
+[org/gnome/rhythmbox]
+maximized=false
+position=(26, 23)
+size=(2544, 1355)
+
+[org/gnome/rhythmbox/player]
+volume=1.0
+
+[org/gnome/rhythmbox/plugins]
+active-plugins=['rb', 'power-manager', 'notification', 'mtpdevice', 'mpris', 'iradio', 'ipod', 'generic-player', 'dbus-media-server', 'cd-recorder', 'audioscrobbler', 'audiocd', 'android', 'artsearch']
+seen-plugins=['grilo', 'rb', 'webremote', 'replaygain', 'rbzeitgeist', 'pythonconsole', 'notification', 'mtpdevice', 'ipod', 'fmradio', 'dbus-media-server', 'daap', 'cd-recorder', 'audioscrobbler', 'artsearch', 'im-status', 'listenbrainz', 'lyrics', 'magnatune']
+
+[org/gnome/rhythmbox/plugins/audioscrobbler/Last.fm]
+scrobbling-enabled=true
+
+[org/gnome/rhythmbox/plugins/audioscrobbler/Libre.fm]
+scrobbling-enabled=true
+
+[org/gnome/rhythmbox/plugins/iradio]
+initial-stations-loaded=true
+
+[org/gnome/rhythmbox/rhythmdb]
+locations=['file:///home/alan/Music']
+
+[org/gnome/settings-daemon/plugins/color]
+night-light-enabled=false
+night-light-last-coordinates=(47.333933903773598, 5.0383713999999999)
+
+[org/gnome/settings-daemon/plugins/media-keys]
+control-center=['<Super>comma']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']
+screensaver=@as []
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
+binding='<Super>v'
+command="flatpak run org.mozilla.firefox -new-tab 'https://search.brave.com'"
+name='Firefox New Search'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
+binding='<Super>y'
+command="flatpak run org.mozilla.firefox -new-tab 'https://youtube.com'"
+name='Firefox Youtube'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
+binding='<Super>Return'
+command='kitty'
+name='New Kitty Window'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
+binding='<Super>j'
+command='nautilus Downloads'
+name='Downloads Folder'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
+binding='<Super>l'
+command="flatpak run org.mozilla.firefox -new-tab 'https://linkedin.com'"
+name='LinkedIn'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
+binding='<Super>space'
+command='albert toggle'
+name='Albert'
+
+[org/gnome/settings-daemon/plugins/power]
+idle-dim=false
+sleep-inactive-ac-timeout=3600
+sleep-inactive-ac-type='nothing'
+
+[org/gnome/shell]
+command-history=['gl', 'lg']
+disable-user-extensions=false
+disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'blur-my-shell@aunetx', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-ui-tune@itstime.tech', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'run-or-raise@edvard.cz', 'rectangle@acristoffers.me', 'noannoyance-fork@vrba.dev']
+favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
+last-selected-power-profile='performance'
+looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)']
+welcome-dialog-last-shown-version='43.0'
+
+[org/gnome/shell/app-switcher]
+current-workspace-only=false
+
+[org/gnome/shell/extensions/auto-move-windows]
+application-list=['org.telegram.desktop.desktop:3', 'org.signal.Signal.desktop:3', 'org.mozilla.Thunderbird.desktop:4', 'com.discordapp.Discord.desktop:3', 'org.gnome.Fractal.desktop:3', 'kitty.desktop:2', 'org.mozilla.firefox.desktop:1']
+
+[org/gnome/shell/extensions/burn-my-windows]
+active-profile='/home/alan/.config/burn-my-windows/profiles/1693417159839460.conf'
+last-extension-version=30
+last-prefs-version=30
+prefs-open-count=4
+preview-effect=''
+
+[org/gnome/shell/extensions/caffeine]
+countdown-timer=0
+indicator-position-max=1
+inhibit-apps=['org.videolan.VLC.desktop']
+toggle-state=false
+
+[org/gnome/shell/extensions/clipboard-indicator]
+toggle-menu=['<Super>semicolon']
+
+[org/gnome/shell/extensions/coverflowalttab]
+icon-style='Classic'
+overlay-icon-size=32.0
+preview-to-monitor-ratio=0.5
+switcher-background-color=(1.0, 1.0, 1.0)
+switcher-looping-method='Flip Stack'
+switcher-style='Coverflow'
+use-application-switcher-icons=false
+
+[org/gnome/shell/extensions/gnome-rectangle]
+animate-movement=true
+animation-duration=150
+padding-inner=8
+padding-outer=8
+
+[org/gnome/shell/extensions/inputmethod-shortcuts]
+imkey-0=['<Alt><Super>j']
+imkey-1=['<Alt><Super>k']
+imkey-2=['<Alt><Super>l']
+imkey-3=@as []
+imkey-4=@as []
+imkey-5=@as []
+imkey-6=@as []
+imkey-7=@as []
+imkey-8=@as []
+imkey-9=@as []
+
+[org/gnome/shell/extensions/mediacontrols]
+colored-player-icon=true
+hide-media-notification=true
+mouse-actions=['toggle_play', 'toggle_menu', 'none', 'none', 'none', 'none', 'none', 'none']
+
+[org/gnome/shell/extensions/net/gfxmonk/impatience]
+speed-factor=0.5
+
+[org/gnome/shell/extensions/noannoyance]
+by-class=['org.telegram.desktop', 'Signal', 'org.gnome.Fractal', 'discord']
+enable-ignorelist=true
+
+[org/gnome/shell/extensions/notification-timeout]
+timeout=2000
+
+[org/gnome/shell/extensions/rectangle]
+animate-movement=true
+animation-duration=150
+
+[org/gnome/shell/extensions/run-or-raise]
+move-window-to-active-workspace=false
+
+[org/gnome/shell/keybindings]
+focus-active-notification=['<Alt><Super>n']
+screenshot=['<Shift><Super>3']
+screenshot-window=['<Shift><Super>5']
+show-screenshot-ui=['<Shift><Super>4']
+switch-to-application-1=@as []
+switch-to-application-2=@as []
+switch-to-application-3=@as []
+switch-to-application-4=@as []
+switch-to-application-5=@as []
+switch-to-application-6=@as []
+switch-to-application-7=@as []
+switch-to-application-8=@as []
+switch-to-application-9=@as []
+toggle-message-tray=['F12']
+toggle-overview=@as []
+toggle-quick-settings=['<Super>c']
+
+[org/gnome/shell/weather]
+automatic-location=true
+locations=[<(uint32 2, <('Reims', 'LFOW', false, [(0.869464861519606, 0.055850536063818547)], [(0.869464861519606, 0.055850536063818547)])>)>]
+
+[org/gnome/shell/world-clocks]
+locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1496638678574467)], [(0.85841109795478021, -2.1496638678574467)])>)>, <(uint32 2, <('São Paulo', 'SBMT', true, [(-0.41044326824509736, -0.8139052020289248)], [(-0.41073414481823473, -0.81361432545578749)])>)>]
+
+[org/gnome/simple-scan]
+document-type='photo'
+
+[org/gnome/software]
+check-timestamp=int64 1705565854
+first-run=false
+flatpak-purge-timestamp=int64 1705572982
+install-timestamp=int64 1704999008
+online-updates-timestamp=int64 1678549560
+update-notification-timestamp=int64 1705041701
+
+[org/gnome/system/location]
+enabled=true
+
+[org/gnome/terminal/legacy]
+always-check-default-terminal=false
+theme-variant='dark'
+
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+audible-bell=false
+background-color='#282A36'
+bold-color='#6E46A4'
+bold-color-same-as-fg=false
+custom-command='/home/alan/.nix-profile/bin/tmux'
+font='JetBrainsMono Nerd Font Mono 14'
+foreground-color='#F8F8F2'
+login-shell=false
+palette=['#262626', '#E356A7', '#42E66C', '#E4F34A', '#9B6BDF', '#E64747', '#75D7EC', '#EFA554', '#7A7A7A', '#FF79C6', '#50FA7B', '#F1FA8C', '#BD93F9', '#FF5555', '#8BE9FD', '#FFB86C']
+scrollbar-policy='never'
+use-custom-command=true
+use-system-font=false
+use-theme-colors=false
+
+[org/gnome/tweaks]
+show-extensions-notice=false
+
+[org/gtk/gtk4/settings/color-chooser]
+custom-colors=[(0.7450980544090271, 0.80784314870834351, 0.86666667461395264, 1.0), (0.0, 0.0, 0.0, 0.0)]
+selected-color=(true, 0.7764706015586853, 0.27450981736183167, 0.0, 1.0)
+
+[org/gtk/gtk4/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=false
+show-size-column=true
+show-type-column=true
+sidebar-width=242
+sort-column='name'
+sort-directories-first=true
+sort-order='ascending'
+type-format='category'
+view-type='grid'
+window-size=(948, 512)
+
+[org/gtk/settings/color-chooser]
+custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
+selected-color=(true, 0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)
+
+[org/gtk/settings/file-chooser]
+date-format='regular'
+location-mode='path-bar'
+show-hidden=true
+show-size-column=true
+show-type-column=true
+sidebar-width=161
+sort-column='name'
+sort-directories-first=false
+sort-order='ascending'
+type-format='category'
+window-position=(26, 23)
+window-size=(1268, 645)
+
+[org/virt-manager/virt-manager]
+manager-window-height=655
+manager-window-width=1268
+xmleditor-enabled=true
+
+[org/virt-manager/virt-manager/confirm]
+delete-storage=true
+forcepoweroff=false
+unapplied-dev=true
+
+[org/virt-manager/virt-manager/connections]
+autoconnect=['qemu:///system']
+uris=['qemu:///system']
+
+[org/virt-manager/virt-manager/conns/qemu:system]
+window-size=(800, 600)
+
+[org/virt-manager/virt-manager/console]
+resize-guest=0
+scaling=2
+
+[org/virt-manager/virt-manager/details]
+show-toolbar=true
+
+[org/virt-manager/virt-manager/new-vm]
+graphics-type='system'
+
+[org/virt-manager/virt-manager/paths]
+media-default='/home/alan/Downloads'
+
+[org/virt-manager/virt-manager/urls]
+isos=['/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
+
+[org/virt-manager/virt-manager/vmlist-fields]
+disk-usage=false
+network-traffic=false
+
+[org/virt-manager/virt-manager/vms/25ba81c6dc704022a85fba55d4a899a9]
+autoconnect=1
+scaling=1
+vm-window-size=(1621, 897)
+
+[org/virt-manager/virt-manager/vms/35f1997cf2fe43748021123c5a01d945]
+autoconnect=1
+resize-guest=1
+scaling=1
+vm-window-size=(1904, 995)
+
+[org/virt-manager/virt-manager/vms/4c21b47e2a41454dae1120bcb49c5a6b]
+autoconnect=1
+scaling=1
+vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/500d0791d8c34d689e7246d876d7edf4]
+autoconnect=1
+scaling=1
+vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/5177360e541845388fe03a1a3a29a0cb]
+autoconnect=1
+scaling=1
+vm-window-size=(1024, 837)
+
+[org/virt-manager/virt-manager/vms/61104600190b467abb112163ad460c86]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/6e51bb824a4c450a8cf4c9af0c2d6574]
+autoconnect=1
+resize-guest=1
+scaling=1
+vm-window-size=(1693, 1355)
+
+[org/virt-manager/virt-manager/vms/ad369a4ee81442a2a96081877fb0ef84]
+autoconnect=1
+resize-guest=1
+scaling=0
+vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/b9d1ea3a978940e6a68ebdbb8a3ad4e5]
+autoconnect=1
+scaling=1
+vm-window-size=(1485, 967)
+
+[org/virt-manager/virt-manager/vms/f40b30d4309e4d1d9e193b8aab2e1f2c]
+autoconnect=1
+scaling=1
+vm-window-size=(2544, 1355)

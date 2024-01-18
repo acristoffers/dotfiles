@@ -33,3 +33,13 @@ EncryptionSalt = ["", ""]
 [[Files]]
   Name = "run-or-raise"
   Path = "~/.config/run-or-raise"
+
+[[Commands]]
+  Name = "gnome-settings"
+  Backup = "dconf dump /"
+  Restore = "dconf load /"
+
+[[Commands]]
+  Name = "flatpak"
+  Backup = "flatpak list --columns=ref --app | tail -n +1"
+  Restore = "xargs flatpak install -y --noninteractive --or-update"
