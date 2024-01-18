@@ -10,7 +10,7 @@ alias e     ec
 alias tm    "tmux; exit"
 alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
 alias bell  "echo -e '\a'"
-alias tree  "ls --tree"
+alias tree  "exa --tree"
 alias clc   "clear" # fuck matlab
 alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
 
