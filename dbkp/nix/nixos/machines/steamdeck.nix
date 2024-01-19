@@ -26,6 +26,11 @@ rec {
         theme = "breeze";
         wayland.enable = true;
         autoLogin.relogin = false;
+        settings = {
+          General = {
+            InputMethod = "qtvirtualkeyboard";
+          };
+        };
       };
       autoLogin = {
         enable = true;
@@ -43,6 +48,7 @@ rec {
     libsForQt5.kirigami2
     libsForQt5.plasma-framework
     libsForQt5.plasma-workspace
+    libsForQt5.qt5.qtvirtualkeyboard
     steamPackages.steam
     steamdeck-firmware
   ];

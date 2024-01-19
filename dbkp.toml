@@ -37,7 +37,7 @@ EncryptionSalt = ["", ""]
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
-  Restore = "dconf load /"
+  Restore = "dconf load -f /"
 
 [[Commands]]
   Name = "flatpak"
