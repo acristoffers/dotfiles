@@ -34,6 +34,10 @@ EncryptionSalt = ["", ""]
   Name = "run-or-raise"
   Path = "~/.config/run-or-raise"
 
+[[Files]]
+  Name = "extensions"
+  Path = "~/.local/share/gnome-shell/extensions"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.inputmethod-shortcuts" path="/org/gnome/shell/extensions/inputmethod-shortcuts/">
+        <key type="as" name="imkey-0">
+            <default>['']</default>
+            <summary>Shortcut to input method 0</summary>
+        </key>
+        <key type="as" name="imkey-1">
+            <default>['']</default>
+            <summary>Shortcut to input method 1</summary>
+        </key>
+        <key type="as" name="imkey-2">
+            <default>['']</default>
+            <summary>Shortcut to input method 2</summary>
+        </key>
+        <key type="as" name="imkey-3">
+            <default>['']</default>
+            <summary>Shortcut to input method 3</summary>
+        </key>
+        <key type="as" name="imkey-4">
+            <default>['']</default>
+            <summary>Shortcut to input method 4</summary>
+        </key>
+        <key type="as" name="imkey-5">
+            <default>['']</default>
+            <summary>Shortcut to input method 5</summary>
+        </key>
+        <key type="as" name="imkey-6">
+            <default>['']</default>
+            <summary>Shortcut to input method 6</summary>
+        </key>
+        <key type="as" name="imkey-7">
+            <default>['']</default>
+            <summary>Shortcut to input method 7</summary>
+        </key>
+        <key type="as" name="imkey-8">
+            <default>['']</default>
+            <summary>Shortcut to input method 8</summary>
+        </key>
+        <key type="as" name="imkey-9">
+            <default>['']</default>
+            <summary>Shortcut to input method 9</summary>
+        </key>
+        <key type="as" name="tpkey-0">
+            <default>['']</default>
+            <summary>Shortcut to touchpad on</summary>
+        </key>
+        <key type="as" name="tpkey-1">
+            <default>['']</default>
+            <summary>Shortcut to touchpad off</summary>
+        </key>
+        <key type="as" name="tpkey-2">
+            <default>['']</default>
+            <summary>Shortcut to touchpad toggle</summary>
+        </key>
+        <key type="b" name="primary-xkb">
+            <default>true</default>
+            <summary>Set xkb to the first one before entering any ibus</summary>
+        </key>
+    </schema>
+</schemalist>
