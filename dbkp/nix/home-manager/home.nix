@@ -46,6 +46,10 @@ in
   qt.enable = isLinux;
   qt.platformTheme = "qtct";
 
-  gtk.enable = isLinux;
-  gtk.theme.name = "Adwaita-dark";
+  gtk = {
+    enable = isLinux;
+    theme.name = "Adwaita";
+    gtk3.extraConfig = { gtk-application-prefer-dark-theme = 1; };
+    gtk4.extraConfig = { gtk-application-prefer-dark-theme = 1; };
+  };
 }

@@ -10,7 +10,7 @@ height=465
 width=948
 
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/shell/extensions/apps-menu/'
+saved-pathbar-path='color-sche'
 saved-view='/org/gnome/shell/extensions/apps-menu/'
 show-warning=false
 window-height=985
@@ -196,7 +196,7 @@ font-antialiasing='rgba'
 font-hinting='slight'
 font-name='Noto Sans,  10'
 gtk-key-theme='Emacs'
-gtk-theme='HighContrastInverse'
+gtk-theme='Adwaita'
 icon-theme='Adwaita'
 monospace-font-name='JetBrainsMonoNL Nerd Font Mono 10'
 show-battery-percentage=true
@@ -631,7 +631,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.268288579528004, 4.0631643999999998)
+night-light-last-coordinates=(49.23896019501197, 4.0631693999999996)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -951,6 +951,7 @@ vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/b8c46fe220684f9ab36f3e9c8215c5c9]
 autoconnect=1
+resize-guest=1
 vm-window-size=(1904, 995)
 
 [org/virt-manager/virt-manager/vms/b9d1ea3a978940e6a68ebdbb8a3ad4e5]
