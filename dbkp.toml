@@ -38,6 +38,10 @@ EncryptionSalt = ["", ""]
   Name = "extensions"
   Path = "~/.local/share/gnome-shell/extensions"
 
+[[Files]]
+  Name = "burn-my-windows"
+  Path = "~/.config/burn-my-windows"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
