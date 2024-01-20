@@ -160,6 +160,7 @@ rec {
     libsForQt5.konsole
     libsForQt5.okular
     libsForQt5.qtstyleplugin-kvantum
+    qt6Packages.qtstyleplugin-kvantum
     lsb-release
     parted
     plocate
