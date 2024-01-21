@@ -56,11 +56,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705835828,
-        "narHash": "sha256-nEOOYfdcN+pnGw7WRRHjHoPGyUF/Obr7xPy+6Yr6ngk=",
+        "lastModified": 1705854090,
+        "narHash": "sha256-jDm+/zLSyqdWFn6uWtk5dYqGKHp1obBqAssfM0CzUho=",
         "owner": "acristoffers",
         "repo": "dbkp",
-        "rev": "2cdb7f3a44bf4e74ef31475ae27ffd9303d7d91c",
+        "rev": "e9c91887149dcc752cf18148339860deefc4b2c4",
         "type": "github"
       },
       "original": {
