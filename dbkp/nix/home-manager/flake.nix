@@ -33,7 +33,6 @@
     remove-trash.url = github:acristoffers/remove-trash;
     remove-trash.inputs.nixpkgs.follows = "nixpkgs";
     remove-trash.inputs.flake-utils.follows = "flake-utils";
-    remove-trash.inputs.zig-overlay.follows = "zig";
 
     void.url = github:acristoffers/void-rs;
     void.inputs.nixpkgs.follows = "nixpkgs";

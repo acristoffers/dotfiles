@@ -32,11 +32,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705796049,
-        "narHash": "sha256-zkqbujNu3ixEar79QJTpJeOG5MYse1uJdcjl9f96uBg=",
+        "lastModified": 1705833550,
+        "narHash": "sha256-CyzbM1mw5xUG4rV5G6FIRM44EvdOgRdWR3joqswyuIU=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "3ac7acd32db4f7111015e8d5349ff6067df01bf6",
+        "rev": "91c19ab206b4b8af72f3f34a947969964ad45908",
         "type": "github"
       },
       "original": {
@@ -56,11 +56,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705783726,
-        "narHash": "sha256-KdrtooK2Tx4kHfUZZMeNJeetcU+teDS429B7r6VRhiU=",
+        "lastModified": 1705835828,
+        "narHash": "sha256-nEOOYfdcN+pnGw7WRRHjHoPGyUF/Obr7xPy+6Yr6ngk=",
         "owner": "acristoffers",
         "repo": "dbkp",
-        "rev": "15876df0f4663577b6b59d8d8388c83c965978b3",
+        "rev": "2cdb7f3a44bf4e74ef31475ae27ffd9303d7d91c",
         "type": "github"
       },
       "original": {
@@ -415,23 +415,6 @@
         "type": "github"
       }
     },
-    "pcre2": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1701189729,
-        "narHash": "sha256-mrGOdzuhfEwVZfU50FsarhOLhyRMM0cg5/3o88e4nvg=",
-        "owner": "PCRE2Project",
-        "repo": "pcre2",
-        "rev": "86919c90182854b5369bc10d5ad43b637f464f50",
-        "type": "github"
-      },
-      "original": {
-        "owner": "PCRE2Project",
-        "repo": "pcre2",
-        "rev": "86919c90182854b5369bc10d5ad43b637f464f50",
-        "type": "github"
-      }
-    },
     "remove-trash": {
       "inputs": {
         "flake-utils": [
@@ -440,18 +423,14 @@
         "gitignore": "gitignore_2",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "pcre2": "pcre2",
-        "zig-overlay": [
-          "zig"
         ]
       },
       "locked": {
-        "lastModified": 1705831287,
-        "narHash": "sha256-WjV2RpkkzvEfkUytLbRsK2+QigSl1HxAHMiAr1qwZps=",
+        "lastModified": 1705847800,
+        "narHash": "sha256-py+2orGK4egSjrTpg9jVEd+6q49UiW8e/lr3n5w7Rqs=",
         "owner": "acristoffers",
         "repo": "remove-trash",
-        "rev": "c5560a5c69cf79ec5355b46f030f5b18dba35223",
+        "rev": "8c3e1e4f3fb5705f0d419d4a8f0863eb5dfa05d8",
         "type": "github"
       },
       "original": {
@@ -570,11 +549,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705796766,
-        "narHash": "sha256-ca0HHlUDmLf1t//jgkXGLKJplDTnu2oj8s/kWI0tSsc=",
+        "lastModified": 1705838875,
+        "narHash": "sha256-ROzgF6NGfVzYc1P363ysF959pCxmy8YGV5xSUTieQ/M=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "5815ab8ee1b423a5ac90b071949911c5d6f24739",
+        "rev": "74331844605b29ddb1109e1482d784806adbd6a5",
         "type": "github"
       },
       "original": {
