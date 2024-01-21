@@ -1,17 +1,19 @@
 function backup
-    block -l
+  block -l
 
-    pushd ~/Developer/GitHub/dotfiles || exit
-    dbkp backup dbkp.json
-    git add -A .
-    git commit -m (date)
-    git push
-    popd
+  pushd ~/Developer/GitHub/dotfiles
+  and dbkp backup
+  and git add -A .
+  and git commit -m (date)
+  and git push
+  and popd
+  or return
 
-    pushd ~/Developer/GitHub/dotfiles-secrets || exit
-    dbkp backup dbkp.json
-    git add -A .
-    git commit -m (date)
-    git push
-    popd
+  pushd ~/Developer/GitHub/dotfiles-secrets
+  and dbkp backup
+  and git add -A .
+  and git commit -m (date)
+  and git push
+  and popd
+  or return
 end
