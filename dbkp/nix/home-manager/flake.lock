@@ -56,11 +56,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705854090,
-        "narHash": "sha256-jDm+/zLSyqdWFn6uWtk5dYqGKHp1obBqAssfM0CzUho=",
+        "lastModified": 1705854709,
+        "narHash": "sha256-tgZXP5uafk8R8gX0ye84NM7C/WXRHO/BpqMQQKVuLd8=",
         "owner": "acristoffers",
         "repo": "dbkp",
-        "rev": "e9c91887149dcc752cf18148339860deefc4b2c4",
+        "rev": "d2355d5f75b307e0488e52d958d6cbda1601dd53",
         "type": "github"
       },
       "original": {
@@ -426,11 +426,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705847800,
-        "narHash": "sha256-py+2orGK4egSjrTpg9jVEd+6q49UiW8e/lr3n5w7Rqs=",
+        "lastModified": 1705866328,
+        "narHash": "sha256-Y7nYRQ+bO+1tnKWmd2KNweOFL1uQ78xuQkuBI9y2F/U=",
         "owner": "acristoffers",
         "repo": "remove-trash",
-        "rev": "8c3e1e4f3fb5705f0d419d4a8f0863eb5dfa05d8",
+        "rev": "815e630ffec8451e75f32e3dc64df2b671bc25f4",
         "type": "github"
       },
       "original": {

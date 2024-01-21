@@ -13,7 +13,7 @@ function update -d "Updates many package managers."
   end
 
   title "Removing Trash Files"
-  command remove-trash ~ 2>/dev/null
+  command remove-trash --no-error ~
 
   rm -rf ~/.cache/nix
   if which cancel &>/dev/null
