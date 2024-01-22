@@ -147,25 +147,20 @@ rec {
     packages = with pkgs; [ ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    cloud-utils
-    coreutils-full
+    (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
     evolution-data-server-gtk4
     gnome3.gnome-tweaks
     gocryptfs
     iputils
     libsForQt5.breeze-icons
-    libsForQt5.konsole
-    libsForQt5.okular
     libsForQt5.qtstyleplugin-kvantum
-    qt6Packages.qtstyleplugin-kvantum
     lsb-release
     parted
     plocate
     pulseaudioFull
-    sirikali
+    qt6Packages.qtstyleplugin-kvantum
+    uutils-coreutils-noprefix
     wget
     xorg.xhost
   ];
@@ -239,6 +234,15 @@ rec {
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = [ "nix-command" "flakes" ];
+    trusted-public-keys = [
+      "jovian-nixos.cachix.org-1:mAWLjAxLNlfxAnozUjOqGj4AxQwCl7MXwOfu7msVlAo="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+    trusted-substituters = [
+      "https://cache.nixos.org"
+      "https://jovian-nixos.cachix.or"
+      "https://nix-community.cachix.org"
+    ];
     allowed-users = [ "alan" ];
     trusted-users = [ "root" "alan" ];
   };

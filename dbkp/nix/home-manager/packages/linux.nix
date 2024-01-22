@@ -12,19 +12,19 @@ let
 in
 with pkgs; [
   bibutils
+  cloud-utils # for growpart
   dex # Excutes .desktop files
   gnupatch
   gource # version control visualization
   libnotify
+  libsForQt5.okular
   openjdk21
-  speechd
-  # stdenv.cc.cc.lib
+  sirikali
   texlive.combined.scheme-full
   wl-clipboard
   wl-clipboard-x11
   xdg-ninja
   xdg-utils
-  # xorg.libXtst # For JavaFX
 ] ++ (
   if pkgs.lib.hasPrefix "x86_64" pkgs.system then
     [

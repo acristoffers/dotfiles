@@ -2,10 +2,10 @@ pkgs:
 
 with pkgs; [
   (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
+  (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
   bibtool
   cacert
-  coreutils-full
   cowsay
   curl
   dogdns
@@ -80,6 +80,7 @@ with pkgs; [
   tree
   tridactyl-native
   unzip
+  uutils-coreutils-noprefix
   watch
   wget
   which
