@@ -265,11 +265,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1704646911,
-        "narHash": "sha256-SDdVglB1epihMGxzpreb2S9bt3t+HBsy1Udnh3+CGSI=",
+        "lastModified": 1705914684,
+        "narHash": "sha256-ihBZN3H1fxfxHM/21cBE+QJ6FdqZWQbsEJNAr9B1qiM=",
         "owner": "acristoffers",
         "repo": "matlab-beautifier",
-        "rev": "09773ade9356c7df60882ba7b4227075248a45a8",
+        "rev": "dbd715f0286926068d6524f1bd755847b37a13c7",
         "type": "github"
       },
       "original": {
@@ -291,11 +291,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1704647186,
-        "narHash": "sha256-Vz1iA6XT/WBSYr5ixpzMi8sGrD6hvd89xubLQcQjHRY=",
+        "lastModified": 1705914775,
+        "narHash": "sha256-8rrDrEsq4/oyVO0GfucNb0QXYoBTBALgYYbUuVm5cLU=",
         "owner": "acristoffers",
         "repo": "matlab-lsp",
-        "rev": "d93608b1872bc790bf6035b6c394b14ec2781403",
+        "rev": "b7f883212ed126b4613ef209f2ab289a62663270",
         "type": "github"
       },
       "original": {
@@ -488,11 +488,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1701373175,
-        "narHash": "sha256-hTKQ4zoaAaiqTCQk5BxANeWCYKK3NTWEUTeUzqyehU8=",
+        "lastModified": 1705915572,
+        "narHash": "sha256-3wrUJMPKwf/nvMfyiQohoZpMYl+x+CDa1RNVI5ZbKlA=",
         "owner": "acristoffers",
         "repo": "void-rs",
-        "rev": "e12b90233fb33d8262ed3caca732a878dcbb09be",
+        "rev": "aa9d3e35014ff7c21794986199df78372b4576eb",
         "type": "github"
       },
       "original": {
