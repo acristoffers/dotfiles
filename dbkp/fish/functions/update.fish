@@ -1,5 +1,5 @@
 function update -d "Updates many package managers."
-  argparse --name=update-nix 'd/debug' -- $argv
+  argparse 'd/debug' -- $argv
 
   if test (count $argv) -gt 0
     for command in $argv
