@@ -146,8 +146,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='background'
-window-state=(1693, 1392, false)
+last-panel='user-accounts'
+window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -536,7 +536,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(948, 512)
 maximized=false
 
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
@@ -597,7 +597,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Developer/GitHub/gnome-rectangle'
+last-folder-path='/home/alan/Documents/Dropbox/Documents/CV/ASML'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -631,7 +631,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.244944668452099, 4.0631876)
+night-light-last-coordinates=(49.223867205147251, 4.0632058000000004)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -700,6 +700,7 @@ preview-effect=''
 countdown-timer=0
 indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -800,9 +801,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1705905699
+check-timestamp=int64 1705992214
 first-run=false
-flatpak-purge-timestamp=int64 1705912837
+flatpak-purge-timestamp=int64 1705999348
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
@@ -842,7 +843,7 @@ location-mode='path-bar'
 show-hidden=false
 show-size-column=true
 show-type-column=true
-sidebar-width=242
+sidebar-width=160
 sort-column='name'
 sort-directories-first=true
 sort-order='ascending'
@@ -899,7 +900,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
+isos=['/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -957,6 +958,10 @@ vm-window-size=(2544, 1355)
 autoconnect=1
 scaling=1
 vm-window-size=(1485, 967)
+
+[org/virt-manager/virt-manager/vms/eef4c3760ea9437aa888295e77c140fe]
+autoconnect=1
+resize-guest=1
 
 [org/virt-manager/virt-manager/vms/f40b30d4309e4d1d9e193b8aab2e1f2c]
 autoconnect=1

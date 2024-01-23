@@ -1,12 +1,12 @@
 build==1.0.3 ; python_version >= "3.11" and python_version < "3.12"
 cachecontrol[filecache]==0.13.1 ; python_version >= "3.11" and python_version < "3.12"
 certifi==2023.11.17 ; python_version >= "3.11" and python_version < "3.12"
-cffi==1.16.0 ; python_version >= "3.11" and python_version < "3.12" and (sys_platform == "darwin" or sys_platform == "linux")
+cffi==1.16.0 ; python_version >= "3.11" and python_version < "3.12" and (sys_platform == "darwin" or sys_platform == "linux") and (sys_platform == "darwin" or platform_python_implementation != "PyPy")
 charset-normalizer==3.3.2 ; python_version >= "3.11" and python_version < "3.12"
 cleo==2.1.0 ; python_version >= "3.11" and python_version < "3.12"
 colorama==0.4.6 ; python_version >= "3.11" and python_version < "3.12" and os_name == "nt"
 crashtest==0.4.1 ; python_version >= "3.11" and python_version < "3.12"
-cryptography==41.0.7 ; python_version >= "3.11" and python_version < "3.12" and sys_platform == "linux"
+cryptography==42.0.0 ; python_version >= "3.11" and python_version < "3.12" and sys_platform == "linux"
 dictor==0.1.12 ; python_version >= "3.11" and python_version < "3.12"
 distlib==0.3.8 ; python_version >= "3.11" and python_version < "3.12"
 dulwich==0.21.7 ; python_version >= "3.11" and python_version < "3.12"
@@ -32,7 +32,7 @@ poetry-plugin-up==0.4.0 ; python_version >= "3.11" and python_version < "3.12"
 poetry==1.7.1 ; python_version >= "3.11" and python_version < "3.12"
 ptyprocess==0.7.0 ; python_version >= "3.11" and python_version < "3.12"
 pycode-similar==1.4 ; python_version >= "3.11" and python_version < "3.12"
-pycparser==2.21 ; python_version >= "3.11" and python_version < "3.12" and (sys_platform == "darwin" or sys_platform == "linux")
+pycparser==2.21 ; python_version >= "3.11" and python_version < "3.12" and (sys_platform == "darwin" or sys_platform == "linux") and (sys_platform == "darwin" or platform_python_implementation != "PyPy")
 pyproject-hooks==1.0.0 ; python_version >= "3.11" and python_version < "3.12"
 pywin32-ctypes==0.2.2 ; python_version >= "3.11" and python_version < "3.12" and sys_platform == "win32"
 rapidfuzz==3.6.1 ; python_version >= "3.11" and python_version < "3.12"

@@ -18,6 +18,7 @@ with pkgs; [
   gource # version control visualization
   libnotify
   libsForQt5.okular
+  lsb-release
   openjdk21
   sirikali
   texlive.combined.scheme-full
