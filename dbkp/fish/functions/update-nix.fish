@@ -7,7 +7,7 @@ function update-nix
     # nix build ~/.config/nix/home-manager\#darwinConfigurations.recherche75.system
     # ./result/sw/bin/darwin-rebuild switch --flake ~/.config/nix/home-manager
 
-    argparse --name=update-nix 'd/debug' -- $argv
+    argparse 'd/debug' -- $argv
 
     nix-channel --update
     nix flake update $XDG_CONFIG_HOME/nix/home-manager
