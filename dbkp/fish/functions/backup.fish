@@ -11,7 +11,7 @@ function backup
   and popd
   or return
 
-  if test -n "$_flag_public"
+  if test -z "$_flag_public"
     pushd ~/Developer/GitHub/dotfiles-secrets
     and dbkp backup
     and git add -A .
