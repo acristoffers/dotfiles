@@ -1,18 +1,18 @@
 #!/usr/bin/env fish
 
 if contains -- "--help" $argv
-    echo "Removes all files in current directory, except the ones listed."
-    echo "Usage:"
-    echo rmbut [files...]
-    exit
+  echo "Removes all files in current directory, except the ones listed."
+  echo "Usage:"
+  echo rmbut [files...]
+  exit
 end
 
 for f in *
-    if not contains $f $argv
-        if contains -- -n $argv
-            echo rm -rf $f
-        else
-            rm -rf $f
-        end
+  if not contains $f $argv
+    if contains -- -n $argv
+      echo rm -rf $f
+    else
+      rm -rf $f
     end
+  end
 end

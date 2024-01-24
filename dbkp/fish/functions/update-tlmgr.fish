@@ -1,14 +1,14 @@
 function update-tlmgr
-	if test (uname -s) != "Darwin"
-		return
-	end
+  if test (uname -s) != "Darwin"
+    return
+  end
 
-	title Updating TeX
+  title Updating TeX
 
-	if not type -q tlmgr
-		brew install mactex
-	end
+  if not type -q tlmgr
+    brew install mactex
+  end
 
-	tlmgr update --self
-	tlmgr update --all
+  tlmgr update --self
+  tlmgr update --all
 end

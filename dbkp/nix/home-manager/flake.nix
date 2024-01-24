@@ -12,23 +12,9 @@
     darwin.url = github:lnl7/nix-darwin;
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    zig.url = github:mitchellh/zig-overlay;
-    zig.inputs.nixpkgs.follows = "nixpkgs";
-    zig.inputs.flake-utils.follows = "flake-utils";
-
-    zls.url = github:acristoffers/zls;
-    zls.inputs.nixpkgs.follows = "nixpkgs";
-    zls.inputs.flake-utils.follows = "flake-utils";
-    zls.inputs.zig-overlay.follows = "zig";
-
-    zon2nix.url = github:nix-community/zon2nix;
-    zon2nix.inputs.nixpkgs.follows = "nixpkgs";
-
     nvim.url = github:acristoffers/nvim-flake;
     nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.flake-utils.follows = "flake-utils";
-    nvim.inputs.zls.follows = "zls";
-    nvim.inputs.matlab-lsp.follows = "matlab-lsp";
 
     remove-trash.url = github:acristoffers/remove-trash;
     remove-trash.inputs.nixpkgs.follows = "nixpkgs";
@@ -37,23 +23,9 @@
     void.url = github:acristoffers/void-rs;
     void.inputs.nixpkgs.follows = "nixpkgs";
     void.inputs.flake-utils.follows = "flake-utils";
-    void.inputs.naersk.follows = "naersk";
-
-    naersk.url = github:nix-community/naersk;
-    naersk.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-matlab.url = gitlab:doronbehar/nix-matlab;
     nix-matlab.inputs.nixpkgs.follows = "nixpkgs";
-
-    matlab-beautifier.url = github:acristoffers/matlab-beautifier;
-    matlab-beautifier.inputs.nixpkgs.follows = "nixpkgs";
-    matlab-beautifier.inputs.flake-utils.follows = "flake-utils";
-    matlab-beautifier.inputs.naersk.follows = "naersk";
-
-    matlab-lsp.url = github:acristoffers/matlab-lsp;
-    matlab-lsp.inputs.nixpkgs.follows = "nixpkgs";
-    matlab-lsp.inputs.flake-utils.follows = "flake-utils";
-    matlab-lsp.inputs.naersk.follows = "naersk";
 
     moirai.url = github:acristoffers/moirai;
     moirai.inputs.nixpkgs.follows = "nixpkgs";

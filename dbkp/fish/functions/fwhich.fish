@@ -1,3 +1,3 @@
 function fwhich
-    file (readlink -f (which $argv))
+  file (readlink -f (which $argv))
 end

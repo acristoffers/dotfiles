@@ -597,7 +597,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Documents/Dropbox/Documents/CV/ASML'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -631,7 +631,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.2177763185597, 4.0632025000000001)
+night-light-last-coordinates=(49.26406145742925, 4.0631640000000004)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -698,7 +698,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 toggle-state=false
 
@@ -801,7 +801,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1705992214
+check-timestamp=int64 1706079210
 first-run=false
 flatpak-purge-timestamp=int64 1705999348
 install-timestamp=int64 1704999008
@@ -866,12 +866,12 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(26, 23)
+window-position=(403, 264)
 window-size=(1268, 645)
 
 [org/virt-manager/virt-manager]
-manager-window-height=655
-manager-window-width=1268
+manager-window-height=302
+manager-window-width=629
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -962,6 +962,7 @@ vm-window-size=(1485, 967)
 [org/virt-manager/virt-manager/vms/eef4c3760ea9437aa888295e77c140fe]
 autoconnect=1
 resize-guest=1
+vm-window-size=(1904, 995)
 
 [org/virt-manager/virt-manager/vms/f40b30d4309e4d1d9e193b8aab2e1f2c]
 autoconnect=1

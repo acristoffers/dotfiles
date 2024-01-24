@@ -1,3 +1,3 @@
 function nwhich
-    nvim (which $argv)
+  nvim (which $argv)
 end

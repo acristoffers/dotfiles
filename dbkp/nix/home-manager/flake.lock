@@ -56,11 +56,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705854709,
-        "narHash": "sha256-tgZXP5uafk8R8gX0ye84NM7C/WXRHO/BpqMQQKVuLd8=",
+        "lastModified": 1706033726,
+        "narHash": "sha256-O7eIQXByNw3UPLeNORv6nwk9/HVxxbfoWscnYRKrBC0=",
         "owner": "acristoffers",
         "repo": "dbkp",
-        "rev": "d2355d5f75b307e0488e52d958d6cbda1601dd53",
+        "rev": "a09c729d431b3a137d5b866c943282a068b191ce",
         "type": "github"
       },
       "original": {
@@ -101,27 +101,6 @@
         "type": "github"
       }
     },
-    "flake-parts": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "zon2nix",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1690933134,
-        "narHash": "sha256-ab989mN63fQZBFrkk4Q8bYxQCktuHmBIBqUG1jl6/FQ=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "59cf3f1447cfc75087e7273b04b31e689a8599fb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -132,6 +111,21 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
         "type": "github"
       },
       "original": {
@@ -164,7 +158,8 @@
     "gitignore_2": {
       "inputs": {
         "nixpkgs": [
-          "remove-trash",
+          "nvim",
+          "zls",
           "nixpkgs"
         ]
       },
@@ -185,7 +180,7 @@
     "gitignore_3": {
       "inputs": {
         "nixpkgs": [
-          "zls",
+          "remove-trash",
           "nixpkgs"
         ]
       },
@@ -210,11 +205,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705879479,
-        "narHash": "sha256-ZIohbyly1KOe+8I3gdyNKgVN/oifKdmeI0DzMfytbtg=",
+        "lastModified": 1706080884,
+        "narHash": "sha256-qhxisCrSraN5YWVb0lNCFH8ovqnCw5W9ldac4Dzr0Nw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2d47379ad591bcb14ca95a90b6964b8305f6c913",
+        "rev": "6b28ab2d798c1c84e24053d95f4ee1dd9d81e2fb",
         "type": "github"
       },
       "original": {
@@ -252,50 +247,24 @@
         "type": "github"
       }
     },
-    "matlab-beautifier": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "naersk": [
-          "naersk"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1705914684,
-        "narHash": "sha256-ihBZN3H1fxfxHM/21cBE+QJ6FdqZWQbsEJNAr9B1qiM=",
-        "owner": "acristoffers",
-        "repo": "matlab-beautifier",
-        "rev": "dbd715f0286926068d6524f1bd755847b37a13c7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "acristoffers",
-        "repo": "matlab-beautifier",
-        "type": "github"
-      }
-    },
     "matlab-lsp": {
       "inputs": {
         "flake-utils": [
+          "nvim",
           "flake-utils"
         ],
-        "naersk": [
-          "naersk"
-        ],
+        "naersk": "naersk",
         "nixpkgs": [
+          "nvim",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1705914775,
-        "narHash": "sha256-8rrDrEsq4/oyVO0GfucNb0QXYoBTBALgYYbUuVm5cLU=",
+        "lastModified": 1704647186,
+        "narHash": "sha256-Vz1iA6XT/WBSYr5ixpzMi8sGrD6hvd89xubLQcQjHRY=",
         "owner": "acristoffers",
         "repo": "matlab-lsp",
-        "rev": "b7f883212ed126b4613ef209f2ab289a62663270",
+        "rev": "d93608b1872bc790bf6035b6c394b14ec2781403",
         "type": "github"
       },
       "original": {
@@ -330,9 +299,25 @@
     },
     "naersk": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1698420672,
+        "narHash": "sha256-/TdeHMPRjjdJub7p7+w55vyABrsJlt5QkznPYy55vKA=",
+        "owner": "nix-community",
+        "repo": "naersk",
+        "rev": "aeb58d5e8faead8980a807c840232697982d47b9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "naersk",
+        "type": "github"
+      }
+    },
+    "naersk_2": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1698420672,
@@ -385,21 +370,45 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1704161960,
+        "narHash": "sha256-QGua89Pmq+FBAro8NriTuoO/wNaUtugt29/qqA8zeeM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "63143ac2c9186be6d9da6035fa22620018c85932",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1705883077,
+        "narHash": "sha256-ByzHHX3KxpU1+V0erFy8jpujTufimh6KaS/Iv3AciHk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5f5210aa20e343b7e35f40c033000db0ef80d7b9",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nvim": {
       "inputs": {
         "flake-utils": [
           "flake-utils"
         ],
         "lsp-setup-git": "lsp-setup-git",
-        "matlab-lsp": [
-          "matlab-lsp"
-        ],
+        "matlab-lsp": "matlab-lsp",
         "nixpkgs": [
           "nixpkgs"
         ],
-        "zls": [
-          "zls"
-        ]
+        "zls": "zls"
       },
       "locked": {
         "lastModified": 1705656423,
@@ -420,17 +429,17 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "gitignore": "gitignore_2",
+        "gitignore": "gitignore_3",
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1705907099,
-        "narHash": "sha256-UTMjTW2DLyafx7M2MsGYuifM/ThWaVWnEESiR75VlNs=",
+        "lastModified": 1706080984,
+        "narHash": "sha256-ToTR9uCvqVnWXC1KzagI77RLFOluT3yYhXzAPIICFGI=",
         "owner": "acristoffers",
         "repo": "remove-trash",
-        "rev": "6ac125028ac8b295000cbe6acf5df06bc2481acf",
+        "rev": "3aaf40d13aa789d457f70384e470bc93bf3400e4",
         "type": "github"
       },
       "original": {
@@ -445,19 +454,13 @@
         "dbkp": "dbkp",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
-        "matlab-beautifier": "matlab-beautifier",
-        "matlab-lsp": "matlab-lsp",
         "moirai": "moirai",
-        "naersk": "naersk",
         "nix-matlab": "nix-matlab",
         "nixpkgs": "nixpkgs",
         "nvim": "nvim",
         "remove-trash": "remove-trash",
         "void": "void",
-        "webots": "webots",
-        "zig": "zig",
-        "zls": "zls",
-        "zon2nix": "zon2nix"
+        "webots": "webots"
       }
     },
     "systems": {
@@ -480,9 +483,7 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "naersk": [
-          "naersk"
-        ],
+        "naersk": "naersk_2",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -538,22 +539,22 @@
         "url": "https://github.com/cyberbotics/webots/releases/download/R2023b/webots-R2023b-x86-64.tar.bz2"
       }
     },
-    "zig": {
+    "zig-overlay": {
       "inputs": {
         "flake-compat": "flake-compat_2",
-        "flake-utils": [
-          "flake-utils"
-        ],
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
+          "nvim",
+          "zls",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1705969436,
-        "narHash": "sha256-+QQBeFBujf/p/pDVtg9oscBVvHBaj62+DZRojqQGDOs=",
+        "lastModified": 1704932604,
+        "narHash": "sha256-CJmwApSNie7rKNo2T6JscgwoIbTTTSNr4nb6OvZxj7s=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "3a17e919c3c8c2a9952fdd7fe1d6c6c6dff516d9",
+        "rev": "9ff9a710a664350f5d3a694824fa2b868b5a22af",
         "type": "github"
       },
       "original": {
@@ -565,49 +566,28 @@
     "zls": {
       "inputs": {
         "flake-utils": [
+          "nvim",
           "flake-utils"
         ],
-        "gitignore": "gitignore_3",
+        "gitignore": "gitignore_2",
         "langref": "langref",
         "nixpkgs": [
+          "nvim",
           "nixpkgs"
         ],
-        "zig-overlay": [
-          "zig"
-        ]
+        "zig-overlay": "zig-overlay"
       },
       "locked": {
-        "lastModified": 1705613169,
-        "narHash": "sha256-K+csoJmze28Mp0+T8sx0MoFwRmIJa+GICP+wNyuYmmQ=",
+        "lastModified": 1705438845,
+        "narHash": "sha256-FXsACKWMDtM0H+tEVNzrlXMyJ9OddngZtU+IOsxK67s=",
         "owner": "acristoffers",
         "repo": "zls",
-        "rev": "a8a83b6ad21e382c49474e8a9ffe35a3e510de3c",
+        "rev": "176108b897106e9fa945f15846e2327be5941f89",
         "type": "github"
       },
       "original": {
         "owner": "acristoffers",
         "repo": "zls",
-        "type": "github"
-      }
-    },
-    "zon2nix": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1701883144,
-        "narHash": "sha256-BrdvQ/49IQzwc3l8EOsURqHKIY3WcTiRDAsVhZ4O/TU=",
-        "owner": "nix-community",
-        "repo": "zon2nix",
-        "rev": "4394c25250810fdeb9559f3cda7a08226ce6e5a7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "zon2nix",
         "type": "github"
       }
     }

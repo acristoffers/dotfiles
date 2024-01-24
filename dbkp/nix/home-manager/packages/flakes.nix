@@ -9,14 +9,9 @@ let
 in
 with inputs; builtins.filter (x: x != null) ([
   (flakePackage dbkp "default")
-  (flakePackage matlab-beautifier "default")
-  (flakePackage matlab-lsp "default")
   (flakePackage moirai "default")
   (flakePackage nvim "default")
   (flakePackage remove-trash "default")
   (flakePackage void "default")
   (flakePackage webots "default")
-  (flakePackage zig "master")
-  (flakePackage zls "default")
-  (flakePackage zon2nix "default")
 ])

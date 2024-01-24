@@ -1,3 +1,3 @@
 function rwhich
-    readlink -f (which $argv)
+  readlink -f (which $argv)
 end
