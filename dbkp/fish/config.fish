@@ -41,6 +41,12 @@ set -x fish_greeting ""
 set -x LSCOLORS gxfxcxdxbxeggdbgagacad
 set -x BAT_THEME Dracula
 
+if type -q git
+  set -U _tide_left_items os cwd git nixshell
+else
+  set -U _tide_left_items os cwd nixshell
+end
+
 if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   if not set -q FULL_NIX_SHELL
     set -x PATH /bin
@@ -103,7 +109,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
     config-linux
   end
 
-  any-nix-shell fish --info-right | source
+  any-nix-shell fish | source
   zoxide init fish --cmd j | source
 else
   set -l OLD_PATH $PATH

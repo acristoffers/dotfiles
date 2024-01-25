@@ -631,7 +631,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.26406145742925, 4.0631640000000004)
+night-light-last-coordinates=(49.244286223235108, 4.0632145)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -698,7 +698,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 toggle-state=false
 
@@ -801,9 +801,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1706079210
+check-timestamp=int64 1706164814
 first-run=false
-flatpak-purge-timestamp=int64 1705999348
+flatpak-purge-timestamp=int64 1706171951
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
