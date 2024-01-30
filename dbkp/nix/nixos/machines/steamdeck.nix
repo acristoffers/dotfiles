@@ -9,6 +9,8 @@ rec {
 
   networking.hostName = "Alan-NixOS-SteamDeck";
 
+  boot.loader.systemd-boot.consoleMode = "auto";
+
   jovian.devices.steamdeck.enable = true;
   jovian.devices.steamdeck.enableSoundSupport = false;
   jovian.steam.enable = true;

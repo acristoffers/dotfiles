@@ -13,8 +13,8 @@
        confirm-kill-emacs nil
        org-directory (expand-file-name "~/.org/")
        display-line-numbers-type 'visual
-       evil-kill-on-visual-paste nil         ;; Prevents yanking selected text after pasting over it.
-       company-tooltip-align-annotations t                           ;; aligns annotation to the right hand side
+       evil-kill-on-visual-paste nil       ;; Prevents yanking selected text after pasting over it.
+       company-tooltip-align-annotations t ;; aligns annotation to the right hand side
        lsp-enable-folding t
        lsp-folding-range-limit 100
        org-journal-dir (expand-file-name "~/.org/journal")

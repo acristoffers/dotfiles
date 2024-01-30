@@ -32,11 +32,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1705915768,
-        "narHash": "sha256-+Jlz8OAqkOwJlioac9wtpsCnjgGYUhvLpgJR/5tP9po=",
+        "lastModified": 1706581965,
+        "narHash": "sha256-1H7dRdK9LJ7+2X1XQtbwXr+QMqtVVo/ZF0/LIvkjdK8=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "1e706ef323de76236eb183d7784f3bd57255ec0b",
+        "rev": "91b9daf672c957ef95a05491a75f62e6a01d5aaf",
         "type": "github"
       },
       "original": {
@@ -205,11 +205,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706134977,
-        "narHash": "sha256-KwNb1Li3K6vuVwZ77tFjZ89AWBo7AiCs9t0Cens4BsM=",
+        "lastModified": 1706473109,
+        "narHash": "sha256-iyuAvpKTsq2u23Cr07RcV5XlfKExrG8gRpF75hf1uVc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "6359d40f6ec0b72a38e02b333f343c3d4929ec10",
+        "rev": "d634c3abafa454551f2083b054cd95c3f287be61",
         "type": "github"
       },
       "original": {
@@ -260,11 +260,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1704647186,
-        "narHash": "sha256-Vz1iA6XT/WBSYr5ixpzMi8sGrD6hvd89xubLQcQjHRY=",
+        "lastModified": 1705914775,
+        "narHash": "sha256-8rrDrEsq4/oyVO0GfucNb0QXYoBTBALgYYbUuVm5cLU=",
         "owner": "acristoffers",
         "repo": "matlab-lsp",
-        "rev": "d93608b1872bc790bf6035b6c394b14ec2781403",
+        "rev": "b7f883212ed126b4613ef209f2ab289a62663270",
         "type": "github"
       },
       "original": {
@@ -341,11 +341,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706108514,
-        "narHash": "sha256-nsXXxdFjcx6LrAbLjcGECN70ew5U8x4X87bor/+fp1A=",
+        "lastModified": 1706540504,
+        "narHash": "sha256-t8Ym36jlHOtwu9kvd600g/2+d2AtORfA6bHpQw0IYfg=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "0adb5ecdcff19eaabd001725c67dbbd00129773d",
+        "rev": "5321453a39ee24644d3239300917cd49f03008e5",
         "type": "gitlab"
       },
       "original": {
@@ -356,11 +356,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1705856552,
-        "narHash": "sha256-JXfnuEf5Yd6bhMs/uvM67/joxYKoysyE3M2k6T3eWbg=",
+        "lastModified": 1706371002,
+        "narHash": "sha256-dwuorKimqSYgyu8Cw6ncKhyQjUDOyuXoxDTVmAXq88s=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "612f97239e2cc474c13c9dafa0df378058c5ad8d",
+        "rev": "c002c6aa977ad22c60398daaa9be52f2203d0006",
         "type": "github"
       },
       "original": {
@@ -372,11 +372,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1704161960,
-        "narHash": "sha256-QGua89Pmq+FBAro8NriTuoO/wNaUtugt29/qqA8zeeM=",
+        "lastModified": 1705883077,
+        "narHash": "sha256-ByzHHX3KxpU1+V0erFy8jpujTufimh6KaS/Iv3AciHk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "63143ac2c9186be6d9da6035fa22620018c85932",
+        "rev": "5f5210aa20e343b7e35f40c033000db0ef80d7b9",
         "type": "github"
       },
       "original": {
@@ -411,11 +411,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1705656423,
-        "narHash": "sha256-XdL6mQYGhFwtHLGwGoufLEB5feGejNIHHdtbXTl+grg=",
+        "lastModified": 1706607154,
+        "narHash": "sha256-zTYoUR/djYfHir8wgS7zZ7o4x1sR7xTrxIkU0NuOMRI=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "82628fe4edb0867671d8fb3e63e8b5d81b54ef5f",
+        "rev": "a102c54d4f6cf9041af075c4bff86c793e28f43c",
         "type": "github"
       },
       "original": {
@@ -435,11 +435,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706119316,
-        "narHash": "sha256-IMt3AudmRkrk+LTvY6gA559hBGm9MbT+qQ9r+chHyV0=",
+        "lastModified": 1706359700,
+        "narHash": "sha256-i6/Obpprc/lC57XszZ8owlumF8MFzA+I8eMHDNi3o3Q=",
         "owner": "acristoffers",
         "repo": "remove-trash",
-        "rev": "37f29b348e6f9a55518beea8457e3f4c56630fab",
+        "rev": "72b929644f578a7bd54b3e6468c1391a8f93a99b",
         "type": "github"
       },
       "original": {
@@ -578,11 +578,11 @@
         "zig-overlay": "zig-overlay"
       },
       "locked": {
-        "lastModified": 1705438845,
-        "narHash": "sha256-FXsACKWMDtM0H+tEVNzrlXMyJ9OddngZtU+IOsxK67s=",
+        "lastModified": 1705613169,
+        "narHash": "sha256-K+csoJmze28Mp0+T8sx0MoFwRmIJa+GICP+wNyuYmmQ=",
         "owner": "acristoffers",
         "repo": "zls",
-        "rev": "176108b897106e9fa945f15846e2327be5941f89",
+        "rev": "a8a83b6ad21e382c49474e8a9ffe35a3e510de3c",
         "type": "github"
       },
       "original": {

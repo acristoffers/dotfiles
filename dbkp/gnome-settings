@@ -10,7 +10,7 @@ height=465
 width=948
 
 [ca/desrt/dconf-editor]
-saved-pathbar-path='color-sche'
+saved-pathbar-path='/org/gnome/shell/extensions/apps-menu/'
 saved-view='/org/gnome/shell/extensions/apps-menu/'
 show-warning=false
 window-height=985
@@ -146,7 +146,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='user-accounts'
+last-panel='keyboard'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -211,7 +211,7 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles']
+application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles', 'org-gnome-fileroller']
 
 [org/gnome/desktop/notifications/application/com-brave-browser]
 application-id='com.brave.Browser.desktop'
@@ -272,6 +272,9 @@ application-id='org.gnome.Epiphany.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-extensions-desktop]
 application-id='org.gnome.Extensions.desktop.desktop'
+
+[org/gnome/desktop/notifications/application/org-gnome-fileroller]
+application-id='org.gnome.FileRoller.desktop'
 
 [org/gnome/desktop/notifications/application/org-gnome-fractal]
 application-id='org.gnome.Fractal.desktop'
@@ -476,7 +479,7 @@ skip-newer=false
 
 [org/gnome/file-roller/listing]
 list-mode='as-folder'
-name-column-width=250
+name-column-width=288
 show-path=false
 sort-method='name'
 sort-type='ascending'
@@ -594,16 +597,16 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Documentos/Courses/Documents/2023'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Documents/Oficiais/Titre de Séjour'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Downloads/TrigaServer'
+last-folder-path='/home/alan/Pictures/Screenshots'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -631,7 +634,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.244286223235108, 4.0632145)
+night-light-last-coordinates=(47.332534840127359, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -801,9 +804,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1706164814
+check-timestamp=int64 1706596886
 first-run=false
-flatpak-purge-timestamp=int64 1706171951
+flatpak-purge-timestamp=int64 1706607332
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
@@ -843,7 +846,7 @@ location-mode='path-bar'
 show-hidden=false
 show-size-column=true
 show-type-column=true
-sidebar-width=160
+sidebar-width=212
 sort-column='name'
 sort-directories-first=true
 sort-order='ascending'
@@ -870,8 +873,8 @@ window-position=(403, 264)
 window-size=(1268, 645)
 
 [org/virt-manager/virt-manager]
-manager-window-height=302
-manager-window-width=629
+manager-window-height=655
+manager-window-width=1268
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -962,7 +965,7 @@ vm-window-size=(1485, 967)
 [org/virt-manager/virt-manager/vms/eef4c3760ea9437aa888295e77c140fe]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1904, 995)
+vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/f40b30d4309e4d1d9e193b8aab2e1f2c]
 autoconnect=1
