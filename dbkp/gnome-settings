@@ -122,6 +122,8 @@ source-currency='DZD'
 source-units='degree'
 target-currency='DZD'
 target-units='radian'
+window-maximized=false
+window-size=(360, 504)
 word-size=64
 
 [org/gnome/calendar]
@@ -634,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.345167434816368, 5.0383713999999999)
+night-light-last-coordinates=(47.338557350752623, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -815,7 +817,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1706686229
 first-run=false
-flatpak-purge-timestamp=int64 1706607332
+flatpak-purge-timestamp=int64 1706693360
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
