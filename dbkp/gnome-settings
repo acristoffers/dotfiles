@@ -146,8 +146,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='keyboard'
-window-state=(1267, 1032, false)
+last-panel='power'
+window-state=(1693, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -539,7 +539,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(948, 512)
+initial-size=(1268, 692)
 maximized=false
 
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
@@ -634,7 +634,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.332534840127359, 5.0383713999999999)
+night-light-last-coordinates=(47.345167434816368, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -679,8 +679,8 @@ sleep-inactive-ac-type='nothing'
 [org/gnome/shell]
 command-history=['gl', 'lg']
 disable-user-extensions=false
-disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com']
-enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'blur-my-shell@aunetx', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-ui-tune@itstime.tech', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'noannoyance-fork@vrba.dev', 'gjsosk@vishram1123.com', 'no-overview@fthx', 'run-or-raise@edvard.cz']
+disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech']
+enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'blur-my-shell@aunetx', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'noannoyance-fork@vrba.dev', 'gjsosk@vishram1123.com', 'no-overview@fthx', 'run-or-raise@edvard.cz', 'vertical-workspaces@G-dH.github.com']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)']
@@ -691,6 +691,12 @@ current-workspace-only=false
 
 [org/gnome/shell/extensions/auto-move-windows]
 application-list=['org.telegram.desktop.desktop:3', 'org.signal.Signal.desktop:3', 'org.mozilla.Thunderbird.desktop:4', 'com.discordapp.Discord.desktop:3', 'org.gnome.Fractal.desktop:3', 'kitty.desktop:2', 'org.mozilla.firefox.desktop:1']
+
+[org/gnome/shell/extensions/blur-my-shell/appfolder]
+blur=false
+
+[org/gnome/shell/extensions/blur-my-shell/overview]
+blur=false
 
 [org/gnome/shell/extensions/burn-my-windows]
 active-profile='/home/alan/.config/burn-my-windows/profiles/1693417159839460.conf'
@@ -775,6 +781,9 @@ animation-duration=150
 [org/gnome/shell/extensions/run-or-raise]
 move-window-to-active-workspace=false
 
+[org/gnome/shell/extensions/vertical-workspaces]
+ws-thumbnails-position=5
+
 [org/gnome/shell/keybindings]
 focus-active-notification=['<Alt><Super>n']
 screenshot=['<Shift><Super>3']
@@ -804,7 +813,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1706596886
+check-timestamp=int64 1706686229
 first-run=false
 flatpak-purge-timestamp=int64 1706607332
 install-timestamp=int64 1704999008

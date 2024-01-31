@@ -18,6 +18,7 @@ function config-linux
   set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
   set -gx XCOMPOSEFILE "$XDG_CONFIG_HOME"/X11/xcompose
   set -gx NIX_PATH nixpkgs=$HOME/.nix-defexpr/channels/nixos
+  set -gx KDEHOME $XDG_CONFIG_HOME/kde_config
 
   for p in $LD_LIBRARY_EXTRA_PATH
     set -a LD_LIBRARY_PATH $p
