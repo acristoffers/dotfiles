@@ -42,6 +42,10 @@ EncryptionSalt = ["", ""]
   Name = "burn-my-windows"
   Path = "~/.config/burn-my-windows"
 
+[[Files]]
+  Name = "background"
+  Path = "~/.config/background"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
