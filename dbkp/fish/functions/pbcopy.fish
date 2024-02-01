@@ -3,6 +3,6 @@ function pbcopy
     command pbcopy $argv
   else
     read -lz input
-    printf $input | perl -ne 'chomp; print $_ =~ s/^\s+|\s+$//gr' | xclip -sel clip
+    printf $input | string-trim | xclip -sel clip
   end
 end

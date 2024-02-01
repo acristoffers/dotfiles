@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+import fileinput
+
+contents = ""
+for line in fileinput.input():
+    contents += line
+
+print(contents.strip(), end="")
