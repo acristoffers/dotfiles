@@ -1,7 +1,7 @@
-{ config, pkgs }:
+{ config, pkgs, isNixOS }:
 
 {
-  enable = true;
+  enable = isNixOS;
   theme = "Dracula";
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";

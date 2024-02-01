@@ -1,4 +1,4 @@
-{ config, inputs, pkgs, username, isLinux, ... }:
+{ config, inputs, pkgs, username, isLinux, isNixOS, ... }:
 
 let
   homeDirectory = if isLinux then "/home/" + username else "/Users/alan";
@@ -35,7 +35,7 @@ in
     dircolors = import ./programs/dircolors.nix { inherit config; inherit pkgs; };
     eza = import ./programs/exa.nix { inherit config; inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
-    kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; };
+    kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; inherit isNixOS; };
     nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; };
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
