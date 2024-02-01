@@ -1,8 +1,8 @@
 function cfp --argument file_name
   set -l cwd (pwd)/$file_name
   if test -e $cwd
-    string trim $cwd | pbcopy
+    printf $cwd | pbcopy
   else
-    string trim $file_name | pbcopy
+    printf $file_name | pbcopy
   end
 end

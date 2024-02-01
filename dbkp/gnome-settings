@@ -608,7 +608,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Oficiais/Titre de Séjo
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Pictures/Screenshots'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -636,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.230263569890283, 4.0631721000000001)
+night-light-last-coordinates=(47.332989542612808, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -784,6 +784,7 @@ animation-duration=150
 move-window-to-active-workspace=false
 
 [org/gnome/shell/extensions/vertical-workspaces]
+dash-bg-gs3-style=false
 ws-thumbnails-position=5
 
 [org/gnome/shell/keybindings]
@@ -817,7 +818,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1706775537
 first-run=false
-flatpak-purge-timestamp=int64 1706693360
+flatpak-purge-timestamp=int64 1706787771
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
