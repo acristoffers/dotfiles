@@ -20,7 +20,6 @@ in
     "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
     "${config.xdg.configHome}/git/config".source = if isLinux then ./dotfiles/git/config-linux else ./dotfiles/git/config-darwin;
     "${config.xdg.configHome}/hammerspoon".source = ./dotfiles/hammerspoon;
-    "${config.xdg.configHome}/helix".source = ./dotfiles/helix;
     "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
     "${config.xdg.configHome}/p10k".source = ./dotfiles/p10k;
