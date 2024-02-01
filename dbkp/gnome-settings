@@ -148,7 +148,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='wifi'
+last-panel='user-accounts'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -541,7 +541,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(948, 512)
 maximized=false
 
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
@@ -636,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.230101338266856, 4.0630996000000001)
+night-light-last-coordinates=(49.233069613342273, 4.0631094000000001)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -709,8 +709,9 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
