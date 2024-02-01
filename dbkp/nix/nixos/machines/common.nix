@@ -153,6 +153,7 @@ rec {
     gnome3.gnome-tweaks
     gocryptfs
     iputils
+    kitty
     libsForQt5.breeze-icons
     libsForQt5.qtstyleplugin-kvantum
     lsb-release

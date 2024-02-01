@@ -43,13 +43,11 @@
   outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
     let
       pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-      isNixOS = builtins.pathExists "/etc/nixos";
       homeConfigForUser = username: inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home.nix ];
         extraSpecialArgs = {
           inherit inputs;
-          inherit isNixOS;
           inherit username;
           isLinux = true;
         };

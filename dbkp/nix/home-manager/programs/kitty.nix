@@ -1,8 +1,12 @@
-{ config, pkgs, isNixOS }:
+{ config, pkgs }:
 
 {
-  enable = isNixOS;
+  enable = true;
   theme = "Dracula";
+  # This way, the configuration files are created, but the binary is not installed, which allows us
+  # to use the system installed kitty. This is necessary because on non-NixOS systems you cannot
+  # launch OpenGL applications.
+  package = pkgs.emptyDirectory;
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";
     size = 12;
