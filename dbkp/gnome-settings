@@ -711,6 +711,7 @@ preview-effect=''
 countdown-timer=0
 indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
