@@ -53,5 +53,5 @@ EncryptionSalt = ["", ""]
 
 [[Commands]]
   Name = "flatpak"
-  Backup = "flatpak list --columns=ref --app | tail -n +1"
+  Backup = "flatpak list --columns=ref --app | tail -n +1 | rg '/.*' -r ''"
   Restore = "xargs flatpak install -y --noninteractive --or-update"

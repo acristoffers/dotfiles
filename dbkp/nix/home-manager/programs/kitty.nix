@@ -3,9 +3,7 @@
 {
   enable = true;
   theme = "Dracula";
-  # This way, the configuration files are created, but the binary is not installed, which allows us
-  # to use the system installed kitty. This is necessary because on non-NixOS systems you cannot
-  # launch OpenGL applications.
+  # Kitty has to be installed in the OS level to work on non-NixOS systems.
   package = pkgs.emptyDirectory;
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";
