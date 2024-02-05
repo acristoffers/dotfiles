@@ -541,7 +541,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(948, 512)
 maximized=false
 
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
@@ -636,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.221303133788602, 4.0631566000000001)
+night-light-last-coordinates=(49.215278164240544, 4.0631997999999996)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -819,7 +819,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1707115416
 first-run=false
-flatpak-purge-timestamp=int64 1707041837
+flatpak-purge-timestamp=int64 1707122553
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
