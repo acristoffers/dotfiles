@@ -235,14 +235,15 @@ rec {
   nix.settings = {
     auto-optimise-store = true;
     experimental-features = [ "nix-command" "flakes" ];
-    trusted-public-keys = [
+    extra-trusted-public-keys = [
       "jovian-nixos.cachix.org-1:mAWLjAxLNlfxAnozUjOqGj4AxQwCl7MXwOfu7msVlAo="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
-    trusted-substituters = [
+    extra-trusted-substituters = [
       "https://cache.nixos.org"
       "https://jovian-nixos.cachix.or"
       "https://nix-community.cachix.org"
+      "https://nyx.chaotic.cx"
     ];
     allowed-users = [ "alan" ];
     trusted-users = [ "root" "alan" ];

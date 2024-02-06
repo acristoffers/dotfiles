@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
 
+    flake-utils.url = github:numtide/flake-utils;
+
     jovian-nixos.url = github:Jovian-Experiments/Jovian-NixOS;
     jovian-nixos.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -19,14 +21,12 @@
           overlays = (import ./nixpkgs-overlays.nix);
         };
       };
+      perSystem = flake-utils.lib.eachDefaultSystem (system:
+        let pkgs = import nixpkgs { inherit system; }; in
+        { formatter = pkgs.nixpkgs-fmt; });
     in
     {
-      formatter = {
-        x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-        x86_64-darwin = nixpkgs.legacyPackages.x86_64-darwin.nixpkgs-fmt;
-        aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixpkgs-fmt;
-        aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
-      };
+      formatter = perSystem.formatter;
       nixosConfigurations = {
         Alan-NixOS-SteamDeck = nixosSystem "x86_64-linux" [
           jovian-nixos.nixosModules.default

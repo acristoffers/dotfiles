@@ -54,7 +54,7 @@
       };
     in
     {
-      formatter = inputs.nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
+      formatter = pkgs.nixpkgs-fmt;
       packages = {
         homeConfigurations = {
           alan = homeConfigForUser "alan";
