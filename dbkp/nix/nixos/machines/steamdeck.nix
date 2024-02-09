@@ -11,12 +11,19 @@ rec {
 
   boot.loader.systemd-boot.consoleMode = "auto";
 
-  jovian.devices.steamdeck.enable = true;
-  jovian.devices.steamdeck.enableSoundSupport = false;
-  jovian.steam.enable = true;
-  jovian.steam.autoStart = false;
-  jovian.steam.user = "alan";
-  jovian.steam.desktopSession = "gnome-wayland";
+  jovian = {
+    devices.steamdeck = {
+      enable = true;
+      enableSoundSupport = false;
+    };
+    steam = {
+      enable = true;
+      autoStart = false;
+      user = "alan";
+      desktopSession = "gnome-wayland";
+    };
+    decky-loader.enable = true;
+  };
 
   services.xserver = {
     desktopManager.plasma5.enable = mkForce false;
