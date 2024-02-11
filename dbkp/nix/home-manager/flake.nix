@@ -28,7 +28,6 @@
     nix-matlab.inputs.nixpkgs.follows = "nixpkgs";
 
     moirai.url = github:acristoffers/moirai;
-    moirai.inputs.nixpkgs.follows = "nixpkgs";
     moirai.inputs.flake-utils.follows = "flake-utils";
 
     webots.url = github:acristoffers/webots-flake;

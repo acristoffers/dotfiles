@@ -481,7 +481,7 @@ skip-newer=false
 
 [org/gnome/file-roller/listing]
 list-mode='as-folder'
-name-column-width=288
+name-column-width=231
 show-path=false
 sort-method='name'
 sort-type='ascending'
@@ -489,7 +489,7 @@ sort-type='ascending'
 [org/gnome/file-roller/ui]
 sidebar-width=200
 window-height=480
-window-width=600
+window-width=821
 
 [org/gnome/gnome-system-monitor]
 current-tab='resources'
@@ -636,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(49.241044276331962, 4.0632086999999997)
+night-light-last-coordinates=(47.317054265917683, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -817,9 +817,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1707471342
+check-timestamp=int64 1707640096
 first-run=false
-flatpak-purge-timestamp=int64 1707478477
+flatpak-purge-timestamp=int64 1707647236
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
