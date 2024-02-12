@@ -6,6 +6,8 @@
 [user]
 	name = Álan Crístoffer
 	email = acristoffers@startmail.com
+[colum]
+  ui = auto
 [pull]
 	rebase = true
 [branch]

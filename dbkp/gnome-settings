@@ -608,7 +608,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/T
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Pictures/Screenshots'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -636,7 +636,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.317054265917683, 5.0383713999999999)
+night-light-last-coordinates=(49.249944139880967, 4.0631544000000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -817,9 +817,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1707640096
+check-timestamp=int64 1707720155
 first-run=false
-flatpak-purge-timestamp=int64 1707647236
+flatpak-purge-timestamp=int64 1707727294
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1705041701
