@@ -148,7 +148,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='user-accounts'
+last-panel='sound'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -488,8 +488,8 @@ sort-type='ascending'
 
 [org/gnome/file-roller/ui]
 sidebar-width=200
-window-height=480
-window-width=821
+window-height=465
+window-width=948
 
 [org/gnome/gnome-system-monitor]
 current-tab='resources'
@@ -574,6 +574,9 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/CV'
 [org/gnome/portal/filechooser/com.spotify.Client]
 last-folder-path='/home/alan/Music/Steam'
 
+[org/gnome/portal/filechooser/com.st.STM32CubeIDE]
+last-folder-path='/home/alan/Developer/Local/STM32'
+
 [org/gnome/portal/filechooser/com.usebottles.bottles]
 last-folder-path='/home/alan/.var/app/com.usebottles.bottles/data/bottles/bottles/Acrobat-Reader/drive_c/Program Files/Adobe/Acrobat DC/Acrobat'
 
@@ -602,10 +605,10 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis/build'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -639,7 +642,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.305126248241265, 5.0383713999999999)
+night-light-last-coordinates=(47.309517946104137, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -820,12 +823,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1707720155
+check-timestamp=int64 1708156184
 first-run=false
-flatpak-purge-timestamp=int64 1707727294
+flatpak-purge-timestamp=int64 1708163317
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1705041701
+update-notification-timestamp=int64 1707914004
 
 [org/gnome/system/location]
 enabled=true

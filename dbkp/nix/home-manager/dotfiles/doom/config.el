@@ -76,7 +76,7 @@
   (setq! ledger-amount "Loading...")
   (defun ledger-update-amount ()
     (setq! ledger-amount
-           (string-remove-suffix "\n" (shell-command-to-string "fish -c 'fin | head -n 1 | string trim'"))))
+           (string-remove-suffix "\n" (shell-command-to-string "fish -c 'fin | rg BNP | string trim'"))))
   (doom-modeline-def-segment ledger
     "Ledger ammount in bank"
     (propertize ledger-amount 'face 'doom-modeline-info))

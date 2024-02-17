@@ -22,7 +22,6 @@ rec {
       user = "alan";
       desktopSession = "gnome-wayland";
     };
-    decky-loader.enable = true;
   };
 
   services.xserver = {
