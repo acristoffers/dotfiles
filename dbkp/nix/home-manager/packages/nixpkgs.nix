@@ -58,6 +58,7 @@ with pkgs; [
   nix-index
   nixpkgs-fmt
   nodePackages_latest.sass
+  nodePackages_latest.uglify-js
   nodePackages_latest.yarn
   nodejs_21
   openssl_3_2
@@ -65,6 +66,7 @@ with pkgs; [
   pandoc
   peaclock
   poetry
+  protonmail-bridge
   pstree
   rage
   renameutils

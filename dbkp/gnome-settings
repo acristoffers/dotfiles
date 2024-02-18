@@ -3,11 +3,11 @@ last-search-text='acristoffers@startmail.com'
 
 [apps/seahorse/listing]
 item-filter='any'
-keyrings-selected=['pkcs11:model=p11-kit-trust;manufacturer=PKCS%2311%20Kit;serial=1;token=System%20Trust']
+keyrings-selected=['gnupg://']
 
 [apps/seahorse/windows/key-manager]
-height=465
-width=948
+height=645
+width=1268
 
 [ca/desrt/dconf-editor]
 saved-pathbar-path='/org/gnome/shell/extensions/apps-menu/'
@@ -541,7 +541,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(948, 512)
+initial-size=(1268, 692)
 maximized=false
 
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
@@ -566,7 +566,7 @@ window-position=[26, 23]
 window-size=[1904, 1032]
 
 [org/gnome/portal/filechooser/com.brave.Browser]
-last-folder-path='/home/alan/Downloads/titre'
+last-folder-path='/home/alan'
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/CV'
@@ -605,7 +605,7 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Downloads/vitibot'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Downloads'
@@ -642,7 +642,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.309517946104137, 5.0383713999999999)
+night-light-last-coordinates=(47.344914994157179, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -823,7 +823,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708156184
+check-timestamp=int64 1708247276
 first-run=false
 flatpak-purge-timestamp=int64 1708163317
 install-timestamp=int64 1704999008
@@ -880,7 +880,7 @@ selected-color=(true, 0.15686274509803921, 0.16470588235294117, 0.21176470588235
 [org/gtk/settings/file-chooser]
 date-format='regular'
 location-mode='path-bar'
-show-hidden=true
+show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=161
@@ -888,7 +888,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(403, 264)
+window-position=(26, 23)
 window-size=(1268, 645)
 
 [org/virt-manager/virt-manager]
