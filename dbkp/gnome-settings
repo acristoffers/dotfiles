@@ -148,7 +148,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='user-accounts'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -160,6 +160,11 @@ enable=false
 
 [org/gnome/desktop/app-folders]
 folder-children=['Utilities', 'YaST']
+
+[org/gnome/desktop/app-folders/folders/Pardus]
+categories=['X-Pardus-Apps']
+name='X-Pardus-Apps.directory'
+translate=true
 
 [org/gnome/desktop/app-folders/folders/Utilities]
 apps=['gnome-abrt.desktop', 'gnome-system-log.desktop', 'nm-connection-editor.desktop', 'org.gnome.baobab.desktop', 'org.gnome.Connections.desktop', 'org.gnome.DejaDup.desktop', 'org.gnome.Dictionary.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.eog.desktop', 'org.gnome.Evince.desktop', 'org.gnome.FileRoller.desktop', 'org.gnome.fonts.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.tweaks.desktop', 'org.gnome.Usage.desktop', 'vinagre.desktop']
@@ -544,6 +549,10 @@ show-delete-permanently=true
 initial-size=(1268, 692)
 maximized=false
 
+[org/gnome/nm-applet/eap/30abab51-a032-41e3-a79d-aa93cadd0f36]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -557,6 +566,14 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/b5672d7a-a827-4f89-91b7-fff72dbc89d9]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/b93fc7c2-1e4e-41d5-8701-a13a9ea04f87]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/d9f53e8f-83d4-4084-abc9-f156073552be]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -602,7 +619,7 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
@@ -645,7 +662,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.315019339217798, 5.0383713999999999)
+night-light-last-coordinates=(49.251338374317058, 4.0631909999999998)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -688,6 +705,7 @@ sleep-inactive-ac-timeout=3600
 sleep-inactive-ac-type='nothing'
 
 [org/gnome/shell]
+app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'kvantummanager.desktop': <{'position': <13>}>, 'cups.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'nixos-manual.desktop': <{'position': <18>}>, 'qt5ct.desktop': <{'position': <19>}>, 'qt6ct.desktop': <{'position': <20>}>, 'org.gnome.Software.desktop': <{'position': <21>}>, 'org.gnome.TextEditor.desktop': <{'position': <22>}>, 'org.gnome.Tour.desktop': <{'position': <23>}>}, {'virt-manager.desktop': <{'position': <0>}>, 'xterm.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Loupe.desktop': <{'position': <3>}>, 'org.gnome.Music.desktop': <{'position': <4>}>, 'org.gnome.Epiphany.desktop': <{'position': <5>}>}]
 command-history=['gl', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx']
@@ -720,7 +738,6 @@ preview-effect=''
 countdown-timer=0
 indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
-toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
