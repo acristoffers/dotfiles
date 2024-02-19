@@ -32,8 +32,8 @@
           jovian-nixos.nixosModules.default
           ./machines/steamdeck.nix
         ];
-        Alan-NixOS-MacBookPro = nixosSystem "x86_64-linux" [
-          ./machines/macbookpro.nix
+        Alan-NixOS-Elemental = nixosSystem "x86_64-linux" [
+          ./machines/elemental.nix
         ];
       };
     };

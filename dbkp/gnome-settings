@@ -569,7 +569,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan'
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
-last-folder-path='/home/alan/Documents/Dropbox/Documents/CV'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/com.spotify.Client]
 last-folder-path='/home/alan/Music/Steam'
@@ -594,6 +594,9 @@ last-folder-path='/home/alan/Documents/Dropbox/Universidade/Graduação/Iniciaç
 
 [org/gnome/portal/filechooser/okular]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Classes/TP-ROS/sujet/build'
+
+[org/gnome/portal/filechooser/org.fedoraproject.MediaWriter]
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.gnome.Fractal]
 last-folder-path='/home/alan/Downloads'
@@ -642,7 +645,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.344914994157179, 5.0383713999999999)
+night-light-last-coordinates=(47.315019339217798, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -823,9 +826,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708247276
+check-timestamp=int64 1708325870
 first-run=false
-flatpak-purge-timestamp=int64 1708163317
+flatpak-purge-timestamp=int64 1708254415
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1707914004
@@ -922,7 +925,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
+isos=['/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -938,6 +941,9 @@ autoconnect=1
 resize-guest=1
 scaling=1
 vm-window-size=(1904, 995)
+
+[org/virt-manager/virt-manager/vms/470f273d70d0479d9b812a21eef6f292]
+autoconnect=1
 
 [org/virt-manager/virt-manager/vms/4c21b47e2a41454dae1120bcb49c5a6b]
 autoconnect=1
