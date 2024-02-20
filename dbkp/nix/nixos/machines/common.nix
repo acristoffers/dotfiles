@@ -67,6 +67,9 @@ rec {
     networkmanager = {
       enable = true;
       appendNameservers = [ "9.9.9.9" "1.1.1.1" ];
+      connectionConfig = {
+        "connection.mdns" = 2;
+      };
     };
     enableIPv6 = false;
     nameservers = networking.networkmanager.appendNameservers;
@@ -191,6 +194,10 @@ rec {
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
+  };
+  services.resolved = {
+    enable = true;
+    extraConfig = "MulticastDNS=yes";
   };
 
   virtualisation = {
