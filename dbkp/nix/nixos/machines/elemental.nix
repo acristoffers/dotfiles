@@ -31,5 +31,6 @@ rec {
   security.unprivilegedUsernsClone = true;
 
   services.fstrim.enable = true;
+  services.nix-serve.enable = true;
   services.thermald.enable = true;
 }
