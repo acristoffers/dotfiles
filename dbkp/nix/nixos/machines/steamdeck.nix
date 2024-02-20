@@ -11,7 +11,6 @@ rec {
 
   boot.loader.systemd-boot.consoleMode = "auto";
 
-  # boot.kernelPackages = pkgs.linuxPackages_zen;
   jovian = {
     devices.steamdeck = {
       enable = true;
