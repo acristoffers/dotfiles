@@ -11,6 +11,7 @@ rec {
 
   boot.loader.systemd-boot.consoleMode = "auto";
 
+  # boot.kernelPackages = pkgs.linuxPackages_zen;
   jovian = {
     devices.steamdeck = {
       enable = true;
@@ -69,18 +70,17 @@ rec {
     hostName = "Alan-NixOS-Elemental";
     system = "x86_64-linux";
     protocol = "ssh-ng";
-    maxJobs = 10;
+    maxJobs = 12;
     speedFactor = 2;
     supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     mandatoryFeatures = [ ];
-    publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhrZzFmc2FGdlJlb2dYU0Y0cERFT0UxZ3NxSWRhbEFrL25XajJBbSszaHkgYWxhbkBBbGFuLU5peE9TLUVsZW1lbnRhbAo=";
   }];
   # optional, useful when the builder has a faster internet connection than yours
   nix.extraOptions = "builders-use-substitutes = true";
   programs.ssh.extraConfig = ''
     Host Alan-NixOS-Elemental
     HostName 192.168.0.14
-    Port 31022
+    Port 22
     User alan
     IdentitiesOnly yes
     IdentityFile /root/.ssh/nixos-builder
