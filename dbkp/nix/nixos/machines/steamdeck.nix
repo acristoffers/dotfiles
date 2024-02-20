@@ -61,7 +61,7 @@ rec {
     steamdeck-firmware
   ];
 
-  nix.settings.extra-trusted-substituters = [ "ssh://alan@192.168.0.14" ];
+  nix.settings.extra-trusted-substituters = [ "ssh://alan@Alan-NixOS-Elemental.local" ];
 
   # Remote build
   nix.distributedBuilds = true;
@@ -78,7 +78,7 @@ rec {
   nix.extraOptions = "builders-use-substitutes = true";
   programs.ssh.extraConfig = ''
     Host Alan-NixOS-Elemental
-    HostName 192.168.0.14
+    HostName Alan-NixOS-Elemental.local
     Port 22
     User alan
     IdentitiesOnly yes
