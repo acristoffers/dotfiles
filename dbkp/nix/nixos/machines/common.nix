@@ -82,12 +82,10 @@ rec {
     desktopManager.gnome.enable = true;
     desktopManager.plasma5.enable = false;
     displayManager.gdm.enable = true;
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "intl";
+    xkb = {
+      layout = "us";
+      variant = "intl";
+    };
   };
 
   # Configure console keymap
@@ -183,7 +181,6 @@ rec {
 
   # List services that you want to enable:
 
-  services.avahi.enable = true;
   services.flatpak.enable = true;
   services.locate = {
     enable = true;
@@ -244,6 +241,15 @@ rec {
     ];
     allowed-users = [ "alan" ];
     trusted-users = [ "root" "alan" ];
+  };
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      userServices = true;
+    };
   };
 
   # Hardening

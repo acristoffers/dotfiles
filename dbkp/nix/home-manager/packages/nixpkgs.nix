@@ -66,7 +66,6 @@ with pkgs; [
   pandoc
   peaclock
   poetry
-  protonmail-bridge
   pstree
   rage
   renameutils
