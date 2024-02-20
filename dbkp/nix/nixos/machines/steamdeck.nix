@@ -62,28 +62,26 @@ rec {
   ];
 
   # Remote build
-  nix.distributedBuilds = false;
+  nix.distributedBuilds = true;
   nix.buildMachines = [{
-    hostName = "builder";
-    # if the builder supports building for multiple architectures,
-    # replace the previous line by, e.g.,
-    # systems = ["x86_64-linux" "aarch64-linux"];
+    hostName = "Alan-NixOS-Elemental";
     system = "x86_64-linux";
     protocol = "ssh-ng";
-    maxJobs = 8;
+    maxJobs = 10;
     speedFactor = 2;
     supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     mandatoryFeatures = [ ];
-    publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUpCV2N4Yi9CbGFxdDFhdU90RStGOFFVV3JVb3RpQzVxQkorVXVFV2RWQ2Igcm9vdEBuaXhvcwo=";
+    publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhrZzFmc2FGdlJlb2dYU0Y0cERFT0UxZ3NxSWRhbEFrL25XajJBbSszaHkgYWxhbkBBbGFuLU5peE9TLUVsZW1lbnRhbAo=";
   }];
   # optional, useful when the builder has a faster internet connection than yours
   nix.extraOptions = "builders-use-substitutes = true";
   programs.ssh.extraConfig = ''
-    Host builder
-    HostName 10.145.25.67
+    Host Alan-NixOS-Elemental
+    HostName 192.168.0.14
     Port 31022
-    User builder
+    User alan
     IdentitiesOnly yes
-    IdentityFile /root/.ssh/builder_ed25519
+    IdentityFile /root/.ssh/nixos-builder
   '';
 }
+

@@ -966,6 +966,7 @@ vm-window-size=(1904, 995)
 
 [org/virt-manager/virt-manager/vms/470f273d70d0479d9b812a21eef6f292]
 autoconnect=1
+vm-window-size=(1024, 837)
 
 [org/virt-manager/virt-manager/vms/4c21b47e2a41454dae1120bcb49c5a6b]
 autoconnect=1
