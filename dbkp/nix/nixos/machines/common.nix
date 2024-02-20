@@ -73,7 +73,7 @@ rec {
     firewall = {
       enable = mkForce true;
       allowedTCPPorts = [ 22 ];
-      allowedUDPPorts = [ ];
+      allowedUDPPorts = [ 5353 ];
     };
   };
 

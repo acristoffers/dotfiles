@@ -61,6 +61,8 @@ rec {
     steamdeck-firmware
   ];
 
+  nix.settings.extra-trusted-substituters = [ "ssh://alan@192.168.0.14" ];
+
   # Remote build
   nix.distributedBuilds = true;
   nix.buildMachines = [{
