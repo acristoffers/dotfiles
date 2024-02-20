@@ -149,7 +149,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='mouse'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -351,6 +351,8 @@ application-id='us.zoom.Zoom.desktop'
 numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
+natural-scroll=true
+tap-to-click=true
 two-finger-scrolling-enabled=true
 
 [org/gnome/desktop/privacy]
@@ -547,7 +549,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(1904, 1032)
 maximized=false
 
 [org/gnome/nm-applet/eap/30abab51-a032-41e3-a79d-aa93cadd0f36]
@@ -617,7 +619,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Classes/TP
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.gnome.Fractal]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
 last-folder-path='/home/alan/Pictures'
@@ -635,7 +637,7 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Pictures'
+last-folder-path='/home/alan/Pictures/Screenshots'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -663,7 +665,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.349983268610977, 5.0383713999999999)
+night-light-last-coordinates=(49.237361320834601, 4.0631444999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -710,7 +712,7 @@ app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.C
 command-history=['gl', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx']
-enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'blur-my-shell@aunetx', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'gjsosk@vishram1123.com', 'vertical-workspaces@G-dH.github.com', 'run-or-raise@edvard.cz', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
+enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'blur-my-shell@aunetx', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'gjsosk@vishram1123.com', 'vertical-workspaces@G-dH.github.com', 'run-or-raise@edvard.cz', 'windowIsReady_Remover@nunofarruca@gmail.com', 'noannoyance-fork@vrba.dev']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")']
@@ -737,7 +739,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=0
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 toggle-state=false
 
@@ -762,7 +764,7 @@ default-snap=7
 enable-drag=true
 enable-tap-gesture=1
 font-size-px=14
-indicator-enabled=true
+indicator-enabled=false
 landscape-height-percent=30
 landscape-width-percent=70
 lang=0
@@ -845,9 +847,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708325870
+check-timestamp=int64 1708416864
 first-run=false
-flatpak-purge-timestamp=int64 1708254415
+flatpak-purge-timestamp=int64 1708369196
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1707914004

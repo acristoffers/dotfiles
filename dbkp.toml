@@ -46,6 +46,18 @@ EncryptionSalt = ["", ""]
   Name = "background"
   Path = "~/.config/background"
 
+[[Files]]
+  Name = "Kvantum"
+  Path = "~/.config/Kvantum"
+
+[[Files]]
+  Name = "qt5ct"
+  Path = "~/.config/qt5ct"
+
+[[Files]]
+  Name = "qt6ct"
+  Path = "~/.config/qt6ct"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
