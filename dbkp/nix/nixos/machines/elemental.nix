@@ -31,6 +31,8 @@ rec {
   security.unprivilegedUsernsClone = true;
 
   services.fstrim.enable = true;
-  services.nix-serve.enable = true;
   services.thermald.enable = true;
+
+  nix.sshServe.enable = true;
+  nix.sshServe.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEfkBMu/0qcgSq3Er6pCR/BiVg+mv9p6Wi/N129f202 alan@Alan-NixOS-SteamDeck" ];
 }

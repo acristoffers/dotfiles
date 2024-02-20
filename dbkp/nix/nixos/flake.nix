@@ -8,11 +8,9 @@
 
     jovian-nixos.url = github:Jovian-Experiments/Jovian-NixOS;
     jovian-nixos.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-serve-ng.url = github:aristanetworks/nix-serve-ng;
   };
 
-  outputs = { nixpkgs, flake-utils, jovian-nixos, nix-serve-ng, ... }:
+  outputs = { nixpkgs, flake-utils, jovian-nixos, ... }:
     let
       nixosSystem = system: modules: nixpkgs.lib.nixosSystem {
         inherit modules;
@@ -35,7 +33,6 @@
           ./machines/steamdeck.nix
         ];
         Alan-NixOS-Elemental = nixosSystem "x86_64-linux" [
-          nix-serve-ng.nixosModules.default
           ./machines/elemental.nix
         ];
       };
