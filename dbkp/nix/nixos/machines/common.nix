@@ -20,6 +20,9 @@ rec {
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
   };
+  environment.etc."profile.local".text = ''
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.gcc.cc.lib}/lib
+  '';
 
   fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;

@@ -54,9 +54,9 @@ last-window-size=(1267, 1032)
 [org/gnome/Contacts]
 did-initial-setup=true
 window-fullscreen=false
-window-height=1392
+window-height=1032
 window-maximized=false
-window-width=2544
+window-width=1904
 
 [org/gnome/GWeather4]
 temperature-unit='centigrade'
@@ -149,7 +149,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='mouse'
+last-panel='sound'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -665,7 +665,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.325879474393652, 5.0383713999999999)
+night-light-last-coordinates=(47.34021680678984, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -847,9 +847,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708416864
+check-timestamp=int64 1708509157
 first-run=false
-flatpak-purge-timestamp=int64 1708424004
+flatpak-purge-timestamp=int64 1708516297
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1707914004

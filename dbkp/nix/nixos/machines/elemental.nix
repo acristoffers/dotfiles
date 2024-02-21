@@ -11,8 +11,10 @@ rec {
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  boot.initrd.luks.devices."luks-3a81fadd-3844-45c6-80fc-a7f0fcf537c8".device = "/dev/disk/by-uuid/3a81fadd-3844-45c6-80fc-a7f0fcf537c8";
   boot.initrd.kernelModules = [ "i915" ];
+  boot.initrd.luks.devices."luks-3a81fadd-3844-45c6-80fc-a7f0fcf537c8" = {
+    device = "/dev/disk/by-uuid/3a81fadd-3844-45c6-80fc-a7f0fcf537c8";
+  };
 
   environment.variables = {
     VDPAU_DRIVER = "va_gl";
