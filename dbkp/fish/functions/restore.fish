@@ -4,7 +4,7 @@ function restore
   argparse p/public -- $argv
 
   if not test -d ~/Developer/GitHub/dotfiles
-    mkdir ~/Developer/GitHub
+    mkdir -p ~/Developer/GitHub
     git clone --recurse-submodule https://github.com/acristoffers/dotfiles ~/Developer/GitHub/dotfiles
   else
     pushd ~/Developer/GitHub/dotfiles
@@ -12,7 +12,7 @@ function restore
     git pull
     or begin
       echo Error updating with git in dotfiles
-      exit 1
+      return
     end
     popd
   end
@@ -20,11 +20,11 @@ function restore
   dbkp restore ~/Developer/GitHub/dotfiles/dbkp.toml
 
   if test -n "$_flag_public"
-    exit 0
+    return
   end
 
   if not test -d ~/Developer/GitHub/dotfiles-secrets
-    mkdir ~/Developer/GitHub
+    mkdir -p ~/Developer/GitHub
     git clone --recurse-submodule https://github.com/acristoffers/dotfiles-secrets ~/Developer/GitHub/dotfiles-secrets
   else
     pushd ~/Developer/GitHub/dotfiles-secrets
@@ -32,7 +32,7 @@ function restore
     git pull
     or begin
       echo Error updating with git in dotfiles-secrets
-      exit 1
+      return
     end
     popd
   end
