@@ -8,6 +8,7 @@ function restore
     git clone --recurse-submodule https://github.com/acristoffers/dotfiles ~/Developer/GitHub/dotfiles
   else
     pushd ~/Developer/GitHub/dotfiles
+    git reset --hard HEAD
     git pull
     or begin
       echo Error updating with git in dotfiles
@@ -27,6 +28,7 @@ function restore
     git clone --recurse-submodule https://github.com/acristoffers/dotfiles-secrets ~/Developer/GitHub/dotfiles-secrets
   else
     pushd ~/Developer/GitHub/dotfiles-secrets
+    git reset --hard HEAD
     git pull
     or begin
       echo Error updating with git in dotfiles-secrets
