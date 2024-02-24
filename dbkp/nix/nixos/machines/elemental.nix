@@ -18,6 +18,7 @@ rec {
 
   environment.variables = {
     VDPAU_DRIVER = "va_gl";
+    LIBVA_DRIVER_NAME = "iHD";
   };
 
   hardware.cpu.intel.updateMicrocode = true;

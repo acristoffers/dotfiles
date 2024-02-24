@@ -21,6 +21,7 @@
           overlays = (import ./nixpkgs-overlays.nix);
         };
       };
+
       perSystem = flake-utils.lib.eachDefaultSystem (system:
         let pkgs = import nixpkgs { inherit system; }; in
         { formatter = pkgs.nixpkgs-fmt; });

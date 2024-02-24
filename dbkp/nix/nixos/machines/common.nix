@@ -40,7 +40,11 @@ rec {
   ];
 
   hardware.bluetooth.enable = true;
-  hardware.opengl.driSupport32Bit = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";

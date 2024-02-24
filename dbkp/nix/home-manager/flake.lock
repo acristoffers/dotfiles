@@ -32,11 +32,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708231718,
-        "narHash": "sha256-IZdieFWvhBkxoOFMDejqLUYqD94WN6k0YSpw0DFy+4g=",
+        "lastModified": 1708655464,
+        "narHash": "sha256-dhi3XXT662o1FtP/Li2dIwcQCco6nhT+Yv71dptTlSw=",
         "owner": "lnl7",
         "repo": "nix-darwin",
-        "rev": "0e6857fa1d632637488666c08e7b02c08e3178f8",
+        "rev": "314a36d99b507892b598da72d0f9d78db084cec9",
         "type": "github"
       },
       "original": {
@@ -205,11 +205,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708451036,
-        "narHash": "sha256-tgZ38NummEdnXvxj4D0StHBzXgceAw8CptytHljH790=",
+        "lastModified": 1708591310,
+        "narHash": "sha256-8mQGVs8JccWTnORgoLOTh9zvf6Np+x2JzhIc+LDcJ9s=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "517601b37c6d495274454f63c5a483c8e3ca6be1",
+        "rev": "0e0e9669547e45ea6cca2de4044c1a384fd0fe55",
         "type": "github"
       },
       "original": {
@@ -339,11 +339,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1708441321,
-        "narHash": "sha256-pEjRU4dkeov8v9Zqpepsjsojf7FthumUwog78OWPA4M=",
+        "lastModified": 1708614105,
+        "narHash": "sha256-jURtEkXuog5iah+wi05q66h2Y2NhInF5cVG0Ik++xyg=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "bb425cdf218d802ef7d2e5838192769af54bb9c1",
+        "rev": "7bf2320d2fe8938b1642561bd7780494f50beb91",
         "type": "gitlab"
       },
       "original": {
@@ -425,11 +425,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1708439651,
-        "narHash": "sha256-ZXM7y0jSEbBmKsMz7SOWOrMBhoLDcYjPUKLv1GYk8Tg=",
+        "lastModified": 1708715016,
+        "narHash": "sha256-W0RkUEVuyIBBS/BUm8p9UbBOPPb7djs/RRxSdZBhHqw=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "2394bf00a0afab4627c4da0ed4affc93072b668f",
+        "rev": "6faa81093af1532c2adf0c23cacb42ec8afe7bab",
         "type": "github"
       },
       "original": {
