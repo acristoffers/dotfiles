@@ -14,8 +14,8 @@ with pkgs; [
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
-  emacs-all-the-icons-fonts
   emacs
+  emacs-all-the-icons-fonts
   emacsPackages.cask
   epstool
   fastfetch
@@ -65,6 +65,7 @@ with pkgs; [
   p7zip
   pandoc
   peaclock
+  phoronix-test-suite
   poetry
   pstree
   rage
