@@ -687,7 +687,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.349474102481004, 5.0383713999999999)
+night-light-last-coordinates=(47.309204801776048, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -761,9 +761,10 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']

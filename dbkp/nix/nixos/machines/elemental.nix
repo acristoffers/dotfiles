@@ -16,6 +16,10 @@ rec {
     device = "/dev/disk/by-uuid/3a81fadd-3844-45c6-80fc-a7f0fcf537c8";
   };
 
+  environment.systemPackages = with pkgs; [
+    auto-cpufreq
+  ];
+
   environment.variables = {
     VDPAU_DRIVER = "va_gl";
     LIBVA_DRIVER_NAME = "iHD";
@@ -30,11 +34,27 @@ rec {
     libvdpau-va-gl
   ];
 
-  security.lockKernelModules = false;
-  security.unprivilegedUsernsClone = true;
-
   services.fstrim.enable = true;
   services.thermald.enable = true;
+  services.auto-cpufreq = {
+    enable = true;
+    settings = {
+      battery = {
+        governor = "powersave";
+        turbo = "never";
+        enable_thresholds = true;
+        start_threshold = 20;
+        stop_threshold = 80;
+      };
+      charger = {
+        governor = "performance";
+        turbo = "auto";
+      };
+    };
+  };
+
+  security.lockKernelModules = false;
+  security.unprivilegedUsernsClone = true;
 
   nix.sshServe.enable = true;
   nix.sshServe.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEfkBMu/0qcgSq3Er6pCR/BiVg+mv9p6Wi/N129f202 alan@Alan-NixOS-SteamDeck" ];
