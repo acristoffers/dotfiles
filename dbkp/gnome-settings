@@ -31,9 +31,9 @@ width=1268
 saved-pathbar-path='disable-lock'
 saved-view='/org/gnome/shell/extensions/apps-menu/'
 show-warning=false
-window-height=985
+window-height=1345
 window-is-maximized=false
-window-width=1267
+window-width=1693
 
 [desktop/ibus/general]
 preload-engines=@as []
@@ -167,8 +167,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='privacy'
-window-state=(1267, 1032, false)
+last-panel='power'
+window-state=(1693, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -229,9 +229,6 @@ show-battery-percentage=true
 text-scaling-factor=1.0
 toolbar-style='text'
 toolkit-accessibility=false
-
-[org/gnome/desktop/lockdown]
-disable-lock-screen=true
 
 [org/gnome/desktop/media-handling]
 autorun-never=true
