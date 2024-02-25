@@ -5,11 +5,12 @@ function restore
 
   if not test -d ~/Developer/GitHub/dotfiles
     mkdir -p ~/Developer/GitHub
-    git clone --recurse-submodule https://github.com/acristoffers/dotfiles ~/Developer/GitHub/dotfiles
+    git clone https://github.com/acristoffers/dotfiles ~/Developer/GitHub/dotfiles
   else
     pushd ~/Developer/GitHub/dotfiles
-    git reset --hard HEAD
-    git pull
+    git add -A
+    and git reset --hard HEAD
+    and git pull
     or begin
       echo Error updating with git in dotfiles
       return
@@ -25,11 +26,12 @@ function restore
 
   if not test -d ~/Developer/GitHub/dotfiles-secrets
     mkdir -p ~/Developer/GitHub
-    git clone --recurse-submodule https://github.com/acristoffers/dotfiles-secrets ~/Developer/GitHub/dotfiles-secrets
+    git clone https://github.com/acristoffers/dotfiles-secrets ~/Developer/GitHub/dotfiles-secrets
   else
     pushd ~/Developer/GitHub/dotfiles-secrets
-    git reset --hard HEAD
-    git pull
+    git add -A
+    and git reset --hard HEAD
+    and git pull
     or begin
       echo Error updating with git in dotfiles-secrets
       return
