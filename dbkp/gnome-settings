@@ -1,3 +1,21 @@
+[apps/psensor]
+graph-alpha-channel-enabled=false
+graph-background-alpha=1.0
+graph-background-color='#e8f4e8f4a8f5'
+graph-foreground-color='#000000000000'
+graph-monitoring-duration=20
+graph-update-interval=2
+interface-hide-on-startup=false
+interface-window-divider-pos=1104
+interface-window-h=995
+interface-window-restore-enabled=true
+interface-window-w=1904
+interface-window-x=26
+interface-window-y=23
+sensor-update-interval=2
+slog-enabled=false
+slog-interval=300
+
 [apps/seahorse]
 last-search-text='acristoffers@startmail.com'
 
@@ -10,7 +28,7 @@ height=645
 width=1268
 
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/shell/extensions/apps-menu/'
+saved-pathbar-path='disable-lock'
 saved-view='/org/gnome/shell/extensions/apps-menu/'
 show-warning=false
 window-height=985
@@ -149,7 +167,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='info-overview'
+last-panel='privacy'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -211,9 +229,6 @@ show-battery-percentage=true
 text-scaling-factor=1.0
 toolbar-style='text'
 toolkit-accessibility=false
-
-[org/gnome/desktop/lockdown]
-disable-lock-screen=true
 
 [org/gnome/desktop/media-handling]
 autorun-never=true
@@ -381,7 +396,7 @@ enabled=['org.gnome.Weather.desktop']
 sort-order=['org.gnome.Contacts.desktop', 'org.gnome.Documents.desktop', 'org.gnome.Nautilus.desktop']
 
 [org/gnome/desktop/session]
-idle-delay=uint32 0
+idle-delay=uint32 300
 
 [org/gnome/desktop/sound]
 event-sounds=true
@@ -672,12 +687,11 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.342215354508141, 5.0383713999999999)
+night-light-last-coordinates=(49.273807135093236, 4.0285000000000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']
-screensaver=@as []
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>v'
@@ -699,18 +713,13 @@ binding='<Super>j'
 command='nautilus Downloads'
 name='Downloads Folder'
 
-[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
-binding='<Super>l'
-command="flatpak run org.mozilla.firefox -new-tab 'https://linkedin.com'"
-name='LinkedIn'
-
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
 binding='<Super>space'
 command='albert toggle'
 name='Albert'
 
 [org/gnome/settings-daemon/plugins/power]
-idle-dim=false
+idle-dim=true
 sleep-inactive-ac-timeout=3600
 sleep-inactive-ac-type='nothing'
 
@@ -748,8 +757,6 @@ preview-effect=''
 countdown-timer=0
 indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -819,6 +826,7 @@ animate-movement=true
 animation-duration=150
 
 [org/gnome/shell/extensions/run-or-raise]
+center-mouse-to-focused-window=false
 move-window-to-active-workspace=false
 
 [org/gnome/shell/extensions/vertical-workspaces]
@@ -856,7 +864,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708767294
+check-timestamp=int64 1708851329
 first-run=false
 flatpak-purge-timestamp=int64 1708778144
 install-timestamp=int64 1704999008

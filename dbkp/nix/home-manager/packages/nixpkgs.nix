@@ -65,7 +65,6 @@ with pkgs; [
   p7zip
   pandoc
   peaclock
-  phoronix-test-suite
   poetry
   pstree
   rage
