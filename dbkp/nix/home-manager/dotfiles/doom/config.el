@@ -32,7 +32,7 @@
        pretty-symbols-active nil
        projectile-project-search-path '("~/.org"
                                         ("~/Developer" . 2)
-                                        ("~/Documents/Dropbox/Documents/CV" . 1)
+                                        ("~/Documents/Dropbox/Documentos/Texto/CV" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Presentations" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Code" . 1)
                                         ("~/Documents/Dropbox/Universidade/Doutorado/Articles" . 1)))

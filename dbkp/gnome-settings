@@ -696,7 +696,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.309599205199575, 5.0383713999999999)
+night-light-last-coordinates=(47.305867464777783, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -743,7 +743,7 @@ app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.C
 command-history=['gl', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
-enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'gjsosk@vishram1123.com', 'run-or-raise@edvard.cz', 'blur-my-shell@aunetx', 'vertical-workspaces@G-dH.github.com']
+enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'gjsosk@vishram1123.com', 'blur-my-shell@aunetx', 'vertical-workspaces@G-dH.github.com', 'run-or-raise@edvard.cz']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")']
@@ -882,9 +882,9 @@ document-type='photo'
 check-timestamp=int64 1708937383
 first-run=false
 flatpak-purge-timestamp=int64 1708944514
-install-timestamp=int64 1704999008
+install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1708937387
+update-notification-timestamp=int64 1708953282
 
 [org/gnome/system/location]
 enabled=true

@@ -20,7 +20,7 @@ abbr nhcfg "nvim ~/.config/nix/home-manager/home.nix"
 abbr fcfg  "nvim ~/.config/fish/config.fish"
 abbr scfg  "source ~/.config/fish/config.fish"
 abbr doc   "pushd ~/Documents/Dropbox/Universidade/Doutorado"
-abbr docs  "pushd ~/Documents/Dropbox/Documents"
+abbr docs  "pushd ~/Documents/Dropbox/Documentos"
 
 set -x LANG              en_US.UTF-8
 set -x LC_CTYPE          en_US.UTF-8
