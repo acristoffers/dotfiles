@@ -67,7 +67,7 @@ index-single-directories=['&DOWNLOAD', '$HOME']
 first-run=false
 
 [org/gnome/Console]
-last-window-size=(1267, 1032)
+last-window-size=(1693, 1392)
 
 [org/gnome/Contacts]
 did-initial-setup=true
@@ -237,13 +237,16 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles', 'org-gnome-fileroller', 'gnome-printers-panel']
+application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles', 'org-gnome-fileroller', 'gnome-printers-panel', 'com-github-marhkb-pods']
 
 [org/gnome/desktop/notifications/application/com-brave-browser]
 application-id='com.brave.Browser.desktop'
 
 [org/gnome/desktop/notifications/application/com-discordapp-discord]
 application-id='com.discordapp.Discord.desktop'
+
+[org/gnome/desktop/notifications/application/com-github-marhkb-pods]
+application-id='com.github.marhkb.Pods.desktop'
 
 [org/gnome/desktop/notifications/application/com-mattjakeman-extensionmanager-desktop]
 application-id='com.mattjakeman.ExtensionManager.desktop.desktop'
@@ -369,7 +372,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -607,6 +610,9 @@ window-maximized=false
 window-position=[26, 23]
 window-size=[1904, 1032]
 
+[org/gnome/portal/filechooser/app.authpass.AuthPass]
+last-folder-path='/home/alan/Downloads'
+
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan'
 
@@ -649,6 +655,9 @@ last-folder-path='/home/alan/Pictures'
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 
+[org/gnome/portal/filechooser/org.keepassxc.KeePassXC]
+last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
+
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
 last-folder-path='/home/alan/Downloads'
 
@@ -687,7 +696,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.309204801776048, 5.0383713999999999)
+night-light-last-coordinates=(47.309599205199575, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -761,10 +770,8 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -872,12 +879,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1708851329
+check-timestamp=int64 1708937383
 first-run=false
-flatpak-purge-timestamp=int64 1708778144
+flatpak-purge-timestamp=int64 1708944514
 install-timestamp=int64 1704999008
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1707914004
+update-notification-timestamp=int64 1708937387
 
 [org/gnome/system/location]
 enabled=true
@@ -920,7 +927,7 @@ sort-directories-first=true
 sort-order='ascending'
 type-format='category'
 view-type='grid'
-window-size=(948, 512)
+window-size=(1268, 692)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
