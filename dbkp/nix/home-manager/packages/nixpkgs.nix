@@ -47,7 +47,6 @@ with pkgs; [
   ispell
   jq
   killall
-  lazygit
   ledger
   less
   man-pages

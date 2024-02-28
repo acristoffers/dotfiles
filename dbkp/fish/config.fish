@@ -42,9 +42,9 @@ set -x LSCOLORS gxfxcxdxbxeggdbgagacad
 set -x BAT_THEME Dracula
 
 if type -q git
-  set -U _tide_left_items os cwd git nixshell
+  set -U _tide_left_items os cwd git ssh nixshell
 else
-  set -U _tide_left_items os cwd nixshell
+  set -U _tide_left_items os cwd ssh nixshell
 end
 
 if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL

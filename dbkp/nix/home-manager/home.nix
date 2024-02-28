@@ -36,6 +36,7 @@ in
     eza = import ./programs/exa.nix { inherit config; inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
     kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; };
+    lazygit = import ./programs/lazygit.nix { inherit config; inherit pkgs; };
     nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; };
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
