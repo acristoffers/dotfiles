@@ -92,6 +92,7 @@ window-size=[1904, 1032]
 [org/gnome/Snapshot]
 capture-mode='video'
 is-maximized=false
+show-composition-guidelines=true
 window-height=640
 window-width=800
 
@@ -773,6 +774,7 @@ countdown-timer=0
 indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 toggle-state=false
+user-enabled=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']

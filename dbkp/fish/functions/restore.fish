@@ -20,6 +20,10 @@ function restore
 
   dbkp restore ~/Developer/GitHub/dotfiles/dbkp.toml
 
+  if type -q tide
+    tide reload
+  end
+
   if test -n "$_flag_public"
     return
   end
@@ -40,4 +44,8 @@ function restore
   end
 
   dbkp restore ~/Developer/GitHub/dotfiles-secrets/dbkp.toml
+
+  if type -q tide
+    tide reload
+  end
 end
