@@ -1,12 +1,14 @@
-import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
+import GObject from 'gi://GObject';
+import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
+import Gtk from 'gi://Gtk';
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 export default class GnomeRectanglePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
         window.add(this.generalPage(settings));
-        window.add(this.shortcutsPage());
+        window.add(this.shortcutsPage(settings));
     }
     generalPage(settings) {
         const page = new Adw.PreferencesPage({
@@ -113,103 +115,381 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         settings.bind('margin-left', marginLeft, 'value', Gio.SettingsBindFlags.DEFAULT);
         return page;
     }
-    shortcutsPage() {
+    shortcutsPage(settings) {
         const page = new Adw.PreferencesPage({
             title: _('Shortcuts'),
             icon_name: 'input-keyboard',
         });
-        const shortcutsGroup = new Adw.PreferencesGroup({
+        const actionsGroup = new Adw.PreferencesGroup({
             title: _('Keyboard Shortcuts'),
-            description: _('List of hardcoded keyboard shortcuts'),
+            description: _('Affects all shortcuts at once'),
         });
-        page.add(shortcutsGroup);
-        this.shortcutRow(shortcutsGroup, 'Quarter: Top Left', 'U');
-        this.shortcutRow(shortcutsGroup, 'Quarter: Top Right', 'I');
-        this.shortcutRow(shortcutsGroup, 'Quarter: Bottom Left', 'J');
-        this.shortcutRow(shortcutsGroup, 'Quarter: Bottom Right', 'K');
-        this.shortcutRow(shortcutsGroup, 'Quarter: Centered', 'Alt+C');
-        this.shortcutRow(shortcutsGroup, 'Fourth: First', 'V');
-        this.shortcutRow(shortcutsGroup, 'Fourth: Second', 'B');
-        this.shortcutRow(shortcutsGroup, 'Fourth: Third', 'N');
-        this.shortcutRow(shortcutsGroup, 'Fourth: Fourth', 'M');
-        this.shortcutRow(shortcutsGroup, 'Third: First', 'D');
-        this.shortcutRow(shortcutsGroup, 'Third: Second', 'F');
-        this.shortcutRow(shortcutsGroup, 'Third: Third', 'G');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Top Left', 'Shift+U');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Top Center', 'Shift+I');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Top Right', 'Shift+O');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Bottom Left', 'Shift+J');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Bottom Center', 'Shift+K');
-        this.shortcutRow(shortcutsGroup, 'Sixth: Bottom Right', 'Shift+L');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Top Left', 'Alt+U');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Top Center', 'Alt+I');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Top Right', 'Alt+O');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Middle Left', 'Alt+J');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Middle Center', 'Alt+K');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Middle Right', 'Alt+L');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Bottom Left', 'Alt+N');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Bottom Center', 'Alt+M');
-        this.shortcutRow(shortcutsGroup, 'Ninth: Bottom Right', 'Alt+comma');
-        this.shortcutRow(shortcutsGroup, 'Half: Center (Vertical)', 'Shift+C');
-        this.shortcutRow(shortcutsGroup, 'Half: Center (Horizontal)', 'Shift+V');
-        this.shortcutRow(shortcutsGroup, 'Half: Left', 'Left');
-        this.shortcutRow(shortcutsGroup, 'Half: Right', 'Right');
-        this.shortcutRow(shortcutsGroup, 'Half: Top', 'Up');
-        this.shortcutRow(shortcutsGroup, 'Half: Bottom', 'Down');
-        this.shortcutRow(shortcutsGroup, 'Two Thirds: Left', 'E');
-        this.shortcutRow(shortcutsGroup, 'Two Thirds: Center', 'R');
-        this.shortcutRow(shortcutsGroup, 'Two Thirds: Right', 'T');
-        this.shortcutRow(shortcutsGroup, 'Three Fourths: Left', 'Shift+N');
-        this.shortcutRow(shortcutsGroup, 'Three Fourths: Right', 'Shift+M');
-        this.shortcutRow(shortcutsGroup, 'Center', 'C');
-        this.shortcutRow(shortcutsGroup, 'Maximize', 'Return');
-        this.shortcutRow(shortcutsGroup, 'Maximize: Almost', 'Shift+Return');
-        this.shortcutRow(shortcutsGroup, 'Maximize: Height', 'Shift+Alt+Up');
-        this.shortcutRow(shortcutsGroup, 'Maximize: Width', 'Shift+Alt+Right');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Top', 'Alt+Up');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Bottom', 'Alt+Down');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Left', 'Alt+Left');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Right', 'Alt+Right');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Bottom Left', '1');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Bottom', '2');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Bottom Right', '3');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Left', '4');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Right', '6');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Top Left', '7');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Top', '8');
-        this.shortcutRow(shortcutsGroup, 'Stretch: Step: Top Right', '9');
-        this.shortcutRow(shortcutsGroup, 'Move: Bottom Left', 'Alt+1');
-        this.shortcutRow(shortcutsGroup, 'Move: Bottom', 'Alt+2');
-        this.shortcutRow(shortcutsGroup, 'Move: Bottom Right', 'Alt+3');
-        this.shortcutRow(shortcutsGroup, 'Move: Left', 'Alt+4');
-        this.shortcutRow(shortcutsGroup, 'Move: Right', 'Alt+6');
-        this.shortcutRow(shortcutsGroup, 'Move: Top Left', 'Alt+7');
-        this.shortcutRow(shortcutsGroup, 'Move: Top', 'Alt+8');
-        this.shortcutRow(shortcutsGroup, 'Move: Top Right', 'Alt+9');
-        this.shortcutRow(shortcutsGroup, 'Move To Monitor: Top', 'Shift+Up');
-        this.shortcutRow(shortcutsGroup, 'Move To Monitor: Bottom', 'Shift+Down');
-        this.shortcutRow(shortcutsGroup, 'Move To Monitor: Left', 'Shift+Left');
-        this.shortcutRow(shortcutsGroup, 'Move To Monitor: Right', 'Shift+Right');
+        page.add(actionsGroup);
+        const restoreDefaults = new Adw.ActionRow({
+            title: _('Restore'),
+            subtitle: _('Restore the default values of all accelerators'),
+            activatable: true,
+        });
+        const restoreDefaultsButton = new Gtk.Button({
+            label: _('Restore'),
+            valign: Gtk.Align.CENTER,
+            hexpand: false,
+            vexpand: false
+        });
+        restoreDefaults.add_suffix(restoreDefaultsButton);
+        restoreDefaultsButton.connect('clicked', () => { this.restoreDefaults(settings); });
+        actionsGroup.add(restoreDefaults);
+        const clearAll = new Adw.ActionRow({
+            title: _('Clear All'),
+            subtitle: _('Clear the values of all accelerators'),
+            activatable: true,
+        });
+        const clearAllButton = new Gtk.Button({
+            label: _('Clear'),
+            valign: Gtk.Align.CENTER,
+            hexpand: false,
+            vexpand: false
+        });
+        clearAll.add_suffix(clearAllButton);
+        clearAllButton.connect('clicked', () => { this.clearAll(settings); });
+        actionsGroup.add(clearAll);
+        const maximizeGroup = new Adw.PreferencesGroup({
+            title: _('Maximize'),
+        });
+        page.add(maximizeGroup);
+        this.shortcutRow(settings, maximizeGroup, 'tile-maximize', 'Maximize');
+        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-almost', 'Almost');
+        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-height', 'Maximize Height');
+        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-width', 'Maximize Width');
+        const quarterGroup = new Adw.PreferencesGroup({
+            title: _('Quarter Grid'),
+        });
+        page.add(quarterGroup);
+        this.shortcutRow(settings, quarterGroup, 'tile-quarter-top-left', 'Top Left');
+        this.shortcutRow(settings, quarterGroup, 'tile-quarter-top-right', 'Top Right');
+        this.shortcutRow(settings, quarterGroup, 'tile-quarter-bottom-left', 'Bottom Left');
+        this.shortcutRow(settings, quarterGroup, 'tile-quarter-bottom-right', 'Bottom Right');
+        this.shortcutRow(settings, quarterGroup, 'tile-quarter-centered', 'Centered');
+        const sixthsGroup = new Adw.PreferencesGroup({
+            title: _('Sixth Grid'),
+        });
+        page.add(sixthsGroup);
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-left', 'Top Left');
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-center', 'Top Center');
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-right', 'Top Right');
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-left', 'Bottom Left');
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-center', 'Bottom Center');
+        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-right', 'Bottom Right');
+        const ninthsGroup = new Adw.PreferencesGroup({
+            title: _('Nineth Grid'),
+        });
+        page.add(ninthsGroup);
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-left', 'Top Left');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-center', 'Top Center');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-right', 'Top Right');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-left', 'Middle Left');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-center', 'Middle Center');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-right', 'Middle Right');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-left', 'Bottom Left');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-center', 'Bottom Center');
+        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-right', 'Bottom Right');
+        const halvesGroup = new Adw.PreferencesGroup({
+            title: _('Halves'),
+        });
+        page.add(halvesGroup);
+        this.shortcutRow(settings, halvesGroup, 'tile-half-top', 'Top');
+        this.shortcutRow(settings, halvesGroup, 'tile-half-bottom', 'Bottom');
+        this.shortcutRow(settings, halvesGroup, 'tile-half-center-horizontal', 'Center (Horizontal)');
+        this.shortcutRow(settings, halvesGroup, 'tile-half-center-vertical', 'Center (Vertical)');
+        this.shortcutRow(settings, halvesGroup, 'tile-half-left', 'Left');
+        this.shortcutRow(settings, halvesGroup, 'tile-half-right', 'Right');
+        const thirdsGroup = new Adw.PreferencesGroup({
+            title: _('Thirds'),
+        });
+        page.add(thirdsGroup);
+        this.shortcutRow(settings, thirdsGroup, 'tile-third-first', 'First');
+        this.shortcutRow(settings, thirdsGroup, 'tile-third-second', 'Second');
+        this.shortcutRow(settings, thirdsGroup, 'tile-third-third', 'Third');
+        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-left', 'Left Two Thirds');
+        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-center', 'Center Two Thirds');
+        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-right', 'Right Two Thirds');
+        const fourthsGroup = new Adw.PreferencesGroup({
+            title: _('Fourths'),
+        });
+        page.add(fourthsGroup);
+        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-first', 'First');
+        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-second', 'Second');
+        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-third', 'Third');
+        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-fourth', 'Fourth');
+        this.shortcutRow(settings, fourthsGroup, 'tile-three-fourths-left', 'Left Three Fourth');
+        this.shortcutRow(settings, fourthsGroup, 'tile-three-fourths-right', 'Right Three Fourth');
+        const moveGroup = new Adw.PreferencesGroup({
+            title: _('Move Tiles'),
+        });
+        page.add(moveGroup);
+        this.shortcutRow(settings, moveGroup, 'tile-center', 'Center');
+        this.shortcutRow(settings, moveGroup, 'tile-move-left', 'Left');
+        this.shortcutRow(settings, moveGroup, 'tile-move-right', 'Right');
+        this.shortcutRow(settings, moveGroup, 'tile-move-top-left', 'Top Left');
+        this.shortcutRow(settings, moveGroup, 'tile-move-top', 'Top');
+        this.shortcutRow(settings, moveGroup, 'tile-move-top-right', 'Top Right');
+        this.shortcutRow(settings, moveGroup, 'tile-move-bottom-left', 'Bottom Left');
+        this.shortcutRow(settings, moveGroup, 'tile-move-bottom', 'Bottom');
+        this.shortcutRow(settings, moveGroup, 'tile-move-bottom-right', 'Bottom Right');
+        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-left', 'Move To Left Monitor');
+        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-right', 'Move To Right Monitor');
+        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-top', 'Move To Top Monitor');
+        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-bottom', 'Move To Bottom Monitor');
+        const stretchGroup = new Adw.PreferencesGroup({
+            title: _('Stretch Tiles'),
+        });
+        page.add(stretchGroup);
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-left', 'Left');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-right', 'Right');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-top', 'Top');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-bottom', 'Bottom');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-left', 'Step: Left');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-right', 'Step: Right');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top-left', 'Step: Top Left');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top', 'Step: Top');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top-right', 'Step: Top Right');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom-left', 'Step: Bottom Left');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom', 'Step: Bottom');
+        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom-right', 'Step: Bottom Right');
         return page;
     }
-    shortcutRow(shortcutsGroup, name, shortcut) {
-        shortcut = `Ctrl+Meta+${shortcut}`;
-        shortcut = shortcut
-            .replaceAll('Alt', '⌥')
-            .replaceAll('Ctrl', '⌃')
-            .replaceAll('Meta', '⌘')
-            .replaceAll('Shift', '⇧')
-            .replaceAll('Down', '↓')
-            .replaceAll('Left', '←')
-            .replaceAll('Right', '→')
-            .replaceAll('Up', '↑')
-            .replaceAll('Return', '↵')
-            .replaceAll('comma', ',')
-            .replaceAll('+', '');
-        const comboRow = new Adw.ComboRow({
-            title: _(name),
-            model: Gtk.StringList.new([shortcut])
+    restoreDefaults(settings) {
+        for (const key of this.acceleratorKeys) {
+            settings.reset(key);
+        }
+    }
+    clearAll(settings) {
+        for (const key of this.acceleratorKeys) {
+            settings.set_strv(key, null);
+        }
+    }
+    shortcutRow(settings, shortcutsGroup, key, name) {
+        const actionRow = new ShortcutSettingWidget(settings, key, name, '');
+        shortcutsGroup.add(actionRow);
+    }
+    acceleratorKeys = [
+        "tile-center",
+        "tile-fourth-first",
+        "tile-fourth-fourth",
+        "tile-fourth-second",
+        "tile-fourth-third",
+        "tile-half-bottom",
+        "tile-half-center-horizontal",
+        "tile-half-center-vertical",
+        "tile-half-left",
+        "tile-half-right",
+        "tile-half-top",
+        "tile-maximize",
+        "tile-maximize-almost",
+        "tile-maximize-height",
+        "tile-maximize-width",
+        "tile-move-bottom",
+        "tile-move-bottom-left",
+        "tile-move-bottom-right",
+        "tile-move-left",
+        "tile-move-right",
+        "tile-move-to-monitor-bottom",
+        "tile-move-to-monitor-left",
+        "tile-move-to-monitor-right",
+        "tile-move-to-monitor-top",
+        "tile-move-top",
+        "tile-move-top-left",
+        "tile-move-top-right",
+        "tile-ninth-bottom-center",
+        "tile-ninth-bottom-left",
+        "tile-ninth-bottom-right",
+        "tile-ninth-middle-center",
+        "tile-ninth-middle-left",
+        "tile-ninth-middle-right",
+        "tile-ninth-top-center",
+        "tile-ninth-top-left",
+        "tile-ninth-top-right",
+        "tile-quarter-bottom-left",
+        "tile-quarter-bottom-right",
+        "tile-quarter-centered",
+        "tile-quarter-top-left",
+        "tile-quarter-top-right",
+        "tile-sixth-bottom-center",
+        "tile-sixth-bottom-left",
+        "tile-sixth-bottom-right",
+        "tile-sixth-top-center",
+        "tile-sixth-top-left",
+        "tile-sixth-top-right",
+        "tile-stretch-bottom",
+        "tile-stretch-left",
+        "tile-stretch-right",
+        "tile-stretch-step-bottom",
+        "tile-stretch-step-bottom-left",
+        "tile-stretch-step-bottom-right",
+        "tile-stretch-step-left",
+        "tile-stretch-step-right",
+        "tile-stretch-step-top",
+        "tile-stretch-step-top-left",
+        "tile-stretch-step-top-right",
+        "tile-stretch-top",
+        "tile-third-first",
+        "tile-third-second",
+        "tile-third-third",
+        "tile-three-fourths-left",
+        "tile-three-fourths-right",
+        "tile-two-thirds-center",
+        "tile-two-thirds-left",
+        "tile-two-thirds-right",
+    ];
+}
+/*
+* Shortcut Widget (https://github.com/eonpatapon/gnome-shell-extension-caffeine/blob/master/caffeine%40patapon.info/preferences/generalPage.js#L227)
+*/
+const genParam = (name, ...dflt) => GObject.ParamSpec.string(name, name, name, GObject.ParamFlags.READWRITE, ...dflt);
+class ShortcutSettingWidget extends Adw.ActionRow {
+    static {
+        GObject.registerClass({
+            Properties: {
+                shortcut: genParam('shortcut', '')
+            },
+            Signals: {
+                changed: { param_types: [GObject.TYPE_STRING] }
+            }
+        }, this);
+    }
+    _editor;
+    _description;
+    _key;
+    _settings;
+    shortLabel;
+    shortcutBox;
+    constructor(settings, key, label, sublabel) {
+        super({
+            title: label,
+            subtitle: sublabel,
+            activatable: true
         });
-        shortcutsGroup.add(comboRow);
+        this.shortcutBox = new Gtk.Box({
+            orientation: Gtk.Orientation.HORIZONTAL,
+            halign: Gtk.Align.CENTER,
+            spacing: 5,
+            hexpand: false,
+            vexpand: false
+        });
+        this._key = key;
+        this._settings = settings;
+        this._description = sublabel;
+        this.shortLabel = new Gtk.ShortcutLabel({
+            disabled_text: _('New accelerator…'),
+            valign: Gtk.Align.CENTER,
+            hexpand: false,
+            vexpand: false
+        });
+        this.shortcutBox.append(this.shortLabel);
+        // Bind signals
+        this.connect('activated', this._onActivated.bind(this));
+        this.bind_property('shortcut', this.shortLabel, 'accelerator', GObject.BindingFlags.DEFAULT);
+        [this.shortcut] = this._settings.get_strv(this._key) ?? [''];
+        this._settings.connect('changed', this.settingsChangedCallback.bind(this));
+        this.add_suffix(this.shortcutBox);
+    }
+    settingsChangedCallback(_obj, key) {
+        if (key == this._key) {
+            [this.shortcut] = this._settings.get_strv(this._key) ?? [''];
+        }
+    }
+    isAcceleratorSet() {
+        if (this.shortLabel.get_accelerator()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    resetAccelerator() {
+        this.saveShortcut();
+    }
+    _onActivated(widget) {
+        let ctl = new Gtk.EventControllerKey();
+        let content = new Adw.StatusPage({
+            title: _('New accelerator…'),
+            description: this._description,
+            icon_name: 'preferences-desktop-keyboard-shortcuts-symbolic'
+        });
+        this._editor = new Adw.Window({
+            modal: true,
+            hide_on_close: true,
+            transient_for: widget.get_root(),
+            width_request: 480,
+            height_request: 320,
+            content
+        });
+        this._editor.add_controller(ctl);
+        ctl.connect('key-pressed', this._onKeyPressed.bind(this));
+        this._editor.present();
+    }
+    _onKeyPressed(_widget, keyval, keycode, state) {
+        let mask = state & Gtk.accelerator_get_default_mod_mask();
+        mask &= ~Gdk.ModifierType.LOCK_MASK;
+        if (!mask && keyval === Gdk.KEY_Escape) {
+            this._editor?.close();
+            return Gdk.EVENT_STOP;
+        }
+        if (keyval === Gdk.KEY_BackSpace) {
+            this.saveShortcut();
+            return Gdk.EVENT_STOP;
+        }
+        if (!this.isValidBinding(mask, keycode, keyval) || !this.isValidAccel(mask, keyval)) {
+            return Gdk.EVENT_STOP;
+        }
+        this.saveShortcut(keyval, keycode, mask);
+        return Gdk.EVENT_STOP;
+    }
+    saveShortcut(keyval, keycode, mask) {
+        if (!keyval && !keycode) {
+            this.shortcut = '';
+        }
+        else {
+            this.shortcut = Gtk.accelerator_name_with_keycode(null, keyval, keycode, mask) ?? '';
+        }
+        this.emit('changed', this.shortcut);
+        this._settings.set_strv(this._key, [this.shortcut]);
+        this._editor?.destroy();
+        this._editor = undefined;
+    }
+    // Functions from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
+    keyvalIsForbidden(keyval) {
+        return [Gdk.KEY_Mode_switch].includes(keyval);
+    }
+    isValidBinding(mask, keycode, keyval) {
+        return !(mask === 0 || mask === Gdk.ModifierType.SHIFT_MASK && keycode !== 0 &&
+            ((keyval >= Gdk.KEY_a && keyval <= Gdk.KEY_z) ||
+                (keyval >= Gdk.KEY_A && keyval <= Gdk.KEY_Z) ||
+                (keyval >= Gdk.KEY_0 && keyval <= Gdk.KEY_9) ||
+                (keyval >= Gdk.KEY_kana_fullstop && keyval <= Gdk.KEY_semivoicedsound) ||
+                (keyval >= Gdk.KEY_Arabic_comma && keyval <= Gdk.KEY_Arabic_sukun) ||
+                (keyval >= Gdk.KEY_Serbian_dje && keyval <= Gdk.KEY_Cyrillic_HARDSIGN) ||
+                (keyval >= Gdk.KEY_Greek_ALPHAaccent && keyval <= Gdk.KEY_Greek_omega) ||
+                (keyval >= Gdk.KEY_hebrew_doublelowline && keyval <= Gdk.KEY_hebrew_taf) ||
+                (keyval >= Gdk.KEY_Thai_kokai && keyval <= Gdk.KEY_Thai_lekkao) ||
+                (keyval >= Gdk.KEY_Hangul_Kiyeog && keyval <= Gdk.KEY_Hangul_J_YeorinHieuh) ||
+                ([
+                    Gdk.KEY_Home,
+                    Gdk.KEY_Left,
+                    Gdk.KEY_Up,
+                    Gdk.KEY_Right,
+                    Gdk.KEY_Down,
+                    Gdk.KEY_Page_Up,
+                    Gdk.KEY_Page_Down,
+                    Gdk.KEY_End,
+                    Gdk.KEY_Tab,
+                    Gdk.KEY_KP_Enter,
+                    Gdk.KEY_Return,
+                ].includes(keyval)) ||
+                (keyval === Gdk.KEY_space && mask === 0) || this.keyvalIsForbidden(keyval)));
+    }
+    isValidAccel(mask, keyval) {
+        return Gtk.accelerator_valid(keyval, mask) || (keyval === Gdk.KEY_Tab && mask !== 0);
     }
 }
+;
