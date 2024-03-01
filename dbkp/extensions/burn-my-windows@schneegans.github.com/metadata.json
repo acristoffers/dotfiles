@@ -10,9 +10,10 @@
   "name": "Burn My Windows",
   "settings-schema": "org.gnome.shell.extensions.burn-my-windows",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/Schneegans/Burn-My-Windows",
   "uuid": "burn-my-windows@schneegans.github.com",
-  "version": 39
+  "version": 41
 }

@@ -168,7 +168,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='power'
+last-panel='keyboard'
 window-state=(1693, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -663,7 +663,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads/SAGIP2024_LaTeX/build'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -697,7 +697,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.333683866472619, 5.0383713999999999)
+night-light-last-coordinates=(47.353555164260548, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -744,7 +744,7 @@ app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.C
 command-history=['gl', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
-enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'gjsosk@vishram1123.com', 'blur-my-shell@aunetx', 'vertical-workspaces@G-dH.github.com', 'run-or-raise@edvard.cz']
+enabled-extensions=['clipboard-indicator@tudmotu.com', 'quick-settings-avatar@d-go', 'CoverflowAltTab@palatis.blogspot.com', 'impatience@gfxmonk.net', 'burn-my-windows@schneegans.github.com', 'caffeine@patapon.info', 'gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'improvedosk@nick-shmyrev.dev', 'appindicatorsupport@rgcjonas.gmail.com', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'inputmethod-shortcuts@osamu.debian.org', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'gjsosk@vishram1123.com', 'blur-my-shell@aunetx', 'vertical-workspaces@G-dH.github.com', 'run-or-raise@edvard.cz', 'rectangle@acristoffers.me']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")']
@@ -766,13 +766,17 @@ blur=false
 active-profile='/home/alan/.config/burn-my-windows/profiles/1693417159839460.conf'
 last-extension-version=30
 last-prefs-version=30
-prefs-open-count=4
+prefs-open-count=5
 preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
+prefs-default-height=1392
+prefs-default-width=843
+show-indicator='only-active'
+toggle-shortcut=['<Shift><Super>g']
 toggle-state=false
 user-enabled=false
 
@@ -882,9 +886,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1709108464
+check-timestamp=int64 1709284058
 first-run=false
-flatpak-purge-timestamp=int64 1709109503
+flatpak-purge-timestamp=int64 1709280915
 install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1708953282
@@ -956,7 +960,7 @@ manager-window-width=1268
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
-delete-storage=true
+delete-storage=false
 forcepoweroff=false
 unapplied-dev=true
 
@@ -981,11 +985,15 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso', '/home/alan/Downloads/steamdeck-recovery-4.img']
+isos=['/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso', '/home/alan/Downloads/archlinux-2023.12.01-x86_64.iso', '/home/alan/Downloads/ubuntu-22.04.3-desktop-amd64.iso', '/home/alan/Downloads/ubuntu-20.04.6-desktop-amd64.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
 network-traffic=false
+
+[org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
+autoconnect=1
+vm-window-size=(2560, 1371)
 
 [org/virt-manager/virt-manager/vms/25ba81c6dc704022a85fba55d4a899a9]
 autoconnect=1
@@ -1028,6 +1036,11 @@ resize-guest=1
 scaling=1
 vm-window-size=(1693, 1355)
 
+[org/virt-manager/virt-manager/vms/78dd2c64fb2346c68e3f99829f783392]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2560, 1371)
+
 [org/virt-manager/virt-manager/vms/ad369a4ee81442a2a96081877fb0ef84]
 autoconnect=1
 resize-guest=1
@@ -1043,6 +1056,11 @@ vm-window-size=(2544, 1355)
 autoconnect=1
 scaling=1
 vm-window-size=(1485, 967)
+
+[org/virt-manager/virt-manager/vms/dc0954fc879641e58765b7b57b7fca8b]
+autoconnect=1
+scaling=2
+vm-window-size=(2560, 1371)
 
 [org/virt-manager/virt-manager/vms/eef4c3760ea9437aa888295e77c140fe]
 autoconnect=1

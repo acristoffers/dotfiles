@@ -1,36 +1,29 @@
-'use strict';
-
 import Gtk from 'gi://Gtk';
 import Adw from 'gi://Adw';
 import Gio from 'gi://Gio';
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-
 export default class GnomeRectanglePreferences extends ExtensionPreferences {
+    _settings;
     fillPreferencesWindow(window) {
-        window._settings = this.getSettings();
-
-        window.add(this.generalPage(window));
-        window.add(this.shortcutsPage(window))
+        this._settings = this.getSettings();
+        window.add(this.generalPage());
+        window.add(this.shortcutsPage());
     }
-
-    generalPage(window) {
+    generalPage() {
         const page = new Adw.PreferencesPage({
             title: _('General'),
             icon_name: 'dialog-information-symbolic',
         });
-
         const animationGroup = new Adw.PreferencesGroup({
             title: _('Animation'),
             description: _('Configure move/resize animation'),
         });
         page.add(animationGroup);
-
         const animationEnabled = new Adw.SwitchRow({
             title: _('Enabled'),
             subtitle: _('Wether to animate windows'),
         });
         animationGroup.add(animationEnabled);
-
         const animationDuration = new Adw.SpinRow({
             title: _('Duration'),
             subtitle: _('Duration of animations in milliseconds'),
@@ -41,13 +34,11 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
             })
         });
         animationGroup.add(animationDuration);
-
         const paddingGroup = new Adw.PreferencesGroup({
             title: _('Paddings'),
             description: _('Configure the padding between windows'),
         });
         page.add(paddingGroup);
-
         const paddingInner = new Adw.SpinRow({
             title: _('Inner'),
             subtitle: _('Padding between windows'),
@@ -58,7 +49,6 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
             })
         });
         paddingGroup.add(paddingInner);
-
         const paddingOuter = new Adw.SpinRow({
             title: _('Outer'),
             subtitle: _('Padding between windows and the screen'),
@@ -69,27 +59,71 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
             })
         });
         paddingGroup.add(paddingOuter);
-
-        window._settings.bind('animate-movement', animationEnabled, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('animation-duration', animationDuration, 'value', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('padding-inner', paddingInner, 'value', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('padding-outer', paddingOuter, 'value', Gio.SettingsBindFlags.DEFAULT);
-
+        const marginGroup = new Adw.PreferencesGroup({
+            title: _('Margins'),
+            description: _('Finer control of the workspace margins (to account for docks)'),
+        });
+        page.add(marginGroup);
+        const marginTop = new Adw.SpinRow({
+            title: _('Top'),
+            subtitle: _('Top margin between screen and windows'),
+            adjustment: new Gtk.Adjustment({
+                lower: 0,
+                upper: 1000,
+                step_increment: 1
+            })
+        });
+        marginGroup.add(marginTop);
+        const marginRight = new Adw.SpinRow({
+            title: _('Right'),
+            subtitle: _('Right margin between screen and windows'),
+            adjustment: new Gtk.Adjustment({
+                lower: 0,
+                upper: 1000,
+                step_increment: 1
+            })
+        });
+        marginGroup.add(marginRight);
+        const marginBottom = new Adw.SpinRow({
+            title: _('Bottom'),
+            subtitle: _('Bottom margin between screen and windows'),
+            adjustment: new Gtk.Adjustment({
+                lower: 0,
+                upper: 1000,
+                step_increment: 1
+            })
+        });
+        marginGroup.add(marginBottom);
+        const marginLeft = new Adw.SpinRow({
+            title: _('Left'),
+            subtitle: _('Left margin between screen and windows'),
+            adjustment: new Gtk.Adjustment({
+                lower: 0,
+                upper: 1000,
+                step_increment: 1
+            })
+        });
+        marginGroup.add(marginLeft);
+        this._settings.bind('animate-movement', animationEnabled, 'active', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('animation-duration', animationDuration, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('padding-inner', paddingInner, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('padding-outer', paddingOuter, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('margin-top', marginTop, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('margin-right', marginRight, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('margin-bottom', marginBottom, 'value', Gio.SettingsBindFlags.DEFAULT);
+        this._settings.bind('margin-left', marginLeft, 'value', Gio.SettingsBindFlags.DEFAULT);
         return page;
     }
-
     shortcutsPage() {
         const page = new Adw.PreferencesPage({
             title: _('Shortcuts'),
             icon_name: 'input-keyboard',
         });
-
         const shortcutsGroup = new Adw.PreferencesGroup({
             title: _('Keyboard Shortcuts'),
             description: _('List of hardcoded keyboard shortcuts'),
         });
         page.add(shortcutsGroup);
-
         this.shortcutRow(shortcutsGroup, 'Quarter: Top Left', 'U');
         this.shortcutRow(shortcutsGroup, 'Quarter: Top Right', 'I');
         this.shortcutRow(shortcutsGroup, 'Quarter: Bottom Left', 'J');
@@ -157,10 +191,8 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         this.shortcutRow(shortcutsGroup, 'Move To Monitor: Bottom', 'Shift+Down');
         this.shortcutRow(shortcutsGroup, 'Move To Monitor: Left', 'Shift+Left');
         this.shortcutRow(shortcutsGroup, 'Move To Monitor: Right', 'Shift+Right');
-
         return page;
     }
-
     shortcutRow(shortcutsGroup, name, shortcut) {
         shortcut = `Ctrl+Meta+${shortcut}`;
         shortcut = shortcut
@@ -174,7 +206,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
             .replaceAll('Up', '↑')
             .replaceAll('Return', '↵')
             .replaceAll('comma', ',')
-            .replaceAll('+', '')
+            .replaceAll('+', '');
         const comboRow = new Adw.ComboRow({
             title: _(name),
             model: Gtk.StringList.new([shortcut])
@@ -182,4 +214,3 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         shortcutsGroup.add(comboRow);
     }
 }
-
