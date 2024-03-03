@@ -168,7 +168,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='background'
+last-panel='display'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -697,7 +697,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.331116336849803, 5.0383713999999999)
+night-light-last-coordinates=(47.304630181843535, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -743,8 +743,8 @@ sleep-inactive-ac-type='nothing'
 app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'kvantummanager.desktop': <{'position': <13>}>, 'cups.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'nixos-manual.desktop': <{'position': <18>}>, 'qt5ct.desktop': <{'position': <19>}>, 'qt6ct.desktop': <{'position': <20>}>, 'org.gnome.Software.desktop': <{'position': <21>}>, 'org.gnome.TextEditor.desktop': <{'position': <22>}>, 'org.gnome.Tour.desktop': <{'position': <23>}>}, {'virt-manager.desktop': <{'position': <0>}>, 'xterm.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Loupe.desktop': <{'position': <3>}>, 'org.gnome.Music.desktop': <{'position': <4>}>, 'org.gnome.Epiphany.desktop': <{'position': <5>}>}]
 command-history=['gl', 'lg']
 disable-user-extensions=false
-disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com', 'blur-my-shell@aunetx']
-enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'rectangle@acristoffers.me', 'quick-settings-avatar@d-go', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'gjsosk@vishram1123.com', 'CoverflowAltTab@palatis.blogspot.com', 'clipboard-indicator@tudmotu.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'vertical-workspaces@G-dH.github.com']
+disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
+enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'rectangle@acristoffers.me', 'quick-settings-avatar@d-go', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'gjsosk@vishram1123.com', 'CoverflowAltTab@palatis.blogspot.com', 'clipboard-indicator@tudmotu.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'vertical-workspaces@G-dH.github.com', 'transparent-top-bar@zhanghai.me']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null']
@@ -772,6 +772,9 @@ blur=false
 blur=true
 force-light-text=false
 
+[org/gnome/shell/extensions/blur-my-shell/screenshot]
+blur=true
+
 [org/gnome/shell/extensions/blur-my-shell/window-list]
 blur=false
 
@@ -784,7 +787,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
