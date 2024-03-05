@@ -82,8 +82,8 @@ rec {
     nameservers = networking.networkmanager.appendNameservers;
     firewall = {
       enable = mkForce true;
-      allowedTCPPorts = [ 22 ];
-      allowedUDPPorts = [ 5353 ];
+      allowedTCPPorts = [ 22 ]; # ssh
+      allowedUDPPorts = [ 5353 ]; # mDNS
     };
   };
 
