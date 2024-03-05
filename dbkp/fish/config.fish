@@ -39,7 +39,6 @@ set -e LC_ALL
 
 set -x fish_greeting ""
 set -x LSCOLORS gxfxcxdxbxeggdbgagacad
-set -x BAT_THEME Dracula
 
 if type -q git
   set -U _tide_left_items os cwd git ssh nixshell
@@ -86,6 +85,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -x NPM_CONFIG_USERCONFIG "$XDG_CONFIG_HOME"/npm/npmrc
   set -x RUSTUP_HOME "$XDG_DATA_HOME"/rustup
   set -x VIMINIT 'let $MYVIMRC = !has("nvim") ? "$XDG_CONFIG_HOME/vim/vimrc" : "$XDG_CONFIG_HOME/nvim/init.lua" | so $MYVIMRC'
+  set -x LIBVIRT_DEFAULT_URI "qemu:///system"
   set -gx MLSP_PATH "$HOME/Documents/MATLAB/Toolboxes/mosek-10/toolbox/r2017a:$HOME/Documents/MATLAB/Bin:$HOME/Documents/MATLAB:$HOME/Documents/MATLAB/Toolboxes/cvx/builtins:$HOME/Documents/MATLAB/Toolboxes/cvx/commands:$HOME/Documents/MATLAB/Toolboxes/cvx/functions:$HOME/Documents/MATLAB/Toolboxes/cvx/lib:$HOME/Documents/MATLAB/Toolboxes/cvx/structures:$HOME/Documents/MATLAB/Toolboxes/cvx:$HOME/Documents/MATLAB/Toolboxes/YALMIP:$HOME/Documents/MATLAB/Toolboxes/YALMIP/extras:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/bilevel:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/global:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/moment:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/parametric:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/robust:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/sos:$HOME/Documents/MATLAB/Toolboxes/YALMIP/operators:$HOME/Documents/MATLAB/Toolboxes/YALMIP/solvers:$HOME/Documents/MATLAB/Toolboxes/sedumi/examples:$HOME/Documents/MATLAB/Toolboxes/sedumi/conversion:$HOME/Documents/MATLAB/Toolboxes/sedumi:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/custom:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/dpvar:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/DP:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/processing:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/sosprogramming:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/sparsityandstructure:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/symvar:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/multipoly:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/multipoly/doc:$HOME/Documents/MATLAB/Toolboxes/MBeautifier:$HOME/Documents/MATLAB/Toolboxes/matlab-schemer:$HOME/Documents/MATLAB/Toolboxes/latex_library:$HOME/Documents/MATLAB/Toolboxes/export_fig:$HOME/Documents/MATLAB/Toolboxes/matpower/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/most/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/most/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/mp-opt-model/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/mp-opt-model/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/mips/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/mips/lib/t:$HOME/Documents/MATLAB/Toolboxes/SDPT3:$HOME/Documents/MATLAB/Toolboxes/SDPT3/Solver:$HOME/Documents/MATLAB/Toolboxes/SDPT3/HSDSolver:$HOME/Documents/MATLAB/Toolboxes/SDPT3/Solver/Mexfun"
 
   add-to-path-if-exists $HOME/bin
