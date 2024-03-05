@@ -5,6 +5,10 @@ let
 in
 {
   programs.home-manager.enable = true;
+  news.display = "silent";
+  news.json = pkgs.lib.mkForce { };
+  news.entries = pkgs.lib.mkForce [ ];
+
   home.stateVersion = "22.11";
   home.username = username;
   home.homeDirectory = homeDirectory;
