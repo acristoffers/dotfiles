@@ -168,8 +168,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='user-accounts'
-window-state=(1693, 1392, false)
+last-panel='printers'
+window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -204,6 +204,9 @@ picture-uri='file:///home/alan/.config/background'
 picture-uri-dark='file:///home/alan/.config/background'
 primary-color='#77767B'
 secondary-color='#000000'
+
+[org/gnome/desktop/datetime]
+automatic-timezone=false
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
@@ -373,7 +376,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -575,7 +578,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(948, 512)
 maximized=false
 
 [org/gnome/nm-applet/eap/30abab51-a032-41e3-a79d-aa93cadd0f36]
@@ -660,7 +663,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Contratação'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Downloads'
@@ -697,7 +700,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.34666732751004, 5.0383713999999999)
+night-light-last-coordinates=(-20.185682460904239, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -787,7 +790,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -907,9 +910,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1709624398
+check-timestamp=int64 1709902044
 first-run=false
-flatpak-purge-timestamp=int64 1709574093
+flatpak-purge-timestamp=int64 1709644970
 install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1708953282
@@ -955,7 +958,7 @@ sort-directories-first=true
 sort-order='ascending'
 type-format='category'
 view-type='grid'
-window-size=(1268, 692)
+window-size=(948, 512)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
@@ -976,8 +979,8 @@ window-position=(26, 23)
 window-size=(1268, 645)
 
 [org/virt-manager/virt-manager]
-manager-window-height=655
-manager-window-width=1268
+manager-window-height=475
+manager-window-width=948
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -1015,7 +1018,7 @@ network-traffic=false
 [org/virt-manager/virt-manager/vms/05c067612d454e1caada36222de49a3e]
 autoconnect=1
 resize-guest=1
-vm-window-size=(2544, 1355)
+vm-window-size=(1904, 995)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1

@@ -47,7 +47,8 @@ rec {
   };
 
   # Set your time zone.
-  time.timeZone = "Europe/Paris";
+  # time.timeZone = "Europe/Paris";
+  time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
@@ -102,7 +103,14 @@ rec {
   console.keyMap = "us-acentos";
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      gutenprint
+      gutenprintBin
+      hplipWithPlugin
+    ];
+  };
 
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=1s
@@ -260,6 +268,7 @@ rec {
   services.avahi = {
     enable = true;
     nssmdns4 = true;
+    openFirewall = true; # For wifi printers
     ipv4 = true;
     ipv6 = false;
     publish = {

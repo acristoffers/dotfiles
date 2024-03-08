@@ -10,6 +10,7 @@ rec {
   networking.hostName = "Alan-NixOS-Elemental";
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  environment.memoryAllocator.provider = "libc";
 
   boot.initrd.kernelModules = [ "i915" ];
   boot.initrd.luks.devices."luks-3a81fadd-3844-45c6-80fc-a7f0fcf537c8" = {
