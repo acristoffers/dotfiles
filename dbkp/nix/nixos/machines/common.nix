@@ -182,7 +182,7 @@ rec {
   programs.dconf.enable = true;
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gnome3";
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
   programs.bash.enableCompletion = true;
   programs.git.enable = true;

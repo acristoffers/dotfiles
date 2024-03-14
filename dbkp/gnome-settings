@@ -168,7 +168,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='printers'
+last-panel='info-overview'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -663,7 +663,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Contratação'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Downloads'
@@ -700,7 +700,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.185682460904239, -44.713999999999999)
+night-light-last-coordinates=(-20.192391755216452, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -790,7 +790,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -910,9 +910,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1709902044
+check-timestamp=int64 1710440776
 first-run=false
-flatpak-purge-timestamp=int64 1709644970
+flatpak-purge-timestamp=int64 1710446761
 install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1708953282
