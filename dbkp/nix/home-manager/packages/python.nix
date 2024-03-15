@@ -20,6 +20,10 @@ with pkgs; (python311.withPackages (p: with p; [
   pandas
   picos
   pip
+  pycairo
+  pydbus
+  pygobject-stubs
+  pygobject3
   pytest
   scipy
   sympy
