@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
+last-panel='user-accounts'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -520,7 +520,7 @@ skip-newer=false
 
 [org/gnome/file-roller/listing]
 list-mode='as-folder'
-name-column-width=231
+name-column-width=366
 show-path=false
 sort-method='name'
 sort-type='ascending'
@@ -620,7 +620,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
-last-folder-path='/home/alan'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
 last-folder-path='/home/alan/Downloads'
@@ -702,7 +702,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.186075345349618, -44.713999999999999)
+night-light-last-coordinates=(-20.189365362019004, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -792,7 +792,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -914,7 +914,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1710585244
 first-run=false
-flatpak-purge-timestamp=int64 1710506648
+flatpak-purge-timestamp=int64 1710595689
 install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1708953282
@@ -978,7 +978,7 @@ sort-directories-first=false
 sort-order='ascending'
 type-format='category'
 window-position=(26, 23)
-window-size=(1268, 645)
+window-size=(948, 465)
 
 [org/virt-manager/virt-manager]
 manager-window-height=475
