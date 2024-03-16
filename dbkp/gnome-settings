@@ -85,7 +85,7 @@ formatting-toolbar-visible=false
 migrated-config=true
 run-in-background=true
 window-height=1032
-window-maximize=false
+window-maximize=true
 window-width=1904
 
 [org/gnome/Music]
@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='online-accounts'
+last-panel='display'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -668,7 +668,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -702,7 +702,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.194744257945921, -44.713999999999999)
+night-light-last-coordinates=(-20.186075345349618, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -792,7 +792,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -912,7 +912,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1710499508
+check-timestamp=int64 1710585244
 first-run=false
 flatpak-purge-timestamp=int64 1710506648
 install-timestamp=int64 1708937314
