@@ -2,41 +2,45 @@
   description = "Álan's Home Manager configuration";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    flake-utils.url = github:numtide/flake-utils;
+    flake-utils.url = "github:numtide/flake-utils";
 
-    home-manager.url = github:nix-community/home-manager/master;
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = github:lnl7/nix-darwin;
+    darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-    nvim.url = github:acristoffers/nvim-flake;
+    nvim.url = "github:acristoffers/nvim-flake";
     nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.flake-utils.follows = "flake-utils";
 
-    remove-trash.url = github:acristoffers/remove-trash;
+    remove-trash.url = "github:acristoffers/remove-trash";
     remove-trash.inputs.nixpkgs.follows = "nixpkgs";
     remove-trash.inputs.flake-utils.follows = "flake-utils";
 
-    void.url = github:acristoffers/void-rs;
+    void.url = "github:acristoffers/void-rs";
     void.inputs.nixpkgs.follows = "nixpkgs";
     void.inputs.flake-utils.follows = "flake-utils";
 
-    nix-matlab.url = gitlab:doronbehar/nix-matlab;
+    nix-matlab.url = "gitlab:doronbehar/nix-matlab";
     nix-matlab.inputs.nixpkgs.follows = "nixpkgs";
 
-    moirai.url = github:acristoffers/moirai;
+    moirai.url = "github:acristoffers/moirai";
     moirai.inputs.flake-utils.follows = "flake-utils";
 
-    webots.url = github:acristoffers/webots-flake;
+    webots.url = "github:acristoffers/webots-flake";
     webots.inputs.nixpkgs.follows = "nixpkgs";
     webots.inputs.flake-utils.follows = "flake-utils";
 
-    dbkp.url = github:acristoffers/dbkp;
+    dbkp.url = "github:acristoffers/dbkp";
     dbkp.inputs.nixpkgs.follows = "nixpkgs";
     dbkp.inputs.flake-utils.follows = "flake-utils";
+
+    bib-converter.url = "github:acristoffers/bib-converter";
+    bib-converter.inputs.nixpkgs.follows = "nixpkgs";
+    bib-converter.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:

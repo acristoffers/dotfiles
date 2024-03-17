@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='user-accounts'
+last-panel='keyboard'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -569,7 +569,7 @@ dynamic-workspaces=false
 default-compression-format='zip'
 
 [org/gnome/nautilus/icon-view]
-default-zoom-level='small-plus'
+default-zoom-level='small'
 
 [org/gnome/nautilus/preferences]
 click-policy='double'
@@ -668,7 +668,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis/build'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -702,7 +702,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.189365362019004, -44.713999999999999)
+night-light-last-coordinates=(-20.191024829582897, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -792,13 +792,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -912,9 +913,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1710585244
+check-timestamp=int64 1710680940
 first-run=false
-flatpak-purge-timestamp=int64 1710595689
+flatpak-purge-timestamp=int64 1710686248
 install-timestamp=int64 1708937314
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1708953282

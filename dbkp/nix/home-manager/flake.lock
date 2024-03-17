@@ -25,6 +25,31 @@
         "type": "github"
       }
     },
+    "bib-converter": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "gitignore": "gitignore",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "tree-sitter-biber": "tree-sitter-biber"
+      },
+      "locked": {
+        "lastModified": 1710685792,
+        "narHash": "sha256-BTwj9f+62u3vL2NtbEg35k7Eb9ALQ1ugO18pn44YHkU=",
+        "owner": "acristoffers",
+        "repo": "bib-converter",
+        "rev": "db3340f4ed49fd361c041b75876f63e8b1d046f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acristoffers",
+        "repo": "bib-converter",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -50,7 +75,7 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "gitignore": "gitignore",
+        "gitignore": "gitignore_2",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -137,6 +162,27 @@
     "gitignore": {
       "inputs": {
         "nixpkgs": [
+          "bib-converter",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709087332,
+        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "gitignore_2": {
+      "inputs": {
+        "nixpkgs": [
           "dbkp",
           "nixpkgs"
         ]
@@ -155,7 +201,7 @@
         "type": "github"
       }
     },
-    "gitignore_2": {
+    "gitignore_3": {
       "inputs": {
         "nixpkgs": [
           "nvim",
@@ -177,7 +223,7 @@
         "type": "github"
       }
     },
-    "gitignore_3": {
+    "gitignore_4": {
       "inputs": {
         "nixpkgs": [
           "remove-trash",
@@ -339,11 +385,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1710514919,
-        "narHash": "sha256-vyKUzkxaXbuhG5Nn1E26c89CadQOd8CyUfJheGb4Q5U=",
+        "lastModified": 1710601327,
+        "narHash": "sha256-FlRF4T6I2m9WNg1+RVtZtes/nkB+awqdZCMHIPcM78A=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "7f9377eb799e6e0525e4e1638fd0a4414c3cc17b",
+        "rev": "080c763aec689b3b9f9be11913b2988efbe286f1",
         "type": "gitlab"
       },
       "original": {
@@ -425,11 +471,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1710450476,
-        "narHash": "sha256-YHqgQFEkucEwXMlEr3nI193dpQ+qcSevpcsxl06FMu4=",
+        "lastModified": 1710599853,
+        "narHash": "sha256-Nk1iZijxNIWh6N6yVaPGQX0qQ3vh5qpiTVZZFYnRfE4=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "8726a55082575891f9444a2b5d1d9c4b77ed247f",
+        "rev": "1e5d5254c6cd56c1a7e38ed74894ff4d68795b43",
         "type": "github"
       },
       "original": {
@@ -443,7 +489,7 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "gitignore": "gitignore_3",
+        "gitignore": "gitignore_4",
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -464,6 +510,7 @@
     },
     "root": {
       "inputs": {
+        "bib-converter": "bib-converter",
         "darwin": "darwin",
         "dbkp": "dbkp",
         "flake-utils": "flake-utils",
@@ -489,6 +536,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tree-sitter-biber": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710684061,
+        "narHash": "sha256-cLpkDSWOnClBEEgAOO7+L1aEV2Dx8CyuIpwJ9Ub/wq0=",
+        "owner": "acristoffers",
+        "repo": "tree-sitter-biber",
+        "rev": "ce2c38b5b2e275361f79b9815cb24a91e9f9b6ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acristoffers",
+        "repo": "tree-sitter-biber",
         "type": "github"
       }
     },
@@ -583,7 +646,7 @@
           "nvim",
           "flake-utils"
         ],
-        "gitignore": "gitignore_2",
+        "gitignore": "gitignore_3",
         "langref": "langref",
         "nixpkgs": [
           "nvim",

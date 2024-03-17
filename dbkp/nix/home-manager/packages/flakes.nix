@@ -8,6 +8,7 @@ let
       null;
 in
 with inputs; builtins.filter (x: x != null) ([
+  (flakePackage bib-converter "default")
   (flakePackage dbkp "default")
   (flakePackage moirai "default")
   (flakePackage nvim "default")
