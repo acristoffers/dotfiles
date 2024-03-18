@@ -6,105 +6,24 @@ import Gtk from 'gi://Gtk';
 import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 export default class GnomeRectanglePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
+        const builder = Gtk.Builder.new_from_file(this.path + "/prefs.ui");
+        const generalPage = builder.get_object("general-page");
+        const shortcutsPage = builder.get_object("shortcuts-page");
+        window.add(generalPage);
+        window.add(shortcutsPage);
         const settings = this.getSettings();
-        window.add(this.generalPage(settings));
-        window.add(this.shortcutsPage(settings));
+        this.generalPage(builder, settings);
+        this.shortcutsPage(builder, settings);
     }
-    generalPage(settings) {
-        const page = new Adw.PreferencesPage({
-            title: _('General'),
-            icon_name: 'dialog-information-symbolic',
-        });
-        const animationGroup = new Adw.PreferencesGroup({
-            title: _('Animation'),
-            description: _('Configure move/resize animation'),
-        });
-        page.add(animationGroup);
-        const animationEnabled = new Adw.SwitchRow({
-            title: _('Enabled'),
-            subtitle: _('Wether to animate windows'),
-        });
-        animationGroup.add(animationEnabled);
-        const animationDuration = new Adw.SpinRow({
-            title: _('Duration'),
-            subtitle: _('Duration of animations in milliseconds'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 10000,
-                step_increment: 10
-            })
-        });
-        animationGroup.add(animationDuration);
-        const paddingGroup = new Adw.PreferencesGroup({
-            title: _('Paddings'),
-            description: _('Configure the padding between windows'),
-        });
-        page.add(paddingGroup);
-        const paddingInner = new Adw.SpinRow({
-            title: _('Inner'),
-            subtitle: _('Padding between windows'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        paddingGroup.add(paddingInner);
-        const paddingOuter = new Adw.SpinRow({
-            title: _('Outer'),
-            subtitle: _('Padding between windows and the screen'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        paddingGroup.add(paddingOuter);
-        const marginGroup = new Adw.PreferencesGroup({
-            title: _('Margins'),
-            description: _('Finer control of the workspace margins (to account for docks)'),
-        });
-        page.add(marginGroup);
-        const marginTop = new Adw.SpinRow({
-            title: _('Top'),
-            subtitle: _('Top margin between screen and windows'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        marginGroup.add(marginTop);
-        const marginRight = new Adw.SpinRow({
-            title: _('Right'),
-            subtitle: _('Right margin between screen and windows'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        marginGroup.add(marginRight);
-        const marginBottom = new Adw.SpinRow({
-            title: _('Bottom'),
-            subtitle: _('Bottom margin between screen and windows'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        marginGroup.add(marginBottom);
-        const marginLeft = new Adw.SpinRow({
-            title: _('Left'),
-            subtitle: _('Left margin between screen and windows'),
-            adjustment: new Gtk.Adjustment({
-                lower: 0,
-                upper: 1000,
-                step_increment: 1
-            })
-        });
-        marginGroup.add(marginLeft);
+    generalPage(builder, settings) {
+        const animationEnabled = builder.get_object("animation-enabled");
+        const animationDuration = builder.get_object("animation-duration");
+        const paddingInner = builder.get_object("padding-inner");
+        const paddingOuter = builder.get_object("padding-outer");
+        const marginTop = builder.get_object("margins-top");
+        const marginRight = builder.get_object("margins-right");
+        const marginBottom = builder.get_object("margins-bottom");
+        const marginLeft = builder.get_object("margins-left");
         settings.bind('animate-movement', animationEnabled, 'active', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('animation-duration', animationDuration, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('padding-inner', paddingInner, 'value', Gio.SettingsBindFlags.DEFAULT);
@@ -113,150 +32,18 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         settings.bind('margin-right', marginRight, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('margin-bottom', marginBottom, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('margin-left', marginLeft, 'value', Gio.SettingsBindFlags.DEFAULT);
-        return page;
     }
-    shortcutsPage(settings) {
-        const page = new Adw.PreferencesPage({
-            title: _('Shortcuts'),
-            icon_name: 'input-keyboard',
-        });
-        const actionsGroup = new Adw.PreferencesGroup({
-            title: _('Keyboard Shortcuts'),
-            description: _('Affects all shortcuts at once'),
-        });
-        page.add(actionsGroup);
-        const restoreDefaults = new Adw.ActionRow({
-            title: _('Restore'),
-            subtitle: _('Restore the default values of all accelerators'),
-            activatable: true,
-        });
-        const restoreDefaultsButton = new Gtk.Button({
-            label: _('Restore'),
-            valign: Gtk.Align.CENTER,
-            hexpand: false,
-            vexpand: false
-        });
-        restoreDefaults.add_suffix(restoreDefaultsButton);
-        restoreDefaultsButton.connect('clicked', () => { this.restoreDefaults(settings); });
-        actionsGroup.add(restoreDefaults);
-        const clearAll = new Adw.ActionRow({
-            title: _('Clear All'),
-            subtitle: _('Clear the values of all accelerators'),
-            activatable: true,
-        });
-        const clearAllButton = new Gtk.Button({
-            label: _('Clear'),
-            valign: Gtk.Align.CENTER,
-            hexpand: false,
-            vexpand: false
-        });
-        clearAll.add_suffix(clearAllButton);
-        clearAllButton.connect('clicked', () => { this.clearAll(settings); });
-        actionsGroup.add(clearAll);
-        const maximizeGroup = new Adw.PreferencesGroup({
-            title: _('Maximize'),
-        });
-        page.add(maximizeGroup);
-        this.shortcutRow(settings, maximizeGroup, 'tile-maximize', 'Maximize');
-        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-almost', 'Almost');
-        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-height', 'Maximize Height');
-        this.shortcutRow(settings, maximizeGroup, 'tile-maximize-width', 'Maximize Width');
-        const quarterGroup = new Adw.PreferencesGroup({
-            title: _('Quarter Grid'),
-        });
-        page.add(quarterGroup);
-        this.shortcutRow(settings, quarterGroup, 'tile-quarter-top-left', 'Top Left');
-        this.shortcutRow(settings, quarterGroup, 'tile-quarter-top-right', 'Top Right');
-        this.shortcutRow(settings, quarterGroup, 'tile-quarter-bottom-left', 'Bottom Left');
-        this.shortcutRow(settings, quarterGroup, 'tile-quarter-bottom-right', 'Bottom Right');
-        this.shortcutRow(settings, quarterGroup, 'tile-quarter-centered', 'Centered');
-        const sixthsGroup = new Adw.PreferencesGroup({
-            title: _('Sixth Grid'),
-        });
-        page.add(sixthsGroup);
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-left', 'Top Left');
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-center', 'Top Center');
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-top-right', 'Top Right');
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-left', 'Bottom Left');
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-center', 'Bottom Center');
-        this.shortcutRow(settings, sixthsGroup, 'tile-sixth-bottom-right', 'Bottom Right');
-        const ninthsGroup = new Adw.PreferencesGroup({
-            title: _('Nineth Grid'),
-        });
-        page.add(ninthsGroup);
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-left', 'Top Left');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-center', 'Top Center');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-top-right', 'Top Right');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-left', 'Middle Left');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-center', 'Middle Center');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-middle-right', 'Middle Right');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-left', 'Bottom Left');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-center', 'Bottom Center');
-        this.shortcutRow(settings, ninthsGroup, 'tile-ninth-bottom-right', 'Bottom Right');
-        const halvesGroup = new Adw.PreferencesGroup({
-            title: _('Halves'),
-        });
-        page.add(halvesGroup);
-        this.shortcutRow(settings, halvesGroup, 'tile-half-top', 'Top');
-        this.shortcutRow(settings, halvesGroup, 'tile-half-bottom', 'Bottom');
-        this.shortcutRow(settings, halvesGroup, 'tile-half-center-horizontal', 'Center (Horizontal)');
-        this.shortcutRow(settings, halvesGroup, 'tile-half-center-vertical', 'Center (Vertical)');
-        this.shortcutRow(settings, halvesGroup, 'tile-half-left', 'Left');
-        this.shortcutRow(settings, halvesGroup, 'tile-half-right', 'Right');
-        const thirdsGroup = new Adw.PreferencesGroup({
-            title: _('Thirds'),
-        });
-        page.add(thirdsGroup);
-        this.shortcutRow(settings, thirdsGroup, 'tile-third-first', 'First');
-        this.shortcutRow(settings, thirdsGroup, 'tile-third-second', 'Second');
-        this.shortcutRow(settings, thirdsGroup, 'tile-third-third', 'Third');
-        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-left', 'Left Two Thirds');
-        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-center', 'Center Two Thirds');
-        this.shortcutRow(settings, thirdsGroup, 'tile-two-thirds-right', 'Right Two Thirds');
-        const fourthsGroup = new Adw.PreferencesGroup({
-            title: _('Fourths'),
-        });
-        page.add(fourthsGroup);
-        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-first', 'First');
-        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-second', 'Second');
-        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-third', 'Third');
-        this.shortcutRow(settings, fourthsGroup, 'tile-fourth-fourth', 'Fourth');
-        this.shortcutRow(settings, fourthsGroup, 'tile-three-fourths-left', 'Left Three Fourth');
-        this.shortcutRow(settings, fourthsGroup, 'tile-three-fourths-right', 'Right Three Fourth');
-        const moveGroup = new Adw.PreferencesGroup({
-            title: _('Move Tiles'),
-        });
-        page.add(moveGroup);
-        this.shortcutRow(settings, moveGroup, 'tile-center', 'Center');
-        this.shortcutRow(settings, moveGroup, 'tile-move-left', 'Left');
-        this.shortcutRow(settings, moveGroup, 'tile-move-right', 'Right');
-        this.shortcutRow(settings, moveGroup, 'tile-move-top-left', 'Top Left');
-        this.shortcutRow(settings, moveGroup, 'tile-move-top', 'Top');
-        this.shortcutRow(settings, moveGroup, 'tile-move-top-right', 'Top Right');
-        this.shortcutRow(settings, moveGroup, 'tile-move-bottom-left', 'Bottom Left');
-        this.shortcutRow(settings, moveGroup, 'tile-move-bottom', 'Bottom');
-        this.shortcutRow(settings, moveGroup, 'tile-move-bottom-right', 'Bottom Right');
-        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-left', 'Move To Left Monitor');
-        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-right', 'Move To Right Monitor');
-        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-top', 'Move To Top Monitor');
-        this.shortcutRow(settings, moveGroup, 'tile-move-to-monitor-bottom', 'Move To Bottom Monitor');
-        const stretchGroup = new Adw.PreferencesGroup({
-            title: _('Stretch Tiles'),
-        });
-        page.add(stretchGroup);
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-left', 'Left');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-right', 'Right');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-top', 'Top');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-bottom', 'Bottom');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-left', 'Step: Left');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-right', 'Step: Right');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top-left', 'Step: Top Left');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top', 'Step: Top');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-top-right', 'Step: Top Right');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom-left', 'Step: Bottom Left');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom', 'Step: Bottom');
-        this.shortcutRow(settings, stretchGroup, 'tile-stretch-step-bottom-right', 'Step: Bottom Right');
-        return page;
+    shortcutsPage(builder, settings) {
+        const restore = builder.get_object("restore-defaults-button");
+        const clear = builder.get_object("clear-all-button");
+        restore.connect('clicked', () => { this.restoreDefaults(settings); });
+        clear.connect('clicked', () => { this.clearAll(settings); });
+        for (const shortcut of this.acceleratorKeys) {
+            const w = builder.get_object(shortcut);
+            if (w != null) {
+                w.setSettings(settings);
+            }
+        }
     }
     restoreDefaults(settings) {
         for (const key of this.acceleratorKeys) {
@@ -267,10 +54,6 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         for (const key of this.acceleratorKeys) {
             settings.set_strv(key, null);
         }
-    }
-    shortcutRow(settings, shortcutsGroup, key, name) {
-        const actionRow = new ShortcutSettingWidget(settings, key, name, '');
-        shortcutsGroup.add(actionRow);
     }
     acceleratorKeys = [
         "tile-center",
@@ -349,8 +132,10 @@ const genParam = (name, ...dflt) => GObject.ParamSpec.string(name, name, name, G
 class ShortcutSettingWidget extends Adw.ActionRow {
     static {
         GObject.registerClass({
+            GTypeName: "ShortcutSettingWidget",
             Properties: {
-                shortcut: genParam('shortcut', '')
+                key: genParam("key", ""),
+                shortcut: genParam("shortcut", ""),
             },
             Signals: {
                 changed: { param_types: [GObject.TYPE_STRING] }
@@ -358,48 +143,39 @@ class ShortcutSettingWidget extends Adw.ActionRow {
         }, this);
     }
     _editor;
-    _description;
-    _key;
     _settings;
-    shortLabel;
-    shortcutBox;
-    constructor(settings, key, label, sublabel) {
-        super({
-            title: label,
-            subtitle: sublabel,
-            activatable: true
-        });
-        this.shortcutBox = new Gtk.Box({
+    _shortLabel;
+    _shortcutBox;
+    setSettings(settings) {
+        this._shortcutBox = new Gtk.Box({
             orientation: Gtk.Orientation.HORIZONTAL,
             halign: Gtk.Align.CENTER,
             spacing: 5,
             hexpand: false,
             vexpand: false
         });
-        this._key = key;
         this._settings = settings;
-        this._description = sublabel;
-        this.shortLabel = new Gtk.ShortcutLabel({
+        this._shortLabel = new Gtk.ShortcutLabel({
             disabled_text: _('New accelerator…'),
             valign: Gtk.Align.CENTER,
             hexpand: false,
             vexpand: false
         });
-        this.shortcutBox.append(this.shortLabel);
+        this._shortcutBox.append(this._shortLabel);
         // Bind signals
         this.connect('activated', this._onActivated.bind(this));
-        this.bind_property('shortcut', this.shortLabel, 'accelerator', GObject.BindingFlags.DEFAULT);
-        [this.shortcut] = this._settings.get_strv(this._key) ?? [''];
+        this.bind_property('shortcut', this._shortLabel, 'accelerator', GObject.BindingFlags.DEFAULT);
+        [this.shortcut] = this._settings.get_strv(this.key) ?? [''];
         this._settings.connect('changed', this.settingsChangedCallback.bind(this));
-        this.add_suffix(this.shortcutBox);
+        this.add_suffix(this._shortcutBox);
     }
     settingsChangedCallback(_obj, key) {
-        if (key == this._key) {
-            [this.shortcut] = this._settings.get_strv(this._key) ?? [''];
+        if (key == this.key) {
+            [this.shortcut] = this._settings?.get_strv(this.key) ?? [''];
         }
     }
     isAcceleratorSet() {
-        if (this.shortLabel.get_accelerator()) {
+        if (this._shortLabel?.get_accelerator()) {
             return true;
         }
         else {
@@ -413,7 +189,7 @@ class ShortcutSettingWidget extends Adw.ActionRow {
         let ctl = new Gtk.EventControllerKey();
         let content = new Adw.StatusPage({
             title: _('New accelerator…'),
-            description: this._description,
+            description: this.subtitle,
             icon_name: 'preferences-desktop-keyboard-shortcuts-symbolic'
         });
         this._editor = new Adw.Window({
@@ -453,7 +229,7 @@ class ShortcutSettingWidget extends Adw.ActionRow {
             this.shortcut = Gtk.accelerator_name_with_keycode(null, keyval, keycode, mask) ?? '';
         }
         this.emit('changed', this.shortcut);
-        this._settings.set_strv(this._key, [this.shortcut]);
+        this._settings?.set_strv(this.key, [this.shortcut]);
         this._editor?.destroy();
         this._editor = undefined;
     }
