@@ -1,4 +1,4 @@
-{ pkgs, inputs, isLinux }:
+{ pkgs, inputs }:
 
 let
   flakePackage = flake: pkgName:

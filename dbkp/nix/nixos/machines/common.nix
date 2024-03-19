@@ -157,7 +157,7 @@ rec {
     isNormalUser = true;
     description = "Álan Crístoffer e Sousa";
     extraGroups = [ "libvirtd" "networkmanager" "render" "video" "wheel" ];
-    packages = with pkgs; [ ];
+    packages = [ ];
   };
 
   environment.systemPackages = with pkgs; [

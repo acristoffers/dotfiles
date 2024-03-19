@@ -2,11 +2,11 @@
   description = "My NixOS Configuration";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    flake-utils.url = github:numtide/flake-utils;
+    flake-utils.url = "github:numtide/flake-utils";
 
-    jovian-nixos.url = github:Jovian-Experiments/Jovian-NixOS;
+    jovian-nixos.url = "github:Jovian-Experiments/Jovian-NixOS";
     jovian-nixos.inputs.nixpkgs.follows = "nixpkgs";
   };
 

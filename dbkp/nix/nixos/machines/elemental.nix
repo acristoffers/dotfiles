@@ -1,6 +1,6 @@
 { pkgs, modulesPath, ... }:
 
-rec {
+{
   imports = [
     ./common.nix
     ../hardware-configuration/elemental.nix
@@ -12,11 +12,6 @@ rec {
   boot.kernelPackages = pkgs.linuxPackages_zen;
   environment.memoryAllocator.provider = "libc";
 
-  # boot.initrd.kernelModules = [ "i915" ];
-  boot.initrd.luks.devices."luks-3a81fadd-3844-45c6-80fc-a7f0fcf537c8" = {
-    device = "/dev/disk/by-uuid/3a81fadd-3844-45c6-80fc-a7f0fcf537c8";
-  };
-
   environment.systemPackages = with pkgs; [
     auto-cpufreq
   ];
@@ -25,16 +20,6 @@ rec {
     VDPAU_DRIVER = "va_gl";
     LIBVA_DRIVER_NAME = "iHD";
   };
-
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
-  hardware.opengl.extraPackages = with pkgs; [
-    intel-media-driver
-    intel-ocl
-    vaapiVdpau
-    # intel-vaapi-driver
-    libvdpau-va-gl
-  ];
 
   services.fstrim.enable = true;
   services.thermald.enable = true;
