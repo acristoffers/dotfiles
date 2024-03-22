@@ -8,7 +8,7 @@ let
   perl5 = import ./perl.nix pkgs;
   python3 = import ./python.nix pkgs;
   ruby3 = import ./ruby.nix pkgs;
-  flakes = import ./flakes.nix { inherit pkgs inputs isLinux; };
+  flakes = import ./flakes.nix { inherit pkgs inputs; };
 
   fish-fzf-fix = pkgs.stdenv.mkDerivation {
     name = "fish-fzf-fix";

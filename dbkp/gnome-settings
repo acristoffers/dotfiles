@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='bluetooth'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -554,12 +554,12 @@ enable-password-authentication=true
 enable-smartcard-authentication=false
 
 [org/gnome/maps]
-last-viewed-location=[47.327409000000003, 5.0383712999999997]
+last-viewed-location=[-20.182909775218619, -44.808431745283116]
 map-type='MapsStreetSource'
 transportation-type='pedestrian'
 window-maximized=false
-window-size=[2385, 1305]
-zoom-level=19
+window-size=[1785, 967]
+zoom-level=17
 
 [org/gnome/mutter]
 center-new-windows=true
@@ -705,7 +705,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.182807217377064, -44.713999999999999)
+night-light-last-coordinates=(-20.186809154517533, -44.713999999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -795,14 +795,13 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -916,7 +915,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1710849535
+check-timestamp=int64 1711107486
 first-run=false
 flatpak-purge-timestamp=int64 1710854402
 install-timestamp=int64 1708937314

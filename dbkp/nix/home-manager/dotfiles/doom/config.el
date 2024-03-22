@@ -82,7 +82,7 @@
     (propertize ledger-amount 'face 'doom-modeline-info))
   (doom-modeline-def-modeline 'ledger-modeline
     '(bar workspace-name window-number modals matches follow buffer-info remote-host buffer-position word-count parrot selection-info)
-    '(ledger compilation objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs checker time))
+    '(ledger compilation objed-state misc-info persp-name battery grip irc mu4e gnus github debug repl lsp minor-modes input-method indent-info buffer-encoding major-mode process vcs time))
   (add-to-list 'doom-modeline-mode-alist '(ledger-mode . ledger-modeline))
   (add-hook 'after-save-hook #'ledger-update-amount)
   (ledger-update-amount))
