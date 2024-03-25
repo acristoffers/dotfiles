@@ -6,9 +6,10 @@
   "original-author": "chlumskyvaclav@gmail.com",
   "settings-schema": "org.gnome.shell.extensions.notification-timeout",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/vchlum/notification-timeout",
   "uuid": "notification-timeout@chlumskyvaclav.gmail.com",
-  "version": 10
+  "version": 11
 }

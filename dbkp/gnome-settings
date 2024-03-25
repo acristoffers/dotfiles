@@ -677,7 +677,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/T
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Videos'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -705,7 +705,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.186809154517533, -44.713999999999999)
+night-light-last-coordinates=(-20.185321358812843, -44.781749400000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -795,7 +795,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -915,7 +915,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1711107486
+check-timestamp=int64 1711374877
 first-run=false
 flatpak-purge-timestamp=int64 1710854402
 install-timestamp=int64 1708937314
