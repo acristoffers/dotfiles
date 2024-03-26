@@ -2,9 +2,17 @@
   description = "Álan's Home Manager configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils = {
+      follows = "chaotic/flake-utils";
+      url = "github:numtide/flake-utils";
+    };
+
+    nixpkgs = {
+      follows = "chaotic/nixpkgs";
+      url = "github:NixOS/nixpkgs/nixos-unstable";
+    };
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +56,10 @@
       pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
       homeConfigForUser = username: inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./home.nix ];
+        modules = [
+          inputs.chaotic.homeManagerModules.default
+          ./home.nix
+        ];
         extraSpecialArgs = {
           inherit inputs;
           inherit username;

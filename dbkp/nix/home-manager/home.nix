@@ -4,6 +4,8 @@ let
   homeDirectory = if isLinux then "/home/" + username else "/Users/alan";
 in
 {
+  nix.package = pkgs.nix;
+
   programs.home-manager.enable = true;
   news.display = "silent";
   news.json = pkgs.lib.mkForce { };
