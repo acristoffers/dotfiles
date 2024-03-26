@@ -169,7 +169,6 @@ rec {
     kitty
     libsForQt5.breeze-icons
     libsForQt5.qtstyleplugin-kvantum
-    lsb-release
     parted
     plocate
     pulseaudioFull

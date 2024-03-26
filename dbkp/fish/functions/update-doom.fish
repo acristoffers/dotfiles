@@ -13,9 +13,5 @@ function update-doom
     scfg
   end
 
-  doom sync
-  doom upgrade
-  doom sync
-  doom purge -g
-  doom build -r
+  doom sync -u --gc -B -j 12 # update, garbage-collect, regraft if necessary, 12 threads aot
 end

@@ -14,5 +14,5 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage nvim "default")
   (flakePackage remove-trash "default")
   (flakePackage void "default")
-  # (flakePackage webots "default")
+  (flakePackage webots "default")
 ])
