@@ -44,6 +44,7 @@ with pkgs; [
   htop
   hunspell
   imagemagick
+  inkscape
   ispell
   jq
   killall
