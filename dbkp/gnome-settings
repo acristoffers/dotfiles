@@ -705,7 +705,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.180991442625313, -44.781749400000002)
+night-light-last-coordinates=(-20.200178411392447, -44.781749400000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
