@@ -29,7 +29,7 @@
   };
 
   hardware.cpu.intel.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
   hardware.opengl.extraPackages = with pkgs; [
     intel-media-driver
     intel-ocl
