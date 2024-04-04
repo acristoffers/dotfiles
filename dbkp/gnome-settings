@@ -31,9 +31,9 @@ width=948
 saved-pathbar-path='/org/gnome/shell/extensions/rectangle/'
 saved-view='/org/gnome/shell/extensions/rectangle/'
 show-warning=false
-window-height=1345
+window-height=985
 window-is-maximized=false
-window-width=1693
+window-width=1267
 
 [desktop/ibus/general]
 preload-engines=@as []
@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='mouse'
+last-panel='wifi'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -378,7 +378,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -672,7 +672,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Developer/GitHub/bill_splitter/lib'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -706,7 +706,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.181901556367638, -44.713999999999999)
+night-light-last-coordinates=(-20.160565417442616, -44.781749400000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -802,7 +802,8 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -933,9 +934,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1711797964
+check-timestamp=int64 1712258583
 first-run=false
-flatpak-purge-timestamp=int64 1711629425
+flatpak-purge-timestamp=int64 1712104914
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
@@ -1091,7 +1092,7 @@ vm-window-size=(1693, 1355)
 [org/virt-manager/virt-manager/vms/78dd2c64fb2346c68e3f99829f783392]
 autoconnect=1
 resize-guest=1
-vm-window-size=(2560, 1371)
+vm-window-size=(1904, 995)
 
 [org/virt-manager/virt-manager/vms/ad369a4ee81442a2a96081877fb0ef84]
 autoconnect=1
