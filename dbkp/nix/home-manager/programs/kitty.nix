@@ -23,6 +23,6 @@
     enableBashIntegration = true;
     enableFishIntegration = true;
     enableZshIntegration = true;
+    mode = "no-cursor";
   };
 }
-
