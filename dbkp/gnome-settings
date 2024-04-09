@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='wifi'
+last-panel='power'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -537,7 +537,7 @@ maximized=false
 network-total-in-bits=false
 show-dependencies=false
 show-whose-processes='user'
-window-state=(2385, 1305, 26, 23)
+window-state=(1785, 967, 26, 23)
 
 [org/gnome/gnome-system-monitor/disktreenew]
 col-6-visible=true
@@ -642,7 +642,7 @@ last-folder-path='/var/lib/flatpak/exports/share/applications'
 last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5kb7f.default-default'
 
 [org/gnome/portal/filechooser/io.github.mhogomchungu.sirikali]
-last-folder-path='/home/alan/Documents/Vault/bl'
+last-folder-path='/home/alan/Documents/.bl'
 
 [org/gnome/portal/filechooser/me.acristoffers.Lachesis]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Graduação/Iniciação Científica/Tanques'
@@ -706,7 +706,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.191646480928551, -44.713999999999999)
+night-light-last-coordinates=(-20.205219664993837, -44.781749400000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -802,6 +802,7 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -932,9 +933,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1712258583
+check-timestamp=int64 1712666380
 first-run=false
-flatpak-purge-timestamp=int64 1712104914
+flatpak-purge-timestamp=int64 1712577599
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
