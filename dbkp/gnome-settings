@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='power'
+last-panel='network'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -378,7 +378,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -584,6 +584,10 @@ show-delete-permanently=true
 initial-size=(948, 512)
 maximized=false
 
+[org/gnome/nm-applet/eap/160325ff-50ad-351e-8ce9-8099a9fd5feb]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/30abab51-a032-41e3-a79d-aa93cadd0f36]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -706,7 +710,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(-20.205219664993837, -44.781749400000002)
+night-light-last-coordinates=(-20.174737781206236, -44.781749400000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -747,6 +751,9 @@ name='Albert'
 idle-dim=true
 sleep-inactive-ac-timeout=3600
 sleep-inactive-ac-type='nothing'
+
+[org/gnome/settings-daemon/plugins/sharing/gnome-user-share-webdav]
+enabled-connections=@as []
 
 [org/gnome/shell]
 app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'kvantummanager.desktop': <{'position': <13>}>, 'cups.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'nixos-manual.desktop': <{'position': <18>}>, 'qt5ct.desktop': <{'position': <19>}>, 'qt6ct.desktop': <{'position': <20>}>, 'org.gnome.Software.desktop': <{'position': <21>}>, 'org.gnome.TextEditor.desktop': <{'position': <22>}>, 'org.gnome.Tour.desktop': <{'position': <23>}>}, {'virt-manager.desktop': <{'position': <0>}>, 'xterm.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Loupe.desktop': <{'position': <3>}>, 'org.gnome.Music.desktop': <{'position': <4>}>, 'org.gnome.Epiphany.desktop': <{'position': <5>}>}]
@@ -802,7 +809,6 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -933,9 +939,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1712666380
+check-timestamp=int64 1712749510
 first-run=false
-flatpak-purge-timestamp=int64 1712577599
+flatpak-purge-timestamp=int64 1712708872
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868

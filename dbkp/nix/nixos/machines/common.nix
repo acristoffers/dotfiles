@@ -83,8 +83,15 @@ rec {
     nameservers = networking.networkmanager.appendNameservers;
     firewall = {
       enable = mkForce true;
-      allowedTCPPorts = [ 22 ]; # ssh
-      allowedUDPPorts = [ 5353 ]; # mDNS
+      allowedTCPPorts = [
+        22 # SSH
+        53 # DNS server
+      ]; 
+      allowedUDPPorts = [
+        5353 # mDNS
+        53 # DNS server
+        67 # DHCP server
+      ]; 
     };
   };
 
@@ -111,6 +118,9 @@ rec {
       hplipWithPlugin
     ];
   };
+
+  services.samba.enable = true;
+  services.samba.openFirewall = true;
 
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=1s
