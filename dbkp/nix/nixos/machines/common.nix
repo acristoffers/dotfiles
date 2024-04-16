@@ -47,8 +47,8 @@ rec {
   };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Paris";
-  time.timeZone = "America/Sao_Paulo";
+  time.timeZone = "Europe/Paris";
+  # time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
