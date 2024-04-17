@@ -27,23 +27,26 @@ rec {
   services.xserver = {
     desktopManager.plasma5.enable = mkForce false;
     displayManager = {
-      defaultSession = "gamescope-wayland";
       gdm.enable = mkForce false;
-      sddm = {
-        enable = mkForce (!jovian.steam.autoStart);
-        theme = "breeze";
-        wayland.enable = true;
-        autoLogin.relogin = false;
-        settings = {
-          General = {
-            InputMethod = "qtvirtualkeyboard";
-          };
+    };
+  };
+
+  services.displayManager = {
+    defaultSession = "gamescope-wayland";
+    sddm = {
+      enable = mkForce (!jovian.steam.autoStart);
+      theme = "breeze";
+      wayland.enable = true;
+      autoLogin.relogin = false;
+      settings = {
+        General = {
+          InputMethod = "qtvirtualkeyboard";
         };
       };
-      autoLogin = {
-        enable = true;
-        user = "alan";
-      };
+    };
+    autoLogin = {
+      enable = true;
+      user = "alan";
     };
   };
 
@@ -85,4 +88,3 @@ rec {
     IdentityFile /root/.ssh/nixos-builder
   '';
 }
-
