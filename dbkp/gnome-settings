@@ -378,7 +378,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -582,7 +582,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(948, 512)
+initial-size=(843, 459)
 maximized=false
 
 [org/gnome/nm-applet/eap/160325ff-50ad-351e-8ce9-8099a9fd5feb]
@@ -674,7 +674,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Contratação'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Downloads'
@@ -711,7 +711,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.304404042459439, 5.0383713999999999)
+night-light-last-coordinates=(47.309742058228316, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -811,8 +811,6 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -945,7 +943,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1713358373
 first-run=false
-flatpak-purge-timestamp=int64 1712970184
+flatpak-purge-timestamp=int64 1713365511
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
@@ -982,7 +980,7 @@ selected-color=(true, 0.7764706015586853, 0.27450981736183167, 0.0, 1.0)
 [org/gtk/gtk4/settings/file-chooser]
 date-format='regular'
 location-mode='path-bar'
-show-hidden=true
+show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=212
@@ -991,7 +989,7 @@ sort-directories-first=true
 sort-order='ascending'
 type-format='category'
 view-type='grid'
-window-size=(948, 512)
+window-size=(1268, 692)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
