@@ -50,6 +50,8 @@ with pkgs; [
   killall
   ledger
   less
+  maestral
+  maestral-gui
   man-pages
   mdcat
   mediainfo

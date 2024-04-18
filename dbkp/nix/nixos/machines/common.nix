@@ -86,11 +86,13 @@ rec {
       allowedTCPPorts = [
         22 # SSH
         53 # DNS server
+        17500 # Dropbox
       ]; 
       allowedUDPPorts = [
         5353 # mDNS
         53 # DNS server
         67 # DHCP server
+        17500 # Dropbox
       ]; 
     };
   };

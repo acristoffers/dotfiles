@@ -26,9 +26,7 @@ rec {
 
   services.xserver = {
     desktopManager.plasma5.enable = mkForce false;
-    displayManager = {
-      gdm.enable = mkForce false;
-    };
+    displayManager.gdm.enable = mkForce false;
   };
 
   services.displayManager = {

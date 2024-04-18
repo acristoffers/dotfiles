@@ -170,8 +170,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
-window-state=(1267, 1032, false)
+last-panel='network'
+window-state=(1693, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -582,7 +582,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 459)
+initial-size=(1268, 692)
 maximized=false
 
 [org/gnome/nm-applet/eap/160325ff-50ad-351e-8ce9-8099a9fd5feb]
@@ -649,6 +649,9 @@ last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5k
 [org/gnome/portal/filechooser/io.github.mhogomchungu.sirikali]
 last-folder-path='/home/alan/Documents/.bl'
 
+[org/gnome/portal/filechooser/io.qt.QtCreator]
+last-folder-path='/home/alan/Developer/GitHub/kwin-rectangle/contents/ui'
+
 [org/gnome/portal/filechooser/me.acristoffers.Lachesis]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Graduação/Iniciação Científica/Tanques'
 
@@ -677,7 +680,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Contratação'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Titre de Séjour'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -711,7 +714,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.309742058228316, 5.0383713999999999)
+night-light-last-coordinates=(47.30685063335217, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -811,6 +814,8 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
@@ -941,9 +946,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1713358373
+check-timestamp=int64 1713425194
 first-run=false
-flatpak-purge-timestamp=int64 1713365511
+flatpak-purge-timestamp=int64 1713432334
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
@@ -1010,8 +1015,8 @@ window-position=(26, 23)
 window-size=(948, 465)
 
 [org/virt-manager/virt-manager]
-manager-window-height=475
-manager-window-width=948
+manager-window-height=422
+manager-window-width=843
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -1049,7 +1054,7 @@ network-traffic=false
 [org/virt-manager/virt-manager/vms/05c067612d454e1caada36222de49a3e]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1904, 995)
+vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1
