@@ -25,6 +25,7 @@ EncryptionSalt = ["", ""]
 [[Files]]
   Name = "nixpkgs"
   Path = "~/.config/nixpkgs"
+  Exclude = ["nix.conf"]
 
 [[Files]]
   Name = "peaclock"

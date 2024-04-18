@@ -11,7 +11,6 @@ com.spotify.Client
 com.st.STM32CubeIDE
 com.transmissionbt.Transmission
 com.valvesoftware.Steam
-io.qt.QtCreator
 me.acristoffers.Lachesis
 net.davidotek.pupgui2
 org.fedoraproject.MediaWriter
