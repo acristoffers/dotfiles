@@ -50,7 +50,7 @@ in
   };
 
   qt.enable = isLinux;
-  qt.platformTheme = "qtct";
+  qt.platformTheme.name = "qtct";
 
   gtk = {
     enable = isLinux;
