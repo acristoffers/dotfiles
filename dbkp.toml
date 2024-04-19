@@ -21,11 +21,11 @@ EncryptionSalt = ["", ""]
 [[Files]]
   Name = "nix"
   Path = "~/.config/nix"
+  Exclude = ["nix.conf"]
 
 [[Files]]
   Name = "nixpkgs"
   Path = "~/.config/nixpkgs"
-  Exclude = ["nix.conf"]
 
 [[Files]]
   Name = "peaclock"

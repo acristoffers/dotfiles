@@ -714,7 +714,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.320358141893593, 5.0383713999999999)
+night-light-last-coordinates=(47.350904678592677, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -947,7 +947,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1713519624
 first-run=false
-flatpak-purge-timestamp=int64 1713432334
+flatpak-purge-timestamp=int64 1713528446
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
@@ -1064,6 +1064,11 @@ autoconnect=1
 scaling=1
 vm-window-size=(1621, 897)
 
+[org/virt-manager/virt-manager/vms/2fe9428c80494dfab161f735900ffeae]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1355)
+
 [org/virt-manager/virt-manager/vms/35f1997cf2fe43748021123c5a01d945]
 autoconnect=1
 resize-guest=1
@@ -1099,6 +1104,10 @@ autoconnect=1
 resize-guest=1
 scaling=1
 vm-window-size=(1693, 1355)
+
+[org/virt-manager/virt-manager/vms/77ad15cb943e4a3fb60517063eb31a85]
+autoconnect=1
+resize-guest=1
 
 [org/virt-manager/virt-manager/vms/78dd2c64fb2346c68e3f99829f783392]
 autoconnect=1
