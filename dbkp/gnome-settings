@@ -714,7 +714,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.350680695593461, 5.0383713999999999)
+night-light-last-coordinates=(47.335360365517737, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -808,7 +808,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1114,6 +1114,15 @@ vm-window-size=(2544, 1355)
 autoconnect=1
 resize-guest=1
 vm-window-size=(1904, 995)
+
+[org/virt-manager/virt-manager/vms/9b6465b296c541b0bf7de351b19b6512]
+autoconnect=1
+resize-guest=1
+
+[org/virt-manager/virt-manager/vms/a9013bfcc82948beae2b5c28af5ca00b]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/ad369a4ee81442a2a96081877fb0ef84]
 autoconnect=1

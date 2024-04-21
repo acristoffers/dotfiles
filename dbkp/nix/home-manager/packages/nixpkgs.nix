@@ -32,6 +32,7 @@ with pkgs; [
   ghostscript
   git
   git-lfs
+  gnome-extensions-cli
   gnugrep
   gnumake
   gnupg
