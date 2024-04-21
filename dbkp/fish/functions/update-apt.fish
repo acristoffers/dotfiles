@@ -1,21 +1,20 @@
 function update-apt
-  if test (uname -s) != "Linux"
-    return
-  end
+    if test (uname -s) != Linux
+        return
+    end
 
-  if not type -q "apt-get"
-    return
-  end
+    if type -q aptitude
+        title Updating Aptitude
 
-  title Updating Aptitude
+        sudo aptitude update -y
+        sudo aptitude full-upgrade -y
+        sudo aptitude clean -y
+    else if type -q apt-get
+        title Updating Apt-Get
 
-  sudo apt update -y
-  sudo apt upgrade -y
-  sudo apt full-upgrade -y
-  sudo apt autoremove -y
-  sudo apt clean -y
-
-  mkdir -p ~/.config/plasma-workspace/env
-  echo "export PATH=$PATH" > ~/.config/plasma-workspace/env/env.sh
-  echo "export XDG_DATA_DIRS=$XDG_DATA_DIRS" >> ~/.config/plasma-workspace/env/env.sh
+        sudo apt-get update -y
+        sudo apt-get full-upgrade -y
+        sudo apt-get autoremove -y
+        sudo apt-get clean -y
+    end
 end
