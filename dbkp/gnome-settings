@@ -89,7 +89,8 @@ window-maximize=true
 window-width=1904
 
 [org/gnome/Music]
-window-size=[1904, 1032]
+window-maximized=false
+window-size=[2544, 1392]
 
 [org/gnome/Snapshot]
 capture-mode='video'
@@ -673,6 +674,9 @@ last-folder-path='/home/alan/Pictures'
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
 
+[org/gnome/portal/filechooser/org.kde.elisa]
+last-folder-path='/home/alan/Documents/Dropbox/Audio/Music'
+
 [org/gnome/portal/filechooser/org.keepassxc.KeePassXC]
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
@@ -714,7 +718,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.336306741338731, 5.0383713999999999)
+night-light-last-coordinates=(47.311964145822792, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']

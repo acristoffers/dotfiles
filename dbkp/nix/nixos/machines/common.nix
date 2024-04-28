@@ -87,13 +87,13 @@ rec {
         22 # SSH
         53 # DNS server
         17500 # Dropbox
-      ]; 
+      ];
       allowedUDPPorts = [
         5353 # mDNS
         53 # DNS server
         67 # DHCP server
         17500 # Dropbox
-      ]; 
+      ];
     };
   };
 
@@ -119,6 +119,11 @@ rec {
       gutenprintBin
       hplipWithPlugin
     ];
+  };
+
+  services.gnome = {
+    tracker.enable = true;
+    tracker-miners.enable = true;
   };
 
   services.samba.enable = true;
