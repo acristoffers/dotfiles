@@ -35,7 +35,7 @@
     net_sync = true;
     net_upload = 100;
     only_physical = true;
-    presets = "cpu:1:default,proc:0:default cpu:0:default,mem:0:default,net:0:default cpu:0:block,net:0:tty";
+    presets = "cpu:1:default,proc:0:default cpu:0:block,net:0:tty";
     proc_colors = true;
     proc_cpu_graphs = true;
     proc_filter_kernel = false;

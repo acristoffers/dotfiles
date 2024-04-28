@@ -170,7 +170,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='network'
+last-panel='info-overview'
 window-state=(1693, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -686,7 +686,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Titre de Séjo
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Videos'
+last-folder-path='/home/alan/Developer/Archive/test'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -714,7 +714,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.335360365517737, 5.0383713999999999)
+night-light-last-coordinates=(47.336306741338731, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -945,9 +945,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1713672506
+check-timestamp=int64 1714278128
 first-run=false
-flatpak-purge-timestamp=int64 1713658046
+flatpak-purge-timestamp=int64 1714263667
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1711806868
@@ -1118,6 +1118,7 @@ vm-window-size=(1904, 995)
 [org/virt-manager/virt-manager/vms/9b6465b296c541b0bf7de351b19b6512]
 autoconnect=1
 resize-guest=1
+vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/a9013bfcc82948beae2b5c28af5ca00b]
 autoconnect=1

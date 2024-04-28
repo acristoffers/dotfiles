@@ -62,7 +62,7 @@ with pkgs; [
   nodePackages_latest.sass
   nodePackages_latest.uglify-js
   nodePackages_latest.yarn
-  nodejs_21
+  nodejs_22
   openssl_3_2
   p7zip
   pandoc
