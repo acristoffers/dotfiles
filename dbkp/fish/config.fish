@@ -3,24 +3,22 @@ ulimit -n 2048
 
 fish_config theme choose "Dracula Official"
 
+alias bell  "echo -e '\a'"
+alias btop  "btop -p 0"
 alias lg    lazygit
+alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
+alias tree  "exa --tree"
+alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
 alias v     nvim
 alias vim   "nvim --noplugin"
-alias e     ec
-alias tm    "tmux; exit"
-alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
-alias bell  "echo -e '\a'"
-alias tree  "exa --tree"
-alias clc   "clear" # fuck matlab
-alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
 
+abbr doc   "pushd ~/Documents/Dropbox/Universidade/Doutorado"
+abbr docs  "pushd ~/Documents/Dropbox/Documentos"
+abbr fcfg  "nvim ~/.config/fish/config.fish"
 abbr ncfg  "nvim ~/.config/nix/home-manager/packages/common.nix"
 abbr nfcfg "nvim ~/.config/nix/home-manager/flake.nix"
 abbr nhcfg "nvim ~/.config/nix/home-manager/home.nix"
-abbr fcfg  "nvim ~/.config/fish/config.fish"
 abbr scfg  "source ~/.config/fish/config.fish"
-abbr doc   "pushd ~/Documents/Dropbox/Universidade/Doutorado"
-abbr docs  "pushd ~/Documents/Dropbox/Documentos"
 
 set -x LANG              en_US.UTF-8
 set -x LC_CTYPE          en_US.UTF-8
