@@ -9,7 +9,6 @@ com.github.xournalpp.xournalpp
 com.mattjakeman.ExtensionManager
 com.mongodb.Compass
 com.spotify.Client
-com.st.STM32CubeIDE
 com.transmissionbt.Transmission
 com.valvesoftware.Steam
 me.acristoffers.Lachesis

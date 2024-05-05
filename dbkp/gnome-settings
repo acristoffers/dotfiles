@@ -21,11 +21,11 @@ last-search-text='acristoffers@startmail.com'
 
 [apps/seahorse/listing]
 item-filter='any'
-keyrings-selected=['secret-service:///org/freedesktop/secrets/collection/Default_5fkeyring']
+keyrings-selected=['openssh:///home/alan/.ssh']
 
 [apps/seahorse/windows/key-manager]
-height=465
-width=948
+height=412
+width=843
 
 [ca/desrt/dconf-editor]
 saved-pathbar-path='/org/gnome/shell/extensions/rectangle/'
@@ -448,7 +448,7 @@ enable-spellchecking=true
 fullscreen=false
 inverted-colors=false
 show-sidebar=false
-sidebar-page='links'
+sidebar-page='thumbnails'
 sidebar-size=226
 sizing-mode='automatic'
 window-ratio=(2.1284101599247411, 1.2258133485372198)
@@ -690,7 +690,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Titre de Séjo
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Developer/Archive/test'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -718,7 +718,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.339930691065092, 5.0383713999999999)
+night-light-last-coordinates=(47.315950591647741, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -949,12 +949,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1714544110
+check-timestamp=int64 1714893023
 first-run=false
-flatpak-purge-timestamp=int64 1714551249
+flatpak-purge-timestamp=int64 1714810828
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1711806868
+update-notification-timestamp=int64 1714803690
 
 [org/gnome/system/location]
 enabled=true
