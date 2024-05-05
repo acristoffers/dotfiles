@@ -33,6 +33,7 @@ with pkgs; [
   git
   git-lfs
   gnome-extensions-cli
+  gnome.gnome-sound-recorder
   gnugrep
   gnumake
   gnupg
