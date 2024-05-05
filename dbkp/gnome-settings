@@ -718,7 +718,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.315950591647741, 5.0383713999999999)
+night-light-last-coordinates=(49.266206172553701, 4.0285000000000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -818,7 +818,6 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 toggle-menu=['<Super>semicolon']
