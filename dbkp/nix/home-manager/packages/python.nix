@@ -8,27 +8,12 @@ with pkgs; (python311.withPackages (p: with p; [
   git-filter-repo
   ipython
   isort
-  jupyter
-  matplotlib
-  mdformat
-  mysql
   neovim
-  nose
   numpy
-  opencv
-  openpyxl
-  pandas
-  picos
   pip
-  pycairo
-  pydbus
   pygobject-stubs
   pygobject3
-  pytest
   scipy
-  sympy
-  termdown
   twine
   wheel
-  yapf
 ]))
