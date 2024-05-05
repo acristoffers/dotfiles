@@ -32,6 +32,7 @@ with pkgs; [
   ghostscript
   git
   git-lfs
+  glab
   gnome-extensions-cli
   gnome.gnome-sound-recorder
   gnugrep

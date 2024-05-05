@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+bibtool '--rewrite.rule { date # "^\([0-9]\|.*[-]\).*$" # "\{%d($year)\}" }' "--rename.field { date
+= year }" "--rename.field { journaltitle = journal }" -r check_y -i "$1" -o output.bib
+
+if [[ -s output.bib ]]
+then
+    mv output.bib $1
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env fish
+
+rm output.pdf > /dev/null
+set url (curl 'https://sci-hub.st/'$argv[1] | awk '/<iframe/ {print $4}' | tr -d \")
+
+if string match -r "^//" $url
+    wget -c "https:"$url -O output.pdf
+else
+    wget -c $url -O output.pdf
+end
+
+open -a Skim output.pdf

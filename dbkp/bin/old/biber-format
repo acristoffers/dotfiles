@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+# biber --tool -E utf8 --fixinits --nolog -q --isbn13 --isbn-normalise \
+#       --output-align --strip-comments -O output.bib $1
+
+bibtool -R -r biblatex -r check_y -r default -r field -r braces -r improve \
+        -r opt --delete.field=file --delete.field=abstract \
+        --delete.field=mendeley-groups --delete.field=url \
+        --print.align.key=1 -sv -i $1 -o output.bib
+
+if [[ -s output.bib ]]
+then
+    mv output.bib $1
+fi
