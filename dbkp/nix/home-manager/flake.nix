@@ -17,9 +17,6 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
-
     nvim.url = "github:acristoffers/nvim-flake";
     nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.flake-utils.follows = "flake-utils";
@@ -63,7 +60,6 @@
         extraSpecialArgs = {
           inherit inputs;
           inherit username;
-          isLinux = true;
         };
       };
     in
@@ -73,28 +69,6 @@
         homeConfigurations = {
           alan = homeConfigForUser "alan";
           lidei = homeConfigForUser "lidei";
-        };
-        darwinConfigurations = rec {
-          recherche75 = MacBook-Air-de-Alan;
-          MacBook-Air-de-Alan = inputs.darwin.lib.darwinSystem {
-            inherit pkgs;
-            system = "aarch64-darwin";
-            modules = [
-              ./darwin.nix
-              inputs.home-manager.darwinModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.alan = ./home.nix;
-                home-manager.extraSpecialArgs = {
-                  inherit inputs;
-                  isLinux = false;
-                  isNixOS = false;
-                  username = "alan";
-                };
-              }
-            ];
-          };
         };
       };
     }

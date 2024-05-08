@@ -1,10 +1,15 @@
-{ config, inputs, pkgs, username, isLinux, ... }:
+{ config, inputs, pkgs, username, ... }:
 
 let
-  homeDirectory = if isLinux then "/home/" + username else "/Users/alan";
+  homeDirectory = "/home/${username}";
 in
 {
   nix.package = pkgs.nix;
+
+  nix.extraOptions = ''
+    auto-optimise-store = true
+    experimental-features = nix-command flakes
+  '';
 
   programs.home-manager.enable = true;
   news.display = "silent";
@@ -16,7 +21,6 @@ in
   home.homeDirectory = homeDirectory;
   home.packages = import ./packages/common.nix {
     inherit inputs;
-    inherit isLinux;
     inherit pkgs;
   };
   fonts.fontconfig.enable = true;
@@ -24,8 +28,7 @@ in
   home.file = {
     "${config.xdg.configHome}/doom".source = ./dotfiles/doom;
     "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
-    "${config.xdg.configHome}/git/config".source = if isLinux then ./dotfiles/git/config-linux else ./dotfiles/git/config-darwin;
-    "${config.xdg.configHome}/hammerspoon".source = ./dotfiles/hammerspoon;
+    "${config.xdg.configHome}/git/config".source = ./dotfiles/git/config;
     "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
     "${config.xdg.configHome}/p10k".source = ./dotfiles/p10k;
@@ -49,11 +52,11 @@ in
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
   };
 
-  qt.enable = isLinux;
+  qt.enable = true;
   qt.platformTheme.name = "qtct";
 
   gtk = {
-    enable = isLinux;
+    enable = true;
     theme.name = "Adwaita";
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = true;

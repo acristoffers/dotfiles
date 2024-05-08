@@ -1,7 +1,6 @@
-{ inputs, pkgs, isLinux }:
+{ inputs, pkgs }:
 
 let
-  darwin = import ./darwin.nix pkgs;
   dicts = import ./dicts.nix pkgs;
   linux = import ./linux.nix { inherit pkgs; nix-matlab = inputs.nix-matlab; };
   nixpkgs = import ./nixpkgs.nix pkgs;
@@ -24,5 +23,5 @@ dicts
 ++ nixpkgs
 ++ flakes
 ++ [ perl5 python3 ruby3 ]
-++ (if isLinux then linux else darwin)
+++ linux
 ++ [ (pkgs.hiPrio fish-fzf-fix) ]
