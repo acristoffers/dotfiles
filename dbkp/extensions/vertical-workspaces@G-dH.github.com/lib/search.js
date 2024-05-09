@@ -3,13 +3,14 @@
  * search.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
 
 'use strict';
 
+import GLib from 'gi://GLib';
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
 import Shell from 'gi://Shell';
@@ -20,6 +21,7 @@ import * as Search from 'resource:///org/gnome/shell/ui/search.js';
 import * as AppDisplay from 'resource:///org/gnome/shell/ui/appDisplay.js';
 
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
+import { Highlighter } from 'resource:///org/gnome/shell/misc/util.js';
 
 let Me;
 // gettext
@@ -72,31 +74,42 @@ export const SearchModule = class {
         this._overrides.addOverride('SearchResult', Search.SearchResult.prototype, SearchResult);
         this._overrides.addOverride('SearchResultsView', Search.SearchResultsView.prototype, SearchResultsView);
         this._overrides.addOverride('ListSearchResults', Search.ListSearchResults.prototype, ListSearchResults);
-        // this._overrides.addOverride('ProviderInfo', Search.ProviderInfo.prototype, ProviderInfo);
+        this._overrides.addOverride('ListSearchResult', Search.ListSearchResult.prototype, ListSearchResultOverride);
+        this._overrides.addOverride('Highlighter', Highlighter.prototype, HighlighterOverride);
 
         // Don't expand the search view vertically and align it to the top
         // this is important in the static workspace mode when the search view bg is not transparent
         // also the "Searching..." and "No Results" notifications will be closer to the search entry, with the distance given by margin-top in the stylesheet
-        Main.overview._overview._controls.layoutManager._searchController.y_align = Clutter.ActorAlign.START;
+        Main.overview.searchController.y_align = Clutter.ActorAlign.START;
+        // Increase the maxResults for app search so that it can show more results in case the user decreases the size of the result icon
+        const appSearchDisplay = Main.overview.searchController._searchResults._providers.filter(p => p.id === 'applications')[0]?.display;
+        if (appSearchDisplay)
+            appSearchDisplay._maxResults = 12;
         console.debug('  SearchModule - Activated');
     }
 
     _disableModule() {
         const reset = true;
+
+        const searchResults = Main.overview.searchController._searchResults;
+        if (searchResults?._searchTimeoutId) {
+            GLib.source_remove(searchResults._searchTimeoutId);
+            searchResults._searchTimeoutId = 0;
+        }
+
         this._updateSearchViewWidth(reset);
 
         if (this._overrides)
             this._overrides.removeAll();
         this._overrides = null;
 
-        Main.overview._overview._controls.layoutManager._searchController.y_align = Clutter.ActorAlign.FILL;
-
+        Main.overview.searchController.y_align = Clutter.ActorAlign.FILL;
 
         console.debug('  WorkspaceSwitcherPopupModule - Disabled');
     }
 
     _updateSearchViewWidth(reset = false) {
-        const searchContent = Main.overview._overview._controls.layoutManager._searchController._searchResults._content;
+        const searchContent = Main.overview.searchController._searchResults._content;
         if (!SEARCH_MAX_WIDTH) { // just store original value;
             const themeNode = searchContent.get_theme_node();
             const width = themeNode.get_max_width();
@@ -160,8 +173,8 @@ const AppSearchProvider = {
                     let dispName = appInfo.get_display_name() || '';
                     let gName = appInfo.get_generic_name() || '';
                     let description = appInfo.get_description() || '';
-                    let categories = appInfo.get_string('Categories') || '';
-                    let keywords = appInfo.get_string('Keywords') || '';
+                    let categories = appInfo.get_string('Categories')?.replace(/;/g, ' ') || '';
+                    let keywords = appInfo.get_string('Keywords')?.replace(/;/g, ' ') || '';
                     name = `${dispName} ${id}`;
                     string = `${dispName} ${gName} ${baseName} ${description} ${categories} ${keywords} ${id}`;
                 }
@@ -213,8 +226,10 @@ const AppSearchProvider = {
     },
 };
 
-const SystemActionIcon = GObject.registerClass(
-class SystemActionIcon extends Search.GridSearchResult {
+const SystemActionIcon = GObject.registerClass({
+    // Registered name should be unique
+    GTypeName: `SystemAction${Math.floor(Math.random() * 1000)}`,
+}, class SystemActionIcon extends Search.GridSearchResult {
     _init(provider, metaInfo, resultsView) {
         super._init(provider, metaInfo, resultsView);
         this.icon._setSizeManually = true;
@@ -242,22 +257,63 @@ const SearchResult = {
 };
 
 const SearchResultsView = {
+    setTerms(terms) {
+        // Check for the case of making a duplicate previous search before
+        // setting state of the current search or cancelling the search.
+        // This will prevent incorrect state being as a result of a duplicate
+        // search while the previous search is still active.
+        let searchString = terms.join(' ');
+        let previousSearchString = this._terms.join(' ');
+        if (searchString === previousSearchString)
+            return;
+
+        this._startingSearch = true;
+
+        this._cancellable.cancel();
+        this._cancellable.reset();
+
+        if (terms.length === 0) {
+            this._reset();
+            return;
+        }
+
+        let isSubSearch = false;
+        if (this._terms.length > 0)
+            isSubSearch = searchString.indexOf(previousSearchString) === 0;
+
+        this._terms = terms;
+        this._isSubSearch = isSubSearch;
+        this._updateSearchProgress();
+
+        if (!this._searchTimeoutId)
+            this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, opt.SEARCH_DELAY, this._onSearchTimeout.bind(this));
+
+        this._highlighter = new Highlighter(this._terms);
+
+        this.emit('terms-changed');
+    },
+
     _doSearch() {
         this._startingSearch = false;
 
         let previousResults = this._results;
         this._results = {};
 
+        const term0 = this._terms[0];
+        const onlySupportedProviders = term0.startsWith(Me.WSP_PREFIX) || term0.startsWith(Me.ESP_PREFIX) || term0.startsWith(Me.RFSP_PREFIX);
+
         this._providers.forEach(provider => {
-            const onlyVShellProviders = this._terms.includes('wq//') || this._terms.includes('fq//');
-            if (!onlyVShellProviders || (onlyVShellProviders && (provider.id.includes('open-windows') || provider.id.includes('recent-files')))) {
+            const supportedProvider = ['open-windows', 'extensions', 'recent-files'].includes(provider.id);
+            if (!onlySupportedProviders || (onlySupportedProviders && supportedProvider)) {
                 let previousProviderResults = previousResults[provider.id];
                 this._doProviderSearch(provider, previousProviderResults);
+            } else {
+                // hide unwanted providers, they will show() automatically when needed
+                provider.display.visible = false;
             }
         });
 
         this._updateSearchProgress();
-
         this._clearSearchTimeout();
     },
 
@@ -279,13 +335,73 @@ const SearchResultsView = {
     },
 };
 
-// fixes app is null error if search provider id is not a desktop app id.
-// is not accessible in 45
-/* const ProviderInfo = {
-    animateLaunch() {
-        let appSys = Shell.AppSystem.get_default();
-        let app = appSys.lookup_app(this.provider.appInfo.get_id());
-        if (app && app.state === Shell.AppState.STOPPED)
-            IconGrid.zoomOutActor(this._content);
+// Add highlighting of the "name" part of the result for all providers
+const ListSearchResultOverride = {
+    _highlightTerms() {
+        let markup = this._resultsView.highlightTerms(this.metaInfo['name']);
+        this.label_actor.clutter_text.set_markup(markup);
+        markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
+        this._descriptionLabel.clutter_text.set_markup(markup);
     },
-};*/
+};
+
+const  HighlighterOverride = {
+    /**
+     * @param {?string[]} terms - list of terms to highlight
+     */
+    /* constructor(terms) {
+        if (!terms)
+            return;
+
+        const escapedTerms = terms
+            .map(term => Shell.util_regex_escape(term))
+            .filter(term => term.length > 0);
+
+        if (escapedTerms.length === 0)
+            return;
+
+        this._highlightRegex = new RegExp(
+            `(${escapedTerms.join('|')})`, 'gi');
+    },*/
+
+    /**
+     * Highlight all occurences of the terms defined for this
+     * highlighter in the provided text using markup.
+     *
+     * @param {string} text - text to highlight the defined terms in
+     * @returns {string}
+     */
+    highlight(text, options) {
+        if (!this._highlightRegex)
+            return GLib.markup_escape_text(text, -1);
+
+        // force use local settings if the class is overridden by another extension (WSP, ESP)
+        const o = options || opt;
+        let escaped = [];
+        let lastMatchEnd = 0;
+        let match;
+        let style = ['', ''];
+        if (o.HIGHLIGHT_DEFAULT)
+            style = ['<b>', '</b>'];
+        // The default highlighting by the bold style causes text to be "randomly" ellipsized in cases where it's not necessary
+        // and also blurry
+        // Underscore doesn't affect label size and all looks better
+        else if (o.HIGHLIGHT_UNDERLINE)
+            style = ['<u>', '</u>'];
+
+        while ((match = this._highlightRegex.exec(text))) {
+            if (match.index > lastMatchEnd) {
+                let unmatched = GLib.markup_escape_text(
+                    text.slice(lastMatchEnd, match.index), -1);
+                escaped.push(unmatched);
+            }
+            let matched = GLib.markup_escape_text(match[0], -1);
+            escaped.push(`${style[0]}${matched}${style[1]}`);
+            lastMatchEnd = match.index + match[0].length;
+        }
+        let unmatched = GLib.markup_escape_text(
+            text.slice(lastMatchEnd), -1);
+        escaped.push(unmatched);
+        return escaped.join('');
+    },
+};

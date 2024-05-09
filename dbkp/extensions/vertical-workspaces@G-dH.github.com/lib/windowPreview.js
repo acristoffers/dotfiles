@@ -3,7 +3,7 @@
  * windowPreview.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -173,9 +173,9 @@ const WindowPreviewCommon = {
                 } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 2) {
                     this._searchAppWindowsAction();
                     return Clutter.EVENT_STOP;
-                } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 3 && opt.WINDOW_THUMBNAIL_ENABLED) {
+                } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 3 && global.windowThumbnails) {
                     this._removeLaters();
-                    Me.Modules.winTmbModule.createThumbnail(metaWindow);
+                    global.windowThumbnails?.createThumbnail(metaWindow);
                     return Clutter.EVENT_STOP;
                 }
             } else if (button === Clutter.BUTTON_MIDDLE) {
@@ -185,9 +185,9 @@ const WindowPreviewCommon = {
                 } else if (opt.WIN_PREVIEW_MID_BTN_ACTION === 2) {
                     this._searchAppWindowsAction();
                     return Clutter.EVENT_STOP;
-                } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 3 && opt.WINDOW_THUMBNAIL_ENABLED) {
+                } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 3 && global.windowThumbnails) {
                     this._removeLaters();
-                    Me.Modules.winTmbModule.createThumbnail(metaWindow);
+                    global.windowThumbnails?.createThumbnail(metaWindow);
                     return Clutter.EVENT_STOP;
                 }
             }
@@ -262,9 +262,9 @@ const WindowPreviewCommon = {
                     if (opt.WINDOW_ICON_CLICK_ACTION === 1) {
                         this._searchAppWindowsAction();
                         return Clutter.EVENT_STOP;
-                    } else if (opt.WINDOW_ICON_CLICK_ACTION === 2 && opt.WINDOW_THUMBNAIL_ENABLED) {
+                    } else if (opt.WINDOW_ICON_CLICK_ACTION === 2 && global.windowThumbnails) {
                         this._removeLaters();
-                        Me.Modules.winTmbModule.createThumbnail(metaWindow);
+                        global.windowThumbnails?.createThumbnail(metaWindow);
                         return Clutter.EVENT_STOP;
                     }
                 } /* else if (act.get_button() === Clutter.BUTTON_SECONDARY) {
@@ -458,12 +458,12 @@ const WindowPreviewCommon = {
         // in static workspace mode show icon and title on windows expose
         if (opt.OVERVIEW_MODE) {
             if (currentState === 1)
-                scale = opt.WORKSPACE_MODE;
-            else if (finalState === 1 || (finalState === 0 && !opt.WORKSPACE_MODE))
+                scale = this._workspace._background._stateAdjustment.value;
+            else if ((finalState === 1 && !opt.WORKSPACE_MODE) || (finalState === 0 && !opt.WORKSPACE_MODE))
                 return;
         }
 
-        if (!opt.WS_ANIMATION && (Main.overview._overview.controls._searchController.searchActive ||
+        if (!opt.WS_ANIMATION && (Main.overview.searchController.searchActive ||
             ((initialState === ControlsState.WINDOW_PICKER && finalState === ControlsState.APP_GRID) ||
              (initialState === ControlsState.APP_GRID && finalState === ControlsState.WINDOW_PICKER)))
         )

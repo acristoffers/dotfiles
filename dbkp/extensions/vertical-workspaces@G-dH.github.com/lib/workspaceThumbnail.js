@@ -3,7 +3,7 @@
  * workspaceThumbnail.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -335,7 +335,7 @@ const WorkspaceThumbnailCommon = {
             // in OVERVIEW MODE 2 windows are not spread and workspace is not scaled
             // we need to repeat transition to the overview state 1 (window picker), but with spreading windows animation
             if (this.metaWorkspace.active) {
-                Main.overview._overview.controls._searchController._setSearchActive(false);
+                Main.overview.searchController._setSearchActive(false);
                 opt.WORKSPACE_MODE = 1;
                 // setting value to 0 would reset WORKSPACE_MODE
                 stateAdjustment.value = 0.01;

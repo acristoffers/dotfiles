@@ -3,7 +3,7 @@
  * settings.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  */
 
@@ -52,9 +52,6 @@ export const Options = class Options {
             closeWsButtonMode: ['int', 'close-ws-button-mode'],
             secWsTmbPositionAdjust: ['int', 'sec-wst-position-adjust'],
             dashMaxIconSize: ['int', 'dash-max-icon-size'],
-            dashShowWindowsIcon: ['int', 'dash-show-windows-icon'],
-            dashShowRecentFilesIcon: ['int', 'dash-show-recent-files-icon'],
-            dashShowExtensionsIcon: ['int', 'dash-show-extensions-icon'],
             centerDashToWs: ['boolean', 'center-dash-to-ws'],
             showAppsIconPosition: ['int', 'show-app-icon-position'],
             wsThumbnailScale: ['int', 'ws-thumbnail-scale'],
@@ -136,9 +133,12 @@ export const Options = class Options {
             overlayKeyPrimary: ['int', 'overlay-key-primary'],
             overlayKeySecondary: ['int', 'overlay-key-secondary'],
             overviewEscBehavior: ['int', 'overview-esc-behavior'],
+            clickEmptyClose: ['boolean', 'click-empty-close'],
             newWindowFocusFix: ['boolean', 'new-window-focus-fix'],
+            newWindowMonitorFix: ['boolean', 'new-window-monitor-fix'],
             appGridPerformance: ['boolean', 'app-grid-performance'],
-            windowThumbnailScale: ['int', 'window-thumbnail-scale'],
+            highlightingStyle: ['int', 'highlighting-style'],
+            delayStartup: ['boolean', 'delay-startup'],
 
             workspaceSwitcherPopupModule: ['boolean', 'workspace-switcher-popup-module'],
             workspaceAnimationModule: ['boolean', 'workspace-animation-module'],
@@ -146,7 +146,6 @@ export const Options = class Options {
             windowManagerModule: ['boolean', 'window-manager-module'],
             windowPreviewModule: ['boolean', 'window-preview-module'],
             windowAttentionHandlerModule: ['boolean', 'win-attention-handler-module'],
-            windowThumbnailModule: ['boolean', 'window-thumbnail-module'],
             swipeTrackerModule: ['boolean', 'swipe-tracker-module'],
             searchControllerModule: ['boolean', 'search-controller-module'],
             searchModule: ['boolean', 'search-module'],
@@ -158,9 +157,6 @@ export const Options = class Options {
             dashModule: ['boolean', 'dash-module'],
             appFavoritesModule: ['boolean', 'app-favorites-module'],
             appDisplayModule: ['boolean', 'app-display-module'],
-            windowSearchProviderModule: ['boolean', 'window-search-provider-module'],
-            recentFilesSearchProviderModule: ['boolean', 'recent-files-search-provider-module'],
-            extensionsSearchProviderModule: ['boolean', 'extensions-search-provider-module'],
 
             profileName1: ['string', 'profile-name-1'],
             profileName2: ['string', 'profile-name-2'],
@@ -325,9 +321,6 @@ export const Options = class Options {
         this.CENTER_DASH_WS = this.get('centerDashToWs');
 
         this.MAX_ICON_SIZE = this.get('dashMaxIconSize');
-        this.SHOW_WINDOWS_ICON = this.get('dashShowWindowsIcon');
-        this.SHOW_RECENT_FILES_ICON = this.get('dashShowRecentFilesIcon');
-        this.SHOW_EXTENSIONS_ICON = this.get('dashShowExtensionsIcon');
 
         this.WS_TMB_POSITION = this.get('workspaceThumbnailsPosition');
         this.ORIENTATION = this.WS_TMB_POSITION > 4 ? 0 : 1;
@@ -420,6 +413,7 @@ export const Options = class Options {
         this.SEARCH_VIEW_SCALE = this.get('searchViewScale') / 100;
         this.SEARCH_MAX_ROWS = this.get('searchMaxResultsRows');
         this.SEARCH_FUZZY = this.get('searchFuzzy');
+        this.SEARCH_DELAY = 0;
 
         this.APP_GRID_ALLOW_INCOMPLETE_PAGES = this.get('appGridIncompletePages');
         this.APP_GRID_ICON_SIZE = this.get('appGridIconSize');
@@ -473,7 +467,6 @@ export const Options = class Options {
         this.PANEL_MODE = this.get('panelVisibility');
         this.PANEL_DISABLED = this.PANEL_MODE === 2;
         this.PANEL_OVERVIEW_ONLY = this.PANEL_MODE === 1;
-        this.START_Y_OFFSET = 0; // set from main module
 
         this.WINDOW_ATTENTION_MODE = this.get('windowAttentionMode');
         this.WINDOW_ATTENTION_DISABLE_NOTIFICATIONS = this.WINDOW_ATTENTION_MODE === 1;
@@ -522,11 +515,19 @@ export const Options = class Options {
         this.OVERLAY_KEY_SECONDARY = this.get('overlayKeySecondary');
 
         this.ESC_BEHAVIOR = this.get('overviewEscBehavior');
+        this.CLICK_EMPTY_CLOSE = this.get('clickEmptyClose');
 
-        this.WINDOW_THUMBNAIL_ENABLED = this.get('windowThumbnailModule');
-        this.WINDOW_THUMBNAIL_SCALE = this.get('windowThumbnailScale') / 100;
+        this.WINDOW_THUMBNAIL_ENABLED = !!Me.Util.getEnabledExtensions('window-thumbnails').length;
 
         this.FIX_NEW_WINDOW_FOCUS = this.get('newWindowFocusFix');
+        this.FIX_NEW_WINDOW_MONITOR = this.get('newWindowMonitorFix');
+
+        this.HIGHLIGHTING_STYLE = this.get('highlightingStyle');
+        this.HIGHLIGHT_DEFAULT = this.HIGHLIGHTING_STYLE === 0;
+        this.HIGHLIGHT_UNDERLINE = this.HIGHLIGHTING_STYLE === 1;
+        this.HIGHLIGHT_NONE = this.HIGHLIGHTING_STYLE === 2;
+
+        this.DELAY_STARTUP = this.get('delayStartup');
     }
 
     _getAnimationDirection() {

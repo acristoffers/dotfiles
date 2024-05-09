@@ -3,7 +3,7 @@
  * prefs.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  */
 
@@ -26,43 +26,41 @@ export default class VShell extends ExtensionPreferences {
         const itemFactory = new OptionsFactory.ItemFactory();
         const pageList = [
             {
-                name: 'profiles',
                 title: _('Profiles'),
                 iconName: 'open-menu-symbolic',
                 optionList: this._getProfilesOptionList(itemFactory),
             },
             {
-                name: 'layout',
                 title: _('Layout'),
                 iconName: 'view-grid-symbolic',
                 optionList: this._getLayoutOptionList(itemFactory),
             },
             {
-                name: 'appearance',
                 title: _('Appearance'),
                 iconName: 'view-reveal-symbolic',
                 optionList: this._getAppearanceOptionList(itemFactory),
             },
             {
-                name: 'behavior',
                 title: _('Behavior'),
                 iconName: 'system-run-symbolic',
                 optionList: this._getBehaviorOptionList(itemFactory),
             },
             {
-                name: 'modules',
+                title: _('App Grid'),
+                iconName: 'view-app-grid-symbolic',
+                optionList: this._getAppGridOptionList(itemFactory),
+            },
+            {
                 title: _('Modules'),
                 iconName: 'application-x-addon-symbolic',
                 optionList: this._getModulesOptionList(itemFactory),
             },
             {
-                name: 'misc',
                 title: _('Misc'),
                 iconName: 'preferences-other-symbolic',
                 optionList: this._getMiscOptionList(itemFactory),
             },
             {
-                name: 'about',
                 title: _('About'),
                 iconName: 'preferences-system-details-symbolic',
                 optionList: this._getAboutOptionList(itemFactory),
@@ -153,14 +151,13 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Dash Position'),
                 null,
-                // // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'dashPosition',
                 [
-                    [_('Top'), 0],
-                    [_('Right'), 1],
                     [_('Bottom'), 2],
                     [_('Left'), 3],
+                    [_('Top'), 0],
+                    [_('Right'), 1],
                     [_('Hide'), 4],
                 ],
                 'dashModule'
@@ -202,7 +199,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Show Apps Icon Position'),
                 _('Sets the position of the "Show Applications" icon in the Dash'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'showAppsIconPosition',
                 [
@@ -216,55 +212,6 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Open Windows Icon Position'),
-                _('Allows to add "Search Open Windows" icon into Dash (if window search provider enabled on the Modules tab) so you can directly toggle window search provider results. You can also use the secondary mouse button click on the Show Apps Icon, or the Space hotkey'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'dashShowWindowsIcon',
-                [
-                    [_('Hide'), 0],
-                    [_('Start'), 1],
-                    [_('End'), 2],
-                ],
-                'dashModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Recent Files Icon Position'),
-                _('Allows to add "Search Recent Files" icon into Dash (if recent files search provider enabled on the Modules tab) so you can directly toggle recent files search provider results. You can also use Ctrl + Space hotkey'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'dashShowRecentFilesIcon',
-                [
-                    [_('Hide'), 0],
-                    [_('Start'), 1],
-                    [_('End'), 2],
-                ],
-                'dashModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Extensions Icon Position'),
-                _('Allows to add "Search Extensions" icon into Dash (if extensions search provider enabled on the Module tab) so you can directly toggle extensions search provider results. You can also use the Ctrl + Shift + Space hotkey'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'dashShowExtensionsIcon',
-                [
-                    [_('Hide'), 0],
-                    [_('Start'), 1],
-                    [_('End'), 2],
-                ],
-                'dashModule'
-            )
-        );
-
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('Workspace Thumbnails / Orientation')
             )
         );
@@ -273,7 +220,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Thumbnails Position / Workspaces Orientation'),
                 _('Position of the workspace thumbnails on the screen also sets orientation of the workspaces to vertical or horizontal. You have two options to disable workspace thumbnails, one sets workspaces to vertical orientation, the second one to horizontal.'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'workspaceThumbnailsPosition',
                 // this mess is just because of backward compatibility
@@ -409,25 +355,6 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
-        const agPageAdjustment = new Gtk.Adjustment({
-            upper: 100,
-            lower: 50,
-            step_increment: 1,
-            page_increment: 10,
-        });
-
-        const agPageWidthScale = itemFactory.newScale(agPageAdjustment);
-        agPageWidthScale.add_mark(90, Gtk.PositionType.TOP, null);
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('App Grid Page Width Scale'),
-                _('Adjusts max app grid page width relative to the available space.'),
-                agPageWidthScale,
-                'appGridPageWidthScale',
-                null,
-                'appDisplayModule'
-            )
-        );
 
         optionList.push(
             itemFactory.getRowWidget(
@@ -483,7 +410,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Main Panel Position'),
                 _('Allows to place the main panel at the bottom of the primary display'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'panelPosition',
                 [
@@ -498,7 +424,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Main Panel Visibility'),
                 _('Allows to hide main panel when not needed'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'panelVisibility',
                 [
@@ -570,7 +495,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Notification Banner Position'),
                 _('Choose where the notification banners appear on the screen'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'notificationPosition',
                 [
@@ -589,7 +513,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('OSD Popup Position'),
                 _('Choose where the OSD pop-ups (like sound volume level) appear on the screen'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'osdPosition',
                 [
@@ -616,7 +539,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Workspace Thumbnails Position'),
                 _('Allows to place workspace thumbnails of secondary monitors on the opposite side than on the primary monitor'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'secWsThumbnailsPosition',
                 [
@@ -684,8 +606,8 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Shift Workspace Preview by Panel Height'),
-                _('This option can help align overview of the secondary monitor with the primary monitor'),
+                _('Shift Overview by Panel Height'),
+                _('This option can help align the overview of the secondary monitor with the primary one'),
                 itemFactory.newSwitch(),
                 'secWsPreviewShift'
             )
@@ -712,7 +634,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Dash Max Icon Size'),
                 _('Maximum size of Dash icons in pixels'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'dashMaxIconSize',
                 [
@@ -732,7 +653,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Dash Background Style'),
                 _('Allows you to change the background color of the dash to match the search results an app folders'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'dashBgColor',
                 [
@@ -796,7 +716,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Running App Indicator'),
                 _('Allows you to change style of the running app indicator under the app icon'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'runningDotStyle',
                 [
@@ -817,7 +736,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Show Workspace Thumbnail Labels'),
                 _('Each workspace thumbnail can show label with its index and name (if defined in the system settings) or name/title of its most recently used app/window'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'showWsTmbLabels',
                 [
@@ -858,7 +776,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Window Preview App Icon Size'),
                 null,
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'winPreviewIconSize',
                 [
@@ -876,7 +793,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Window Title Position / Visibility'),
                 _('Sets the position of the window title that is displayed when the mouse hovers over the window or can always be visible'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'winTitlePosition',
                 [
@@ -935,165 +851,6 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('App Grid')
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Icon Size'),
-                _('Allows to set a fixed app grid icon size and bypass the default adaptive algorithm'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appGridIconSize',
-                [
-                    [_('Adaptive (Default)'), -1],
-                    [_('256'), 256],
-                    [_('224'), 224],
-                    [_('208'), 208],
-                    [_('192'), 192],
-                    [_('176'), 176],
-                    [_('160'), 160],
-                    [_('144'), 144],
-                    [_('128'), 128],
-                    [_('112'), 112],
-                    [_('96'), 96],
-                    [_('80'), 80],
-                    [_('64'), 64],
-                    [_('48'), 48],
-                // [_('32'), 32],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Folder Icon Size'),
-                _('Allows to set a fixed icon size and bypass the default adaptive algorithm in the open folder dialog'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appGridFolderIconSize',
-                [
-                    [_('Adaptive (Default)'), -1],
-                    [_('128'), 128],
-                    [_('112'), 112],
-                    [_('96'), 96],
-                    [_('80'), 80],
-                    [_('64'), 64],
-                    [_('48'), 48],
-                    [_('32'), 32],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        const folderIconGridCombo = itemFactory.newDropDown();
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Max App Folder Icon Grid Size'),
-                _('Sets a grid size (number of icons) in the folder preview. 3x3 options automatically switches between 2x2 and 3x3 grid depending on the number of icons in the folder'),
-                folderIconGridCombo,
-                'appGridFolderIconGrid',
-                [
-                    [_('2x2 (Default)'), 2],
-                    [_('3x3 for 5+ apps'), 3],
-                    [_('3x3 for 9+ apps'), 4],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        const columnsAdjustment = new Gtk.Adjustment({
-            upper: 15,
-            lower: 0,
-            step_increment: 1,
-            page_increment: 1,
-        });
-
-        const columnsSpinBtn = itemFactory.newSpinButton(columnsAdjustment);
-        optionList.push(itemFactory.getRowWidget(
-            _('Columns per Page (0 for adaptive grid)'),
-            _('Number of columns in the application grid. If set to 0 (the default), the number will be set automatically to fit the available width'),
-            columnsSpinBtn,
-            'appGridColumns',
-            null,
-            'appDisplayModule'
-        ));
-
-        const rowsAdjustment = new Gtk.Adjustment({
-            upper: 15,
-            lower: 0,
-            step_increment: 1,
-            page_increment: 1,
-        });
-
-        const rowsSpinBtn = itemFactory.newSpinButton(rowsAdjustment);
-        optionList.push(itemFactory.getRowWidget(
-            _('Rows per Page (0 for adaptive grid)'),
-            _('Number of rows in the application grid. If set to 0 (the default), the number will be set automatically to fit the available height'),
-            rowsSpinBtn,
-            'appGridRows',
-            null,
-            'appDisplayModule'
-        ));
-
-        const folderColumnsAdjustment = new Gtk.Adjustment({
-            upper: 15,
-            lower: 0,
-            step_increment: 1,
-            page_increment: 1,
-        });
-
-        const folderColumnsSpinBtn = itemFactory.newSpinButton(folderColumnsAdjustment);
-        optionList.push(itemFactory.getRowWidget(
-            _('Folder Columns per Page (0 for adaptive grid)'),
-            _('Number of columns in folder grid. If you leave the value at 0, the number of columns will be calculated to fit all the folder icons on one page'),
-            folderColumnsSpinBtn,
-            'appGridFolderColumns',
-            null,
-            'appDisplayModule'
-        ));
-
-        const folderRowsAdjustment = new Gtk.Adjustment({
-            upper: 15,
-            lower: 0,
-            step_increment: 1,
-            page_increment: 1,
-        });
-
-        const folderRowsSpinBtn = itemFactory.newSpinButton(folderRowsAdjustment);
-        optionList.push(itemFactory.getRowWidget(
-            _('Folder Rows per Page (0 for adaptive grid)'),
-            _('Number of rows in folder grid. If you leave the value at 0, the number of rows will be calculated to fit all the folder icons on one page'),
-            folderRowsSpinBtn,
-            'appGridFolderRows',
-            null,
-            'appDisplayModule'
-        ));
-
-        const appGridSpacingAdjustment = new Gtk.Adjustment({
-            upper: 30,
-            lower: 5,
-            step_increment: 1,
-            page_increment: 5,
-        });
-
-        const appGridSpacingScale = itemFactory.newScale(appGridSpacingAdjustment);
-        appGridSpacingScale.add_mark(12, Gtk.PositionType.TOP, null);
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Grid Spacing'),
-                _('Adjusts the spacing between icons in a grid, the real impact is on folders'),
-                appGridSpacingScale,
-                'appGridSpacing',
-                null,
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('Search')
             )
         );
@@ -1102,7 +859,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('App Search Icon Size'),
                 _('Size of results provided by the App Search Provider - smaller size allows to fit more results'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'searchIconSize',
                 [
@@ -1138,6 +894,20 @@ export default class VShell extends ExtensionPreferences {
                 'searchMaxResultsRows',
                 null,
                 'searchModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Highlighting'),
+                _('The GNOME default highlighting style (bold) causes strings to be "randomly" ellipsized, often preventing you from seeing the whole string, even if there is space for it. The selected style will be applied to all search results globally. If you are using other extensions that offer this option, make sure you set the same setting in all of them.'),
+                itemFactory.newDropDown(),
+                'highlightingStyle',
+                [
+                    [_('Bold (Default)'), 0],
+                    [_('Underline'), 1],
+                    [_('None'), 2],
+                ]
             )
         );
 
@@ -1234,31 +1004,6 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Window Thumbnails (PIP)')
-            )
-        );
-
-        const winTmbAdjustment = new Gtk.Adjustment({
-            upper: 50,
-            lower: 5,
-            step_increment: 1,
-            page_increment: 1,
-        });
-
-        const winTmbScale = itemFactory.newScale(winTmbAdjustment);
-        winTmbScale.add_mark(15, Gtk.PositionType.TOP, null);
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Default Window Thumbnail (PIP) Scale (% of screen height)'),
-                _('Default scale of window thumbnail (like Picture In Picture) that you can create using the app icon menu or window preview action'),
-                winTmbScale,
-                'windowThumbnailScale'
-            )
-        );
-
         return optionList;
     }
     // ----------------------------------------------------------------
@@ -1276,7 +1021,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Overview Mode'),
                 _('The Expose Windows on Hover mode does not expose the workspace preview windows until the mouse pointer enters any window\nThe Static Workspace mode keeps the workspace static when you activate the overview, it only shows Dash, workspace thumbnails and search entry over the workspace and only clicking on an active workspace thumbnail activates the default overview'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'overviewMode',
                 [
@@ -1291,7 +1035,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Startup State'),
                 _('Allows to change the state in which GNOME Shell starts a session'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'startupState',
                 [
@@ -1306,7 +1049,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Escape Key Behavior'),
                 _('Allows you to close the overview with a single press of the Escape key, even from the application grid or from search, if the search entry field does not have focus'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'overviewEscBehavior',
                 [
@@ -1319,6 +1061,16 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('Click Empty Space To Close'),
+                _('Enables clicking on an empty space in the overview to close it'),
+                itemFactory.newSwitch(),
+                'clickEmptyClose',
+                null
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('Overlay Key (Super/Windows)')
             )
         );
@@ -1326,14 +1078,13 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Single-Press Action'),
-                _('Disable or change behavior when you press and release the Super key. The "Search Windows" options requires the WindowSearchProvider module to be activated'),
-                // itemFactory.newComboBox(),
+                _('Disable or change behavior when you press and release the Super key. The "Search Windows" options requires the "WSP (Window Search Provider)" extension installed and enabled. Link is available on the Modules tab in Settings'),
                 itemFactory.newDropDown(),
                 'overlayKeyPrimary',
                 [
                     [_('Disable'), 0],
                     [_('Follow Global Overview Mode'), 1],
-                    [_('Overview (Default)'), 2],
+                    [_('Overview - Window Picker (Default)'), 2],
                     [_('Applications'), 3],
                     [_('Overview - Static WS Preview'), 4],
                     [_('Overview - Static Workspace'), 5],
@@ -1347,8 +1098,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Double-Press Action'),
-                _('Disable or change behavior when you double-press the Super key. The "Search Windows" option requires the WindowSearchProvider module to be activated. The "Static WS Overview - Expose Windows" option allows you to switch to default Activities Overview window picker view if you set static workspace (preview) for the single press/release Super key action'),
-                // itemFactory.newComboBox(),
+                _('Disable or change behavior when you double-press the Super key. The "Search Windows" option requires the "WSP (Window Search Provider)" extension installed and enabled. The "Static WS Overview - Expose Windows" option allows you to switch to default Activities Overview window picker view if you set static workspace (preview) for the single press/release Super key action'),
                 itemFactory.newDropDown(),
                 'overlayKeySecondary',
                 [
@@ -1371,8 +1121,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Hot Corner Action'),
-                _('Disable or change behavior of the hot corner. Holding down the Ctrl key while hitting the hot corner switches between Overview/Applications actions'),
-                // itemFactory.newComboBox(),
+                _('Disable or change behavior of the hot corner. Holding down the Ctrl key while hitting the hot corner switches between Overview/Applications actions. The "Search Windows" option requires the "WSP (Window Search Provider)" extension installed and enabled'),
                 itemFactory.newDropDown(),
                 'hotCornerAction',
                 [
@@ -1392,7 +1141,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Hot Corner Position'),
                 _('Choose which corner of your monitors will be active. If you choose "Follow Dash" option, the corner will be placed near the left or top edge of the Dash. The last option extends the hot corner trigger to cover the entire ege of the monitor where Dash is located'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'hotCornerPosition',
                 [
@@ -1451,7 +1199,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('App Icon - Click Behavior'),
                 _('Choose your preferred behavior when clicking on an app icon. The "Prefer Current Workspace" option opens a new app window if not present in the current workspace. The "Open New Window" option also switches behavior of the middle click to "Activate" since its default behavior is to open a new window'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'dashShowWindowsBeforeActivation',
                 [
@@ -1468,29 +1215,12 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('App Icon - Scroll Action'),
                 _('Choose the behavior when scrolling over an app icon. The window cycler works with a list of windows sorted by the "Most Recently Used" and grouped by workspaces. Scrolling up cycles through previously used windows on the same workspace and then switches to another workspace, if any'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'dashIconScroll',
                 [
                     [_('Default'), 0],
                     [_('Cycle App Windows - Highlight Selected'), 1],
                     [_('Cycle App Windows - Highlight App'), 2],
-                ],
-                'dashModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Search Windows Icon - Scroll Action'),
-                _('Choose the behavior when scrolling over the Search Windows icon. The window cycler works with a list of windows sorted by "Most Recently Used" of the current workspace or all workspaces. Scrolling up cycles through previously used windows on the same workspace, or all windows regardless workspace. This option is mainly useful for the static workspace overview mode.'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'searchWindowsIconScroll',
-                [
-                    [_('Default'), 0],
-                    [_('Cycle All Windows'), 1],
-                    [_('Cycle Windows On Current WS'), 2],
                 ],
                 'dashModule'
             )
@@ -1506,7 +1236,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Close Workspace Button'),
                 _('The Close Workspace button appears on the workspace thumbnail when you hover over it and allows you to close all windows on the workspace. You can choose a "safety lock" to prevent accidental use'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'closeWsButtonMode',
                 [
@@ -1528,14 +1257,13 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Secondary Button Click Action'),
                 _('Allows you to add a secondary mouse click action to the window preview'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'winPreviewSecBtnAction',
                 [
                     [_('Activate Window (Default)'), 0],
                     [_('Close Window'), 1],
                     [_('Search For Same App Windows'), 2],
-                    [_('Create Window Thumbnail - PIP'), 3],
+                    [_('Create Window Thumbnail/PiP (requires WTMB extension)'), 3],
                 ],
                 'windowPreviewModule'
             )
@@ -1545,14 +1273,13 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Middle Button Click Action'),
                 _('Allows you to add a middle mouse click action to the window preview'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'winPreviewMidBtnAction',
                 [
                     [_('Activate Window (Default)'), 0],
                     [_('Close Window'), 1],
                     [_('Search For Same App Windows'), 2],
-                    [_('Create Window Thumbnail - PIP'), 3],
+                    [_('Create Window Thumbnail/PiP (requires WTMB extension)'), 3],
                 ],
                 'windowPreviewModule'
             )
@@ -1562,13 +1289,12 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('App Icon Click Action'),
                 _('Select the action to take when the application icon on the window preview is clicked'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'windowIconClickAction',
                 [
                     [_('Activate Window (Default)'), 0],
                     [_('Search For Same App Windows'), 1],
-                    [_('Create Window Thumbnail - PIP'), 2],
+                    [_('Create Window Thumbnail/PiP (requires WTMB extension)'), 2],
                 ],
                 'windowPreviewModule'
             )
@@ -1587,174 +1313,22 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('App Grid')
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('App Grid Order'),
-                _('Choose sorting method for the app grid. Note that sorting by usage ignores folders'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appGridOrder',
-                [
-                    [_('Custom (Default)'), 0],
-                    [_('Alphabet - Folders First'), 1],
-                    [_('Alphabet - Folders Last'), 2],
-                    [_('Usage - No Folders'), 3],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('App Folder Order'),
-                _('Choose sorting method for app folders'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appFolderOrder',
-                [
-                    [_('Custom (Default)'), 0],
-                    [_('Alphabet'), 1],
-                    [_('Usage'), 2],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('App Grid Content'),
-                _('The default Shell removes favorite apps, this option allows to duplicate them in the grid or remove also running applications. Option "Favorites and Running First" only works with the Alphabet and Usage sorting'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appGridContent',
-                [
-                    [_('Include All'), 0],
-                    [_('Include All - Favorites and Running First'), 1],
-                    [_('Exclude Favorites (Default)'), 2],
-                    [_('Exclude Running'), 3],
-                    [_('Exclude Favorites and Running'), 4],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Active Icons in Folder Preview'),
-                _('If enabled, icons in the folder review behaves like normal icons, you can activate or even drag them directly, without having to open the folder first'),
-                itemFactory.newSwitch(),
-                'appGridActivePreview',
-                null,
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Center Open Folders'),
-                _('App folder may open in the center of the screen or above the source folder icon'),
-                itemFactory.newSwitch(),
-                'appGridFolderCenter',
-                null,
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Allow Incomplete Pages'),
-                _('If disabled, icons from the next page (if any) are automatically moved to fill any empty slot left after an icon was (re)moved (to a folder for example)'),
-                itemFactory.newSwitch(),
-                'appGridIncompletePages',
-                null,
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('App Labels Behavior'),
-                _('Choose how and when to display app names'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'appGridNamesMode',
-                [
-                    [_('Ellipsized - Expand Selected (Default)'), 0],
-                    [_('Always Expanded'), 1],
-                    [_('Hidden - Show Selected Only'), 2],
-                ],
-                'appDisplayModule'
-            )
-        );
-
-        optionList.push(itemFactory.getRowWidget(
-            _('Reset App Grid Layout'),
-            _('Removes all stored app grid positions, after reset icons will be sorted alphabetically, except folder contents'),
-            itemFactory.newResetButton(() => {
-                const settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
-                settings.set_value('app-picker-layout', new GLib.Variant('aa{sv}', []));
-            })
-        ));
-
-        optionList.push(itemFactory.getRowWidget(
-            _('Remove App Grid Folders'),
-            _('Removes all folders, folder apps will move to the root grid'),
-            itemFactory.newResetButton(() => {
-                const settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-                settings.set_strv('folder-children', []);
-            })
-        ));
-
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('Search')
             )
         );
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Window Search Provider - Sorting'),
-                _('Choose the window sorting method'),
-                // itemFactory.newComboBox(),
-                itemFactory.newDropDown(),
-                'searchWindowsOrder',
-                [
-                    [_('Most Recently Used (MRU)'), 0],
-                    [_('MRU - Current Workspace First'), 1],
-                    [_('MRU - By Workspaces'), 2],
-                    [_('Stable Sequence - By Workspaces'), 3],
-                ],
-                'windowSearchProviderModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('Enable Fuzzy Match'),
-                _('Enabling the fuzzy match allows you to skip letters in the pattern you are searching for and find "Firefox" even if you type "ffx". Works only for the App, Window and Recent files search providers'),
+                _('Enabling the fuzzy match allows you to skip letters in the pattern you are searching for and find "Firefox" even if you type "ffx". Works only for the App, Windows, Extensions and Recent files search providers'),
                 itemFactory.newSwitch(),
                 'searchFuzzy'
             )
         );
 
-        /* const wspCommandSwitch = itemFactory.newSwitch();
-    optionList.push(
-        itemFactory.getRowWidget(
-            _('Enable Commands in Search Entry'),
-            _('You can use following commands separated by the space at the end of entered pattern:\n/x!   \t\t\t- close selected window\n/xa! \t\t\t- close all found windows\n/m[number] \t\t- (e.g. /m6) move selected window to workspace with given index\n/ma[number] \t- move all found windows to workspace with given index'),
-            wspCommandSwitch,
-            'searchWindowsCommands'
-        )
-    );*/
-
         optionList.push(
             itemFactory.getRowWidget(
-                _('Animations - General')
+                _('Animations')
             )
         );
 
@@ -1778,15 +1352,8 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Animations - Overview')
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('App Grid Animation'),
                 _('When entering the App Grid view, the app grid animates from the edge of the screen. You can choose the direction, keep the Default (direction will be selected automatically) or disable the animation if you don\'t like it'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'appGridAnimation',
                 [
@@ -1804,7 +1371,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Search View Animation'),
                 _('When search is activated the search view with search results can animate from the edge of the screen. You can choose the direction, keep the Default (currently Bottom to Top) or disable the animation if you don\'t like it.'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'searchViewAnimation',
                 [
@@ -1823,7 +1389,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Workspace Preview Animation'),
                 _('When entering / leaving the App Grid / Search view, the workspace preview can animate to/from workspace thumbnail.'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'workspaceAnimation',
                 [
@@ -1862,7 +1427,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Workspace Switcher Animation'),
                 _('Allows you to disable movement of the desktop background during workspace switcher animation outside of the overview. The Static Background mode also keeps Conky and desktop icons on their place during switching.'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'workspaceSwitcherAnimation',
                 [
@@ -1877,7 +1441,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Workspace Switcher Mode (Isolate Monitors)'),
                 _('Note that this is a workaround, not full-fledged feature. GNOME Shell does not support separate workspaces for each monitor, so V-Shell switches workspaces only on the primary monitor and moves windows across workspaces on secondary monitors in order to simulate independent behavior. The current monitor is determined by the position of the mouse pointer'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'wsSwitcherMode',
                 [
@@ -1892,7 +1455,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Workspace Switcher Popup Mode'),
                 _('This popup shows up when you switch workspace using a keyboard shortcut or gesture outside of the overview. You can to disable the popup at all, or show it on the current monitor (the one with mouse pointer) instead of the primary.'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'wsSwPopupMode',
                 [
@@ -1914,7 +1476,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Window Attention Handler'),
                 _('When a window requires attention (often a new window), GNOME Shell shows you a notification about it. You can disable popups of these messages (notification will be pushed into the message tray silently) or focus the source window immediately instead'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'windowAttentionMode',
                 [
@@ -1930,7 +1491,6 @@ export default class VShell extends ExtensionPreferences {
             itemFactory.getRowWidget(
                 _('Favorites'),
                 _('Disable pin/unpin app notifications'),
-                // itemFactory.newComboBox(),
                 itemFactory.newDropDown(),
                 'favoritesNotify',
                 [
@@ -1944,40 +1504,388 @@ export default class VShell extends ExtensionPreferences {
         return optionList;
     }
 
+    // -----------------------------------------------------------------------------------------------------------------
+
+    _getAppGridOptionList(itemFactory) {
+        const optionList = [];
+        // options item format:
+        // (text, caption, widget, settings-variable, [options for combo], sensitivity-depends-on-bool-variable)
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Main App Grid')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Icon Size'),
+                _('Allows to set a fixed app grid icon size and bypass the default adaptive algorithm'),
+                itemFactory.newDropDown(),
+                'appGridIconSize',
+                [
+                    [_('Adaptive (Default)'), -1],
+                    [_('256'), 256],
+                    [_('224'), 224],
+                    [_('208'), 208],
+                    [_('192'), 192],
+                    [_('176'), 176],
+                    [_('160'), 160],
+                    [_('144'), 144],
+                    [_('128'), 128],
+                    [_('112'), 112],
+                    [_('96'), 96],
+                    [_('80'), 80],
+                    [_('64'), 64],
+                    [_('48'), 48],
+                // [_('32'), 32],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        const columnsAdjustment = new Gtk.Adjustment({
+            upper: 15,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 1,
+        });
+
+        const columnsSpinBtn = itemFactory.newSpinButton(columnsAdjustment);
+        optionList.push(itemFactory.getRowWidget(
+            _('Columns per Page (0 for adaptive grid)'),
+            _('Number of columns in the application grid. If set to 0, the number will be set automatically to fit the available width'),
+            columnsSpinBtn,
+            'appGridColumns',
+            null,
+            'appDisplayModule'
+        ));
+
+        const rowsAdjustment = new Gtk.Adjustment({
+            upper: 15,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 1,
+        });
+
+        const rowsSpinBtn = itemFactory.newSpinButton(rowsAdjustment);
+        optionList.push(itemFactory.getRowWidget(
+            _('Rows per Page (0 for adaptive grid)'),
+            _('Number of rows in the application grid. If set to 0, the number will be set automatically to fit the available height'),
+            rowsSpinBtn,
+            'appGridRows',
+            null,
+            'appDisplayModule'
+        ));
+
+        const folderColumnsAdjustment = new Gtk.Adjustment({
+            upper: 15,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 1,
+        });
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Allow Incomplete Pages'),
+                _('If disabled, icons from the next page (if any) are automatically moved to fill any empty slot left after an icon was (re)moved (to a folder for example)'),
+                itemFactory.newSwitch(),
+                'appGridIncompletePages',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Sorting'),
+                _('Choose sorting method for the app grid. Note that sorting by usage ignores folders'),
+                itemFactory.newDropDown(),
+                'appGridOrder',
+                [
+                    [_('Custom (Default)'), 0],
+                    [_('Alphabet - Folders First'), 1],
+                    [_('Alphabet - Folders Last'), 2],
+                    [_('Usage - No Folders'), 3],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Folders')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Folder Icon Size'),
+                _('Allows to set a fixed icon size and bypass the default adaptive algorithm in the open folder dialog'),
+                itemFactory.newDropDown(),
+                'appGridFolderIconSize',
+                [
+                    [_('Adaptive (Default)'), -1],
+                    [_('128'), 128],
+                    [_('112'), 112],
+                    [_('96'), 96],
+                    [_('80'), 80],
+                    [_('64'), 64],
+                    [_('48'), 48],
+                    // [_('32'), 32],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        const folderIconGridCombo = itemFactory.newDropDown();
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Folder Preview Grid Size'),
+                _('Sets a grid size (number of icons) in the folder icon preview. 3x3 options automatically switches between 2x2 and 3x3 grid depending on the number of icons in the folder'),
+                folderIconGridCombo,
+                'appGridFolderIconGrid',
+                [
+                    [_('2x2 (Default)'), 2],
+                    [_('3x3 for 5+ apps'), 3],
+                    [_('3x3 for 9+ apps'), 4],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Active Icons in Folder Preview'),
+                _('If enabled, icons in the folder preview behaves like normal icons, you can activate or even drag them directly, without having to open the folder first. This option also affects the app grid default icon size'),
+                itemFactory.newSwitch(),
+                'appGridActivePreview',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        const folderColumnsSpinBtn = itemFactory.newSpinButton(folderColumnsAdjustment);
+        optionList.push(itemFactory.getRowWidget(
+            _('Maximum Number Of Columns (0 for automatic)'),
+            _('Specifies the maximum number of columns per page in folder grids. If you leave the value at 0, the maximum number of columns will be calculated based on available space. The actual folder grid dimensions will be determined by the number of items within the set limits'),
+            folderColumnsSpinBtn,
+            'appGridFolderColumns',
+            null,
+            'appDisplayModule'
+        ));
+
+        const folderRowsAdjustment = new Gtk.Adjustment({
+            upper: 15,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 1,
+        });
+
+        const folderRowsSpinBtn = itemFactory.newSpinButton(folderRowsAdjustment);
+        optionList.push(itemFactory.getRowWidget(
+            _('Maximum Number Of Rows (0 for automatic)'),
+            _('Specifies the maximum number of rows per page in folder grids. If you leave the value at 0, the maximum number of rows will be calculated based on available space. The actual folder grid dimensions will be determined by the number of items within the set limits'),
+            folderRowsSpinBtn,
+            'appGridFolderRows',
+            null,
+            'appDisplayModule'
+        ));
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Folder Order'),
+                _('Choose sorting method for app folders'),
+                itemFactory.newDropDown(),
+                'appFolderOrder',
+                [
+                    [_('Custom (Default)'), 0],
+                    [_('Alphabet'), 1],
+                    [_('Usage'), 2],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Center Open Folders'),
+                _('App folder may open in the center of the screen or above the folder source icon'),
+                itemFactory.newSwitch(),
+                'appGridFolderCenter',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Layout')
+            )
+        );
+
+        const agPageAdjustment = new Gtk.Adjustment({
+            upper: 100,
+            lower: 50,
+            step_increment: 1,
+            page_increment: 10,
+        });
+
+        const agPageWidthScale = itemFactory.newScale(agPageAdjustment);
+        agPageWidthScale.add_mark(60, Gtk.PositionType.TOP, null);
+        agPageWidthScale.add_mark(70, Gtk.PositionType.TOP, null);
+        agPageWidthScale.add_mark(80, Gtk.PositionType.TOP, null);
+        agPageWidthScale.add_mark(90, Gtk.PositionType.TOP, null);
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Grid Page Width Scale'),
+                _('Adjusts maximum app grid page width relative to the available space'),
+                agPageWidthScale,
+                'appGridPageWidthScale',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        const appGridSpacingAdjustment = new Gtk.Adjustment({
+            upper: 30,
+            lower: 5,
+            step_increment: 1,
+            page_increment: 5,
+        });
+
+        const appGridSpacingScale = itemFactory.newScale(appGridSpacingAdjustment);
+        appGridSpacingScale.add_mark(12, Gtk.PositionType.TOP, null);
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Grid Spacing'),
+                _('Adjusts the spacing between icons in a grid. V-Shell uses this value to calculate grid dimensions for adaptive options. However, the main grid automatically adjusts the spacing for the grid and available space, while folder grids use the spacing exactly as set here'),
+                appGridSpacingScale,
+                'appGridSpacing',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Content')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Grid Content'),
+                _('The default Shell removes favorite apps, this option allows to duplicate them in the grid or remove also running applications. Option "Favorites and Running First" only works with the Alphabet and Usage sorting'),
+                itemFactory.newDropDown(),
+                'appGridContent',
+                [
+                    [_('Include All'), 0],
+                    [_('Include All - Favorites and Running First'), 1],
+                    [_('Exclude Favorites (Default)'), 2],
+                    [_('Exclude Running'), 3],
+                    [_('Exclude Favorites and Running'), 4],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('App Labels Behavior'),
+                _('Choose how and when to display app names'),
+                itemFactory.newDropDown(),
+                'appGridNamesMode',
+                [
+                    [_('Ellipsized - Expand Selected (Default)'), 0],
+                    [_('Always Expanded'), 1],
+                    [_('Hidden - Show Selected Only'), 2],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Performance')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Smooth App Grid Animations'),
+                _('This option allows V-Shell to pre-realize app grid and app folders during session startup in order to avoid stuttering animations when using them for the first time. If enabled, the session startup needs a little bit more time to finish and necessary memory will be allocated at this time'),
+                itemFactory.newSwitch(),
+                'appGridPerformance'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Reset')
+            )
+        );
+
+        optionList.push(itemFactory.getRowWidget(
+            _('Reset App Grid Layout'),
+            _('Removes all stored app grid positions, after reset icons will be sorted alphabetically, except folder contents'),
+            itemFactory.newResetButton(() => {
+                const settings = new Gio.Settings({ schema_id: 'org.gnome.shell' });
+                settings.set_value('app-picker-layout', new GLib.Variant('aa{sv}', []));
+            })
+        ));
+
+        optionList.push(itemFactory.getRowWidget(
+            _('Remove App Grid Folders'),
+            _('Removes all folders, folder apps will move to the root grid'),
+            itemFactory.newResetButton(() => {
+                const settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+                settings.set_strv('folder-children', []);
+            })
+        ));
+
+        return optionList;
+    }
+
     _getModulesOptionList(itemFactory) {
         const optionList = [];
         // options item format:
         // (text, caption, widget, settings-variable, [options for combo], sensitivity-depends-on-bool-variable)
         optionList.push(
             itemFactory.getRowWidget(
-                _('V-Shell Modules (allows you to disable modules that conflict with another extension)')
+                _('Optional Modules')
             )
         );
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('WindowSearchProvider'),
-                _('Activates the window search provider that adds open windows to the search results. You can search app names and window titles. You can also use "wq//" prefix (also by pressing the Space hotkey in the overview, or clicking dash icon) to suppress results from other search providers'),
-                itemFactory.newSwitch(),
-                'windowSearchProviderModule'
+                _('Windows Search Provider - Moved from V-Shell to the standalone "WSP" extension'),
+                _('NOTE: This module has been released as a standalone extension with new features, click to learn more. Related V-Shell options are still available if you install the WSP extension.\n\nWSP adds adds open windows to the search results. You can search app names and window titles. You can also use "wq//" or custom prefix (also by pressing the Space hotkey in the overview, or clicking dash icon) to suppress results from other search providers'),
+                itemFactory.newLinkButton('https://github.com/G-dH/windows-search-provider?tab=readme-ov-file#wsp-windows-search-provider')
             )
         );
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('RecentFilesSearchProvider'),
-                _('Activates the recent files search provider that can be triggered by a dash icon, Ctrl + Space hotkey or by typing "fq//" prefix in the search entry field. This option needs File History option enabled in the GNOME Privacy settings'),
-                itemFactory.newSwitch(),
-                'recentFilesSearchProviderModule'
+                _('Extensions Search Provider - Moved from V-Shell to the standalone "ESP" extension'),
+                _('NOTE: This module has been released as a standalone extension with new features, click to learn more. Related V-Shell options are still available if you install the ESP extension.\n\nESP adds extensions to the search results. You can also use "eq//" or custom prefix (also by pressing the Ctrl + Shift + Space hotkey in the overview, or clicking dash icon) to suppress results from other search providers'),
+                itemFactory.newLinkButton('https://github.com/G-dH/extensions-search-provider?tab=readme-ov-file#esp-extensions-search-provider')
             )
         );
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('ExtensionsSearchProvider'),
-                _('Activates the extensions search provider that adds extensions to the search results. You can also use "eq//" prefix (also by pressing the Ctrl + Shift + Space hotkey in the overview, or clicking dash icon) to suppress results from other search providers'),
-                itemFactory.newSwitch(),
-                'extensionsSearchProviderModule'
+                _('Window Thumbnails (PiP) - Moved from V-Shell to the standalone "WTMB" extension'),
+                _('NOTE: This module has been released as a standalone extension with new features, click to learn more. Related V-Shell options are still available if you install the WTMB extension.\n\nWTMB allows the creation of Picture-in-Picture like window thumbnails that you can use for monitoring of windows on another workspace'),
+                itemFactory.newLinkButton('https://github.com/G-dH/window-thumbnails?tab=readme-ov-file#wtmb-window-thumbnails')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Built-in Modules (allows to disable modules that conflict with another extension)')
             )
         );
 
@@ -2109,15 +2017,6 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('WindowThumbnail'),
-                _('Create Window Thumbnail (PIP) option in the app icon menu and window preview actions'),
-                itemFactory.newSwitch(),
-                'windowThumbnailModule'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
                 _('Workspace'),
                 _('Fixes workspace preview allocations for vertical workspaces orientation and window scaling in static overview modes'),
                 itemFactory.newSwitch(),
@@ -2166,39 +2065,18 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
-        /* optionList.push(
-        itemFactory.getRowWidget(
-            _('Compatibility')
-        )
-    );
-
-    optionList.push(
-        itemFactory.getRowWidget(
-            _('Improve compatibility with Dash to Dock'),
-            _('With the default Ubuntu Dock and other Dash To Dock forks, you may experience issues with Activities overview after you change Dock position or re-enable the extension. This option is enabled automatically if a replacement for the Dash is detected. In any case, using Dash to Dock extension with V-Shell is problematic and not recommended.'),
-            itemFactory.newSwitch(),
-            'fixUbuntuDock'
-        )
-    );*/
-
         optionList.push(
             itemFactory.getRowWidget(
-                _('Performance')
+                _('Workarounds / Hacks')
             )
         );
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Smooth App Grid Animations'),
-                _('This option allows V-Shell to pre-realize app grid and app folders during session startup in order to avoid stuttering animations when using them for the first time. If enabled, the session startup needs a little bit more time to finish and necessary memory will be allocated at this time'),
+                _('Delay at Startup'),
+                _("If you encounter issues during GNOME Shell startup after logging in, which could be caused by V-Shell's incompatibility with another extension, try enabling this option. When enabled, V-Shell is activated after the startup is complete. It will activate automatically when Dash to Dock, Ubuntu Dock or Dash to Panel extensions are detected."),
                 itemFactory.newSwitch(),
-                'appGridPerformance'
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Workarounds')
+                'delayStartup'
             )
         );
 
@@ -2211,8 +2089,19 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Fix New Window Not On Current Monitor (experimental)'),
+                _('If you use multiple monitors, you may encounter the issue of new windows opening on a different monitor than expected. This option moves those windows to the current monitor, determined by the position of the mouse pointer. However, this is a workaround, and some windows may override it, moving the window back to the previous monitor during initialization'),
+                itemFactory.newSwitch(),
+                'newWindowMonitorFix'
+            )
+        );
+
         return optionList;
     }
+
+    // --------------------------------------------------------------------------------------------------
 
     _getAboutOptionList(itemFactory) {
         const optionList = [];
@@ -2233,7 +2122,7 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(itemFactory.getRowWidget(
             _('Reset all options'),
-            _('Set all options to default values.'),
+            _('Reset all options to their default values'),
             itemFactory.newOptionsResetButton()
         ));
 
@@ -2268,7 +2157,7 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(itemFactory.getRowWidget(
             _('Buy Me a Coffee'),
-            _('If you like V-Shell, you can help me with my coffee expenses'),
+            _('Enjoying V-Shell? Consider supporting it by buying me a coffee!'),
             itemFactory.newLinkButton('https://buymeacoffee.com/georgdh')
         ));
 

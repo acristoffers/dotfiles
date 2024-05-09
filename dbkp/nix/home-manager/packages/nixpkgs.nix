@@ -14,7 +14,7 @@ with pkgs; [
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
-  emacs
+  emacs29-pgtk
   emacs-all-the-icons-fonts
   emacsPackages.cask
   epstool

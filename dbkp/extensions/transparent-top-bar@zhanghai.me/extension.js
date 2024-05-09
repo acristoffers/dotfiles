@@ -30,8 +30,8 @@ export default class TransparentTopBarExtension extends Extension {
         }
 
         this._actorSignalIds.set(global.window_group, [
-            global.window_group.connect('actor-added', this._onWindowActorAdded.bind(this)),
-            global.window_group.connect('actor-removed', this._onWindowActorRemoved.bind(this))
+            global.window_group.connect('child-added', this._onWindowActorAdded.bind(this)),
+            global.window_group.connect('child-removed', this._onWindowActorRemoved.bind(this))
         ]);
 
         this._updateTransparent();

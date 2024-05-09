@@ -3,7 +3,7 @@
  * workspacesView.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -69,6 +69,8 @@ export const WorkspacesViewModule = class {
 
         if (!desktopCubeConflict)
             this._overrides.addOverride('WorkspacesView', WorkspacesView.WorkspacesView.prototype, WorkspacesViewCommon);
+        else
+            this._overrides.removeOverride('WorkspacesView');
 
         this._overrides.addOverride('WorkspacesDisplay', WorkspacesView.WorkspacesDisplay.prototype, WorkspacesDisplayCommon);
         this._overrides.addOverride('ExtraWorkspaceView', WorkspacesView.ExtraWorkspaceView.prototype, ExtraWorkspaceViewCommon);
@@ -263,6 +265,7 @@ const WorkspacesViewCommon = {
             adjustments.push(this._workspaces[workspaceIndex]._background._stateAdjustment);
         }
 
+        opt.WORKSPACE_MODE = 1;
         adjustments.forEach(adj => {
             if (adj.value === 0) {
                 adj.value = 0;
@@ -270,7 +273,6 @@ const WorkspacesViewCommon = {
                     duration: 200,
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                     onComplete: () => {
-                        opt.WORKSPACE_MODE = 1;
                         if (callback)
                             callback();
                     },
@@ -333,12 +335,13 @@ const SecondaryMonitorDisplayVertical = {
             Math.round(scaledWidth));
     },
 
-    _getWorkspacesBoxForState(state, box, padding, thumbnailsWidth, spacing) {
+    _getWorkspacesBoxForState(state, box, thumbnailsWidth, spacing, startY, panelHeight) {
         // const { ControlsState } = OverviewControls;
         const workspaceBox = box.copy();
-        const [width, height] = workspaceBox.get_size();
+        let [width, height] = workspaceBox.get_size();
+        height -= panelHeight;
 
-        let wWidth, wHeight, wsbX, wsbY, offset, yShift;
+        let wWidth, wHeight, wsbX, wsbY, offset;
         switch (state) {
         case ControlsState.HIDDEN:
             break;
@@ -347,16 +350,8 @@ const SecondaryMonitorDisplayVertical = {
             if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE)
                 break;
 
-            yShift = 0;
-            if (opt.SEC_WS_PREVIEW_SHIFT && !opt.PANEL_DISABLED) {
-                if (opt.PANEL_POSITION_TOP)
-                    yShift = Main.panel.height;
-                else
-                    yShift = -Main.panel.height;
-            }
-
             wWidth = width - thumbnailsWidth - 5 * spacing;
-            wHeight = Math.min(wWidth / (width / height) - Math.abs(yShift), height - 4 * spacing);
+            wHeight = Math.min(wWidth / (width / height), height - 4 * spacing);
             wWidth = Math.round(wWidth * opt.SEC_WS_PREVIEW_SCALE);
             wHeight = Math.round(wHeight * opt.SEC_WS_PREVIEW_SCALE);
 
@@ -366,7 +361,7 @@ const SecondaryMonitorDisplayVertical = {
             else
                 wsbX = offset;
 
-            wsbY = Math.round((height - wHeight - Math.abs(yShift)) / 2 + yShift);
+            wsbY = Math.round((startY + height - wHeight) / 2);
 
             workspaceBox.set_origin(wsbX, wsbY);
             workspaceBox.set_size(wWidth, wHeight);
@@ -381,24 +376,31 @@ const SecondaryMonitorDisplayVertical = {
 
         const themeNode = this.get_theme_node();
         const contentBox = themeNode.get_content_box(box);
-        const [width, height] = contentBox.get_size();
+        let [width, height] = contentBox.get_size();
+        let [, startY] = contentBox.get_origin();
+        // Save some resources
+        if (this._startY === undefined) {
+            this._panelHeight = opt.SEC_WS_PREVIEW_SHIFT && Main.panel.visible ? Main.panel.height : 0;
+            startY += opt.SEC_WS_PREVIEW_SHIFT && opt.PANEL_POSITION_TOP ? this._panelHeight : 0;
+            this._startY = startY;
+        }
+
+        startY = this._startY;
+        height -= this._panelHeight;
         const { expandFraction } = this._thumbnails;
         const spacing = themeNode.get_length('spacing') * expandFraction;
-        const padding = Math.round(0.1 * height);
 
         let thumbnailsWidth = 0;
         let thumbnailsHeight = 0;
         this._thumbnails.visible = !opt.SEC_WS_TMB_HIDDEN;
         if (this._thumbnails.visible) {
-            const reduceBoxHeight = opt.SEC_WS_PREVIEW_SHIFT && Main.panel.visible ? Main.panel.height : 0;
-
-            thumbnailsWidth = width * opt.SEC_MAX_THUMBNAIL_SCALE;
+            thumbnailsWidth = Math.round(width * opt.SEC_MAX_THUMBNAIL_SCALE);
 
             let totalTmbSpacing;
             [totalTmbSpacing, thumbnailsHeight] = this._thumbnails.get_preferred_height(thumbnailsWidth);
             thumbnailsHeight = Math.round(thumbnailsHeight + totalTmbSpacing);
 
-            const thumbnailsHeightMax = height - spacing - reduceBoxHeight;
+            const thumbnailsHeightMax = height - spacing;
 
             if (thumbnailsHeight > thumbnailsHeightMax) {
                 thumbnailsHeight = thumbnailsHeightMax;
@@ -406,11 +408,11 @@ const SecondaryMonitorDisplayVertical = {
             }
 
             let wsTmbX;
-            if (opt.SEC_WS_TMB_LEFT) { // left
-                wsTmbX = spacing / 2;
+            if (opt.SEC_WS_TMB_LEFT) {
+                wsTmbX = 0;
                 this._thumbnails._positionLeft = true;
             } else {
-                wsTmbX = width - spacing / 2 - thumbnailsWidth;
+                wsTmbX = width - thumbnailsWidth;
                 this._thumbnails._positionLeft = false;
             }
 
@@ -418,8 +420,9 @@ const SecondaryMonitorDisplayVertical = {
             const availSpace = height - thumbnailsHeight;
 
             let wsTmbY =  availSpace / 2;
-            wsTmbY -= opt.SEC_WS_TMB_POSITION_ADJUSTMENT * wsTmbY;
-            wsTmbY += opt.SEC_WS_PREVIEW_SHIFT && Main.panel.visible ? Main.panel.height : 0;
+
+            wsTmbY -= opt.SEC_WS_TMB_POSITION_ADJUSTMENT * (wsTmbY - spacing / 2);
+            wsTmbY += startY;
 
             childBox.set_origin(Math.round(wsTmbX), Math.round(wsTmbY));
             childBox.set_size(thumbnailsWidth, thumbnailsHeight);
@@ -431,7 +434,7 @@ const SecondaryMonitorDisplayVertical = {
         } = this._overviewAdjustment.getStateTransitionParams();
 
         let workspacesBox;
-        const workspaceParams = [contentBox, padding, thumbnailsWidth, spacing];
+        const workspaceParams = [contentBox, thumbnailsWidth, spacing, startY, this._panelHeight];
         if (!transitioning) {
             workspacesBox =
                 this._getWorkspacesBoxForState(currentState, ...workspaceParams);
@@ -561,12 +564,13 @@ const SecondaryMonitorDisplayHorizontal = {
         return { opacity, scale, translationY };
     },
 
-    _getWorkspacesBoxForState(state, box, padding, thumbnailsHeight, spacing) {
+    _getWorkspacesBoxForState(state, box, thumbnailsHeight, spacing, startY, panelHeight) {
         // const { ControlsState } = OverviewControls;
         const workspaceBox = box.copy();
-        const [width, height] = workspaceBox.get_size();
+        let [width, height] = workspaceBox.get_size();
+        height -= panelHeight;
 
-        let wWidth, wHeight, wsbX, wsbY, offset, yShift;
+        let wWidth, wHeight, wsbX, wsbY, offset;
         switch (state) {
         case ControlsState.HIDDEN:
             break;
@@ -575,26 +579,18 @@ const SecondaryMonitorDisplayHorizontal = {
             if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE)
                 break;
 
-            yShift = 0;
-            if (opt.SEC_WS_PREVIEW_SHIFT && !opt.PANEL_DISABLED) {
-                if (opt.PANEL_POSITION_TOP)
-                    yShift = Main.panel.height;
-                else
-                    yShift = -Main.panel.height;
-            }
-
-            wHeight = height - Math.abs(yShift) - (thumbnailsHeight ? thumbnailsHeight + 4 * spacing : padding);
+            wHeight = height - (thumbnailsHeight ? thumbnailsHeight + 4 * spacing : 4 * spacing);
             wWidth = Math.min(wHeight * (width / height), width - 5 * spacing);
             wWidth = Math.round(wWidth * opt.SEC_WS_PREVIEW_SCALE);
             wHeight = Math.round(wHeight * opt.SEC_WS_PREVIEW_SCALE);
 
-            offset = Math.round((height - thumbnailsHeight - wHeight - Math.abs(yShift)) / 2);
+            offset = Math.round((height - thumbnailsHeight - wHeight) / 2);
             if (opt.SEC_WS_TMB_TOP)
                 wsbY = thumbnailsHeight + offset;
             else
                 wsbY = offset;
 
-            wsbY += yShift;
+            wsbY += startY;
             wsbX = Math.round((width - wWidth) / 2);
 
             workspaceBox.set_origin(wsbX, wsbY);
@@ -610,17 +606,24 @@ const SecondaryMonitorDisplayHorizontal = {
 
         const themeNode = this.get_theme_node();
         const contentBox = themeNode.get_content_box(box);
-        const [width, height] = contentBox.get_size();
+        let [width, height] = contentBox.get_size();
+        let [, startY] = contentBox.get_origin();
+        // Save some resources
+        if (this._startY === undefined) {
+            this._panelHeight = opt.SEC_WS_PREVIEW_SHIFT && Main.panel.visible ? Main.panel.height : 0;
+            startY += opt.SEC_WS_PREVIEW_SHIFT && opt.PANEL_POSITION_TOP ? this._panelHeight : 0;
+            this._startY = startY;
+        }
+        startY = this._startY;
+        height -= this._panelHeight;
+
         const { expandFraction } = this._thumbnails;
         const spacing = themeNode.get_length('spacing') * expandFraction;
-        const padding = Math.round(0.1 * height);
 
         let thumbnailsWidth = 0;
         let thumbnailsHeight = 0;
         this._thumbnails.visible = !opt.SEC_WS_TMB_HIDDEN;
         if (this._thumbnails.visible) {
-            const reservedHeight = opt.SEC_WS_PREVIEW_SHIFT && Main.panel.visible ? Main.panel.height : 0;
-
             thumbnailsHeight = height * opt.SEC_MAX_THUMBNAIL_SCALE;
 
             let totalTmbSpacing;
@@ -636,9 +639,9 @@ const SecondaryMonitorDisplayHorizontal = {
 
             let wsTmbY;
             if (opt.SEC_WS_TMB_TOP)
-                wsTmbY = spacing / 2 + reservedHeight;
+                wsTmbY = spacing / 2 + startY;
             else
-                wsTmbY = height - spacing / 2 - thumbnailsHeight;
+                wsTmbY = height - spacing / 2 - thumbnailsHeight + startY;
 
             const childBox = new Clutter.ActorBox();
             const availSpace = width - thumbnailsWidth;
@@ -656,7 +659,7 @@ const SecondaryMonitorDisplayHorizontal = {
         } = this._overviewAdjustment.getStateTransitionParams();
 
         let workspacesBox;
-        const workspaceParams = [contentBox, padding, thumbnailsHeight, spacing];
+        const workspaceParams = [contentBox, thumbnailsHeight, spacing, startY, this._panelHeight];
         if (!transitioning) {
             workspacesBox =
                 this._getWorkspacesBoxForState(currentState, ...workspaceParams);
@@ -759,14 +762,12 @@ const ExtraWorkspaceViewCommon = {
 
     exposeWindows() {
         const adjustment = this._workspace._background._stateAdjustment;
+        opt.WORKSPACE_MODE = 1;
         if (adjustment.value === 0) {
             adjustment.value = 0;
             adjustment.ease(1, {
                 duration: 200,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    opt.WORKSPACE_MODE = 1;
-                },
             });
         }
     },
@@ -805,7 +806,18 @@ const WorkspacesDisplayCommon = {
                         upper: 0, // FitMode.SINGLE,
                     }),
                     this._overviewAdjustment);
-                Main.layoutManager.overviewGroup.add_actor(view);
+                Main.layoutManager.overviewGroup.add_child(view);
+
+                if (opt.CLICK_EMPTY_CLOSE) {
+                    // Allow users to close the overview by clicking on an empty space on the secondary monitor
+                    // The primary monitor overview is handled in the overviewControls
+                    const clickAction = new Clutter.ClickAction();
+                    clickAction.connect('clicked', () => {
+                        Main.overview.hide();
+                    });
+                    view.reactive = true;
+                    view.add_action(clickAction);
+                }
             }
 
             this._workspacesViews.push(view);
@@ -906,15 +918,15 @@ const WorkspacesDisplayCommon = {
             break;
         case Clutter.KEY_space:
             if (Me.Util.isCtrlPressed() && Me.Util.isShiftPressed()) {
-                Me.Util.activateSearchProvider(Me.ESP_PREFIX);
+                Me.Util.openPreferences();
             } else if (Me.Util.isAltPressed()) {
                 Main.ctrlAltTabManager._items.forEach(i => {
                     if (i.sortGroup === 1 && i.name === 'Dash')
                         Main.ctrlAltTabManager.focusGroup(i);
                 });
-            } else if (opt.get('recentFilesSearchProviderModule') && Me.Util.isCtrlPressed()) {
-                Me.Util.activateSearchProvider(Me.RFSP_PREFIX);
-            } else if (opt.get('windowSearchProviderModule')) {
+            } else if (Me.Util.getEnabledExtensions('extensions-search-provider').length && Me.Util.isCtrlPressed()) {
+                Me.Util.activateSearchProvider(Me.ESP_PREFIX);
+            } else if (Me.Util.getEnabledExtensions('windows-search-provider').length) {
                 Me.Util.activateSearchProvider(Me.WSP_PREFIX);
             }
 
@@ -924,7 +936,7 @@ const WorkspacesDisplayCommon = {
         case Clutter.KEY_Right:
         case Clutter.KEY_Up:
         case Clutter.KEY_Tab:
-            if (Main.overview._overview._controls._searchController.searchActive) {
+            if (Main.overview.searchController.searchActive) {
                 Main.overview.searchEntry.grab_key_focus();
             } else if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && state === 1) {
                 // expose windows by "clicking" on ws thumbnail

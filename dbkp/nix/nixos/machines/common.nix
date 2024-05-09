@@ -21,6 +21,7 @@ rec {
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
   };
   environment.etc."profile.local".text = ''
+    alias sudo=doas
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.gcc.cc.lib}/lib
   '';
 
@@ -51,7 +52,7 @@ rec {
   # time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_CTYPE = "en_US.UTF-8";
     LC_NUMERIC = "pt_BR.UTF-8";
@@ -66,7 +67,11 @@ rec {
     LC_MEASUREMENT = "fr_FR.UTF-8";
     LC_IDENTIFICATION = "fr_FR.UTF-8";
   };
-  i18n.supportedLocales = [ "all" ];
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "fr_FR.UTF-8/UTF-8"
+    "pt_BR.UTF-8/UTF-8"
+  ];
 
   location.provider = "geoclue2";
 
@@ -292,6 +297,14 @@ rec {
       userServices = true;
     };
   };
+
+  security.doas.enable = true;
+  security.sudo.enable = false;
+  security.doas.extraRules = [{
+    users = [ "alan" ];
+    keepEnv = true;
+    persist = true;
+  }];
 
   # Hardening
   programs.firejail.enable = true;

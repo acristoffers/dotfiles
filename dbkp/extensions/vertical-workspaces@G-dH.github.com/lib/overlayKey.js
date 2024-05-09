@@ -3,7 +3,7 @@
  * overlayKey.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -41,7 +41,7 @@ export const OverlayKeyModule = class {
         this.moduleEnabled = opt.get('overlayKeyModule');
         const conflict = false;
         // Avoid modifying the overlay key if its configuration is consistent with the GNOME default
-        const defaultConfig = opt.OVERLAY_KEY_PRIMARY === 2 && opt.OVERLAY_KEY_SECONDARY === 1;
+        const defaultConfig = opt.OVERVIEW_MODE === 0 && opt.OVERLAY_KEY_PRIMARY === 2 && opt.OVERLAY_KEY_SECONDARY === 1;
 
         reset = reset || !this.moduleEnabled || conflict || defaultConfig;
 
@@ -137,7 +137,7 @@ export const OverlayKeyModule = class {
                 opt.OVERVIEW_MODE2 = false;
                 opt.WORKSPACE_MODE = 1;
                 break;
-            case 3: // Default overview
+            case 3: // App grid
                 if (Main.overview._shown)
                     Main.overview.hide();
                 else

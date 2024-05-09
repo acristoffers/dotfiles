@@ -3,7 +3,7 @@
  * extension.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -50,10 +50,6 @@ import { WindowPreviewModule } from './lib/windowPreview.js';
 import { WorkspaceAnimationModule } from './lib/workspaceAnimation.js';
 import { WorkspaceModule } from './lib/workspace.js';
 import { WorkspaceSwitcherPopupModule } from './lib/workspaceSwitcherPopup.js';
-import { WindowSearchProviderModule } from './lib/windowSearchProvider.js';
-import { RecentFilesSearchProviderModule } from './lib/recentFilesSearchProvider.js';
-import { ExtensionsSearchProviderModule } from './lib/extensionsSearchProvider.js';
-import { WinTmbModule } from './lib/winTmb.js';
 
 let Me;
 // gettext
@@ -73,11 +69,13 @@ export default class VShell extends Extension.Extension {
         Me.gettext = this.gettext.bind(this);
         _ = Me.gettext;
 
-        Me.WSP_PREFIX = WindowSearchProviderModule._PREFIX;
-        Me.RFSP_PREFIX = RecentFilesSearchProviderModule._PREFIX;
-        Me.ESP_PREFIX = ExtensionsSearchProviderModule._PREFIX;
+        // search prefixes for supported search providers
+        Me.WSP_PREFIX = 'wq//';
+        Me.RFSP_PREFIX = 'fq//';
+        Me.ESP_PREFIX = 'eq//';
 
         Me.opt = new Me.Settings.Options(Me);
+        opt = Me.opt;
 
         Me.Util.init(Me);
     }
@@ -90,14 +88,27 @@ export default class VShell extends Extension.Extension {
 
     enable() {
         this._init();
-        // flag for Util.getEnabledExtensions()
-        Me.extensionsLoadIncomplete = Main.layoutManager._startingUp;
-        opt = Me.opt;
-
         this._initModules();
-        this.activateVShell();
 
-        Me.extensionsLoadIncomplete = false;
+        // prevent conflicts during startup
+        let skipStartup = Me.gSettings.get_boolean('delay-startup') ||
+                Me.Util.getEnabledExtensions('ubuntu-dock').length ||
+                Me.Util.getEnabledExtensions('dash-to-dock').length ||
+                Me.Util.getEnabledExtensions('dash-to-panel').length;
+        if (skipStartup && Main.layoutManager._startingUp) {
+            this._startupConId = Main.layoutManager.connect('startup-complete', () => {
+                this._delayedStartup = true;
+                this._activateVShell();
+                // Since VShell has been activated with a delay, move it in extensionOrder
+                let extensionOrder = Main.extensionManager._extensionOrder;
+                const idx = extensionOrder.indexOf(this.metadata.uuid);
+                extensionOrder.push(extensionOrder.splice(idx, 1)[0]);
+                Main.layoutManager.disconnect(this._startupConId);
+                this._startupConId = 0;
+            });
+        } else {
+            this._activateVShell();
+        }
 
         console.debug(`${Me.metadata.name}: enabled`);
     }
@@ -105,14 +116,12 @@ export default class VShell extends Extension.Extension {
     // Reason for using "unlock-dialog" session mode:
     // Updating the "appDisplay" content every time the screen is locked/unlocked takes quite a lot of time and affects the user experience.
     disable() {
+        if (this._startupConId)
+            Main.layoutManager.disconnect(this._startupConId);
         this.removeVShell();
         this._disposeModules();
 
-        // If Dash to Dock is enabled, disabling V-Shell can end in broken overview
-        Main.overview.hide();
-
         console.debug(`${Me.metadata.name}: disabled`);
-
         this._cleanGlobals();
     }
 
@@ -144,10 +153,6 @@ export default class VShell extends Extension.Extension {
         Me.Modules.workspaceSwitcherPopupModule = new WorkspaceSwitcherPopupModule(Me);
         Me.Modules.workspaceThumbnailModule = new WorkspaceThumbnailModule(Me);
         Me.Modules.workspacesViewModule = new WorkspacesViewModule(Me);
-        Me.Modules.windowSearchProviderModule = new WindowSearchProviderModule(Me);
-        Me.Modules.recentFilesSearchProviderModule = new RecentFilesSearchProviderModule(Me);
-        Me.Modules.extensionsSearchProviderModule = new ExtensionsSearchProviderModule(Me);
-        Me.Modules.winTmbModule = new WinTmbModule(Me);
     }
 
     _disposeModules() {
@@ -160,18 +165,22 @@ export default class VShell extends Extension.Extension {
         }
 
         Me.Util.cleanGlobals();
-
         Me.Modules = null;
-        opt = null;
     }
 
-    activateVShell() {
+    _activateVShell() {
         this._enabled = true;
 
         this._originalGetNeighbor = Meta.Workspace.prototype.get_neighbor;
 
         this._removeTimeouts();
         this._timeouts = {};
+
+        if (!Main.layoutManager._startingUp)
+            this._ensureOverviewIsHidden();
+
+        // store dash _workId so we will be able to detect replacement when entering overview
+        this._storeDashId();
 
         // load VShell configuration
         this._updateSettings();
@@ -195,14 +204,18 @@ export default class VShell extends Extension.Extension {
 
         this._updateSettingsConnection();
 
-        // store dash _workId so we will be able to detect replacement when entering overview
-        this._storeDashId();
-
         // workaround for upstream bug - overview always shows workspace 1 instead of the active one after restart
         this._setInitialWsIndex();
+
+        this._resetShellProperties();
     }
 
     removeVShell() {
+        // Rebasing V-Shell when overview is open causes problems
+        // also if Dash to Dock is enabled, disabling V-Shell can result in a broken overview
+        this._ensureOverviewIsHidden();
+        this._resetShellProperties();
+
         this._enabled = false;
 
         const reset = true;
@@ -217,25 +230,51 @@ export default class VShell extends Extension.Extension {
         // switch PageUp/PageDown workspace switcher shortcuts
         this._switchPageShortcuts();
 
-        // remove any position offsets from dash and ws thumbnails
-        if (!Me.Util.dashNotDefault()) {
-            Main.overview.dash.translation_x = 0;
-            Main.overview.dash.translation_y = 0;
-        }
-        Main.overview._overview._controls._thumbnailsBox.translation_x = 0;
-        Main.overview._overview._controls._thumbnailsBox.translation_y = 0;
-        Main.overview._overview._controls._searchEntryBin.translation_y = 0;
-        Main.overview._overview._controls.set_child_above_sibling(Main.overview._overview._controls._workspacesDisplay, null);
-        // restore default animation speed
-        St.Settings.get().slow_down_factor = 1;
-
-        // restore default dash background style
-        Main.overview.dash._background.set_style('');
         // hide status message if shown
         this._showStatusMessage(false);
         this._prevDash = null;
 
+        // restore default animation speed
+        St.Settings.get().slow_down_factor = 1;
+
         Meta.Workspace.prototype.get_neighbor = this._originalGetNeighbor;
+    }
+
+    _ensureOverviewIsHidden() {
+        if (Main.overview._shown) {
+            Main.overview._shown = false;
+            // Main.overview._animationInProgress = true;
+            Main.overview._visibleTarget = false;
+            Main.overview._overview.prepareToLeaveOverview();
+            Main.overview._changeShownState('HIDING');
+            Main.overview._hideDone();
+            Main.overview.dash.showAppsButton.checked = false;
+        }
+    }
+
+    _resetShellProperties() {
+        const controls = Main.overview._overview.controls;
+        // remove any position offsets from dash and ws thumbnails
+        if (!Me.Util.dashNotDefault()) {
+            controls.dash.translation_x = 0;
+            controls.dash.translation_y = 0;
+        }
+        controls._thumbnailsBox.translation_x = 0;
+        controls._thumbnailsBox.translation_y = 0;
+        controls._searchEntryBin.translation_y = 0;
+        controls._workspacesDisplay.scale_x = 1;
+        controls.set_child_above_sibling(controls._workspacesDisplay, null);
+
+        // following properties may be reduced if extensions are rebased while the overview is open
+        controls._thumbnailsBox.remove_all_transitions();
+        controls._thumbnailsBox.scale_x = 1;
+        controls._thumbnailsBox.scale_y = 1;
+        controls._thumbnailsBox.opacity = 255;
+
+        controls._searchController._searchResults.opacity = 255;
+
+        // restore default dash background style
+        controls.dash._background.set_style('');
     }
 
     _removeTimeouts() {
@@ -277,7 +316,6 @@ export default class VShell extends Extension.Extension {
         if (!this._monitorsChangedConId)
             this._monitorsChangedConId = Main.layoutManager.connect('monitors-changed', () => this._updateVShell(2000));
 
-
         if (!this._showingOverviewConId)
             this._showingOverviewConId = Main.overview.connect('showing', this._onShowingOverview.bind(this));
 
@@ -289,15 +327,15 @@ export default class VShell extends Extension.Extension {
                         () => {
                             Me.Modules.panelModule.update();
                             Me.Modules.overviewControlsModule.update();
-                            Me.Modules.winTmbModule.showThumbnails();
 
                             this._timeouts.unlock = 0;
                             return GLib.SOURCE_REMOVE;
                         }
                     );
                 } else if (session.currentMode === 'unlock-dialog') {
-                    Me.Modules.panelModule.update(true);
-                    Me.Modules.winTmbModule.hideThumbnails();
+                    Me.Modules.panelModule.update();
+                    Main.layoutManager.panelBox.translation_y = 0;
+                    Main.panel.opacity = 255;
                 }
             });
         }
@@ -332,6 +370,40 @@ export default class VShell extends Extension.Extension {
                 }
             );
         }
+
+        this._updateNewWindowConnection();
+    }
+
+    _updateNewWindowConnection() {
+        const nMonitors = global.display.get_n_monitors();
+        if (nMonitors > 1 && opt.FIX_NEW_WINDOW_MONITOR && !this._newWindowCreatedConId) {
+            this._newWindowCreatedConId = global.display.connect_after('window-created', (w, win) => {
+                if (Main.layoutManager._startingUp || win.get_window_type() !== Meta.WindowType.NORMAL)
+                    return;
+                const winActor = win.get_compositor_private();
+                const _moveWinToMonitor = () => {
+                    const currentMonitor = global.display.get_current_monitor();
+                    if (win.get_monitor() !== currentMonitor) {
+                        // some windows ignore this action if executed immediately
+                        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                            win.move_to_monitor(currentMonitor);
+                            return GLib.SOURCE_REMOVE;
+                        });
+                    }
+                };
+                if (!winActor.realized) {
+                    const realizeId = winActor.connect('realize', () => {
+                        winActor.disconnect(realizeId);
+                        _moveWinToMonitor();
+                    });
+                } else {
+                    _moveWinToMonitor();
+                }
+            });
+        } else if ((nMonitors.length === 1 || !opt.FIX_NEW_WINDOW_MONITOR) && this._newWindowCreatedConId) {
+            global.display.disconnect(this._newWindowCreatedConId);
+            this._newWindowCreatedConId = 0;
+        }
     }
 
     _removeConnections() {
@@ -354,6 +426,11 @@ export default class VShell extends Extension.Extension {
             Main.extensionManager.disconnect(this._watchDockSigId);
             this._watchDockSigId = 0;
         }
+
+        if (this._newWindowCreatedConId) {
+            global.display.disconnect(this._newWindowCreatedConId);
+            this._newWindowCreatedConId = 0;
+        }
     }
 
     _updateOverrides(reset = false) {
@@ -368,28 +445,21 @@ export default class VShell extends Extension.Extension {
 
         Me.Modules.layoutModule.update(reset);
         Me.Modules.dashModule.update(reset);
-        // avoid enabling panel module when session is locked
-        if (reset || (!reset && !Main.sessionMode.isLocked))
-            Me.Modules.panelModule.update(reset);
-        // the panel must be visible when screen is locked
-        // at startup time, panel will be updated from the startupAnimation after allocation
-        if (!reset && Main.sessionMode.isLocked && !Main.layoutManager._startingUp)
-            Me.Modules.panelModule._showPanel(true);
-            // PanelModule._showPanel(true);
-            // hide panel so it appears directly on the final place
-        /* else if (Main.layoutManager._startingUp && !Meta.is_restart())
-            Main.panel.opacity = 0;*/
+        Me.Modules.panelModule.update(reset);
 
         Me.Modules.workspaceAnimationModule.update(reset);
         Me.Modules.workspaceSwitcherPopupModule.update(reset);
-
         Me.Modules.swipeTrackerModule.update(reset);
-
         Me.Modules.searchModule.update(reset);
 
-        Me.Modules.windowSearchProviderModule.update(reset);
-        Me.Modules.recentFilesSearchProviderModule.update(reset);
-        Me.Modules.extensionsSearchProviderModule.update(reset);
+        Me.Modules.appDisplayModule.update(reset);
+
+        Me.Modules.windowAttentionHandlerModule.update(reset);
+        Me.Modules.appFavoritesModule.update(reset);
+        Me.Modules.messageTrayModule.update(reset);
+        Me.Modules.osdWindowModule.update(reset);
+        Me.Modules.overlayKeyModule.update(reset);
+        Me.Modules.searchControllerModule.update(reset);
 
         if (Main.sessionMode.isLocked)
             this._sessionLockActive = true;
@@ -402,19 +472,12 @@ export default class VShell extends Extension.Extension {
         if (!Main.sessionMode.isLocked)
             this._sessionLockActive = false;
 
-        // iconGridModule will be updated from appDisplayModule
-        Me.Modules.appDisplayModule.update(reset);
-
-        Me.Modules.windowAttentionHandlerModule.update(reset);
-        Me.Modules.appFavoritesModule.update(reset);
-        Me.Modules.messageTrayModule.update(reset);
-        Me.Modules.osdWindowModule.update(reset);
-        Me.Modules.overlayKeyModule.update(reset);
-        Me.Modules.searchControllerModule.update(reset);
-        Me.Modules.winTmbModule.update(reset);
-
         if (!reset && !Main.layoutManager._startingUp)
             Main.overview._overview.controls.setInitialTranslations();
+        if (this._sessionLockActive) {
+            Main.layoutManager.panelBox.translation_y = 0;
+            Main.panel.opacity = 255;
+        }
     }
 
     _onShowingOverview() {
@@ -463,7 +526,7 @@ export default class VShell extends Extension.Extension {
                     console.warn(`[${Me.metadata.name}]: Updating extension ...`);
                     // for case the monitor configuration has been changed, update all
                     Me._resetInProgress = true;
-                    this.activateVShell();
+                    this._activateVShell();
                     Me._resetInProgress = false;
                 }
                 this._timeouts.reset = 0;
@@ -497,7 +560,7 @@ export default class VShell extends Extension.Extension {
             this._timeouts.loadingProfile = GLib.timeout_add(
                 GLib.PRIORITY_DEFAULT,
                 100, () => {
-                    this.activateVShell();
+                    this._activateVShell();
                     this._timeouts.loadingProfile = 0;
                     return GLib.SOURCE_REMOVE;
                 });
@@ -525,14 +588,11 @@ export default class VShell extends Extension.Extension {
         opt.DASH_VISIBLE = opt.DASH_VISIBLE && !Me.Util.getEnabledExtensions('dash-to-panel@jderose9.github.com').length;
 
         const monitorWidth = global.display.get_monitor_geometry(global.display.get_primary_monitor()).width;
-        if (monitorWidth < 1600) {
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        if (monitorWidth / scaleFactor < 1600) {
             opt.APP_GRID_ICON_SIZE_DEFAULT = opt.APP_GRID_ACTIVE_PREVIEW && !opt.APP_GRID_USAGE ? 128 : 64;
             opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT = 64;
         }
-
-        /* if (!Me.Util.dashIsDashToDock()) { // DtD has its own opacity control
-            Me.Modules.dashModule.updateStyle(dash);
-        }*/
 
         // adjust search entry style for OM2
         if (opt.OVERVIEW_MODE2)
@@ -549,17 +609,17 @@ export default class VShell extends Extension.Extension {
         Main.overview.searchEntry.opacity = 255;
         St.Settings.get().slow_down_factor = opt.ANIMATION_TIME_FACTOR;
 
-        opt.START_Y_OFFSET = (opt.get('panelModule') && opt.PANEL_OVERVIEW_ONLY && opt.PANEL_POSITION_TOP) ||
-            // better to add unnecessary space than to have a panel overlapping other objects
-            Me.Util.getEnabledExtensions('hidetopbar').length
-            ? Main.panel.height
-            : 0;
-
         // Options for workspace switcher, apply custom function only if needed
         if (opt.WS_WRAPAROUND || opt.WS_IGNORE_LAST)
             Meta.Workspace.prototype.get_neighbor = this._getNeighbor;
         else
             Meta.Workspace.prototype.get_neighbor = this._originalGetNeighbor;
+
+        // delay search so it doesn't make the search view transition stuttering
+        // 150 is the default value in GNOME Shell, but the search feels laggy
+        // Of course there is some overload for fast keyboard typist
+        if (opt.SEARCH_VIEW_ANIMATION)
+            opt.SEARCH_DELAY = 150;
 
         if (settings)
             this._applySettings(key);
@@ -622,6 +682,9 @@ export default class VShell extends Extension.Extension {
             break;
         case 'ws-switcher-mode':
             Me.Modules.windowManagerModule.update();
+            break;
+        case 'new-window-monitor-fix':
+            this._updateNewWindowConnection();
             break;
         }
 
@@ -741,7 +804,9 @@ export default class VShell extends Extension.Extension {
         if (!Me._vShellStatusMessage) {
             const sm = new /* Main.*/RestartMessage(_('Updating V-Shell...'));
             sm.set_style('background-color: rgba(0,0,0,0.3);');
-            sm.open();
+            if (!this._delayedStartup)
+                sm.open();
+            this._delayedStartup = false;
             Me._vShellStatusMessage = sm;
         }
 
@@ -811,8 +876,10 @@ export default class VShell extends Extension.Extension {
     }
 }
 
-const RestartMessage = GObject.registerClass(
-class RestartMessage extends ModalDialog.ModalDialog {
+const RestartMessage = GObject.registerClass({
+    // Registered name should be unique
+    GTypeName: `RestartMessage${Math.floor(Math.random() * 1000)}`,
+}, class RestartMessage extends ModalDialog.ModalDialog {
     _init(message) {
         super._init({
             shellReactive: true,

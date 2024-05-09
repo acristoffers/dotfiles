@@ -171,7 +171,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='info-overview'
+last-panel='background'
 window-state=(1267, 1032, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -718,7 +718,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.347230602660019, 5.0383713999999999)
+night-light-last-coordinates=(49.267528546038491, 4.0285000000000002)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -892,6 +892,7 @@ move-window-to-active-workspace=false
 
 [org/gnome/shell/extensions/vertical-workspaces]
 dash-bg-gs3-style=false
+dash-position-adjust=0
 new-window-focus-fix=true
 overview-bg-blur-sigma=0
 overview-esc-behavior=1
@@ -901,6 +902,7 @@ startup-state=1
 window-attention-mode=2
 ws-preview-bg-radius=15
 ws-thumbnails-position=5
+wst-position-adjust=0
 
 [org/gnome/shell/extensions/windowgestures]
 fn-fullscreen=false
@@ -948,9 +950,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1715155152
+check-timestamp=int64 1715239468
 first-run=false
-flatpak-purge-timestamp=int64 1714910152
+flatpak-purge-timestamp=int64 1715162280
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

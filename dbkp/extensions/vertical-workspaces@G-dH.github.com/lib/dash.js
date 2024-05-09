@@ -3,10 +3,9 @@
  * dash.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022-2023
+ * @copyright  2022-2024
  * @license    GPL-3.0
- * modified dash module of https://github.com/RensAlthuis/vertical-overview extension
- */
+  */
 
 'use strict';
 
@@ -23,7 +22,6 @@ import * as AppFavorites from 'resource:///org/gnome/shell/ui/appFavorites.js';
 import * as AppMenu from 'resource:///org/gnome/shell/ui/appMenu.js';
 import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
 import * as DND from 'resource:///org/gnome/shell/ui/dnd.js';
-import * as IconGrid from 'resource:///org/gnome/shell/ui/iconGrid.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 
 let Me;
@@ -38,6 +36,8 @@ let _timeouts;
 export const BaseIconSizes = [16, 24, 32, 40, 44, 48, 56, 64, 72, 80, 96, 112, 128];
 
 const DASH_ITEM_LABEL_SHOW_TIME = 150;
+
+const shellVersion46 = !Clutter.Container; // Container has been removed in 46
 
 export const DashModule = class {
     constructor(me) {
@@ -130,32 +130,53 @@ export const DashModule = class {
         this._overrides.addOverride('DashIcon', Dash.DashIcon.prototype, DashIconCommon);
         this._overrides.addOverride('AppMenu', AppMenu.AppMenu.prototype, AppMenuCommon);
 
+        if (shellVersion46)
+            dash.add_style_class_name('dash-46');
+
         if (opt.DASH_VERTICAL) {
             // this._overrides.addOverride('Dash', Dash.Dash.prototype, DashVerticalOverride);
-            dash.add_style_class_name('vertical');
+            dash.add_style_class_name(shellVersion46
+                ? 'vertical-46'
+                : 'vertical'
+            );
             this._setOrientation(Clutter.Orientation.VERTICAL);
         } else {
             this._setOrientation(Clutter.Orientation.HORIZONTAL);
+        }
+
+        if (opt.DASH_VERTICAL && opt.DASH_BG_GS3_STYLE) {
+            if (opt.DASH_LEFT) {
+                dash.add_style_class_name(shellVersion46
+                    ? 'vertical-46-gs3-left'
+                    : 'vertical-gs3-left');
+            } else if (opt.DASH_RIGHT) {
+                dash.add_style_class_name(shellVersion46
+                    ? 'vertical-46-gs3-right'
+                    : 'vertical-gs3-right');
+            }
+        } else {
+            dash.remove_style_class_name('vertical-gs3-left');
+            dash.remove_style_class_name('vertical-gs3-right');
+            dash.remove_style_class_name('vertical-46-gs3-left');
+            dash.remove_style_class_name('vertical-46-gs3-right');
         }
 
         if (!this._customWorkId)
             this._customWorkId = Main.initializeDeferredWork(dash._box, dash._redisplay.bind(dash));
         dash._workId = this._customWorkId;
 
-        this._updateSearchWindowsIcon();
-        this._updateRecentFilesIcon();
-        this._updateExtensionsIcon();
         this._moveDashAppGridIcon();
         this._connectShowAppsIcon();
 
         dash.visible = opt.DASH_VISIBLE;
-        dash._background.add_style_class_name('dash-background-reduced');
+        // dash._background.add_style_class_name('dash-background-reduced');
         dash._queueRedisplay();
 
         if (opt.DASH_ISOLATE_WS && !this._wmSwitchWsConId) {
             this._wmSwitchWsConId = global.windowManager.connect('switch-workspace', () => dash._queueRedisplay());
             this._newWindowConId = global.display.connect_after('window-created', () => dash._queueRedisplay());
         }
+
         console.debug('  DashModule - Activated');
     }
 
@@ -181,9 +202,7 @@ export const DashModule = class {
         this._setOrientation(Clutter.Orientation.HORIZONTAL);
         this._moveDashAppGridIcon(reset);
         this._connectShowAppsIcon(reset);
-        this._updateSearchWindowsIcon(false);
-        this._updateRecentFilesIcon(false);
-        this._updateExtensionsIcon(false);
+
         this._resetStyle(dash);
         dash.visible = !this._conflict;
         dash._background.opacity = 255;
@@ -194,8 +213,11 @@ export const DashModule = class {
 
     _resetStyle(dash) {
         dash.remove_style_class_name('vertical');
+        dash.remove_style_class_name('vertical-46');
         dash.remove_style_class_name('vertical-gs3-left');
         dash.remove_style_class_name('vertical-gs3-right');
+        dash.remove_style_class_name('vertical-46-gs3-left');
+        dash.remove_style_class_name('vertical-46-gs3-right');
         dash.remove_style_class_name('vertical-left');
         dash.remove_style_class_name('vertical-right');
         dash._background.remove_style_class_name('dash-background-light');
@@ -237,16 +259,6 @@ export const DashModule = class {
         dash._separator = null;
         dash._queueRedisplay();
         dash._adjustIconSize();
-
-        if (orientation && opt.DASH_BG_GS3_STYLE) {
-            if (opt.DASH_LEFT)
-                dash.add_style_class_name('vertical-gs3-left');
-            else if (opt.DASH_RIGHT)
-                dash.add_style_class_name('vertical-gs3-right');
-        } else {
-            dash.remove_style_class_name('vertical-gs3-left');
-            dash.remove_style_class_name('vertical-gs3-right');
-        }
     }
 
     _moveDashAppGridIcon(reset = false) {
@@ -295,141 +307,6 @@ export const DashModule = class {
             dash._showAppsIcon.reactive = false;
         }
     }
-
-    _updateSearchWindowsIcon(show = opt.SHOW_WINDOWS_ICON, dash) {
-        dash = dash ?? Main.overview._overview._controls.layoutManager._dash;
-        const dashContainer = dash._dashContainer;
-
-        if (dash._showWindowsIcon) {
-            dashContainer.remove_child(dash._showWindowsIcon);
-            if (dash._showWindowsIconClickedId) {
-                dash._showWindowsIcon.toggleButton.disconnect(dash._showWindowsIconClickedId);
-                dash._showWindowsIconClickedId = 0;
-            }
-            delete  dash._showWindowsIconClickedId;
-            if (dash._showWindowsIcon)
-                dash._showWindowsIcon.destroy();
-            delete dash._showWindowsIcon;
-        }
-
-        if (!show || !opt.get('windowSearchProviderModule'))
-            return;
-
-        if (!dash._showWindowsIcon) {
-            dash._showWindowsIcon = new Dash.DashItemContainer();
-            new Me.Util.Overrides().addOverride('showWindowsIcon', dash._showWindowsIcon, ShowWindowsIcon);
-            dash._showWindowsIcon._afterInit();
-            dash._showWindowsIcon.show(false);
-            dashContainer.add_child(dash._showWindowsIcon);
-            dash._hookUpLabel(dash._showWindowsIcon);
-        }
-
-        dash._showWindowsIcon.icon.setIconSize(dash.iconSize);
-        if (opt.SHOW_WINDOWS_ICON === 1) {
-            dashContainer.set_child_at_index(dash._showWindowsIcon, 0);
-        } else if (opt.SHOW_WINDOWS_ICON === 2) {
-            const index = dashContainer.get_children().length - 1;
-            dashContainer.set_child_at_index(dash._showWindowsIcon, index);
-        }
-
-        Main.overview._overview._controls.layoutManager._dash._adjustIconSize();
-
-        if (dash._showWindowsIcon && !dash._showWindowsIconClickedId) {
-            dash._showWindowsIconClickedId = dash._showWindowsIcon.toggleButton.connect('clicked', () => {
-                Me.Util.activateSearchProvider(Me.WSP_PREFIX);
-            });
-        }
-    }
-
-    _updateRecentFilesIcon(show = opt.SHOW_RECENT_FILES_ICON, dash) {
-        dash = dash ?? Main.overview._overview._controls.layoutManager._dash;
-        const dashContainer = dash._dashContainer;
-
-        if (dash._recentFilesIcon) {
-            dashContainer.remove_child(dash._recentFilesIcon);
-            if (dash._recentFilesIconClickedId) {
-                dash._recentFilesIcon.toggleButton.disconnect(dash._recentFilesIconClickedId);
-                dash._recentFilesIconClickedId = 0;
-            }
-            delete dash._recentFilesIconClickedId;
-            if (dash._recentFilesIcon)
-                dash._recentFilesIcon.destroy();
-            delete dash._recentFilesIcon;
-        }
-
-        if (!show || !opt.get('recentFilesSearchProviderModule'))
-            return;
-
-        if (!dash._recentFilesIcon) {
-            dash._recentFilesIcon = new Dash.DashItemContainer();
-            new Me.Util.Overrides().addOverride('recentFilesIcon', dash._recentFilesIcon, ShowRecentFilesIcon);
-            dash._recentFilesIcon._afterInit();
-            dash._recentFilesIcon.show(false);
-            dashContainer.add_child(dash._recentFilesIcon);
-            dash._hookUpLabel(dash._recentFilesIcon);
-        }
-
-        dash._recentFilesIcon.icon.setIconSize(dash.iconSize);
-        if (opt.SHOW_RECENT_FILES_ICON === 1) {
-            dashContainer.set_child_at_index(dash._recentFilesIcon, 0);
-        } else if (opt.SHOW_RECENT_FILES_ICON === 2) {
-            const index = dashContainer.get_children().length - 1;
-            dashContainer.set_child_at_index(dash._recentFilesIcon, index);
-        }
-
-        Main.overview._overview._controls.layoutManager._dash._adjustIconSize();
-
-        if (dash._recentFilesIcon && !dash._recentFilesIconClickedId) {
-            dash._recentFilesIconClickedId = dash._recentFilesIcon.toggleButton.connect('clicked', () => {
-                Me.Util.activateSearchProvider(Me.RFSP_PREFIX);
-            });
-        }
-    }
-
-    _updateExtensionsIcon(show = opt.SHOW_EXTENSIONS_ICON, dash) {
-        dash = dash ?? Main.overview._overview._controls.layoutManager._dash;
-        const dashContainer = dash._dashContainer;
-
-        if (dash._extensionsIcon) {
-            dashContainer.remove_child(dash._extensionsIcon);
-            if (dash._extensionsIconClickedId) {
-                dash._extensionsIcon.toggleButton.disconnect(dash._extensionsIconClickedId);
-                dash._extensionsIconClickedId = 0;
-            }
-            delete dash._extensionsIconClickedId;
-            if (dash._extensionsIcon)
-                dash._extensionsIcon.destroy();
-            delete dash._extensionsIcon;
-        }
-
-        if (!show || !opt.get('extensionsSearchProviderModule'))
-            return;
-
-        if (!dash._extensionsIcon) {
-            dash._extensionsIcon = new Dash.DashItemContainer();
-            new Me.Util.Overrides().addOverride('extensionsIcon', dash._extensionsIcon, ShowExtensionsIcon);
-            dash._extensionsIcon._afterInit();
-            dash._extensionsIcon.show(false);
-            dashContainer.add_child(dash._extensionsIcon);
-            dash._hookUpLabel(dash._extensionsIcon);
-        }
-
-        dash._extensionsIcon.icon.setIconSize(dash.iconSize);
-        if (opt.SHOW_EXTENSIONS_ICON === 1) {
-            dashContainer.set_child_at_index(dash._extensionsIcon, 0);
-        } else if (opt.SHOW_EXTENSIONS_ICON === 2) {
-            const index = dashContainer.get_children().length - 1;
-            dashContainer.set_child_at_index(dash._extensionsIcon, index);
-        }
-
-        Main.overview._overview._controls.layoutManager._dash._adjustIconSize();
-
-        if (dash._extensionsIcon && !dash._extensionsIconClickedId) {
-            dash._extensionsIconClickedId = dash._extensionsIcon.toggleButton.connect('clicked', () => {
-                Me.Util.activateSearchProvider(Me.ESP_PREFIX);
-            });
-        }
-    }
 };
 
 function getAppFromSource(source) {
@@ -475,20 +352,20 @@ const DashItemContainerCommon = {
         let y;
 
         if (opt.DASH_TOP) {
-            const yOffset = 0.75 * itemHeight + 3 * node.get_length('-y-offset');
+            const yOffset = itemHeight + (shellVersion46 ? 0 : -3);
             y = stageY + yOffset;
         } else  if (opt.DASH_BOTTOM) {
             const yOffset = node.get_length('-y-offset');
             y = stageY - this.label.height - yOffset;
         } else if (opt.DASH_RIGHT) {
             const yOffset = Math.floor((itemHeight - labelHeight) / 2);
-            xOffset = 4;
+            xOffset = shellVersion46 ? 8 : 4;
 
             x = stageX - xOffset - this.label.width;
             y = Math.clamp(stageY + yOffset, 0, global.stage.height - labelHeight);
         } else if (opt.DASH_LEFT) {
             const yOffset = Math.floor((itemHeight - labelHeight) / 2);
-            xOffset = 4;
+            xOffset = shellVersion46 ? 8 : 4;
 
             x = stageX + this.width + xOffset;
             y = Math.clamp(stageY + yOffset, 0, global.stage.height - labelHeight);
@@ -744,14 +621,14 @@ const DashCommon = {
         if (this._showAppsIcon.visible)
             iconChildren.push(this._showAppsIcon);
 
+
+        // showWindowsIcon and extensionsIcon can be provided by the WSP and ESP extensions
         if (this._showWindowsIcon)
             iconChildren.push(this._showWindowsIcon);
 
-        if (this._recentFilesIcon)
-            iconChildren.push(this._recentFilesIcon);
-
         if (this._extensionsIcon)
             iconChildren.push(this._extensionsIcon);
+
 
         if (!iconChildren.length)
             return;
@@ -967,12 +844,15 @@ const DashIconCommon = {
             this._scrollConId = this.connect('scroll-event', DashExtensions.onScrollEvent.bind(this));
             this._leaveConId = this.connect('leave-event', DashExtensions.onLeaveEvent.bind(this));
         }
+
+        if (this._updateRunningDotStyle)
+            this._updateRunningDotStyle();
     },
 
-    popupMenu() {
+    /* popupMenu() {
         const side = opt.DASH_VERTICAL ? St.Side.LEFT : St.Side.BOTTOM;
         AppIconCommon.popupMenu.bind(this)(side);
-    },
+    },*/
 
     _updateRunningStyle() {
         const currentWs = global.workspace_manager.get_active_workspace();
@@ -984,6 +864,220 @@ const DashIconCommon = {
             this._dot.show();
         else
             this._dot.hide();
+    },
+
+    /* after__init() {
+        if (this._updateRunningDotStyle)
+            this._updateRunningDotStyle();
+    },*/
+
+    _updateRunningDotStyle() {
+        if (opt.RUNNING_DOT_STYLE)
+            this._dot.add_style_class_name('app-well-app-running-dot-custom');
+        else
+            this._dot.remove_style_class_name('app-well-app-running-dot-custom');
+
+        if (!this.label && shellVersion46) {
+            if (opt.DASH_VERTICAL) {
+                this._dot.translation_y = 0;
+                this._dot.translation_x = 0; // opt.DASH_LEFT ? -4 : 4;
+            } else {
+                this._dot.translation_y = 8;
+                this._dot.translation_x = 0;
+            }
+        }
+    },
+
+    activate(button) {
+        const event = Clutter.get_current_event();
+        const state = event ? event.get_state() : 0;
+        const isMiddleButton = button && button === Clutter.BUTTON_MIDDLE;
+        const isCtrlPressed = Me.Util.isCtrlPressed(state);
+        const isShiftPressed = Me.Util.isShiftPressed(state);
+
+        const currentWS = global.workspace_manager.get_active_workspace();
+        const appRecentWorkspace = this._getAppRecentWorkspace(this.app);
+        // this feature shouldn't affect search results, dash icons don't have labels, so we use them as a condition
+        const showWidowsBeforeActivation = opt.DASH_CLICK_ACTION === 1 && !this.icon.label;
+
+        let targetWindowOnCurrentWs = false;
+        if (opt.DASH_FOLLOW_RECENT_WIN) {
+            targetWindowOnCurrentWs = appRecentWorkspace === currentWS;
+        } else {
+            this.app.get_windows().forEach(
+                w => {
+                    targetWindowOnCurrentWs = targetWindowOnCurrentWs || (w.get_workspace() === currentWS);
+                }
+            );
+        }
+
+        const openNewWindow = this.app.can_open_new_window() &&
+                            this.app.state === Shell.AppState.RUNNING &&
+                            (((isCtrlPressed || isMiddleButton) && !opt.DASH_CLICK_OPEN_NEW_WIN) ||
+                            (opt.DASH_CLICK_OPEN_NEW_WIN && !this._selectedMetaWin && !isMiddleButton) ||
+                            ((opt.DASH_CLICK_PREFER_WORKSPACE || opt.DASH_ISOLATE_WS) && !targetWindowOnCurrentWs));
+
+        if ((this.app.state === Shell.AppState.STOPPED || openNewWindow) && !isShiftPressed)
+            this.animateLaunch();
+
+        if (openNewWindow) {
+            this.app.open_new_window(-1);
+        // if DASH_CLICK_ACTION == "SHOW_WINS_BEFORE", the app has more than one window and has no window on the current workspace,
+        // don't activate the app immediately, only move the overview to the workspace with the app's recent window
+        } else if (showWidowsBeforeActivation && !isShiftPressed && this.app.get_n_windows() > 1 && !targetWindowOnCurrentWs/* && !(opt.OVERVIEW_MODE && !opt.WORKSPACE_MODE)*/) {
+
+            Main.wm.actionMoveWorkspace(appRecentWorkspace);
+            Main.overview.dash.showAppsButton.checked = false;
+            return;
+        } else if (this._selectedMetaWin) {
+            this._selectedMetaWin.activate(global.get_current_time());
+        } else if (showWidowsBeforeActivation && opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !isShiftPressed && this.app.get_n_windows() > 1) {
+            // expose windows
+            Main.overview._overview._controls._thumbnailsBox._activateThumbnailAtPoint(0, 0, global.get_current_time(), true);
+            return;
+        } else if (((opt.DASH_SHIFT_CLICK_MV && isShiftPressed) || ((opt.DASH_CLICK_PREFER_WORKSPACE || opt.DASH_ISOLATE_WS) && !openNewWindow)) && this.app.get_windows().length) {
+            this._moveAppToCurrentWorkspace();
+            if (opt.DASH_ISOLATE_WS) {
+                this.app.activate();
+                // hide the overview after the window is re-created
+                GLib.idle_add(GLib.PRIORITY_LOW, () => Main.overview.hide());
+            }
+            return;
+        } else if (isShiftPressed) {
+            return;
+        } else {
+            this.app.activate();
+        }
+
+        Main.overview.hide();
+    },
+
+    _moveAppToCurrentWorkspace() {
+        this.app.get_windows().forEach(w => w.change_workspace(global.workspace_manager.get_active_workspace()));
+    },
+
+    popupMenu(side = St.Side.LEFT) {
+        side = opt.DASH_VERTICAL ? St.Side.LEFT : St.Side.BOTTOM;
+        // AppIconCommon.popupMenu.bind(this)(side);
+
+        this.setForcedHighlight(true);
+        this._removeMenuTimeout();
+        this.fake_release();
+
+        if (!this._getWindowsOnCurrentWs) {
+            this._getWindowsOnCurrentWs = function () {
+                const winList = [];
+                this.app.get_windows().forEach(w => {
+                    if (w.get_workspace() === global.workspace_manager.get_active_workspace())
+                        winList.push(w);
+                });
+                return winList;
+            };
+
+            this._windowsOnOtherWs = function () {
+                return (this.app.get_windows().length - this._getWindowsOnCurrentWs().length) > 0;
+            };
+        }
+
+        if (!this._menu) {
+            this._menu = new AppMenu.AppMenu(this, side, {
+                favoritesSection: true,
+                showSingleWindows: true,
+            });
+
+            this._menu.setApp(this.app);
+            this._openSigId = this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
+                if (!isPoppedUp)
+                    this._onMenuPoppedDown();
+            });
+            // Main.overview.connectObject('hiding',
+            this._hidingSigId = Main.overview.connect('hiding',
+                () => this._menu.close(), this);
+
+            Main.uiGroup.add_child(this._menu.actor);
+            this._menuManager.addMenu(this._menu);
+        }
+
+        // once the menu is created, it stays unchanged and we need to modify our items based on current situation
+        if (this._addedMenuItems && this._addedMenuItems.length)
+            this._addedMenuItems.forEach(i => i.destroy());
+
+
+        const popupItems = [];
+
+        const separator = new PopupMenu.PopupSeparatorMenuItem();
+        this._menu.addMenuItem(separator);
+
+        if (this.app.get_n_windows()) {
+            // if (/* opt.APP_MENU_FORCE_QUIT*/true) {}
+            popupItems.push([_('Force Quit'), () => {
+                this.app.get_windows()[0].kill();
+            }]);
+
+            // if (opt.APP_MENU_CLOSE_WS) {}
+            const nWin = this._getWindowsOnCurrentWs().length;
+            if (nWin) {
+                popupItems.push([_(`Close ${nWin} Windows on Current Workspace`), () => {
+                    const windows = this._getWindowsOnCurrentWs();
+                    let time = global.get_current_time();
+                    for (let win of windows) {
+                    // increase time by 1 ms for each window to avoid errors from GS
+                        win.delete(time++);
+                    }
+                }]);
+            }
+
+
+            popupItems.push([_('Move App to Current Workspace ( Shift + Click )'), this._moveAppToCurrentWorkspace]);
+            // WTMB (Windows Thumbnails) extension required
+            if (global.windowThumbnails) {
+                popupItems.push([_('Create Window Thumbnail/PiP'), () => {
+                    global.windowThumbnails?.createThumbnail(this.app.get_windows()[0]);
+                }]);
+            }
+        }
+
+        this._addedMenuItems = [];
+        this._addedMenuItems.push(separator);
+        popupItems.forEach(i => {
+            let item = new PopupMenu.PopupMenuItem(i[0]);
+            this._menu.addMenuItem(item);
+            item.connect('activate', i[1].bind(this));
+            if (i[1] === this._moveAppToCurrentWorkspace && !this._windowsOnOtherWs())
+                item.setSensitive(false);
+            this._addedMenuItems.push(item);
+        });
+
+        this.emit('menu-state-changed', true);
+
+        this._menu.open(BoxPointer.PopupAnimation.FULL);
+        this._menuManager.ignoreRelease();
+        this.emit('sync-tooltip');
+
+        return false;
+    },
+
+    _getWindowApp(metaWin) {
+        const tracker = Shell.WindowTracker.get_default();
+        return tracker.get_window_app(metaWin);
+    },
+
+    _getAppLastUsedWindow(app) {
+        let recentWin;
+        global.display.get_tab_list(Meta.TabList.NORMAL_ALL, null).forEach(metaWin => {
+            const winApp = this._getWindowApp(metaWin);
+            if (!recentWin && winApp === app)
+                recentWin = metaWin;
+        });
+        return recentWin;
+    },
+
+    _getAppRecentWorkspace(app) {
+        const recentWin = this._getAppLastUsedWindow(app);
+        if (recentWin)
+            return recentWin.get_workspace();
+
+        return null;
     },
 };
 
@@ -1172,305 +1266,6 @@ const AppIconCommon = {
             this._dot.add_style_class_name('app-well-app-running-dot-custom');
         else
             this._dot.remove_style_class_name('app-well-app-running-dot-custom');
-    },
-
-    activate(button) {
-        const event = Clutter.get_current_event();
-        const state = event ? event.get_state() : 0;
-        const isMiddleButton = button && button === Clutter.BUTTON_MIDDLE;
-        const isCtrlPressed = Me.Util.isCtrlPressed(state);
-        const isShiftPressed = Me.Util.isShiftPressed(state);
-
-        const currentWS = global.workspace_manager.get_active_workspace();
-        const appRecentWorkspace = this._getAppRecentWorkspace(this.app);
-        // this feature shouldn't affect search results, dash icons don't have labels, so we use them as a condition
-        const showWidowsBeforeActivation = opt.DASH_CLICK_ACTION === 1 && !this.icon.label;
-
-        let targetWindowOnCurrentWs = false;
-        if (opt.DASH_FOLLOW_RECENT_WIN) {
-            targetWindowOnCurrentWs = appRecentWorkspace === currentWS;
-        } else {
-            this.app.get_windows().forEach(
-                w => {
-                    targetWindowOnCurrentWs = targetWindowOnCurrentWs || (w.get_workspace() === currentWS);
-                }
-            );
-        }
-
-        const openNewWindow = this.app.can_open_new_window() &&
-                            this.app.state === Shell.AppState.RUNNING &&
-                            (((isCtrlPressed || isMiddleButton) && !opt.DASH_CLICK_OPEN_NEW_WIN) ||
-                            (opt.DASH_CLICK_OPEN_NEW_WIN && !this._selectedMetaWin && !isMiddleButton) ||
-                            ((opt.DASH_CLICK_PREFER_WORKSPACE || opt.DASH_ISOLATE_WS) && !targetWindowOnCurrentWs));
-
-        if ((this.app.state === Shell.AppState.STOPPED || openNewWindow) && !isShiftPressed)
-            this.animateLaunch();
-
-        if (openNewWindow) {
-            this.app.open_new_window(-1);
-        // if DASH_CLICK_ACTION == "SHOW_WINS_BEFORE", the app has more than one window and has no window on the current workspace,
-        // don't activate the app immediately, only move the overview to the workspace with the app's recent window
-        } else if (showWidowsBeforeActivation && !isShiftPressed && this.app.get_n_windows() > 1 && !targetWindowOnCurrentWs/* && !(opt.OVERVIEW_MODE && !opt.WORKSPACE_MODE)*/) {
-
-            Main.wm.actionMoveWorkspace(appRecentWorkspace);
-            Main.overview.dash.showAppsButton.checked = false;
-            return;
-        } else if (this._selectedMetaWin) {
-            this._selectedMetaWin.activate(global.get_current_time());
-        } else if (showWidowsBeforeActivation && opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !isShiftPressed && this.app.get_n_windows() > 1) {
-            // expose windows
-            Main.overview._overview._controls._thumbnailsBox._activateThumbnailAtPoint(0, 0, global.get_current_time(), true);
-            return;
-        } else if (((opt.DASH_SHIFT_CLICK_MV && isShiftPressed) || ((opt.DASH_CLICK_PREFER_WORKSPACE || opt.DASH_ISOLATE_WS) && !openNewWindow)) && this.app.get_windows().length) {
-            this._moveAppToCurrentWorkspace();
-            if (opt.DASH_ISOLATE_WS) {
-                this.app.activate();
-                // hide the overview after the window is re-created
-                GLib.idle_add(GLib.PRIORITY_LOW, () => Main.overview.hide());
-            }
-            return;
-        } else if (isShiftPressed) {
-            return;
-        } else {
-            this.app.activate();
-        }
-
-        Main.overview.hide();
-    },
-
-    _moveAppToCurrentWorkspace() {
-        this.app.get_windows().forEach(w => w.change_workspace(global.workspace_manager.get_active_workspace()));
-    },
-
-    popupMenu(side = St.Side.LEFT) {
-        this.setForcedHighlight(true);
-        this._removeMenuTimeout();
-        this.fake_release();
-
-        if (!this._getWindowsOnCurrentWs) {
-            this._getWindowsOnCurrentWs = function () {
-                const winList = [];
-                this.app.get_windows().forEach(w => {
-                    if (w.get_workspace() === global.workspace_manager.get_active_workspace())
-                        winList.push(w);
-                });
-                return winList;
-            };
-
-            this._windowsOnOtherWs = function () {
-                return (this.app.get_windows().length - this._getWindowsOnCurrentWs().length) > 0;
-            };
-        }
-
-        if (!this._menu) {
-            this._menu = new AppMenu.AppMenu(this, side, {
-                favoritesSection: true,
-                showSingleWindows: true,
-            });
-
-            this._menu.setApp(this.app);
-            this._openSigId = this._menu.connect('open-state-changed', (menu, isPoppedUp) => {
-                if (!isPoppedUp)
-                    this._onMenuPoppedDown();
-            });
-            // Main.overview.connectObject('hiding',
-            this._hidingSigId = Main.overview.connect('hiding',
-                () => this._menu.close(), this);
-
-            Main.uiGroup.add_actor(this._menu.actor);
-            this._menuManager.addMenu(this._menu);
-        }
-
-        // once the menu is created, it stays unchanged and we need to modify our items based on current situation
-        if (this._addedMenuItems && this._addedMenuItems.length)
-            this._addedMenuItems.forEach(i => i.destroy());
-
-
-        const popupItems = [];
-
-        const separator = new PopupMenu.PopupSeparatorMenuItem();
-        this._menu.addMenuItem(separator);
-
-        if (this.app.get_n_windows()) {
-            // if (/* opt.APP_MENU_FORCE_QUIT*/true) {}
-            popupItems.push([_('Force Quit'), () => {
-                this.app.get_windows()[0].kill();
-            }]);
-
-            // if (opt.APP_MENU_CLOSE_WS) {}
-            const nWin = this._getWindowsOnCurrentWs().length;
-            if (nWin) {
-                popupItems.push([_(`Close ${nWin} Windows on Current Workspace`), () => {
-                    const windows = this._getWindowsOnCurrentWs();
-                    let time = global.get_current_time();
-                    for (let win of windows) {
-                    // increase time by 1 ms for each window to avoid errors from GS
-                        win.delete(time++);
-                    }
-                }]);
-            }
-
-            popupItems.push([_('Move App to Current Workspace ( Shift + Click )'), this._moveAppToCurrentWorkspace]);
-            if (opt.WINDOW_THUMBNAIL_ENABLED) {
-                popupItems.push([_('Create Window Thumbnail - PIP'), () => {
-                    Me.Modules.winTmbModule.createThumbnail(this.app.get_windows()[0]);
-                }]);
-            }
-        }
-
-        this._addedMenuItems = [];
-        this._addedMenuItems.push(separator);
-        popupItems.forEach(i => {
-            let item = new PopupMenu.PopupMenuItem(i[0]);
-            this._menu.addMenuItem(item);
-            item.connect('activate', i[1].bind(this));
-            if (i[1] === this._moveAppToCurrentWorkspace && !this._windowsOnOtherWs())
-                item.setSensitive(false);
-            this._addedMenuItems.push(item);
-        });
-
-        this.emit('menu-state-changed', true);
-
-        this._menu.open(BoxPointer.PopupAnimation.FULL);
-        this._menuManager.ignoreRelease();
-        this.emit('sync-tooltip');
-
-        return false;
-    },
-
-    _getWindowApp(metaWin) {
-        const tracker = Shell.WindowTracker.get_default();
-        return tracker.get_window_app(metaWin);
-    },
-
-    _getAppLastUsedWindow(app) {
-        let recentWin;
-        global.display.get_tab_list(Meta.TabList.NORMAL_ALL, null).forEach(metaWin => {
-            const winApp = this._getWindowApp(metaWin);
-            if (!recentWin && winApp === app)
-                recentWin = metaWin;
-        });
-        return recentWin;
-    },
-
-    _getAppRecentWorkspace(app) {
-        const recentWin = this._getAppLastUsedWindow(app);
-        if (recentWin)
-            return recentWin.get_workspace();
-
-        return null;
-    },
-};
-
-const ShowWindowsIcon = {
-    _afterInit() {
-        this._isSearchWindowsIcon = true;
-        this._labelText = _('Search Open Windows (Hotkey: Space)');
-        this.toggleButton = new St.Button({
-            style_class: 'show-apps',
-            track_hover: true,
-            can_focus: true,
-            toggle_mode: false,
-        });
-
-        this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(this.labelText, {
-            setSizeManually: true,
-            showLabel: false,
-            createIcon: this._createIcon.bind(this),
-        });
-        this.icon.y_align = Clutter.ActorAlign.CENTER;
-
-        this.toggleButton.add_actor(this.icon);
-        this.toggleButton._delegate = this;
-
-        this.setChild(this.toggleButton);
-
-        if (opt.SEARCH_WINDOWS_ICON_SCROLL) {
-            this.reactive = true;
-            this._scrollConId = this.connect('scroll-event', DashExtensions.onScrollEvent.bind(this));
-            this._leaveConId = this.connect('leave-event', DashExtensions.onLeaveEvent.bind(this));
-        }
-    },
-
-    _createIcon(size) {
-        this._iconActor = new St.Icon({
-            icon_name: 'focus-windows-symbolic',
-            icon_size: size,
-            style_class: 'show-apps-icon',
-            track_hover: true,
-        });
-        return this._iconActor;
-    },
-};
-
-const ShowRecentFilesIcon = {
-    _afterInit() {
-        this._labelText = _('Search Recent Files (Hotkey: Ctrl + Space)');
-        this.toggleButton = new St.Button({
-            style_class: 'show-apps',
-            track_hover: true,
-            can_focus: true,
-            toggle_mode: false,
-        });
-
-        this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(this.labelText, {
-            setSizeManually: true,
-            showLabel: false,
-            createIcon: this._createIcon.bind(this),
-        });
-        this.icon.y_align = Clutter.ActorAlign.CENTER;
-
-        this.toggleButton.add_actor(this.icon);
-        this.toggleButton._delegate = this;
-
-        this.setChild(this.toggleButton);
-    },
-
-    _createIcon(size) {
-        this._iconActor = new St.Icon({
-            icon_name: 'document-open-recent-symbolic',
-            icon_size: size,
-            style_class: 'show-apps-icon',
-            track_hover: true,
-        });
-        return this._iconActor;
-    },
-};
-
-const ShowExtensionsIcon = {
-    _afterInit() {
-        this._labelText = _('Search Extensions (Hotkey: Ctrl + Shift + Space)');
-        this.toggleButton = new St.Button({
-            style_class: 'show-apps',
-            track_hover: true,
-            can_focus: true,
-            toggle_mode: false,
-        });
-
-        this._iconActor = null;
-        this.icon = new IconGrid.BaseIcon(this.labelText, {
-            setSizeManually: true,
-            showLabel: false,
-            createIcon: this._createIcon.bind(this),
-        });
-        this.icon.y_align = Clutter.ActorAlign.CENTER;
-
-        this.toggleButton.add_actor(this.icon);
-        this.toggleButton._delegate = this;
-
-        this.setChild(this.toggleButton);
-    },
-
-    _createIcon(size) {
-        this._iconActor = new St.Icon({
-            icon_name: 'application-x-addon-symbolic',
-            icon_size: size,
-            style_class: 'show-apps-icon',
-            track_hover: true,
-        });
-        return this._iconActor;
     },
 };
 

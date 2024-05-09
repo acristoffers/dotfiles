@@ -3,7 +3,7 @@
  * appDisplay.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -29,10 +29,13 @@ let opt;
 // gettext
 let _;
 
+let _appDisplay;
 let _timeouts;
 
 const APP_ICON_TITLE_EXPAND_TIME = 200;
 const APP_ICON_TITLE_COLLAPSE_TIME = 100;
+
+const shellVersion46 = !Clutter.Container; // Container has been removed in 46
 
 function _getCategories(info) {
     let categoriesStr = info.get_categories();
@@ -55,11 +58,12 @@ export const AppDisplayModule = class {
         opt = Me.opt;
         _  = Me.gettext;
 
+        _appDisplay = Main.overview._overview.controls._appDisplay;
+
         this._firstActivation = true;
         this.moduleEnabled = false;
         this._overrides = null;
 
-        this._appGridLayoutSettings =  null;
         this._appDisplayScrollConId =  0;
         this._appSystemStateConId =  0;
         this._appGridLayoutConId =  0;
@@ -71,6 +75,7 @@ export const AppDisplayModule = class {
         Me = null;
         opt = null;
         _ = null;
+        _appDisplay = null;
     }
 
     update(reset) {
@@ -102,55 +107,33 @@ export const AppDisplayModule = class {
 
         _timeouts = {};
 
-        // Common
+        // Common/appDisplay
         // this._overrides.addOverride('BaseAppViewCommon', AppDisplay.BaseAppView.prototype, BaseAppViewCommon);
-        // instead of overriding inaccessible BaseAppView class, we override its children - AppDisplay and FolderView
+        // instead of overriding inaccessible BaseAppView class, we override its subclasses - AppDisplay and FolderView
         this._overrides.addOverride('BaseAppViewCommonApp', AppDisplay.AppDisplay.prototype, BaseAppViewCommon);
-        this._overrides.addOverride('BaseAppViewCommonFolder', AppDisplay.FolderView.prototype, BaseAppViewCommon);
-        this._overrides.addOverride('FolderView', AppDisplay.FolderView.prototype, FolderView);
         this._overrides.addOverride('AppDisplay', AppDisplay.AppDisplay.prototype, AppDisplayCommon);
         this._overrides.addOverride('AppViewItem', AppDisplay.AppViewItem.prototype, AppViewItemCommon);
+        this._overrides.addOverride('AppIcon', AppDisplay.AppIcon.prototype, AppIcon);
+        this._overrides.addOverride('AppGridLayout', _appDisplay._appGridLayout, BaseAppViewGridLayout);
+        _appDisplay._appGridLayout._isAppDisplay = true;
+
+        // Custom folders
+        this._overrides.addOverride('BaseAppViewCommonFolder', AppDisplay.FolderView.prototype, BaseAppViewCommon);
+        this._overrides.addOverride('FolderView', AppDisplay.FolderView.prototype, FolderView);
+        this._overrides.addOverride('AppFolderDialog', AppDisplay.AppFolderDialog.prototype, AppFolderDialog);
         this._overrides.addOverride('FolderIcon', AppDisplay.FolderIcon.prototype, FolderIcon);
         if (opt.APP_GRID_ACTIVE_PREVIEW)
-            this._overrides.addOverride('ActiveFolderIcon', AppDisplay.FolderIcon, ActiveFolderIcon);
-        this._overrides.addOverride('AppIcon', AppDisplay.AppIcon.prototype, AppIcon);
+            this._overrides.addOverride('ActiveFolderIcon', AppDisplay.FolderIcon.prototype, ActiveFolderIcon);
+        else
+            this._overrides.removeOverride('ActiveFolderIcon');
 
-        if (opt.ORIENTATION === Clutter.Orientation.VERTICAL) {
-            // this._overrides.addOverride('BaseAppViewVertical', AppDisplay.BaseAppView.prototype, BaseAppViewVertical);
-            this._overrides.addOverride('BaseAppViewVerticalApp', AppDisplay.AppDisplay.prototype, BaseAppViewVertical);
-            this._overrides.addOverride('BaseAppViewVerticalFolder', AppDisplay.FolderView.prototype, BaseAppViewVertical);
-            this._overrides.addOverride('AppDisplayVertical', AppDisplay.AppDisplay.prototype, AppDisplayVertical);
-        }
-
-        // Custom App Grid
-        this._overrides.addOverride('AppFolderDialog', AppDisplay.AppFolderDialog.prototype, AppFolderDialog);
-
-        // BaseAppViewGridLayout is not exported, we can only access current instance
-        this._overrides.addOverride('BaseAppViewGridLayout', Main.overview._overview.controls._appDisplay._appGridLayout, BaseAppViewGridLayout);
-        // this._overrides.addOverride('FolderGrid', AppDisplay.FolderGrid.prototype, FolderGrid);
-
-        this._setAppDisplayOrientation(opt.ORIENTATION === Clutter.Orientation.VERTICAL);
+        this._setAppDisplayOrientation(opt.ORIENTATION);
         this._updateDND();
-
-        const appDisplay = Main.overview._overview.controls._appDisplay;
-
-        if (!this._originalWorkId)
-            this._originalWorkId = appDisplay._redisplayWorkId;
-        if (!this._newWorkId) {
-            appDisplay._redisplayWorkId = Main.initializeDeferredWork(appDisplay, () => {
-                appDisplay._redisplay();
-                if (appDisplay._overviewHiddenId === 0)
-                    appDisplay._overviewHiddenId = Main.overview.connect('hidden', () => appDisplay.goToPage(0));
-            });
-            this._newWorkId = appDisplay._redisplayWorkId;
-        } else {
-            appDisplay._redisplayWorkId = this._newWorkId;
-        }
-
 
         if (!Main.sessionMode.isGreeter)
             this._updateAppDisplayProperties();
 
+        _appDisplay.add_style_class_name('app-display-46');
         console.debug('  AppDisplayModule - Activated');
     }
 
@@ -162,15 +145,13 @@ export const AppDisplayModule = class {
         this._overrides = null;
 
         const reset = true;
-        this._setAppDisplayOrientation(false);
+        this._setAppDisplayOrientation(Clutter.Orientation.HORIZONTAL);
         this._updateAppDisplayProperties(reset);
         this._updateDND(reset);
         this._restoreOverviewGroup();
         this._removeStatusMessage();
 
-        // register a new appDisplay workId so the original code will be called from the callback
-        const appDisplay = Main.overview._overview.controls._appDisplay;
-        appDisplay._redisplayWorkId = this._originalWorkId;
+        _appDisplay.remove_style_class_name('app-display-46');
 
         console.debug('  AppDisplayModule - Disabled');
     }
@@ -185,129 +166,120 @@ export const AppDisplayModule = class {
         }
     }
 
-    _setAppDisplayOrientation(vertical = false) {
-        const CLUTTER_ORIENTATION = vertical ? Clutter.Orientation.VERTICAL : Clutter.Orientation.HORIZONTAL;
-        const scroll = vertical ? 'vscroll' : 'hscroll';
-        // app display to vertical has issues - page indicator not working
-        // global appDisplay orientation switch is not built-in
-        let appDisplay = Main.overview._overview._controls._appDisplay;
+    _setAppDisplayOrientation(orientation) {
         // following line itself only changes in which axis will operate overshoot detection which switches appDisplay pages while dragging app icon to vertical
-        appDisplay._orientation = CLUTTER_ORIENTATION;
-        appDisplay._grid.layoutManager._orientation = CLUTTER_ORIENTATION;
-        appDisplay._swipeTracker.orientation = CLUTTER_ORIENTATION;
-        appDisplay._swipeTracker._reset();
-        if (vertical) {
-            appDisplay._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
+        _appDisplay._orientation = orientation;
+        _appDisplay._grid.layoutManager._orientation = orientation;
+        _appDisplay._swipeTracker.orientation = orientation;
+        _appDisplay._swipeTracker._reset();
+        if (orientation) {
+            _appDisplay._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
 
             // move and change orientation of page indicators
-            const pageIndicators = appDisplay._pageIndicators;
+            const pageIndicators = _appDisplay._pageIndicators;
             pageIndicators.vertical = true;
-            appDisplay._box.vertical = false;
+            _appDisplay._box.vertical = false;
             pageIndicators.x_expand = false;
             pageIndicators.y_align = Clutter.ActorAlign.CENTER;
             pageIndicators.x_align = Clutter.ActorAlign.START;
+            pageIndicators.remove_style_class_name('page-indicators-horizontal');
+            pageIndicators.add_style_class_name('page-indicators-vertical');
 
-            // moving these bars needs more patching of the appDisplay's code
-            // for now we just change bars style to be more like vertically oriented arrows indicating direction to prev/next page
-            appDisplay._nextPageIndicator.add_style_class_name('nextPageIndicator');
-            appDisplay._prevPageIndicator.add_style_class_name('prevPageIndicator');
-
+            // Change bars style to be more like vertically oriented arrows indicating direction to prev/next page
+            // For horizontally oriented displays, this solution seems better than moving the indicators up and down
+            // because there's usually more horizontal space than vertical
+            _appDisplay._prevPageIndicator.add_style_class_name('prev-page-indicator');
+            _appDisplay._nextPageIndicator.add_style_class_name('next-page-indicator');
             // setting their x_scale to 0 removes the arrows and avoid allocation issues compared to .hide() them
-            appDisplay._nextPageArrow.scale_x = 0;
-            appDisplay._prevPageArrow.scale_x = 0;
+            _appDisplay._nextPageArrow.scale_x = 0;
+            _appDisplay._prevPageArrow.scale_x = 0;
         } else {
-            appDisplay._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
+            _appDisplay._scrollView.set_policy(St.PolicyType.EXTERNAL, St.PolicyType.NEVER);
             if (this._appDisplayScrollConId) {
-                appDisplay._adjustment.disconnect(this._appDisplayScrollConId);
+                _appDisplay._adjustment.disconnect(this._appDisplayScrollConId);
                 this._appDisplayScrollConId = 0;
             }
 
             // restore original page indicators
-            const pageIndicators = appDisplay._pageIndicators;
+            _appDisplay._box.vertical = true;
+            const pageIndicators = _appDisplay._pageIndicators;
             pageIndicators.vertical = false;
-            appDisplay._box.vertical = true;
             pageIndicators.x_expand = true;
             pageIndicators.y_align = Clutter.ActorAlign.END;
             pageIndicators.x_align = Clutter.ActorAlign.CENTER;
+            pageIndicators.remove_style_class_name('page-indicators-vertical');
+            pageIndicators.add_style_class_name('page-indicators-horizontal');
 
             // put back touch friendly navigation buttons
-            const scrollContainer = appDisplay._scrollView.get_parent();
-            if (appDisplay._hintContainer && !appDisplay._hintContainer.get_parent()) {
-                scrollContainer.add_child(appDisplay._hintContainer);
+            const scrollContainer = _appDisplay._scrollView.get_parent();
+            if (_appDisplay._hintContainer && !_appDisplay._hintContainer.get_parent()) {
+                scrollContainer.add_child(_appDisplay._hintContainer);
                 // the hit container covers the entire app grid and added at the top of the stack blocks DND drops
                 // so it needs to be pushed below
-                scrollContainer.set_child_below_sibling(appDisplay._hintContainer, null);
+                scrollContainer.set_child_below_sibling(_appDisplay._hintContainer, null);
             }
 
-            appDisplay._nextPageArrow.scale_x = 1;
-            appDisplay._prevPageArrow.scale_x = 1;
+            _appDisplay._nextPageArrow.scale_x = 1;
+            _appDisplay._prevPageArrow.scale_x = 1;
 
-            appDisplay._nextPageIndicator.remove_style_class_name('nextPageIndicator');
-            appDisplay._prevPageIndicator.remove_style_class_name('prevPageIndicator');
+            _appDisplay._prevPageIndicator.remove_style_class_name('prev-page-indicator');
+            _appDisplay._nextPageIndicator.remove_style_class_name('next-page-indicator');
         }
 
         // value for page indicator is calculated from scroll adjustment, horizontal needs to be replaced by vertical
-        appDisplay._adjustment = appDisplay._scrollView[scroll].adjustment;
-
-        // no need to connect already connected signal (wasn't removed the original one before)
-        if (!vertical) {
-            // reset used appDisplay properties
-            Main.overview._overview._controls._appDisplay.scale_y = 1;
-            Main.overview._overview._controls._appDisplay.scale_x = 1;
-            Main.overview._overview._controls._appDisplay.opacity = 255;
-            return;
-        }
+        _appDisplay._adjustment = orientation
+            ? _appDisplay._scrollView.get_vscroll_bar().adjustment
+            : _appDisplay._scrollView.get_hscroll_bar().adjustment;
 
         // update appGrid dot pages indicators
-        this._appDisplayScrollConId = appDisplay._adjustment.connect('notify::value', adj => {
-            const value = adj.value / adj.page_size;
-            appDisplay._pageIndicators.setCurrentPosition(value);
-        });
+        // no need to connect already connected signal (wasn't removed the original one before)
+        if (orientation && !this._appDisplayScrollConId) {
+            this._appDisplayScrollConId = _appDisplay._adjustment.connect('notify::value', adj => {
+                const value = adj.value / adj.page_size;
+                _appDisplay._pageIndicators.setCurrentPosition(value);
+            });
+        }
     }
 
     // Set App Grid columns, rows, icon size, incomplete pages
     _updateAppDisplayProperties(reset = false) {
         opt._appGridNeedsRedisplay = false;
         // columns, rows, icon size
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        appDisplay.visible = true;
+        _appDisplay.visible = true;
         if (reset) {
-            appDisplay._grid.layoutManager.fixedIconSize = -1;
-            appDisplay._grid.layoutManager.allow_incomplete_pages = true;
-            appDisplay._grid._currentMode = -1;
-            appDisplay._grid.setGridModes();
-            if (this._appGridLayoutSettings) {
-                this._appGridLayoutSettings.disconnect(this._appGridLayoutConId);
+            _appDisplay._grid.layoutManager.fixedIconSize = -1;
+            _appDisplay._grid.layoutManager.allow_incomplete_pages = true;
+            _appDisplay._grid._currentMode = -1;
+            _appDisplay._grid.setGridModes();
+            if (this._appGridLayoutConId) {
+                global.settings.disconnect(this._appGridLayoutConId);
                 this._appGridLayoutConId = 0;
-                this._appGridLayoutSettings = null;
             }
-            appDisplay._redisplay();
+            _appDisplay._redisplay();
 
-            appDisplay._grid.set_style('');
+            _appDisplay._grid.set_style('');
             this._updateAppGrid(reset);
         } else {
             // update grid on layout reset
-            if (!this._appGridLayoutSettings) {
-                this._appGridLayoutSettings = Me.getSettings('org.gnome.shell');
-                this._appGridLayoutConId = this._appGridLayoutSettings.connect('changed::app-picker-layout', this._updateLayout);
-            }
+            if (!this._appGridLayoutConId)
+                this._appGridLayoutConId = global.settings.connect('changed::app-picker-layout', this._updateLayout.bind(this));
 
-            appDisplay._grid.layoutManager.allow_incomplete_pages = opt.APP_GRID_ALLOW_INCOMPLETE_PAGES;
-            // appDisplay._grid.set_style(`column-spacing: ${opt.APP_GRID_SPACING}px; row-spacing: ${opt.APP_GRID_SPACING}px;`);
+            _appDisplay._grid.layoutManager.allow_incomplete_pages = opt.APP_GRID_ALLOW_INCOMPLETE_PAGES;
             // APP_GRID_SPACING constant is used for grid dimensions calculation
             // but sometimes the actual grid spacing properties affect/change the calculated size, therefore we set it lower to avoid this problem
             // main app grid always use available space and the spacing is optimized for the grid dimensions
-            appDisplay._grid.set_style('column-spacing: 5px; row-spacing: 5px;');
+            _appDisplay._grid.set_style('column-spacing: 5px; row-spacing: 5px;');
 
             // force redisplay
-            appDisplay._grid._currentMode = -1;
-            appDisplay._grid.setGridModes();
-            appDisplay._grid.layoutManager.fixedIconSize = opt.APP_GRID_ICON_SIZE;
+            _appDisplay._grid._currentMode = -1;
+            _appDisplay._grid.setGridModes();
+            _appDisplay._grid.layoutManager.fixedIconSize = opt.APP_GRID_ICON_SIZE;
+
             // avoid resetting appDisplay before startup animation
             // x11 shell restart skips startup animation
             if (!Main.layoutManager._startingUp) {
                 this._updateAppGrid();
-            } else if (Main.layoutManager._startingUp && (Meta.is_restart() || Me.Util.dashIsDashToDock())) {
+            } else if (Main.layoutManager._startingUp && Meta.is_restart()) {
                 _timeouts.three = GLib.idle_add(GLib.PRIORITY_LOW, () => {
                     this._updateAppGrid();
                     _timeouts.three = 0;
@@ -324,7 +296,7 @@ export const AppDisplayModule = class {
                     'app-state-changed',
                     () => {
                         this._updateFolderIcons = true;
-                        Main.overview._overview.controls._appDisplay._redisplay();
+                        _appDisplay._redisplay();
                     }
                 );
             }
@@ -340,35 +312,22 @@ export const AppDisplayModule = class {
         Main.layoutManager.overviewGroup.scale_x = 1;
         Main.layoutManager.overviewGroup.scale_y = 1;
         Main.layoutManager.overviewGroup.hide();
-        Main.overview._overview._controls._appDisplay.translation_x = 0;
-        Main.overview._overview._controls._appDisplay.translation_y = 0;
-        Main.overview._overview._controls._appDisplay.visible = true;
-        Main.overview._overview._controls._appDisplay.opacity = 255;
-    }
-
-    // update all invalid positions that may be result of grid/icon size change
-    _updateIconPositions() {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        const layout = JSON.stringify(global.settings.get_value('app-picker-layout').recursiveUnpack());
-        // if app grid layout is empty, sort source alphabetically to avoid misplacing
-        if (layout === JSON.stringify([]) && appDisplay._sortOrderedItemsAlphabetically)
-            appDisplay._sortOrderedItemsAlphabetically();
-        const icons = [...appDisplay._orderedItems];
-        for (let i = 0; i < icons.length; i++)
-            appDisplay._moveItem(icons[i], -1, -1);
+        _appDisplay.translation_x = 0;
+        _appDisplay.translation_y = 0;
+        _appDisplay.visible = true;
+        _appDisplay.opacity = 255;
     }
 
     _removeIcons() {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        const icons = [...appDisplay._orderedItems];
+        const icons = [..._appDisplay._orderedItems];
         for (let i = 0; i < icons.length; i++) {
             const icon = icons[i];
             if (icon._dialog)
                 Main.layoutManager.overviewGroup.remove_child(icon._dialog);
-            appDisplay._removeItem(icon);
+            _appDisplay._removeItem(icon);
             icon.destroy();
         }
-        appDisplay._folderIcons = [];
+        _appDisplay._folderIcons = [];
     }
 
     _removeStatusMessage() {
@@ -383,72 +342,52 @@ export const AppDisplayModule = class {
     }
 
     _updateLayout(settings, key) {
-        const currentValue = JSON.stringify(settings.get_value(key).deep_unpack());
-        const emptyValue = JSON.stringify([]);
-        const customLayout = currentValue !== emptyValue;
-        if (!customLayout) {
+        // Reset the app grid only if the user layout has been completely removed
+        if (!settings.get_value(key).deep_unpack().length) {
             this._updateAppGrid();
         }
     }
 
     _updateAppGrid(reset = false, callback) {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        // reset the grid only if called directly without args or if all folders where removed by using reset button in Settings window
-        // otherwise this function is called every time a user moves icon to another position as a settings callback
-
-        // force update icon size using adaptToSize(), the page size cannot be the same as the current one
-        appDisplay._grid.layoutManager._pageWidth += 1;
-        appDisplay._grid.layoutManager.adaptToSize(appDisplay._grid.layoutManager._pageWidth - 1, appDisplay._grid.layoutManager._pageHeight);
-
-        // don't delay the first screen lock whe extensions are rebased
-        // removing icons takes time and with other
+        // Avoid unnecessary load
         if (!Main.sessionMode.isLocked)
             this._removeIcons();
 
-        appDisplay._redisplay();
+        _appDisplay._grid._currentMode = -1;
+        _appDisplay._redisplay();
 
-        // don't realize appDisplay on disable, or at startup if disabled
-        // always realize appDisplay otherwise to avoid errors while opening folders (that I was unable to trace)
-        if (reset || (!opt.APP_GRID_PERFORMANCE && callback)) {
+        // don't realize appDisplay on disable
+        if (reset) {
             this._removeStatusMessage();
-            if (callback)
-                callback();
             return;
         }
 
-        // workaround - silently realize appDisplay
-        // appDisplay and its content must be "visible" (opacity > 0) on the screen (within monitor geometry)
-        // to realize its objects
-        // this action takes some time and affects animations during the first use
-        // if we do it invisibly before user needs it, it can improve the user's experience
+        // Workaround - silently realize appDisplay
+        // The realization takes some time and affects animations during the first use
+        // If we do it invisibly before the user needs the app grid, it can improve the user's experience
+
+        // Setting OffscreenRedirect allows for appDisplay realization even if it's off screen
+        // so we don't need to move it to the visible part of the stage
+        _appDisplay.offscreen_redirect = Clutter.OffscreenRedirect.ALWAYS;
+        _appDisplay.visible = true;
+        _appDisplay.opacity = 1;
 
         this._exposeAppGrid();
 
         // let the main loop process our changes before continuing
-        _timeouts.one = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            this._updateIconPositions();
-            if (appDisplay._sortOrderedItemsAlphabetically) {
-                appDisplay._sortOrderedItemsAlphabetically();
-                appDisplay._grid.layoutManager._pageWidth += 1;
-                appDisplay._grid.layoutManager.adaptToSize(appDisplay._grid.layoutManager._pageWidth - 1, appDisplay._grid.layoutManager._pageHeight);
-                appDisplay._setLinearPositions(appDisplay._orderedItems);
-            }
+        _timeouts.updateAppGrid = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            _appDisplay._grid.layoutManager.updateIconSize();
+            // Ensure icons are in the proper positions and on the correct pages
+            _appDisplay._updateIconPositions();
 
-            appDisplay._redisplay();
-            // realize also all app folders (by opening them) so the first popup is as smooth as the second one
-            // let the main loop process our changes before continuing
-            _timeouts.two = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-                this._restoreAppGrid();
-                Me._resetInProgress = false;
-                this._removeStatusMessage();
+            this._restoreAppGrid();
+            Me._resetInProgress = false;
+            this._removeStatusMessage();
 
-                if (callback)
-                    callback();
+            if (callback)
+                callback();
 
-                _timeouts.two = 0;
-                return GLib.SOURCE_REMOVE;
-            });
-            _timeouts.one = 0;
+            _timeouts.updateAppGrid = 0;
             return GLib.SOURCE_REMOVE;
         });
     }
@@ -464,93 +403,42 @@ export const AppDisplayModule = class {
             overviewGroup.visible = true;
         }
 
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        appDisplay.opacity = 1;
+        _appDisplay.opacity = 1;
 
-        // find usable value, sometimes it's one, sometime the other...
-        let [x, y] = appDisplay.get_position();
-        let { x1, y1 } = appDisplay.allocation;
-        x = x === Infinity ? 0 : x;
-        y = y === Infinity ? 0 : y;
-        x1 = x1 === Infinity ? 0 : x1;
-        y1 = y1 === Infinity ? 0 : y1;
-        appDisplay.translation_x = -(x ? x : x1);
-        appDisplay.translation_y = -(y ? y : y1);
-        this._exposeAppFolders();
-    }
-
-    _exposeAppFolders() {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        appDisplay._folderIcons.forEach(d => {
-            d._ensureFolderDialog();
-            d._dialog._updateFolderSize();
-            d._dialog.scale_y = 0.0001;
-            d._dialog.show();
-        });
+        if (opt.APP_GRID_PERFORMANCE)
+            this._exposeAppFolders();
     }
 
     _restoreAppGrid() {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        appDisplay.translation_x = 0;
-        appDisplay.translation_y = 0;
-        // appDisplay.opacity = 0;
-        this._hideAppFolders();
+        if (opt.APP_GRID_PERFORMANCE)
+            this._hideAppFolders();
 
         const overviewGroup = Main.layoutManager.overviewGroup;
         if (!Main.overview._shown)
             overviewGroup.hide();
         overviewGroup.scale_y = 1;
         overviewGroup.opacity = 255;
+        _appDisplay.opacity = 0;
+        _appDisplay.visible = !!opt.APP_GRID_ANIMATION;
+    }
 
-        this._removeStatusMessage();
+    _exposeAppFolders() {
+        _appDisplay._folderIcons.forEach(d => {
+            d._ensureFolderDialog();
+            d._dialog.scale_y = 0.0001;
+            d._dialog.show();
+            d._dialog._updateFolderSize();
+        });
     }
 
     _hideAppFolders() {
-        const appDisplay = Main.overview._overview._controls._appDisplay;
-        appDisplay._folderIcons.forEach(d => {
+        _appDisplay._folderIcons.forEach(d => {
             if (d._dialog) {
-                d._dialog._updateFolderSize();
                 d._dialog.hide();
                 d._dialog.scale_y = 1;
             }
         });
     }
-
-    _getWindowApp(metaWin) {
-        const tracker = Shell.WindowTracker.get_default();
-        return tracker.get_window_app(metaWin);
-    }
-
-    _getAppLastUsedWindow(app) {
-        let recentWin;
-        global.display.get_tab_list(Meta.TabList.NORMAL_ALL, null).forEach(metaWin => {
-            const winApp = this._getWindowApp(metaWin);
-            if (!recentWin && winApp === app)
-                recentWin = metaWin;
-        });
-        return recentWin;
-    }
-
-    _getAppRecentWorkspace(app) {
-        const recentWin = this._getAppLastUsedWindow(app);
-        if (recentWin)
-            return recentWin.get_workspace();
-
-        return null;
-    }
-};
-
-const AppDisplayVertical = {
-    // correction of the appGrid size when page indicators were moved from the bottom to the right
-    adaptToSize(width, height) {
-        const [, indicatorWidth] = this._pageIndicators.get_preferred_width(-1);
-        width -= indicatorWidth;
-
-        this._grid.findBestModeForSize(width, height);
-
-        const adaptToSize = AppDisplay.BaseAppView.prototype.adaptToSize.bind(this);
-        adaptToSize(width, height);
-    },
 };
 
 function _getViewFromIcon(icon) {
@@ -730,10 +618,36 @@ const AppDisplayCommon = {
 
         return true;
     },
+
+    // update all invalid positions that may be result of grid/icon size change
+    _updateIconPositions() {
+        const layoutMissing = !global.settings.get_value('app-picker-layout').recursiveUnpack().length;
+        // if app grid layout is empty, sort source alphabetically to avoid misplacing
+        if (layoutMissing && this._sortOrderedItemsAlphabetically)
+            this._sortOrderedItemsAlphabetically();
+        const icons = [...this._orderedItems];
+        for (let i = 0; i < icons.length; i++)
+            this._moveItem(icons[i], -1, -1);
+    },
 };
 
-const BaseAppViewVertical = {
+const BaseAppViewCommon = {
     after__init() {
+        this._pageIndicators.add_style_class_name(
+            opt.ORIENTATION
+                ? 'page-indicators-vertical'
+                : 'page-indicators-horizontal'
+        );
+
+        // Page indicators width is originally calculated as a ratio to the grid size
+        // but we need consistent width for all folder sizes
+        // Because the base class cannot be patched directly (not exported),
+        // replace the method in the current instance
+        this._appGridLayout._getIndicatorsWidth = BaseAppViewGridLayout._getIndicatorsWidth;
+
+        if (!opt.ORIENTATION)
+            return;
+
         this._grid.layoutManager._orientation = Clutter.Orientation.VERTICAL;
         this._scrollView.set_policy(St.PolicyType.NEVER, St.PolicyType.EXTERNAL);
         this._orientation = Clutter.Orientation.VERTICAL;
@@ -744,7 +658,6 @@ const BaseAppViewVertical = {
         this._pageIndicators.x_expand = false;
         this._pageIndicators.y_align = Clutter.ActorAlign.CENTER;
         this._pageIndicators.x_align = Clutter.ActorAlign.START;
-        this._pageIndicators.set_style('margin-right: 10px;');
         // moving these bars needs more patching of the this's code
         // for now we just change bars style to be more like vertically oriented arrows indicating direction to prev/next page
         this._nextPageIndicator.add_style_class_name('nextPageIndicator');
@@ -754,16 +667,14 @@ const BaseAppViewVertical = {
         this._nextPageArrow.scale_x = 0;
         this._prevPageArrow.scale_x = 0;
 
-        this._adjustment = this._scrollView.vscroll.adjustment;
+        this._adjustment = this._scrollView.get_vscroll_bar().adjustment;
 
         this._adjustment.connect('notify::value', adj => {
             const value = adj.value / adj.page_size;
             this._pageIndicators.setCurrentPosition(value);
         });
     },
-};
 
-const BaseAppViewCommon = {
     _sortOrderedItemsAlphabetically(icons = null) {
         if (!icons)
             icons = this._orderedItems;
@@ -855,13 +766,14 @@ const BaseAppViewCommon = {
             else if (opt.APP_GRID_FOLDERS_LAST)
                 appIcons.sort((a, b) => a._folder && !b._folder);
 
-            this._setLinearPositions(appIcons);
+            if (thisIsAppDisplay)
+                this._setLinearPositions(appIcons);
 
             this._orderedItems = appIcons;
         }
 
         this.emit('view-loaded');
-        if (!opt.APP_GRID_ALLOW_INCOMPLETE_PAGES) {
+        if (!opt.APP_GRID_ALLOW_INCOMPLETE_PAGES && thisIsAppDisplay) {
             for (let i = 0; i < this._grid.nPages; i++)
                 this._grid.layoutManager._fillItemVacancies(i);
         }
@@ -945,56 +857,63 @@ const BaseAppViewCommon = {
 
 const BaseAppViewGridLayout = {
     _getIndicatorsWidth(box) {
+        if (!this._isAppDisplay && opt.ORIENTATION)
+            return 0;
+
         const [width, height] = box.get_size();
         const arrows = [
             this._nextPageArrow,
             this._previousPageArrow,
         ];
 
-        const minArrowsWidth = arrows.reduce(
-            (previousWidth, accessory) => {
-                const [min] = accessory.get_preferred_width(height);
-                return Math.max(previousWidth, min);
-            }, 0);
+        let minArrowsWidth;
+        if (opt.ORIENTATION) {
+            minArrowsWidth = 30;
+        } else {
+            minArrowsWidth = arrows.reduce(
+                (previousWidth, accessory) => {
+                    const [min] = accessory.get_preferred_width(height);
+                    return Math.max(previousWidth, min);
+                }, 0);
+        }
 
-        const idealIndicatorWidth = (width * 0.1/* PAGE_PREVIEW_RATIO*/) / 2;
+        const horizontalSize = this._isAppDisplay
+            ? (width * (1 - opt.APP_GRID_PAGE_WIDTH_SCALE)) / 2
+            : 100;
+        const idealIndicatorWidth = Math.max(horizontalSize, minArrowsWidth);
 
-        return Math.max(idealIndicatorWidth, minArrowsWidth);
+        return idealIndicatorWidth;
     },
 };
 
 const FolderIcon = {
     after__init() {
-        /* // If folder preview icons are clickable,
-        // disable opening the folder with primary mouse button and enable the secondary one
-         const buttonMask = opt.APP_GRID_ACTIVE_PREVIEW
-            ? St.ButtonMask.TWO | St.ButtonMask.THREE
-            : St.ButtonMask.ONE | St.ButtonMask.TWO;
-        this.button_mask = buttonMask;*/
         this.button_mask = St.ButtonMask.ONE | St.ButtonMask.TWO;
+        if (shellVersion46)
+            this.add_style_class_name('app-folder-46');
+        else
+            this.add_style_class_name('app-folder-45');
     },
 
     open() {
         this._ensureFolderDialog();
-        // always open folder with the first page
-        this.view._scrollView.vscroll.adjustment.value = 0;
         this._dialog.popup();
     },
 };
 
 const ActiveFolderIcon = {
-    handleDragOver() {
-        return DND.DragMotionResult.CONTINUE;
-    },
+    _canAccept(source) {
+        if (!(source instanceof AppDisplay.AppIcon))
+            return false;
 
-    acceptDrop() {
-        return false;
-    },
+        let view = _getViewFromIcon(source);
+        if (!view || !(view instanceof AppDisplay.AppDisplay))
+            return false;
 
-    _onDragEnd() {
-        this._dragging = false;
-        this.undoScaleAndFade();
-        Main.overview.endItemDrag(this._sourceItem.icon);
+        /* if (this._folder.get_strv('apps').includes(source.id))
+            return false;*/
+
+        return true;
     },
 };
 
@@ -1043,25 +962,25 @@ const FolderView = {
                     child._sourceItem = this._orderedItems[i];
                     child._sourceFolder = this;
                     child.icon.style_class = '';
+                    child.set_style_class_name('');
                     child.icon.set_style('margin: 0; padding: 0;');
                     child._dot.set_style('margin-bottom: 1px;');
                     child.icon.setIconSize(subSize);
+                    child._canAccept = () => false;
 
                     bin.child = child;
 
                     bin.connect('enter-event', () => {
                         bin.ease({
                             duration: 100,
-                            scale_x: 1.14,
-                            scale_y: 1.14,
+                            translation_y: -3,
                             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                         });
                     });
                     bin.connect('leave-event', () => {
                         bin.ease({
                             duration: 100,
-                            scale_x: 1,
-                            scale_y: 1,
+                            translation_y: 0,
                             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                         });
                     });
@@ -1070,10 +989,6 @@ const FolderView = {
 
             layout.attach(bin, rtl ? (i + 1) % gridSize : i % gridSize, Math.floor(i / gridSize), 1, 1);
         }
-
-        // if folder content changed, update folder size, but not if it's empty
-        if (this._dialog && this._dialog._designCapacity !== this._orderedItems.length && this._orderedItems.length)
-            this._dialog._updateFolderSize();
 
         return icon;
     },
@@ -1131,22 +1046,13 @@ const FolderView = {
         });
 
         if (opt.APP_FOLDER_ORDER)
-            Main.overview._overview.controls._appDisplay._sortOrderedItemsAlphabetically(items);
+            _appDisplay._sortOrderedItemsAlphabetically(items);
 
         if (opt.APP_FOLDER_USAGE)
             items.sort((a, b) => Shell.AppUsage.get_default().compare(a.app.id, b.app.id));
 
         this._appIds = this._apps.map(app => app.get_id());
         return items;
-    },
-
-    // 42 only - don't apply appGrid scale on folders
-    adaptToSize(width, height) {
-        if (!opt.ORIENTATION) {
-            const [, indicatorHeight] = this._pageIndicators.get_preferred_height(-1);
-            height -= indicatorHeight;
-        }
-        BaseAppViewCommon.adaptToSize.bind(this)(width, height, true);
     },
 
     acceptDrop(source) {
@@ -1167,13 +1073,17 @@ const FolderView = {
     },
 };
 
-const FolderGrid = GObject.registerClass(
-class FolderGrid extends AppDisplay.AppGrid {
+const FolderGrid = GObject.registerClass({
+    // Registered name should be unique
+    GTypeName: `FolderGrid${Math.floor(Math.random() * 1000)}`,
+}, class FolderGrid extends AppDisplay.AppGrid {
     _init() {
         super._init({
             allow_incomplete_pages: false,
-            columns_per_page: opt.APP_GRID_FOLDER_COLUMNS ? opt.APP_GRID_FOLDER_COLUMNS : 20,
-            rows_per_page: opt.APP_GRID_FOLDER_ROWS ? opt.APP_GRID_FOLDER_ROWS : 20,
+            // For adaptive size (0), set the numbers high enough to fit all the icons
+            // to avoid splitting the icons to pages upon creating the grid
+            columns_per_page: 20,
+            rows_per_page: 20,
             page_halign: Clutter.ActorAlign.CENTER,
             page_valign: Clutter.ActorAlign.CENTER,
         });
@@ -1184,14 +1094,10 @@ class FolderGrid extends AppDisplay.AppGrid {
 
         this.setGridModes([
             {
-                columns: opt.APP_GRID_FOLDER_COLUMNS ? opt.APP_GRID_FOLDER_COLUMNS : 3,
-                rows: opt.APP_GRID_FOLDER_ROWS ? opt.APP_GRID_FOLDER_ROWS : 3,
+                columns: 20,
+                rows: 20,
             },
         ]);
-    }
-
-    adaptToSize(width, height) {
-        this.layout_manager.adaptToSize(width, height);
     }
 });
 
@@ -1200,7 +1106,11 @@ const FOLDER_DIALOG_ANIMATION_TIME = 200; // AppDisplay.FOLDER_DIALOG_ANIMATION_
 const AppFolderDialog = {
     // injection to _init()
     after__init() {
-        this._viewBox.add_style_class_name('app-folder-dialog-vshell');
+        // GS 46 changed the aligning to CENTER which restricts max folder dialog size
+        this._viewBox.set({
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
+        });
 
         // delegate this dialog to the FolderIcon._view
         // so its _createFolderIcon function can update the dialog if folder content changed
@@ -1224,9 +1134,12 @@ const AppFolderDialog = {
     },
 
     after__addFolderNameEntry() {
+        // edit-folder-button class has been replaced with icon-button class which is not transparent in 46
+        this._editButton.add_style_class_name('edit-folder-button');
+
         // Edit button
         this._removeButton = new St.Button({
-            style_class: 'edit-folder-button',
+            style_class: 'icon-button edit-folder-button',
             button_mask: St.ButtonMask.ONE,
             toggle_mode: false,
             reactive: true,
@@ -1256,7 +1169,7 @@ const AppFolderDialog = {
                 folders.splice(folders.indexOf(this._view._id), 1);
 
                 // remove all abandoned folders (usually my own garbage and unwanted default folders...)
-                /* const appFolders = this._appDisplay._folderIcons.map(icon => icon._id);
+                /* const appFolders = _appDisplay._folderIcons.map(icon => icon._id);
                 folders.forEach(folder => {
                     if (!appFolders.includes(folder)) {
                         folders.splice(folders.indexOf(folder._id), 1);
@@ -1271,9 +1184,27 @@ const AppFolderDialog = {
         });
 
         this._entryBox.add_child(this._removeButton);
+        this._entryBox.set_child_at_index(this._removeButton, 0);
 
-        // Adjust empty actor to center the title
-        this._entryBox.get_first_child().width = 82;
+        this._closeButton = new St.Button({
+            style_class: 'icon-button edit-folder-button',
+            button_mask: St.ButtonMask.ONE,
+            toggle_mode: false,
+            reactive: true,
+            can_focus: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
+            child: new St.Icon({
+                icon_name: 'window-close-symbolic',
+                icon_size: 16,
+            }),
+        });
+
+        this._closeButton.connect('clicked', () => {
+            this.popdown();
+        });
+
+        this._entryBox.add_child(this._closeButton);
     },
 
     popup() {
@@ -1292,140 +1223,175 @@ const AppFolderDialog = {
 
         this._needsZoomAndFade = true;
 
-        // the first folder dialog realization needs size correction
-        // so set the folder size, let it realize and then update the folder content
-        if (!this.realized) {
-            this._updateFolderSize();
-            GLib.idle_add(
-                GLib.PRIORITY_DEFAULT,
-                () => {
-                    this._updateFolderSize();
-                }
-            );
+        this.show();
+        this._updateFolderSize();
+        this._view._grid.grab_key_focus();
+        this.emit('open-state-changed', true);
+    },
+
+    vfunc_allocate(box) {
+        // super.allocate(box)
+        St.Bin.prototype.vfunc_allocate.bind(this)(box);
+
+        // Override any attempt to resize the folder dialog
+        // This happens "randomly" for some dialog grid configurations
+        // I was unable to find the culprit, however the size change happens on grid _redisplay()
+        // The downside of this workaround is that the re-allocation cancels icons transitions,
+        // so it affects grid icons animations when that happens
+        // Force the re-allocation only if needed
+        if (this._width && this._height && (this._width !== this.child.width || this._height !== this.child.height)) {
+            const childBox = new Clutter.ActorBox();
+            childBox.set_size(this._width, this._height);
+            this.child.allocate(childBox);
         }
 
-        this.show();
-        this.emit('open-state-changed', true);
+        // We can only start zooming after receiving an allocation
+        if (this._needsZoomAndFade)
+            this._zoomAndFadeIn();
     },
 
     _updateFolderSize() {
         const view = this._view;
+        const nItems = view._orderedItems.length;
         const [firstItem] = view._grid.layoutManager._container;
         if (!firstItem)
             return;
-        // adapt folder size according to the settings and number of icons
-        const appDisplay = this._source._parentView;
-        if (!appDisplay.width || appDisplay.allocation.x2 === Infinity || appDisplay.allocation.x2 === -Infinity) {
-            return;
-        }
 
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-        const itemPadding = 55; // default icon item padding on Fedora 44
-        // const dialogMargin = 30;
-        const nItems = view._orderedItems.length;
+        const margin = 30; // see stylesheet .app-folder-dialog-container;
+        const appDisplay = this._source._parentView;
+        const maxDialogWidth =
+            (appDisplay.allocation.x2 - appDisplay.allocation.x1) / scaleFactor;
+        const maxDialogHeight =
+            (appDisplay.allocation.y2 - appDisplay.allocation.y1 +
+            (opt.SHOW_SEARCH_ENTRY ? Main.overview._overview.controls._searchEntryBin.height : 0)
+            ) / scaleFactor;
+
+        if (!isFinite(maxDialogWidth) || !isFinite(maxDialogHeight) || !maxDialogWidth || !maxDialogHeight)
+            return;
+
         let columns = opt.APP_GRID_FOLDER_COLUMNS;
+        const maxColumns = columns ? columns : 100;
         let rows = opt.APP_GRID_FOLDER_ROWS;
-        const fullAdaptiveGrid = !columns && !rows;
-        let spacing = opt.APP_GRID_SPACING;
+        const maxRows = rows ? rows : 100;
+        // const fullAdaptiveGrid = !columns && !rows;
+
+        const layoutManager = view._grid.layoutManager;
+        const spacing = opt.APP_GRID_SPACING;
+        const padding = 160; // Empiric size
+        const titleBoxHeight =
+            Math.round(this._entryBox.get_preferred_height(-1)[1] / scaleFactor); // ~75
+        const minDialogWidth =
+            Math.round(this._entryBox.get_preferred_width(-1)[1] / scaleFactor + 2 * margin);
+        const navigationArrowsSize = // padding + one arrow width is sufficient for both arrows
+            Math.round(view._nextPageArrow.get_preferred_width(-1)[1] / scaleFactor);
+        const pageIndicatorSize =
+            Math.round(Math.min(...view._pageIndicators.get_size()) / scaleFactor);// ~28;
+        // Will be updated to the actual value later
+        let itemPadding = 55;
         const minItemSize = 48 + itemPadding;
 
-        if (fullAdaptiveGrid) {
-            columns = Math.ceil(Math.sqrt(nItems));
-            rows = columns;
-            if (columns * (columns - 1) >= nItems) {
-                rows = columns - 1;
-            } else if ((columns + 1) * (columns - 1) >= nItems) {
-                rows = columns - 1;
-                columns += 1;
-            }
-        } else if (!columns && rows) {
+        // if (fullAdaptiveGrid) {
+        columns = Math.ceil(Math.sqrt(nItems));
+        rows = columns;
+        if (columns * (columns - 1) >= nItems) {
+            rows = columns - 1;
+        } else if ((columns + 1) * (columns - 1) >= nItems) {
+            rows = columns - 1;
+            columns += 1;
+        }
+        /* } else if (!columns && rows) {
             columns = Math.ceil(nItems / rows);
         } else if (columns && !rows) {
             rows = Math.ceil(nItems / columns);
-        }
+        }*/
+
+        columns = Math.clamp(columns, 1, maxColumns);
+        rows = Math.clamp(rows, 1, maxRows);
 
         const iconSize = opt.APP_GRID_FOLDER_ICON_SIZE < 0 ? opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT : opt.APP_GRID_FOLDER_ICON_SIZE;
-        view._grid.layoutManager.fixedIconSize = iconSize;
-        view._grid.set_style(`column-spacing: ${opt.APP_GRID_SPACING}px; row-spacing: ${opt.APP_GRID_SPACING}px;`);
-        view._grid.layoutManager._pageWidth += 1;
-        view._grid.layoutManager.adaptToSize(view._grid.layoutManager._pageWidth - 1, view._grid.layoutManager._pageHeight);
-
-        let itemSize = iconSize + 55; // icon padding
+        let itemSize = iconSize + itemPadding;
         // first run sets the grid before we can read the real icon size
         // so we estimate the size from default properties
         // and correct it in the second run
         if (this.realized) {
             firstItem.icon.setIconSize(iconSize);
-            const [firstItemWidth] = firstItem.get_preferred_size();
+            // Item height is inconsistent because it depends on its label height
+            const [, firstItemWidth] = firstItem.get_preferred_width(-1);
             const realSize = firstItemWidth / scaleFactor;
-            // if the preferred item size is smaller than icon plus some padding, ignore it
-            // (icons that are not yet realized are returning sizes like 45 or 53)
-            if (realSize > (iconSize + 24))
-                itemSize = realSize;
+            itemSize = realSize;
+            itemPadding = realSize - iconSize;
         }
 
-        let width = columns * (itemSize + spacing) + /* padding for nav arrows*/64;
-        width = Math.round(width + (opt.ORIENTATION ? 100 : 160/* space for navigation arrows*/));
-        let height = rows * (itemSize + spacing) + /* header*/75 + /* padding*/ 2 * 30 + /* padding + ?page indicator*/(!opt.ORIENTATION || !opt.APP_GRID_FOLDER_COLUMNS ? 100 : 70);
+        let horizontalNavigation = opt.ORIENTATION ? pageIndicatorSize : navigationArrowsSize; // either add padding or arrows
+        let gridWidth = columns * (itemSize + spacing);
+        let width = gridWidth + horizontalNavigation + padding + 2 * margin;
+        let verticalNavigation = opt.ORIENTATION ? 0 : 0;// pageIndicatorSize;
+        let gridHeight = rows * (itemSize + spacing);
+        let height = titleBoxHeight + gridHeight + verticalNavigation + padding;
 
-        // allocation is more reliable than appDisplay width/height properties
-        const appDisplayWidth = appDisplay.allocation.x2 - appDisplay.allocation.x1;
-        const appDisplayHeight = appDisplay.allocation.y2 - appDisplay.allocation.y1 + (opt.SHOW_SEARCH_ENTRY ? Main.overview._overview.controls._searchEntryBin.height : 0);
-
-        // folder must fit the appDisplay area
+        // Folder must fit the appDisplay area plus searchEntryBin if visible
         // reduce columns/rows if needed and count with the scaled values
-        if (!opt.APP_GRID_FOLDER_ROWS) {
-            while ((height * scaleFactor) > appDisplayHeight) {
-                height -= itemSize + spacing;
-                rows -= 1;
-            }
+        // if (!opt.APP_GRID_FOLDER_ROWS) {
+        while (height > maxDialogHeight && rows > 1) {
+            height -= itemSize + spacing;
+            rows -= 1;
+        }
+        // }
+
+        // if (!opt.APP_GRID_FOLDER_COLUMNS) {
+        while (width > maxDialogWidth && columns > 1) {
+            width -= itemSize + spacing;
+            columns -= 1;
+        }
+        // }
+
+        // Try to compensate for the previous reduction if there is a space
+        // if (!opt.APP_GRID_FOLDER_COLUMNS) {
+        while ((nItems > columns * rows) && ((width + (itemSize + spacing)) <= maxDialogWidth) && (columns < maxColumns)) {
+            width += itemSize + spacing;
+            columns += 1;
+        }
+        // }
+        // remove columns that cannot be displayed
+        if (((columns * minItemSize  + (columns - 1) * spacing)) > maxDialogWidth)
+            columns = Math.floor(maxDialogWidth / (minItemSize + spacing));
+        // if (!opt.APP_GRID_FOLDER_ROWS) {
+        while ((nItems > columns * rows) && ((height + (itemSize + spacing)) <= maxDialogHeight) && (rows < maxRows)) {
+            height += itemSize + spacing;
+            rows += 1;
+        }
+        // }
+        // remove rows that cannot be displayed
+        if ((((rows * minItemSize  + (rows - 1) * spacing))) > maxDialogHeight)
+            rows = Math.floor(maxDialogWidth / (minItemSize + spacing));
+
+        // Remove space reserved for page controls and indicator if not used
+        if (rows * columns >= nItems) {
+            width -= horizontalNavigation;
+            height -= verticalNavigation;
         }
 
-        if (!opt.APP_GRID_FOLDER_COLUMNS) {
-            while ((width * scaleFactor) > appDisplayWidth) {
-                width -= itemSize + spacing;
-                columns -= 1;
-            }
-        }
-        // try to compensate for the previous reduction if there is a space
-        if (!opt.APP_GRID_FOLDER_COLUMNS) {
-            while ((nItems > columns * rows) && ((width * scaleFactor + itemSize + spacing) <= appDisplayWidth)) {
-                width += itemSize + spacing;
-                columns += 1;
-            }
-            // remove columns that cannot be displayed
-            if ((columns * minItemSize  + (columns - 1) * spacing) > appDisplayWidth)
-                columns = Math.floor(appDisplayWidth / (minItemSize + spacing));
-        }
-        if (!opt.APP_GRID_FOLDER_ROWS) {
-            while ((nItems > columns * rows) && ((height * scaleFactor + itemSize + spacing) <= appDisplayHeight)) {
-                height += itemSize + spacing;
-                rows += 1;
-            }
-            // remove rows that cannot be displayed
-            if ((rows * minItemSize  + (rows - 1) * spacing) > appDisplayHeight)
-                rows = Math.floor(appDisplayWidth / (minItemSize + spacing));
-        }
+        width = Math.clamp(width, minDialogWidth, maxDialogWidth);
+        height = Math.min(height, maxDialogHeight);
 
-        width = Math.clamp(width, 640, appDisplayWidth);
-        height = Math.min(height, appDisplayHeight);
-
-        const layoutManager = view._grid.layoutManager;
-        layoutManager.rows_per_page = rows;
         layoutManager.columns_per_page = columns;
+        layoutManager.rows_per_page = rows;
 
-        // this line is required by GS 43
-        // view._grid.setGridModes([{ columns, rows }]);
+        this._width = width * scaleFactor;
+        this._height = height * scaleFactor;
 
-        this.child.set_style(`
-            width: ${width}px;
-            height: ${height}px;
-            padding: 30px;
-        `);
+        this.child.set_size(width * scaleFactor, height * scaleFactor);
+
+        if (opt.APP_GRID_FOLDER_ICON_SIZE < 0) {
+            layoutManager._gridWidth = width - padding;
+            layoutManager._gridHeight = height - titleBoxHeight - padding;
+            layoutManager.updateIconSize();
+        } else {
+            layoutManager.fixedIconSize = iconSize;
+        }
 
         view._redisplay();
-        // store original item count
-        this._designCapacity = nItems;
     },
 
     _zoomAndFadeIn() {
@@ -1443,27 +1409,36 @@ const AppFolderDialog = {
 
         const appDisplay = this._source._parentView;
 
-        const [appDisplayX, appDisplayY] = this._source._parentView.get_transformed_position();
+        let [appDisplayX, appDisplayY] = this._source._parentView.get_transformed_position();
+        const searchEntryHeight = opt.SHOW_SEARCH_ENTRY ? Main.overview._overview.controls._searchEntryBin.height : 0;
+        appDisplayY -= searchEntryHeight;
+        let folderAreaWidth = appDisplay.width;
+        const folderAreaHeight = appDisplay.height + searchEntryHeight;
         if (!opt.APP_GRID_FOLDER_CENTER) {
             dialogTargetX = sourceCenterX - this.child.width / 2;
             dialogTargetY = sourceCenterY - this.child.height / 2;
+
+            const xPadding = appDisplay._grid.layoutManager.pagePadding.left;
+            if (this.child.width < folderAreaWidth - 2 * xPadding) {
+                folderAreaWidth -= 2 * xPadding;
+                appDisplayX += xPadding;
+            }
 
             // keep the dialog in appDisplay area if possible
             dialogTargetX = Math.clamp(
                 dialogTargetX,
                 appDisplayX,
-                appDisplayX + appDisplay.width - this.child.width
+                appDisplayX + folderAreaWidth - this.child.width
             );
 
             dialogTargetY = Math.clamp(
                 dialogTargetY,
                 appDisplayY,
-                appDisplayY + appDisplay.height - this.child.height
+                appDisplayY + folderAreaHeight - this.child.height
             );
         } else {
-            const searchEntryHeight = opt.SHOW_SEARCH_ENTRY ? Main.overview._overview.controls._searchEntryBin.height : 0;
-            dialogTargetX = appDisplayX + appDisplay.width / 2 - this.child.width / 2;
-            dialogTargetY = appDisplayY - searchEntryHeight + ((appDisplay.height + searchEntryHeight) / 2 - this.child.height / 2) / 2;
+            dialogTargetX = appDisplayX + folderAreaWidth / 2 - this.child.width / 2;
+            dialogTargetY = appDisplayY + (folderAreaHeight / 2 - this.child.height / 2) / 2;
         }
 
         const dialogOffsetX = Math.round(dialogTargetX - dialogX);
@@ -1539,7 +1514,7 @@ const AppFolderDialog = {
             scale_y: this._source.height / this.child.height,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
             onComplete: () => {
                 this.child.set({
                     translation_x: 0,
@@ -1559,14 +1534,14 @@ const AppFolderDialog = {
         appDisplay.ease({
             opacity: 255,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_IN_QUAD,
         });
 
         if (opt.SHOW_SEARCH_ENTRY) {
             Main.overview.searchEntry.ease({
                 opacity: 255,
                 duration: FOLDER_DIALOG_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                mode: Clutter.AnimationMode.EASE_IN_QUAD,
             });
         }
 
@@ -1574,17 +1549,15 @@ const AppFolderDialog = {
     },
 
     _setLighterBackground(lighter) {
+        let opacity = 255;
         if (this._isOpen)
-            Main.overview._overview._controls._appDisplay.opacity = lighter ? 20 : 0;
-        /* const backgroundColor = lighter
-            ? this.DIALOG_SHADE_HIGHLIGHT
-            : this.DIALOG_SHADE_NORMAL;
+            opacity = lighter ? 20 : 0;
 
-        this.ease({
-            backgroundColor,
+        _appDisplay.ease({
+            opacity,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        }); */
+        });
     },
 };
 
@@ -1595,7 +1568,7 @@ const AppIcon = {
     },
 
     // avoid accepting by placeholder when dragging active preview
-    // and also by icon if alphabet or usage sorting are used
+    // and also by icon if usage sorting is used
     _canAccept(source) {
         if (source._sourceItem)
             source = source._sourceItem;

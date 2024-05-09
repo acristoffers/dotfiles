@@ -19,6 +19,8 @@
 import Clutter from 'gi://Clutter';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
+import Shell from 'gi://Shell';
+import Gio from 'gi://Gio';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
@@ -91,6 +93,11 @@ class Manager {
 
         // action widget holder
         this._actionWidgets = {};
+
+        // Desktop Theme Setting
+        this._isettings = new Gio.Settings({
+            schema: 'org.gnome.desktop.interface'
+        });
     }
 
     // Clear potentially running timeout/interval
@@ -115,6 +122,10 @@ class Manager {
             clearInterval(this._flingInterval);
             this._flingInterval = null;
         }
+        if (this._actionWidgets.tilerHider) {
+            clearTimeout(this._actionWidgets.tilerHider);
+            this._actionWidgets.tilerHider = null;
+        }
     }
 
     // Cleanup Extension
@@ -134,6 +145,7 @@ class Manager {
 
         // Cleanup all variables
         this._clearVars();
+        this._isettings = null;
         this._settings = null;
         this._ShaderClass = null;
     }
@@ -169,7 +181,7 @@ class Manager {
         this._isActiveWin = false;
         this._tapHold = 0;
         this._tapHoldWin = null;
-        // _getTapHoldMove()
+        this._tapHoldTick = 0;
 
         // Pinch
         this._gesture = {
@@ -247,10 +259,23 @@ class Manager {
         this._swipeMods = [];
     }
 
+    // Is dark theme?
+    _isDarkTheme() {
+        let uit = this._settings.get_int('ui-theme');
+        if (uit == 0) {
+            return (this._isettings
+                .get_string('color-scheme') == 'prefer-dark');
+        }
+        return (uit == 2);
+    }
+
     // Create UI Indicator
     _createUi(ui_class, x, y, w, h, icon, parent) {
         let ui = new St.Widget({ style_class: ui_class });
-        ui.set_clip_to_allocation(true);
+        if (this._isDarkTheme()) {
+            ui.add_style_class_name("wgs-dark");
+        }
+        // ui.set_clip_to_allocation(true);
         ui._icon = null;
         ui._parent = parent ? parent : Main.layoutManager.uiGroup;
         if (icon) {
@@ -446,7 +471,8 @@ class Manager {
 
     _isWindowBlacklist(win) {
         if (win) {
-            if (WindowClassBlacklist.indexOf(win.get_wm_class()) == -1) {
+            if (WindowClassBlacklist.indexOf(win.get_wm_class()) == -1 ||
+                win.get_window_type() === Meta.WindowType.DESKTOP) {
                 return false;
             }
         }
@@ -600,6 +626,13 @@ class Manager {
         }
     }
 
+    // window management
+    _winmanWinApp(win) {
+        return Shell.WindowTracker.get_default()
+            .get_window_app(win);
+        // App.create_icon_texture;
+    }
+
     // Snap Window
     _setSnapWindow(snapRight) {
         if (this._targetWindow == null) {
@@ -706,6 +739,24 @@ class Manager {
     // Swipe window move handler
     _swipeUpdateMove() {
         this._activateWindow();
+
+        // gnome-shell-extension-tiling-assistant support
+        if (this._targetWindow.isTiled) {
+            let urct = this._targetWindow.untiledRect;
+            if (urct) {
+                let r = urct._rect;
+                this._startWinArea.x = r.x;
+                this._startWinArea.y = r.y;
+                this._startWinArea.width = r.width;
+                this._startWinArea.height = r.height;
+                // this._targetWindow.move_resize_frame(
+                //     true,
+                //     r.x, r.y, r.width, r.height
+                // );
+                this._sendKeyPress([Clutter.KEY_Super_L, Clutter.KEY_Down]);
+            }
+        }
+
         let allowMoveSnap = this._getEnableMoveSnap();
         // Move calculation
         let mX = this._monitorArea.x;
@@ -852,10 +903,19 @@ class Manager {
         let allowMove = this._getEnableMove();
         this._isActiveWin = false;
         this._targetWindow = null;
+        let isTapHoldAction = false;
+
+        // Clear unswipe tap-hold
+        if ((this._tapHoldTick != 1) &&
+            (this._tapHoldTick < this._tick())) {
+            this._tapHold = this._tapHoldTick = 0;
+            this._tapHoldWin = null;
+        }
 
         if (this._tapHoldWin) {
             this._targetWindow = this._tapHoldWin;
             this._tapHoldWin = null;
+            isTapHoldAction = true;
         }
         else if (!this._getUseActiveWindow() && !this._getTapHoldMove()) {
             this._targetWindow = this._findPointerWindow();
@@ -915,7 +975,8 @@ class Manager {
         // Check allow resize
         if (this._swipeIsWin && !this._isActiveWin && allowResize &&
             this._targetWindow.allows_resize() &&
-            this._targetWindow.allows_move()) {
+            this._targetWindow.allows_move() &&
+            !this._targetWindow.isTiled && !isTapHoldAction) {
             // Edge cursor position detection
             if (this._startPos.y >= wBottom - edge) {
                 if (this._startPos.y <= wBottom) {
@@ -962,7 +1023,7 @@ class Manager {
         if (this._swipeIsWin && !this._isEdge(WindowEdgeAction.RESIZE)) {
             let setmove = false;
             if (this._getTapHoldMove()) {
-                if (this._tapHold) {
+                if (this._tapHold == this._gestureNumFinger()) {
                     // Tap and hold
                     setmove = true;
                 }
@@ -981,6 +1042,10 @@ class Manager {
                     this._edgeAction = WindowEdgeAction.MOVE;
                 }
             }
+        } else if (this._tapHold > 2 &&
+            this._tapHold != this._gestureNumFinger()) {
+            this._edgeAction = WindowEdgeAction.GESTURE_DOWN;
+            this._movePos.y = (this._gestureThreshold() / 4) + 1;
         }
 
         return this._swipeIsWin ?
@@ -1034,13 +1099,9 @@ class Manager {
                             let allowMove = this._getEnableMove();
                             let holdMove = this._getTapHoldMove();
 
-                            // if (holdMove && this._tapHold) {
-                            //     // this._tapHold
-                            //     this._edgeGestured = allowMove ? 0 : 1;
-                            // }
-                            // else 
                             if (!allowMove || holdMove) {
-                                if (!this._targetWindow.get_maximized()) {
+                                if (!this._targetWindow.get_maximized() &&
+                                    !this._targetWindow.isTiled) {
                                     this._edgeGestured = 1;
                                 }
                                 else {
@@ -1155,7 +1216,7 @@ class Manager {
             if (this._isEdge(WindowEdgeAction.GESTURE_UP)) {
                 vert = 1;
                 // Reset to single gesture
-                if (Math.abs(this._movePos.x) < trigger) {
+                if (Math.abs(this._movePos.x) < combineTrigger) {
                     this._edgeAction = WindowEdgeAction.GESTURE_UP;
                     this._gesture.velocity = this._velocityInit();
                     this._velocityAppend(this._gesture.velocity, 0);
@@ -1165,9 +1226,8 @@ class Manager {
             }
             else if (this._isEdge(WindowEdgeAction.GESTURE_DOWN)) {
                 vert = 2;
-
                 // Reset to single gesture
-                if (Math.abs(this._movePos.x) < trigger) {
+                if (Math.abs(this._movePos.x) < combineTrigger) {
                     this._edgeAction = WindowEdgeAction.GESTURE_DOWN;
                     this._gesture.velocity = this._velocityInit();
                     this._velocityAppend(this._gesture.velocity, 0);
@@ -1199,6 +1259,7 @@ class Manager {
         }
 
         // Limit progress
+        let oprog = prog;
         if (prog >= 1) {
             prog = 1.0;
         }
@@ -1254,7 +1315,7 @@ class Manager {
                 if (aid >= 50) {
                     this._activateWindow();
                 }
-                this._runAction(aid, 0, this._gesture.progress);
+                this._runAction(aid, 0, this._gesture.progress, oprog);
             }
             this._gesture.action_cmp = this._gesture.action;
         }
@@ -1292,7 +1353,8 @@ class Manager {
         if (this._gesture.action) {
             let aid = this._actionIdGet(this._gesture.action);
             if (aid) {
-                if (this._gesture.progress < 1.0) {
+                let issnapaction = (aid == 51 || aid == 52);
+                if ((this._gesture.progress < 1.0) && !issnapaction) {
                     // Fling Velocity
                     let vel = this._velocityCalc(this._gesture.velocity);
                     if (vel > 0.001) {
@@ -1475,11 +1537,11 @@ class Manager {
 
     _tapHoldGesture(state, numfingers) {
         let isWin = (numfingers == this._gestureNumFinger());
-        if (isWin && this._getTapHoldMove()) {
+        if (!isWin || this._getTapHoldMove()) {
             if (state) {
                 let me = this;
                 this._holdTo = setTimeout(function () {
-                    me._holdTo = 0;
+                    me._tapHold = 0;
                     let activeWin = null;
                     if (!me._getUseActiveWindow()) {
                         activeWin = me._findPointerWindow();
@@ -1487,12 +1549,14 @@ class Manager {
                     if (!activeWin) {
                         activeWin = global.display.get_focus_window();
                     }
-                    if (activeWin) {
+                    if (activeWin && ((activeWin.allows_move() &&
+                        !activeWin.get_maximized()) || !isWin)) {
                         activeWin.activate(
                             Meta.CURRENT_TIME
                         );
                         me._tapHold = numfingers;
                         me._tapHoldWin = activeWin;
+                        me._tapHoldTick = 1;
                         activeWin.get_compositor_private()
                             .set_pivot_point(0.5, 0.5);
                         activeWin.get_compositor_private().ease({
@@ -1514,12 +1578,13 @@ class Manager {
                             }
                         });
                     }
-                }, 200);
+                }, 100);
             }
             else {
                 if (this._holdTo) {
                     clearTimeout(this._holdTo);
                 }
+                this._tapHoldTick = this._tick() + 100;
                 this._holdTo = 0;
             }
         }
@@ -1581,7 +1646,7 @@ class Manager {
     }
 
     // Run Action
-    _runAction(id, state, progress) {
+    _runAction(id, state, progress, oprog) {
         const _LCASE = 32;
         if (id == 1) {
             //
@@ -1715,30 +1780,17 @@ class Manager {
                     }
 
                     ui.fx?.release();
-                    ui.ease({
-                        duration: Math.round(250 * progress),
-                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                        opacity: activeWin ? 0 : 255,
-                        scale_x: activeWin ? 0 : 1,
-                        scale_y: activeWin ? 0 : 1,
-                        onStopped: () => {
-                            ui.set_pivot_point(0, 0);
-                            if (activeWin) {
-                                ui.hide();
-                                ui.opacity = 0;
-                                ui.ease({
-                                    duration: 800,
-                                    opacity: 0
-                                });
-                                activeWin.delete(
-                                    Meta.CURRENT_TIME
-                                );
-                                activeWin = null;
-                            }
-                            ui = null;
-                        }
-                    });
-
+                    ui.set_pivot_point(0, 0);
+                    ui.opacity = 255;
+                    ui.scale_x = 1.0;
+                    ui.scale_y = 1.0;
+                    if (activeWin) {
+                        activeWin.delete(
+                            Meta.CURRENT_TIME
+                        );
+                        activeWin = null;
+                    }
+                    ui = null;
                     this._actionWidgets.close = null;
                 }
             } else if (state) {
@@ -1853,6 +1905,7 @@ class Manager {
             if (!ui) {
                 ui = -1;
                 let wins = null;
+                let listActor = null;
 
                 // Cancel cache win timeout
                 if (this._actionWidgets.resetWinlist) {
@@ -1861,19 +1914,87 @@ class Manager {
                 }
                 // Get cached window list
                 if (this._actionWidgets.cacheWinTabList) {
-                    wins = this._actionWidgets.cacheWinTabList;
+                    wins = this._actionWidgets.cacheWinTabList?.wins;
+                    listActor = this._actionWidgets.cacheWinTabList?.actor;
                 }
                 if (!wins) {
                     // No last cached
                     wins = this._getWindowTabList();
+                    if (wins.length > 1) {
+                        // Create UI
+                        let gsize = Main.layoutManager.uiGroup.get_size();
+                        let pad = 8;
+                        let posCfg = this._settings.get_int(
+                            'winswitch-position'
+                        );
+                        let lW = (pad * 2) + (wins.length * 48);
+                        let lH = (pad * 2) + 32;
+                        let lX = (gsize[0] - lW) / 2;
+                        let lY = 64; // Top
+                        let pivY = 0;
+                        if (posCfg == 1) {
+                            // Center
+                            lY = (gsize[1] - lH) / 2;
+                            pivY = 0.5;
+                        }
+                        else if (posCfg == 2) {
+                            // Bottom
+                            lY = gsize[1] - (lH + 64);
+                            pivY = 1;
+                        }
+                        listActor = this._createUi(
+                            "wgs-winswitch", lX, lY, lW, lH
+                        );
+                        listActor.set_pivot_point(0.5, pivY);
+                        listActor.opacity = 0;
+                        listActor.scale_x = 0.5;
+                        listActor.scale_y = 0.5;
+                        listActor._data = [];
+                        for (var i = 0; i < wins.length; i++) {
+                            let win = wins[i];
+                            let app = this._winmanWinApp(win);
+                            let ico = app.create_icon_texture(32);
+                            ico.add_style_class_name("wgs-winswitch-ico");
+                            // remove_style_class_name
+                            listActor.add_child(ico);
+                            ico.set_size(32, 32);
+                            ico.set_position((pad * 2) + (48 * i), pad);
+                            ico.set_pivot_point(0.5, 0.5);
+                            listActor._data.push(
+                                {
+                                    app: app,
+                                    win: win,
+                                    ico: ico
+                                }
+                            )
+                        }
+                        listActor.viewShow({
+                            opacity: 255,
+                            scale_x: 1,
+                            scale_y: 1
+                        }, 200);
+
+                        // Reorder for next (below 1s) calls
+                        this._actionWidgets.cacheWinTabList = {
+                            sel: 0,
+                            first: wins[0],
+                            wins: wins,
+                            actor: listActor
+                        };
+                    }
+                    else {
+                        this._actionWidgets.cacheWinTabList = null;
+                    }
                 }
                 if (wins.length > 1) {
                     ui = { from: wins[0] };
                     if (prv) {
                         ui.into = wins[wins.length - 1];
+                        ui.nsel = -1;
                     }
                     else {
                         ui.into = wins[1];
+                        ui.nsel = 1;
                     }
                     ui.lstate = 0;
                     ui.from_actor = ui.from.get_compositor_private();
@@ -1881,87 +2002,133 @@ class Manager {
                     ui.from_actor.set_pivot_point(0.5, 1);
                     ui.into_actor.set_pivot_point(0.5, 1);
 
-                    // Reorder for next (below 1s) calls
-                    this._actionWidgets.cacheWinTabList = wins;
+                    // Set selected target
+                    for (var i = 0; i < listActor._data.length; i++) {
+                        let d = listActor._data[i];
+                        if (d.win == ui.from) {
+                            d.ico.add_style_class_name("selected");
+                            ui.from_ico = d.ico;
+                        }
+                        else if (d.win == ui.into) {
+                            d.ico.remove_style_class_name("selected");
+                            ui.into_ico = d.ico;
+                        }
+                        else {
+                            d.ico.remove_style_class_name("selected");
+                        }
+                    }
                 }
                 this._actionWidgets[wid] = ui;
             }
             if (ui && ui != -1) {
                 if (!state) {
-                    ui.from_actor.opacity = 255 - Math.round(80 * progress);
-                    ui.from_actor.scale_y =
-                        ui.from_actor.scale_x = 1.0 - (0.05 * progress);
-                    ui.into_actor.scale_y =
-                        ui.into_actor.scale_x = 1.0 + (0.05 * progress);
+                    try {
+                        ui.from_actor.opacity = 255 - Math.round(80 * progress);
+                        ui.from_actor.scale_y =
+                            ui.from_actor.scale_x = 1.0 - (0.05 * progress);
+                        ui.into_actor.scale_y =
+                            ui.into_actor.scale_x = 1.0 + (0.05 * progress);
+                    } catch (e) { }
                     if (progress > 0.8) {
                         if (!ui.lstate) {
-                            ui.into.raise();
+                            try {
+                                ui.into.raise();
+                            } catch (e) { }
                             ui.lstate = 1;
+                            ui.from_ico?.remove_style_class_name("selected");
+                            ui.into_ico?.add_style_class_name("selected");
                         }
                     }
                     else if (ui.lstate) {
-                        ui.from.raise();
+                        try {
+                            ui.from.raise();
+                        } catch (e) { }
                         ui.lstate = 0;
+                        ui.from_ico?.add_style_class_name("selected");
+                        ui.into_ico?.remove_style_class_name("selected");
                     }
                 }
                 else {
                     if ((progress > 0.8) || ui.lstate) {
-                        ui.into.activate(
-                            Meta.CURRENT_TIME
-                        );
+                        try {
+                            try {
+                                this._actionWidgets
+                                    .cacheWinTabList.first.activate(
+                                        Meta.CURRENT_TIME
+                                    );
+                            } catch (e) { }
+                            try {
+                                ui.from.raise();
+                            } catch (e) { }
+                            ui.into.activate(
+                                Meta.CURRENT_TIME
+                            );
+                        } catch (e) { }
                         if (prv) {
-                            this._actionWidgets.cacheWinTabList.unshift(
-                                this._actionWidgets.cacheWinTabList.pop()
+                            this._actionWidgets.cacheWinTabList.wins.unshift(
+                                this._actionWidgets.cacheWinTabList.wins.pop()
                             );
                         }
                         else {
-                            this._actionWidgets.cacheWinTabList.push(
-                                this._actionWidgets.cacheWinTabList.shift()
+                            this._actionWidgets.cacheWinTabList.wins.push(
+                                this._actionWidgets.cacheWinTabList.wins.shift()
                             );
                         }
+                        ui.from_ico?.remove_style_class_name("selected");
+                        ui.into_ico?.add_style_class_name("selected");
+                    }
+                    else {
+                        ui.from_ico?.add_style_class_name("selected");
+                        ui.into_ico?.remove_style_class_name("selected");
                     }
                     ui.nclose = 0;
                     // Ease Restore
-                    ui.from_actor.ease({
-                        duration: Math.round(200 * progress),
-                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                        opacity: 255,
-                        scale_x: 1,
-                        scale_y: 1,
-                        onStopped: () => {
-                            ui.from_actor.set_pivot_point(0, 0);
-                            ui.from_actor = null;
-                            ui.from = null;
-                            if (++ui.nclose == 2) {
-                                ui = null;
+                    try {
+                        ui.from_actor.ease({
+                            duration: Math.round(200 * progress),
+                            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                            opacity: 255,
+                            scale_x: 1,
+                            scale_y: 1,
+                            onStopped: () => {
+                                ui.from_actor.set_pivot_point(0, 0);
+                                ui.from_actor = null;
+                                ui.from = null;
+                                if (++ui.nclose == 2) {
+                                    ui = null;
+                                }
                             }
-                        }
-                    });
-                    ui.into_actor.ease({
-                        duration: Math.round(200 * progress),
-                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                        opacity: 255,
-                        scale_x: 1,
-                        scale_y: 1,
-                        onStopped: () => {
-                            ui.into_actor.set_pivot_point(0, 0);
-                            ui.into_actor = null;
-                            ui.into = null;
-                            if (++ui.nclose == 2) {
-                                ui = null;
+                        });
+                    } catch (e) { }
+                    try {
+                        ui.into_actor.ease({
+                            duration: Math.round(200 * progress),
+                            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                            opacity: 255,
+                            scale_x: 1,
+                            scale_y: 1,
+                            onStopped: () => {
+                                ui.into_actor.set_pivot_point(0, 0);
+                                ui.into_actor = null;
+                                ui.into = null;
+                                if (++ui.nclose == 2) {
+                                    ui = null;
+                                }
                             }
-                        }
-                    });
+                        });
+                    } catch (e) { }
                     this._actionWidgets[wid] = null;
 
                     // Clear cache after timeout
                     let me = this;
                     this._actionWidgets.resetWinlist = setTimeout(
                         function () {
+                            me._actionWidgets
+                                .cacheWinTabList.actor.aniRelease();
                             me._actionWidgets.cacheWinTabList = null;
                             clearTimeout(me._actionWidgets.resetWinlist);
                             me._actionWidgets.resetWinlist = 0;
-                        }, 1000
+                        }, 500
                     );
                 }
             } else if (state) {
@@ -2283,21 +2450,17 @@ class Manager {
             // ALT+TAB
             this._sendKeyPress([Clutter.KEY_Alt_L, Clutter.KEY_Tab]);
         }
-        else if (id == 19) {
+        else if (id == 19 || id == 20) {
             if (!state || progress < 1.0) {
                 // Ignore if non end
                 return;
             }
-            // Overview (Super)
-            this._sendKeyPress([Clutter.KEY_Super_L]);
-        }
-        else if (id == 20) {
-            if (!state || progress < 1.0) {
-                // Ignore if non end
-                return;
+            if (id == 19) {
+                Main.overview.show();
             }
-            // Show Apps (Super+A)
-            this._sendKeyPress([Clutter.KEY_Super_L, Clutter.KEY_A + _LCASE]);
+            else {
+                Main.overview.showApps();
+            }
         }
         else if (id == 21) {
             if (!state || progress < 1.0) {
@@ -2341,6 +2504,9 @@ class Manager {
             let winCanMax = activeWin.allows_move() && activeWin.can_maximize();
             let winIsMaximized = activeWin.get_maximized();
             let winMaxed = Meta.MaximizeFlags.BOTH == winIsMaximized;
+            if (activeWin.isTiled) {
+                winIsMaximized = Meta.MaximizeFlags.VERTICAL;
+            }
             let winIsFullscreen = activeWin.is_fullscreen();
             let allowFullscreen = this._getEnableFullscreen();
             let ui = 0; // find action id
@@ -2394,51 +2560,53 @@ class Manager {
                         }
                     }
                     else if (ui <= 3) {
-                        if (progress >= 0.2) {
-                            if (!this._actionWidgets[wid]) {
-                                let moarea = activeWin
-                                    .get_work_area_current_monitor();
-                                if (ui == 1) {
-                                    // max
-                                    this._showPreview(
-                                        moarea.x,
-                                        moarea.y,
-                                        moarea.width,
-                                        moarea.height
-                                    );
-                                }
-                                else if (ui == 2) {
-                                    // snap left
-                                    this._showPreview(
-                                        moarea.x,
-                                        moarea.y,
-                                        moarea.width / 2,
-                                        moarea.height
-                                    );
-                                }
-                                else if (ui == 3) {
-                                    // snap right
-                                    this._showPreview(
-                                        moarea.x
-                                        + (moarea.width / 2),
-                                        moarea.y,
-                                        moarea.width / 2,
-                                        moarea.height
-                                    );
-                                }
-                                this._actionWidgets[wid] = 1;
+                        if (!this._actionWidgets[wid]) {
+                            if (this._actionWidgets.tilerHider) {
+                                clearTimeout(this._actionWidgets.tilerHider);
+                                this._actionWidgets.tilerHider = null;
                             }
-                        }
-                        else if (this._actionWidgets[wid]) {
-                            this._hidePreview();
-                            this._actionWidgets[wid] = 0;
+                            let moarea = activeWin
+                                .get_work_area_current_monitor();
+                            if (ui == 1) {
+                                // max
+                                this._showPreview(
+                                    moarea.x,
+                                    moarea.y,
+                                    moarea.width,
+                                    moarea.height
+                                );
+                            }
+                            else if (ui == 2) {
+                                // snap left
+                                this._showPreview(
+                                    moarea.x,
+                                    moarea.y,
+                                    moarea.width / 2,
+                                    moarea.height
+                                );
+                            }
+                            else if (ui == 3) {
+                                // snap right
+                                this._showPreview(
+                                    moarea.x
+                                    + (moarea.width / 2),
+                                    moarea.y,
+                                    moarea.width / 2,
+                                    moarea.height
+                                );
+                            }
+                            this._actionWidgets[wid] = 1;
                         }
                     }
                 }
                 else {
                     if (ui <= 3) {
                         // max, snap
-                        if (progress >= 0.2) {
+                        if (this._actionWidgets.tilerHider) {
+                            clearTimeout(this._actionWidgets.tilerHider);
+                            this._actionWidgets.tilerHider = null;
+                        }
+                        if (this._actionWidgets[wid] && (progress > 0)) {
                             if (ui == 1) {
                                 activeWin.maximize(Meta.MaximizeFlags.BOTH);
                             }
@@ -2449,7 +2617,11 @@ class Manager {
                                 this._setSnapWindow(1);
                             }
                         }
-                        this._hidePreview();
+                        this._actionWidgets.tilerHider = setTimeout(
+                            function (me) {
+                                me._hidePreview();
+                                me._actionWidgets.tilerHider = null;
+                            }, 100, this);
                         this._actionWidgets[wid] = 0;
                     }
                     else {
@@ -2478,6 +2650,11 @@ class Manager {
                                 activeWin.unmaximize(
                                     Meta.MaximizeFlags.BOTH
                                 );
+                                if (activeWin.isTiled) {
+                                    this._sendKeyPress([
+                                        Clutter.KEY_Super_L, Clutter.KEY_Down
+                                    ]);
+                                }
                             }
                         }
                     }

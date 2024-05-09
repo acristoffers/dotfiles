@@ -3,7 +3,7 @@
  * windowAttentionHandler.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  *
  */
@@ -87,7 +87,13 @@ const WindowAttentionHandlerCommon = {
 
         const app = this._tracker.get_window_app(window);
         // const source = new WindowAttentionHandler.WindowAttentionSource(app, window);
-        const source = new MessageTray.Source(app.get_name());
+        let args;
+        if (!Main.overview.dash.add_actor) // detects GS 46 - Clutter.Container has been removed
+            args = { title: app.get_name() };
+        else
+            args = app.get_name();
+
+        const source = new MessageTray.Source(args);
         new Me.Util.Overrides().addOverride('MessageSource', source, WindowAttentionSourceCommon);
         source._init(app, window);
         Main.messageTray.add(source);

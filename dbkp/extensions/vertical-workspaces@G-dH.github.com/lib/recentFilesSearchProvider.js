@@ -3,7 +3,7 @@
  * recentFilesSearchProvider.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2023
+ * @copyright  2022 - 2024
  * @license    GPL-3.0
  */
 
@@ -12,7 +12,6 @@
 import GLib from 'gi://GLib';
 import St from 'gi://St';
 import Gio from 'gi://Gio';
-import Shell from 'gi://Shell';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
@@ -25,6 +24,7 @@ let _;
 // so it needs to be something less common
 // needs to be accessible from vw module
 export const PREFIX = 'fq//';
+const ID = 'recent-files';
 
 export const RecentFilesSearchProviderModule = class {
     // export for other modules
@@ -68,8 +68,8 @@ export const RecentFilesSearchProviderModule = class {
             2000,
             () => {
                 if (!this._recentFilesSearchProvider) {
-                    this._recentFilesSearchProvider = new RecentFilesSearchProvider(opt);
-                    this._getOverviewSearchResult()._registerProvider(this._recentFilesSearchProvider);
+                    this._recentFilesSearchProvider = new RecentFilesSearchProvider();
+                    this._registerProvider(this._recentFilesSearchProvider);
                 }
                 this._enableTimeoutId = 0;
                 return GLib.SOURCE_REMOVE;
@@ -81,7 +81,7 @@ export const RecentFilesSearchProviderModule = class {
 
     _disableModule() {
         if (this._recentFilesSearchProvider) {
-            this._getOverviewSearchResult()._unregisterProvider(this._recentFilesSearchProvider);
+            this._unregisterProvider(this._recentFilesSearchProvider);
             this._recentFilesSearchProvider = null;
         }
         if (this._enableTimeoutId) {
@@ -92,30 +92,44 @@ export const RecentFilesSearchProviderModule = class {
         console.debug('  RecentFilesSearchProviderModule - Disabled');
     }
 
-    _getOverviewSearchResult() {
-        return Main.overview._overview.controls._searchController._searchResults;
+    _registerProvider(provider) {
+        const searchResults = Main.overview.searchController._searchResults;
+        provider.searchInProgress = false;
+
+        searchResults._providers.push(provider);
+
+        // create results display and add it to the _content
+        searchResults._ensureProviderDisplay.bind(searchResults)(provider);
+    }
+
+    _unregisterProvider(provider) {
+        const searchResults = Main.overview.searchController._searchResults;
+        searchResults._unregisterProvider(provider);
     }
 };
 
 class RecentFilesSearchProvider {
     constructor() {
-        this.id = 'recent-files';
+        this.id = ID;
+        const appId = 'org.gnome.Nautilus.desktop';
 
-        const appInfo = Gio.AppInfo.create_from_commandline('/usr/bin/nautilus -w', _('Recent Files'), null);
-        appInfo.get_description = () => _('Search recent files');
-        appInfo.get_name = () => _('Recent Files');
-        appInfo.get_id = () => 'org.gnome.Nautilus.desktop';
-        appInfo.get_icon = () => Gio.icon_new_for_string('document-open-recent-symbolic');
-        appInfo.should_show = () => true;
+        // A real appInfo created from a commandline has often issues with overriding get_id() method, so we use dict instead
+        this.appInfo = {
+            get_id: () => appId,
+            get_name: () => _('Recent Files'),
+            get_icon: () => Gio.icon_new_for_string('focus-windows-symbolic'),
+            should_show: () => true,
+            get_commandline: () => '/usr/bin/nautilus -w recent:///',
+            launch: () => {},
+        };
 
-        this.appInfo = appInfo;
         this.canLaunchSearch = true;
         this.isRemoteProvider = false;
 
         this._recentFilesManager = new RecentFilesManager();
     }
 
-    getInitialResultSet(terms/* , callback*/) {
+    getInitialResultSet(terms/* , cancellable*/) {
         const rfm = this._recentFilesManager;
         rfm.loadFromFile();
 
@@ -213,12 +227,8 @@ class RecentFilesSearchProvider {
         return results.slice(0, 20);
     }
 
-    getSubsearchResultSet(previousResults, terms/* , callback*/) {
+    getSubsearchResultSet(previousResults, terms/* , cancellable*/) {
         return this.getInitialResultSet(terms);
-    }
-
-    getSubsearchResultSet42(terms, callback) {
-        callback(this._getResultSet(terms));
     }
 }
 
