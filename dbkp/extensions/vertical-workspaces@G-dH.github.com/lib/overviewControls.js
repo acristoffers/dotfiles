@@ -328,11 +328,14 @@ const ControlsManagerCommon = {
             this.set_child_above_sibling(this._searchEntryBin, null);
             if (!Me.Util.dashNotDefault())
                 this.set_child_above_sibling(this.dash, null);
-
+            if (Main.layoutManager.panelBox.get_parent() === Main.layoutManager.overviewGroup)
+                Main.layoutManager.overviewGroup.set_child_above_sibling(Main.layoutManager.panelBox, Main.overview._overview);
             this.dash._isAbove = true;
         } else if (this.dash._isAbove && progress < 1) {
             // keep dash below for ws transition between the overview and hidden state
             this.set_child_above_sibling(this._workspacesDisplay, null);
+            if (Main.layoutManager.panelBox.get_parent() === Main.layoutManager.overviewGroup)
+                Main.layoutManager.overviewGroup.set_child_below_sibling(Main.layoutManager.panelBox, Main.overview._overview);
             this.dash._isAbove = false;
         }
     },

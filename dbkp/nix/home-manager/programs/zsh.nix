@@ -32,6 +32,16 @@
       silent_clone https://github.com/zsh-users/zsh-autosuggestions.git     $ZSH_CUSTOM/plugins/zsh-autosuggestions
       silent_clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
       silent_clone https://github.com/Aloxaf/fzf-tab.git                    $ZSH_CUSTOM/plugins/fzf-tab
+
+      bindkey -e
+      bindkey '^p' history-search-backward
+      bindkey '^n' history-search-forward
+
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+      zstyle ':completion:*' menu no
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+
+      eval "$(fzf --zsh)"
     '';
   };
   history = {
