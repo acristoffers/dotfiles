@@ -76,6 +76,10 @@ window-height=1032
 window-maximized=false
 window-width=1267
 
+[org/gnome/Extensions]
+window-height=1035
+window-width=629
+
 [org/gnome/GWeather4]
 temperature-unit='centigrade'
 
