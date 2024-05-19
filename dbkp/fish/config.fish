@@ -13,13 +13,14 @@ alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
 alias v     nvim
 alias vim   "nvim --noplugin"
 
-abbr doc   "pushd ~/Documents/Dropbox/Universidade/Doutorado"
-abbr docs  "pushd ~/Documents/Dropbox/Documentos"
-abbr fcfg  "nvim ~/.config/fish/config.fish"
-abbr ncfg  "nvim ~/.config/nix/home-manager/packages/common.nix"
-abbr nfcfg "nvim ~/.config/nix/home-manager/flake.nix"
-abbr nhcfg "nvim ~/.config/nix/home-manager/home.nix"
-abbr scfg  "source ~/.config/fish/config.fish"
+abbr doc     "pushd ~/Documents/Dropbox/Universidade/Doutorado"
+abbr docs    "pushd ~/Documents/Dropbox/Documentos"
+abbr fcfg    "nvim ~/.config/fish/config.fish"
+abbr ncfg    "nvim ~/.config/nix/home-manager/packages/common.nix"
+abbr nfcfg   "nvim ~/.config/nix/home-manager/flake.nix"
+abbr nhcfg   "nvim ~/.config/nix/home-manager/home.nix"
+abbr scfg    "source ~/.config/fish/config.fish"
+abbr pbpaste "xclip -sel clip -out"
 
 set -x LANG              en_US.UTF-8
 set -x LC_CTYPE          en_US.UTF-8
@@ -87,6 +88,9 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -x LIBVIRT_DEFAULT_URI "qemu:///system"
   set -gx MLSP_PATH "$HOME/Documents/MATLAB/Toolboxes/mosek-10/toolbox/r2017a:$HOME/Documents/MATLAB/Bin:$HOME/Documents/MATLAB:$HOME/Documents/MATLAB/Toolboxes/cvx/builtins:$HOME/Documents/MATLAB/Toolboxes/cvx/commands:$HOME/Documents/MATLAB/Toolboxes/cvx/functions:$HOME/Documents/MATLAB/Toolboxes/cvx/lib:$HOME/Documents/MATLAB/Toolboxes/cvx/structures:$HOME/Documents/MATLAB/Toolboxes/cvx:$HOME/Documents/MATLAB/Toolboxes/YALMIP:$HOME/Documents/MATLAB/Toolboxes/YALMIP/extras:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/bilevel:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/global:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/moment:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/parametric:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/robust:$HOME/Documents/MATLAB/Toolboxes/YALMIP/modules/sos:$HOME/Documents/MATLAB/Toolboxes/YALMIP/operators:$HOME/Documents/MATLAB/Toolboxes/YALMIP/solvers:$HOME/Documents/MATLAB/Toolboxes/sedumi/examples:$HOME/Documents/MATLAB/Toolboxes/sedumi/conversion:$HOME/Documents/MATLAB/Toolboxes/sedumi:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/custom:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/dpvar:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/DP:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/processing:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/sosprogramming:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/sparsityandstructure:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/internal/symvar:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/multipoly:$HOME/Documents/MATLAB/Toolboxes/SOSTOOLS/multipoly/doc:$HOME/Documents/MATLAB/Toolboxes/MBeautifier:$HOME/Documents/MATLAB/Toolboxes/matlab-schemer:$HOME/Documents/MATLAB/Toolboxes/latex_library:$HOME/Documents/MATLAB/Toolboxes/export_fig:$HOME/Documents/MATLAB/Toolboxes/matpower/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/most/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/most/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/mp-opt-model/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/mp-opt-model/lib/t:$HOME/Documents/MATLAB/Toolboxes/matpower/mips/lib:$HOME/Documents/MATLAB/Toolboxes/matpower/mips/lib/t:$HOME/Documents/MATLAB/Toolboxes/SDPT3:$HOME/Documents/MATLAB/Toolboxes/SDPT3/Solver:$HOME/Documents/MATLAB/Toolboxes/SDPT3/HSDSolver:$HOME/Documents/MATLAB/Toolboxes/SDPT3/Solver/Mexfun"
   set -x LEDGER_FILE ~/.org/finances/(date +%Y).ledger
+  set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
+  set -gx XCOMPOSEFILE "$XDG_CONFIG_HOME"/X11/xcompose
+  set -gx NIX_PATH nixpkgs=$HOME/.nix-defexpr/channels/nixos
 
   add-to-path-if-exists $HOME/bin
   add-to-path-if-exists $HOME/.bin
@@ -102,12 +106,22 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   add-to-path-if-exists $HOME/.bin/languagetool/5.5/bin
   add-to-path-if-exists $PIP_PREFIX/bin
   add-to-path-if-exists $GOPATH/bin
+  add-to-path-if-exists /var/lib/snapd/snap/bin
 
-  if test (uname -s) = "Darwin"
-    config-darwin
+  if lsb_release -i | grep -q Steam
+    set -U tide_os_icon 󰓓
+  else if lsb_release -i | grep -q NixOS
+    set -U tide_os_icon 
   else
-    config-linux
+    set -U tide_os_icon 
   end
+
+  for p in $LD_LIBRARY_EXTRA_PATH
+    set -a LD_LIBRARY_PATH $p
+  end
+
+  # Prevents messages about degraded session in home-manager
+  systemctl --user reset-failed
 
   any-nix-shell fish | source
   zoxide init fish --cmd j | source
