@@ -14,8 +14,8 @@ with pkgs; [
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
-  emacs29-pgtk
   emacs-all-the-icons-fonts
+  emacs29-pgtk
   emacsPackages.cask
   epstool
   fastfetch
@@ -78,6 +78,7 @@ with pkgs; [
   rustup
   shellcheck
   shfmt
+  starship
   taplo
   termdown
   tmux
