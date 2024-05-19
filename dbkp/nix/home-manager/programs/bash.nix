@@ -15,6 +15,6 @@
     XDG_STATE_HOME = "$HOME/.local/state";
   };
   bashrcExtra = ''
-    eval "''${starship init bash}"
+    eval "$(starship init bash)"
   '';
 }
