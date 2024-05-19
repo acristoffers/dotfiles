@@ -73,11 +73,12 @@
 
     eval "$(fzf --zsh)"
     eval "$(zoxide init --cmd j zsh)"
+    eval "$(starship init zsh)"
 
     if [[ -f "$HOME/.cargo/env" ]]; then
       source "$HOME/.cargo/env"
     fi
 
-    eval "$(starship init zsh)"
+    return
   '';
 }
