@@ -26,7 +26,6 @@ with pkgs; [
   fish
   fishPlugins.fzf-fish
   fishPlugins.puffer
-  fishPlugins.tide
   gawk
   gh
   ghostscript

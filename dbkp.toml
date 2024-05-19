@@ -59,6 +59,10 @@ EncryptionSalt = ["", ""]
   Name = "qt6ct"
   Path = "~/.config/qt6ct"
 
+[[Files]]
+  Name = "starship.toml"
+  Path = "~/.config/starship.toml"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"

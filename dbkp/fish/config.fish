@@ -40,12 +40,6 @@ set -e LC_ALL
 set -x fish_greeting ""
 set -x LSCOLORS gxfxcxdxbxeggdbgagacad
 
-if type -q git
-  set -U _tide_left_items os cwd git ssh nixshell
-else
-  set -U _tide_left_items os cwd ssh nixshell
-end
-
 if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   if not set -q FULL_NIX_SHELL
     set -x PATH /bin
@@ -108,14 +102,6 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   add-to-path-if-exists $GOPATH/bin
   add-to-path-if-exists /var/lib/snapd/snap/bin
 
-  if lsb_release -i | grep -q Steam
-    set -U tide_os_icon 󰓓
-  else if lsb_release -i | grep -q NixOS
-    set -U tide_os_icon 
-  else
-    set -U tide_os_icon 
-  end
-
   for p in $LD_LIBRARY_EXTRA_PATH
     set -a LD_LIBRARY_PATH $p
   end
@@ -170,3 +156,4 @@ end
 
 _git_fetch_on_cd
 fzf_configure_bindings --directory=\ef
+starship init fish | source

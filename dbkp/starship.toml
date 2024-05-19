@@ -1,0 +1,90 @@
+format = """
+$os\
+[](bg:violet fg:purple)\
+$directory\
+[](bg:purple fg:violet)\
+$git_branch$git_status\
+[](bg:orange fg:purple)\
+$nix_shell\
+[](bg:green fg:orange)\
+$hostname\
+[](bg:violet fg:green)\
+${custom.other}\
+[](bg:gray fg:violet)\
+$shell\
+[ ](fg:gray)\
+"""
+
+add_newline = false
+palette = "dracula"
+
+[palettes.dracula]
+black = '#000000'
+white = '#FFFFFF'
+purple = '#5F60AF'
+violet = '#AF87FF'
+orange = '#FFB86C'
+green = '#A6E22E'
+gray = "#44475A"
+
+[os]
+format = "[ $symbol ]($style)"
+style = "bg:purple fg:white"
+disabled = false
+
+[directory]
+style = "bg:violet fg:black"
+format = "[ $path ]($style)"
+truncation_length = 1
+truncation_symbol = ""
+
+[os.symbols]
+Ubuntu = ""
+Fedora = ""
+NixOS = ""
+
+[git_branch]
+symbol = ""
+style = "bg:purple fg:white"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:purple fg:white"
+format = '([$all_status$ahead_behind ]($style))'
+stashed = '\$$count'
+ahead = "⇡$count"
+behind = "⇣$count"
+up_to_date = ""
+diverged = "⇕$count"
+conflicted = "=$count"
+deleted = "✘$count"
+renamed = "»$count"
+modified = "!$count"
+staged = "+$count"
+untracked = "?$count"
+typechanged = ""
+
+[nix_shell]
+symbol = ""
+style = "bg:orange fg:black"
+format = "[ $symbol $state ]($style)"
+
+[hostname]
+ssh_symbol = ""
+style = "bg:green fg:black"
+format = "[ $ssh_symbol $hostname ]($style)"
+
+[shell]
+disabled = false
+style = "bg:gray fg:white"
+format = '[ $indicator ]($style)'
+bash_indicator = "Bash"
+fish_indicator = "Fish"
+zsh_indicator = "ZSH"
+
+[custom.other]
+command = "echo $STARSHIP_CUSTOM_SEGMENT"
+style = "bg:violet fg:black"
+format = '[ $output ]($style)'
+when = 'env | grep STARSHIP_CUSTOM_SEGMENT'
+shell = ["bash", "--noprofile", "--norc"]

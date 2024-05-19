@@ -33,9 +33,6 @@
     fi
     source "''${ZINIT_HOME}/zinit.zsh"
 
-    zinit light romkatv/powerlevel10k
-    zinit light dracula/powerlevel10k
-
     zinit light zsh-users/zsh-autosuggestions
     zinit light zsh-users/zsh-completions
     zinit light zsh-users/zsh-syntax-highlighting
@@ -48,8 +45,6 @@
 
     autoload -Uz compinit && compinit
     zinit cdreplay -q
-
-    source "${config.xdg.configHome}/p10k/p10k.zsh"
 
     bindkey -e # Emacs mode
     bindkey '^p' history-search-backward
@@ -82,5 +77,7 @@
     if [[ -f "$HOME/.cargo/env" ]]; then
       source "$HOME/.cargo/env"
     fi
+
+    eval "$(starship init zsh)"
   '';
 }
