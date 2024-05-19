@@ -3,37 +3,37 @@ ulimit -n 2048
 
 fish_config theme choose "Dracula Official"
 
-alias bell  "echo -e '\a'"
-alias btop  "btop -p 0"
-alias lg    lazygit
+alias bell "echo -e '\a'"
+alias btop "btop -p 0"
+alias lg lazygit
 alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
-alias sudo  doas
-alias tree  "exa --tree"
+alias sudo doas
+alias tree "exa --tree"
 alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
-alias v     nvim
-alias vim   "nvim --noplugin"
+alias v nvim
+alias vim "nvim --noplugin"
 
-abbr doc     "pushd ~/Documents/Dropbox/Universidade/Doutorado"
-abbr docs    "pushd ~/Documents/Dropbox/Documentos"
-abbr fcfg    "nvim ~/.config/fish/config.fish"
-abbr ncfg    "nvim ~/.config/nix/home-manager/packages/common.nix"
-abbr nfcfg   "nvim ~/.config/nix/home-manager/flake.nix"
-abbr nhcfg   "nvim ~/.config/nix/home-manager/home.nix"
-abbr scfg    "source ~/.config/fish/config.fish"
+abbr doc "pushd ~/Documents/Dropbox/Universidade/Doutorado"
+abbr docs "pushd ~/Documents/Dropbox/Documentos"
+abbr fcfg "nvim ~/.config/fish/config.fish"
+abbr ncfg "nvim ~/.config/nix/home-manager/packages/common.nix"
+abbr nfcfg "nvim ~/.config/nix/home-manager/flake.nix"
+abbr nhcfg "nvim ~/.config/nix/home-manager/home.nix"
+abbr scfg "source ~/.config/fish/config.fish"
 abbr pbpaste "xclip -sel clip -out"
 
-set -x LANG              en_US.UTF-8
-set -x LC_CTYPE          en_US.UTF-8
-set -x LC_NUMERIC        pt_BR.UTF-8
-set -x LC_TIME           pt_BR.UTF-8
-set -x LC_COLLATE        pt_BR.UTF-8
-set -x LC_MONETARY       fr_FR.UTF-8
-set -x LC_MESSAGES       en_US.UTF-8
-set -x LC_PAPER          pt_BR.UTF-8
-set -x LC_NAME           fr_FR.UTF-8
-set -x LC_ADDRESS        fr_FR.UTF-8
-set -x LC_TELEPHONE      fr_FR.UTF-8
-set -x LC_MEASUREMENT    fr_FR.UTF-8
+set -x LANG en_US.UTF-8
+set -x LC_CTYPE en_US.UTF-8
+set -x LC_NUMERIC pt_BR.UTF-8
+set -x LC_TIME pt_BR.UTF-8
+set -x LC_COLLATE pt_BR.UTF-8
+set -x LC_MONETARY fr_FR.UTF-8
+set -x LC_MESSAGES en_US.UTF-8
+set -x LC_PAPER pt_BR.UTF-8
+set -x LC_NAME fr_FR.UTF-8
+set -x LC_ADDRESS fr_FR.UTF-8
+set -x LC_TELEPHONE fr_FR.UTF-8
+set -x LC_MEASUREMENT fr_FR.UTF-8
 set -x LC_IDENTIFICATION fr_FR.UTF-8
 set -e LC_ALL
 
@@ -100,7 +100,6 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   add-to-path-if-exists $HOME/.bin/languagetool/5.5/bin
   add-to-path-if-exists $PIP_PREFIX/bin
   add-to-path-if-exists $GOPATH/bin
-  add-to-path-if-exists /var/lib/snapd/snap/bin
 
   for p in $LD_LIBRARY_EXTRA_PATH
     set -a LD_LIBRARY_PATH $p
@@ -123,7 +122,7 @@ else
     end
   end
 
-  if test (uname -s) = "Linux"
+  if test (uname -s) = Linux
     set -x LOCALE_ARCHIVE /usr/lib/locale/locale-archive
   end
 
@@ -156,4 +155,4 @@ end
 
 _git_fetch_on_cd
 fzf_configure_bindings --directory=\ef
-starship init fish | source
+~/.nix-profile/bin/starship init fish | source
