@@ -15,6 +15,8 @@
     XDG_STATE_HOME = "$HOME/.local/state";
   };
   bashrcExtra = ''
-    eval "$(starship init bash)"
+    if [[ $- == *i* ]]; then
+      eval "$(starship init zsh)"
+    fi
   '';
 }

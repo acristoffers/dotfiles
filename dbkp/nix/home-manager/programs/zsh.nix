@@ -71,9 +71,11 @@
     setopt hist_ignore_dups
     setopt hist_find_no_dups
 
-    eval "$(fzf --zsh)"
-    eval "$(zoxide init --cmd j zsh)"
-    eval "$(starship init zsh)"
+    if [[ $- == *i* ]]; then
+      eval "$(fzf --zsh)"
+      eval "$(zoxide init --cmd j zsh)"
+      eval "$(starship init zsh)"
+    fi
 
     if [[ -f "$HOME/.cargo/env" ]]; then
       source "$HOME/.cargo/env"
