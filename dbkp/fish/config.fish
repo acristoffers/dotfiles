@@ -155,4 +155,7 @@ end
 
 _git_fetch_on_cd
 fzf_configure_bindings --directory=\ef
-~/.nix-profile/bin/starship init fish | source
+
+if status --is-interactive
+  ~/.nix-profile/bin/starship init fish | source
+end
