@@ -827,6 +827,8 @@ show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
 
 [org/gnome/shell/extensions/clipboard-indicator]
+cache-size=50
+history-size=200
 toggle-menu=['<Super>semicolon']
 
 [org/gnome/shell/extensions/coverflowalttab]

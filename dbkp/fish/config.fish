@@ -153,9 +153,9 @@ if test -f $XDG_DATA_HOME/secrets.fish
   source $XDG_DATA_HOME/secrets.fish
 end
 
-_git_fetch_on_cd
-fzf_configure_bindings --directory=\ef
 
 if status --is-interactive
+  _git_fetch_on_cd
+  fzf_configure_bindings --directory=\ef
   ~/.nix-profile/bin/starship init fish | source
 end
