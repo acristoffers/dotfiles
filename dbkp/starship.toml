@@ -8,13 +8,13 @@ $directory\
 right_format = """
 [ ](fg:gray)\
 $shell\
-[](bg:gray fg:violet)\
+[](bg:gray fg:violet)\
 ${custom.other}\
-[](bg:violet fg:green)\
+[](bg:violet fg:green)\
 $hostname\
-[](bg:green fg:orange)\
+[](bg:green fg:orange)\
 $nix_shell\
-[](bg:orange fg:purple)\
+[](bg:orange fg:purple)\
 $git_branch$git_status\
 [](fg:purple)
 """
