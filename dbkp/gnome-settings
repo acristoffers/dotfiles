@@ -732,7 +732,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.317293671995124, 5.0383713999999999)
+night-light-last-coordinates=(47.34297865297858, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -971,7 +971,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1716628184
 first-run=false
-flatpak-purge-timestamp=int64 1716628124
+flatpak-purge-timestamp=int64 1716710588
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
