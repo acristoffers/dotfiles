@@ -16,6 +16,7 @@
   };
   bashrcExtra = ''
     if [[ $- == *i* ]]; then
+      source "$(blesh-share)/ble.sh"
       eval "$(starship init bash)"
     fi
   '';

@@ -5,6 +5,7 @@ with pkgs; [
   (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
   bibtool
+  blesh
   cacert
   cowsay
   curl
