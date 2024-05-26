@@ -2,17 +2,21 @@ format = """
 $os\
 [](bg:violet fg:purple)\
 $directory\
-[](bg:purple fg:violet)\
-$git_branch$git_status\
-[](bg:orange fg:purple)\
-$nix_shell\
-[](bg:green fg:orange)\
-$hostname\
-[](bg:violet fg:green)\
-${custom.other}\
-[](bg:gray fg:violet)\
+[ ](fg:violet)\
+"""
+
+right_format = """
+[ ](fg:gray)\
 $shell\
-[ ](fg:gray)\
+[](bg:gray fg:violet)\
+${custom.other}\
+[](bg:violet fg:green)\
+$hostname\
+[](bg:green fg:orange)\
+$nix_shell\
+[](bg:orange fg:purple)\
+$git_branch$git_status\
+[](fg:purple)
 """
 
 add_newline = false
@@ -46,7 +50,7 @@ NixOS = ""
 [git_branch]
 symbol = ""
 style = "bg:purple fg:white"
-format = '[ $symbol $branch ]($style)'
+format = '([ $symbol $branch ]($style))'
 
 [git_status]
 style = "bg:purple fg:white"
