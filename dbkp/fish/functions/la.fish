@@ -1,3 +1,3 @@
-function la --wraps ls --description "List contents of directory, including hidden files in directory using long format"
+function la --wraps ls --description "alias la=ls -lha"
   ls -lagh $argv
 end

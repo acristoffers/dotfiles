@@ -1,6 +1,6 @@
 function fix-path
   set -l tmp $PATH
-  set -x PATH /bin
+  set -Ux PATH /bin
   for path in {,/usr}{,/local}{/sbin,/bin}
     add-to-path-if-exists $path
   end
