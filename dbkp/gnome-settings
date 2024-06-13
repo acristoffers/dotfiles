@@ -21,11 +21,11 @@ last-search-text='acristoffers@startmail.com'
 
 [apps/seahorse/listing]
 item-filter='any'
-keyrings-selected=['openssh:///home/alan/.ssh']
+keyrings-selected=['secret-service:///org/freedesktop/secrets/collection/Default_5fkeyring']
 
 [apps/seahorse/windows/key-manager]
-height=412
-width=843
+height=647
+width=1268
 
 [ca/desrt/dconf-editor]
 saved-pathbar-path='/org/gnome/shell/extensions/rectangle/'
@@ -175,8 +175,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='background'
-window-state=(1267, 1032, false)
+last-panel='network'
+window-state=(1693, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -597,8 +597,16 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 692)
+initial-size=(843, 460)
 maximized=false
+
+[org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/0d00b642-0051-43be-acce-13309da16f0d]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/160325ff-50ad-351e-8ce9-8099a9fd5feb]
 ignore-ca-cert=false
@@ -632,6 +640,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/fb09e15a-56f0-4923-8531-972e72289275]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/photos]
 window-maximized=false
 window-position=[26, 23]
@@ -661,6 +673,9 @@ last-folder-path='/var/lib/flatpak/exports/share/applications'
 [org/gnome/portal/filechooser/eu.betterbird.Betterbird]
 last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5kb7f.default-default'
 
+[org/gnome/portal/filechooser/gnome-wifi-panel]
+last-folder-path='/home/alan/Downloads/OpenVPN/steamdeck'
+
 [org/gnome/portal/filechooser/io.github.mhogomchungu.sirikali]
 last-folder-path='/home/alan/Documents/.bl'
 
@@ -683,7 +698,7 @@ last-folder-path='/home/alan/Downloads/projects'
 last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
-last-folder-path='/home/alan/Pictures'
+last-folder-path='/home/alan/Downloads/OpenVPN/steamdeck'
 
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
@@ -698,7 +713,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/DoS/build'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -732,7 +747,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.308590608349391, 5.0383713999999999)
+night-light-last-coordinates=(47.301046161025901, 5.0383713999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -782,7 +797,7 @@ app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.C
 command-history=['gl', 'r', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
-enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'clipboard-indicator@tudmotu.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'quick-settings-avatar@d-go', 'vertical-workspaces@G-dH.github.com', 'rectangle@acristoffers.me', 'transparent-top-bar@zhanghai.me', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com']
+enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'quick-settings-avatar@d-go', 'vertical-workspaces@G-dH.github.com', 'rectangle@acristoffers.me', 'transparent-top-bar@zhanghai.me', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'clipboard-indicator@tudmotu.com']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null', 'GtkBuilder.registerClass', "import Adw from 'gi:/adw'", "import Adw from 'gi://Adw';", 'Adw', 'Gtk']
@@ -826,14 +841,12 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -969,9 +982,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1717002442
+check-timestamp=int64 1718297587
 first-run=false
-flatpak-purge-timestamp=int64 1716710588
+flatpak-purge-timestamp=int64 1718131745
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

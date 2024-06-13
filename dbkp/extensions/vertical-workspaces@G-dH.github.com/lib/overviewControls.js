@@ -131,8 +131,8 @@ export const OverviewControlsModule = class {
                 searchController.unblock_signal_handler(this._originalSearchControllerSigId);
                 this._originalSearchControllerSigId = 0;
             }
-            Main.overview.searchController._searchResults.translation_x = 0;
-            Main.overview.searchController._searchResults.translation_y = 0;
+            searchController._searchResults.translation_x = 0;
+            searchController._searchResults.translation_y = 0;
             Main.overview.searchEntry.visible = true;
             Main.overview.searchEntry.opacity = 255;
         } else {
@@ -186,6 +186,22 @@ const ControlsManagerCommon = {
     /* _update: function() {
         ...
     }*/
+
+    prepareToEnterOverview() {
+        this._searchController.prepareToEnterOverview();
+        this._workspacesDisplay.prepareToEnterOverview();
+
+        Main.overview._overview.controls.opacity = 255;
+
+        // Ensure that overview backgrounds are ready when needed
+        if (!this._bgManagers && (opt.SHOW_BG_IN_OVERVIEW || !opt.SHOW_WS_PREVIEW_BG))
+            this._setBackground();
+        else if (this._bgManagers && !(opt.SHOW_BG_IN_OVERVIEW || !opt.SHOW_WS_PREVIEW_BG))
+            this._setBackground(true);
+
+        // store pointer X coordinate for OVERVIEW_MODE 1 - to prevent immediate switch to WORKSPACE_MODE 1 if the mouse pointer is steady
+        opt.showingPointerX = global.get_pointer()[0];
+    },
 
     // this function has duplicate in WorkspaceView so we use one function for both to avoid issues with syncing them
     _getFitModeForState(state) {
@@ -694,7 +710,6 @@ const ControlsManagerCommon = {
     },
 
     _getOverviewTranslations(dash, tmbBox, searchEntryBin) {
-        // const tmbBox = Main.overview._overview._controls._thumbnailsBox;
         const animationsDisabled = !St.Settings.get().enable_animations || ((opt.SHOW_WS_PREVIEW_BG && !opt.OVERVIEW_MODE2) && !Main.layoutManager._startingUp);
         if (animationsDisabled)
             return [0, 0, 0, 0, 0];
@@ -803,7 +818,7 @@ const ControlsManagerCommon = {
     _setBackground(reset = false) {
         if (this._bgManagers) {
             this._bgManagers.forEach(bg => {
-                Main.overview._overview._controls._stateAdjustment.disconnect(bg._fadeSignal);
+                this._stateAdjustment.disconnect(bg._fadeSignal);
                 bg.destroy();
             });
         }
@@ -825,8 +840,7 @@ const ControlsManagerCommon = {
             bgManager.backgroundActor.content.vignette_sharpness = 0;
             bgManager.backgroundActor.content.brightness = 1;
 
-
-            bgManager._fadeSignal = Main.overview._overview._controls._stateAdjustment.connect('notify::value', v => {
+            bgManager._fadeSignal = this._stateAdjustment.connect('notify::value', v => {
                 this._updateBackground(bgManager, v.value, v);
             });
 
@@ -841,10 +855,10 @@ const ControlsManagerCommon = {
     },
 
     _updateBackground(bgManager, stateValue = 2, stateAdjustment = null) {
-        // Blur My Shell extension destroys all background actors in the overview and doesn't care about consequences
+        // Just in case something destroys our background (like older versions of Blur My Shell)
         if (this._bgManagers[0] && !Main.layoutManager.overviewGroup.get_children().includes(this._bgManagers[0].backgroundActor)) {
-            Main.notifyError(`[${Me.metadata.name}]`, _('Overview background crashed!\nIf you are using Blur My Shell, disable overview blur in its settings and re-enable V-Shell Overview Background to avoid visual glitches.'));
-            // remove and disconnect our destroyed backgrounds to avoid more errors
+            console.error(`[${Me.metadata.name}]`, 'Error: The overview background has been destroyed, possibly by another incompatible extension');
+            // remove and disconnect our destroyed backgrounds to avoid further errors
             this._setBackground(true);
             return;
         }
@@ -852,9 +866,12 @@ const ControlsManagerCommon = {
         const finalState = stateAdjustment?.getStateTransitionParams().finalState;
         if (!opt.SHOW_BG_IN_OVERVIEW && !opt.SHOW_WS_PREVIEW_BG) {
             // if no bg shown in the overview, fade out the wallpaper
+            if (bgManager.backgroundActor.get_effect('blur'))
+                bgManager.backgroundActor.remove_effect_by_name('blur');
             if (!(opt.OVERVIEW_MODE2 && opt.WORKSPACE_MODE && finalState === 1))
                 bgManager.backgroundActor.opacity = Util.lerp(255, 0, Math.min(stateValue, 1));
         } else {
+            bgManager.backgroundActor.opacity = 255;
             let VIGNETTE, BRIGHTNESS, bgValue;
             if (opt.OVERVIEW_MODE2 && stateValue <= 1 && !opt.WORKSPACE_MODE) {
                 VIGNETTE = 0;
@@ -1110,13 +1127,13 @@ const ControlsManagerLayoutVertical = {
                 appDisplayBox.set_origin(Math.round(startX + width), Math.round(appDisplayY));
                 break;
             case 2:
-                appDisplayBox.set_origin(Math.round(startX - adWidth), Math.round(appDisplayY));
+                appDisplayBox.set_origin(Math.round(box.x1 - adWidth), Math.round(appDisplayY));
                 break;
             case 3:
-                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(this._workAreaBox.y2));
+                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(box.y2));
                 break;
             case 5:
-                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(this._workAreaBox.y1 - adHeight));
+                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(box.y1 - adHeight));
                 break;
             }
             break;
@@ -1268,7 +1285,7 @@ const ControlsManagerLayoutVertical = {
             this._dash.allocate(childBox);
         }
 
-        availableHeight -= opt.DASH_VERTICAL ? 0 : dashHeight + spacing;
+        availableHeight -= opt.DASH_VERTICAL ? halfSpacing : dashHeight;
 
         let [searchHeight] = this._searchEntry.get_preferred_height(width - wsTmbWidth);
 
@@ -1301,7 +1318,7 @@ const ControlsManagerLayoutVertical = {
         if (opt.DASH_TOP)
             searchEntryY = startY + dashHeight;
         else
-            searchEntryY = startY;
+            searchEntryY = startY + halfSpacing;
 
         searchEntryX = startX + searchXoffset;
         let searchWidth = width - 2 * spacing - wsTmbWidth - (opt.DASH_VERTICAL ? dashWidth : 0); // xAlignCenter is given by wsBox
@@ -1352,20 +1369,17 @@ const ControlsManagerLayoutVertical = {
         this._appDisplay.allocate(appDisplayBox);
 
         // Search
+        let searchX = 0;
         if (opt.CENTER_SEARCH_VIEW) {
             const dashW = (opt.DASH_VERTICAL ? dashWidth : 0) + spacing;
             searchWidth = width - 2 * wsTmbWidth - 2 * dashW;
-            childBox.set_origin(
-                Math.round(startX + wsTmbWidth + dashW),
-                Math.round(startY + (opt.DASH_TOP ? dashHeight + spacing : spacing) + searchHeight)
-            );
+            searchX = Math.round(startX + wsTmbWidth + dashW);
         } else {
-            childBox.set_origin(
-                Math.round(this._xAlignCenter ? startX + wsTmbWidth + spacing : startX + searchXoffset),
-                Math.round(startY + (opt.DASH_TOP ? dashHeight + spacing : spacing) + searchHeight)
-            );
+            searchX = Math.round(this._xAlignCenter ? startX + wsTmbWidth + spacing : startX + searchXoffset);
         }
+        const searchY = Math.round(startY + (opt.DASH_TOP ? dashHeight : halfSpacing) + spacing + searchHeight);
 
+        childBox.set_origin(searchX, searchY);
         childBox.set_size(Math.round(searchWidth), Math.round(availableHeight));
         this._searchController.allocate(childBox);
 
@@ -1497,10 +1511,10 @@ const ControlsManagerLayoutHorizontal = {
                 appDisplayBox.set_origin(Math.round(startX - adWidth), Math.round(appDisplayY));
                 break;
             case 3:
-                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(this._workAreaBox.y2));
+                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(box.y2));
                 break;
             case 5:
-                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(this._workAreaBox.y1 - adHeight));
+                appDisplayBox.set_origin(Math.round(appDisplayX), Math.round(box.y1 - adHeight));
                 break;
             }
             break;
@@ -1609,7 +1623,7 @@ const ControlsManagerLayoutHorizontal = {
 
             this._workspacesThumbnails.allocate(childBox);
 
-            availableHeight -= wsTmbHeight + spacing;
+            availableHeight -= wsTmbHeight + halfSpacing;
         }
 
         if (this._dash.visible) {
@@ -1688,7 +1702,7 @@ const ControlsManagerLayoutHorizontal = {
         if (opt.DASH_TOP)
             searchEntryY = startY + (opt.WS_TMB_TOP ? wsTmbHeight : 0) + dashHeight;
         else
-            searchEntryY = startY + (opt.WS_TMB_TOP ? wsTmbHeight + spacing : 0);
+            searchEntryY = startY + (opt.WS_TMB_TOP ? wsTmbHeight + halfSpacing : halfSpacing);
 
 
         searchEntryX = startX + searchXoffset;
@@ -1740,20 +1754,17 @@ const ControlsManagerLayoutHorizontal = {
         this._appDisplay.allocate(appDisplayBox);
 
         // Search
+        let searchX = 0;
         if (opt.CENTER_SEARCH_VIEW) {
             const dashW = (opt.DASH_VERTICAL ? dashWidth : 0) + spacing;
             searchWidth = width - 2 * dashW;
-            childBox.set_origin(
-                Math.round(startX + dashW),
-                Math.round(startY + (opt.DASH_TOP ? dashHeight + spacing : spacing) + (opt.WS_TMB_TOP ? wsTmbHeight + spacing : 0) + searchHeight)
-            );
+            searchX = Math.round(startX + dashW);
         } else {
-            childBox.set_origin(
-                Math.round(this._xAlignCenter ? startX + spacing : startX + searchXoffset),
-                Math.round(startY + (opt.DASH_TOP ? dashHeight + spacing : spacing) + (opt.WS_TMB_TOP ? wsTmbHeight + spacing : 0) + searchHeight)
-            );
+            searchX = Math.round(this._xAlignCenter ? startX + spacing : startX + searchXoffset);
         }
+        const searchY = Math.round(startY + (opt.DASH_TOP ? dashHeight : halfSpacing) + (opt.WS_TMB_TOP ? wsTmbHeight : 0) + spacing + searchHeight);
 
+        childBox.set_origin(searchX, searchY);
         childBox.set_size(Math.round(searchWidth), Math.round(availableHeight));
         this._searchController.allocate(childBox);
 

@@ -113,6 +113,7 @@ export const AppDisplayModule = class {
         this._overrides.addOverride('BaseAppViewCommonApp', AppDisplay.AppDisplay.prototype, BaseAppViewCommon);
         this._overrides.addOverride('AppDisplay', AppDisplay.AppDisplay.prototype, AppDisplayCommon);
         this._overrides.addOverride('AppViewItem', AppDisplay.AppViewItem.prototype, AppViewItemCommon);
+        this._overrides.addOverride('AppGridCommon', AppDisplay.AppGrid.prototype, AppGridCommon);
         this._overrides.addOverride('AppIcon', AppDisplay.AppIcon.prototype, AppIcon);
         this._overrides.addOverride('AppGridLayout', _appDisplay._appGridLayout, BaseAppViewGridLayout);
         _appDisplay._appGridLayout._isAppDisplay = true;
@@ -130,10 +131,11 @@ export const AppDisplayModule = class {
         this._setAppDisplayOrientation(opt.ORIENTATION);
         this._updateDND();
 
+        _appDisplay.add_style_class_name('app-display-46');
+
         if (!Main.sessionMode.isGreeter)
             this._updateAppDisplayProperties();
 
-        _appDisplay.add_style_class_name('app-display-46');
         console.debug('  AppDisplayModule - Activated');
     }
 
@@ -243,9 +245,9 @@ export const AppDisplayModule = class {
 
     // Set App Grid columns, rows, icon size, incomplete pages
     _updateAppDisplayProperties(reset = false) {
-        opt._appGridNeedsRedisplay = false;
         // columns, rows, icon size
         _appDisplay.visible = true;
+
         if (reset) {
             _appDisplay._grid.layoutManager.fixedIconSize = -1;
             _appDisplay._grid.layoutManager.allow_incomplete_pages = true;
@@ -255,11 +257,11 @@ export const AppDisplayModule = class {
                 global.settings.disconnect(this._appGridLayoutConId);
                 this._appGridLayoutConId = 0;
             }
-            _appDisplay._redisplay();
 
             _appDisplay._grid.set_style('');
             this._updateAppGrid(reset);
         } else {
+            _appDisplay._grid._ready = false;
             // update grid on layout reset
             if (!this._appGridLayoutConId)
                 this._appGridLayoutConId = global.settings.connect('changed::app-picker-layout', this._updateLayout.bind(this));
@@ -270,9 +272,7 @@ export const AppDisplayModule = class {
             // main app grid always use available space and the spacing is optimized for the grid dimensions
             _appDisplay._grid.set_style('column-spacing: 5px; row-spacing: 5px;');
 
-            // force redisplay
             _appDisplay._grid._currentMode = -1;
-            _appDisplay._grid.setGridModes();
             _appDisplay._grid.layoutManager.fixedIconSize = opt.APP_GRID_ICON_SIZE;
 
             // avoid resetting appDisplay before startup animation
@@ -349,15 +349,13 @@ export const AppDisplayModule = class {
     }
 
     _updateAppGrid(reset = false, callback) {
-        // Avoid unnecessary load
+        // Updating appGrid content while rebasing extensions when session is locked makes no sense
         if (!Main.sessionMode.isLocked)
             this._removeIcons();
 
-        _appDisplay._grid._currentMode = -1;
-        _appDisplay._redisplay();
-
-        // don't realize appDisplay on disable
+        // appDisplay disabled
         if (reset) {
+            _appDisplay._redisplay();
             this._removeStatusMessage();
             return;
         }
@@ -369,25 +367,28 @@ export const AppDisplayModule = class {
         // Setting OffscreenRedirect allows for appDisplay realization even if it's off screen
         // so we don't need to move it to the visible part of the stage
         _appDisplay.offscreen_redirect = Clutter.OffscreenRedirect.ALWAYS;
-        _appDisplay.visible = true;
         _appDisplay.opacity = 1;
 
         this._exposeAppGrid();
 
-        // let the main loop process our changes before continuing
-        _timeouts.updateAppGrid = GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            _appDisplay._grid.layoutManager.updateIconSize();
-            // Ensure icons are in the proper positions and on the correct pages
-            _appDisplay._updateIconPositions();
+        _timeouts.updateAppGrid0 = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            _appDisplay._redisplay();
+            if (opt.APP_GRID_PERFORMANCE)
+                this._exposeAppFolders();
 
-            this._restoreAppGrid();
-            Me._resetInProgress = false;
-            this._removeStatusMessage();
+            // let the main loop process our changes before continuing
+            _timeouts.updateAppGrid1 = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                this._restoreAppGrid();
+                Me._resetInProgress = false;
+                this._removeStatusMessage();
 
-            if (callback)
-                callback();
+                if (callback)
+                    callback();
 
-            _timeouts.updateAppGrid = 0;
+                _timeouts.updateAppGrid1 = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+            _timeouts.updateAppGrid0 = 0;
             return GLib.SOURCE_REMOVE;
         });
     }
@@ -402,11 +403,6 @@ export const AppDisplayModule = class {
             // if overview is hidden, show it
             overviewGroup.visible = true;
         }
-
-        _appDisplay.opacity = 1;
-
-        if (opt.APP_GRID_PERFORMANCE)
-            this._exposeAppFolders();
     }
 
     _restoreAppGrid() {
@@ -419,7 +415,7 @@ export const AppDisplayModule = class {
         overviewGroup.scale_y = 1;
         overviewGroup.opacity = 255;
         _appDisplay.opacity = 0;
-        _appDisplay.visible = !!opt.APP_GRID_ANIMATION;
+        _appDisplay.visible = false;
     }
 
     _exposeAppFolders() {
@@ -701,6 +697,18 @@ const BaseAppViewCommon = {
                 icon.view._redisplay();
             });
         }
+
+        // different options for main app grid and app folders
+        const thisIsFolder = this instanceof AppDisplay.FolderView;
+        const thisIsAppDisplay = !thisIsFolder;
+
+        // Populate the main app grid after the grid dimensions are updated
+        // to prevent messy icon positions
+        if (thisIsAppDisplay && !this._grid._ready) {
+            return;
+        }
+        const ignorePages = thisIsAppDisplay && !opt.APP_GRID_ALLOW_INCOMPLETE_PAGES;
+
         let oldApps = this._orderedItems.slice();
         let oldAppIds = oldApps.map(icon => icon.id);
 
@@ -718,7 +726,9 @@ const BaseAppViewCommon = {
 
         // Add new app icons, or move existing ones
         newApps.forEach(icon => {
-            const [page, position] = this._getItemPosition(icon);
+            let [page, position] = [-1, -1];
+            if (!ignorePages)
+                [page, position] = this._getItemPosition(icon);
             if (addedApps.includes(icon)) {
                 this._addItem(icon, page, position);
             } else if (page !== -1 && position !== -1) {
@@ -728,9 +738,6 @@ const BaseAppViewCommon = {
             }
         });
 
-        // different options for root app grid and app folders
-        const thisIsFolder = this instanceof AppDisplay.FolderView;
-        const thisIsAppDisplay = !thisIsFolder;
         if ((opt.APP_GRID_ORDER && thisIsAppDisplay) ||
         (opt.APP_FOLDER_ORDER && thisIsFolder)) {
             // const { itemsPerPage } = this._grid;
@@ -882,6 +889,31 @@ const BaseAppViewGridLayout = {
         const idealIndicatorWidth = Math.max(horizontalSize, minArrowsWidth);
 
         return idealIndicatorWidth;
+    },
+};
+
+const AppGridCommon = {
+    _updatePadding() {
+        const node = this.get_theme_node();
+        const { rowSpacing, columnSpacing } = this.layoutManager;
+
+        const padding = this._indicatorsPadding.copy();
+        if (this === _appDisplay) {
+            const pageHeight = this.layoutManager.pageHeight;
+            const vPadding = pageHeight - pageHeight * opt.APP_GRID_PAGE_HEIGHT_SCALE;
+            padding.top = Math.round(vPadding / 2);
+            padding.bottom = padding.top;
+        }
+
+        padding.left += rowSpacing;
+        padding.right += rowSpacing;
+        padding.top += columnSpacing;
+        padding.bottom += columnSpacing;
+        ['top', 'right', 'bottom', 'left'].forEach(side => {
+            padding[side] += node.get_length(`page-padding-${side}`);
+        });
+
+        this.layoutManager.pagePadding = padding;
     },
 };
 
@@ -1087,7 +1119,7 @@ const FolderGrid = GObject.registerClass({
             page_valign: Clutter.ActorAlign.CENTER,
         });
         this.layout_manager._isFolder = true;
-        const spacing = opt.APP_GRID_SPACING;
+        const spacing = opt.APP_GRID_FOLDER_SPACING;
         this.set_style(`column-spacing: ${spacing}px; row-spacing: ${spacing}px;`);
         this.layoutManager.fixedIconSize = opt.APP_GRID_FOLDER_ICON_SIZE;
 
@@ -1276,7 +1308,7 @@ const AppFolderDialog = {
         // const fullAdaptiveGrid = !columns && !rows;
 
         const layoutManager = view._grid.layoutManager;
-        const spacing = opt.APP_GRID_SPACING;
+        const spacing = opt.APP_GRID_FOLDER_SPACING;
         const padding = 160; // Empiric size
         const titleBoxHeight =
             Math.round(this._entryBox.get_preferred_height(-1)[1] / scaleFactor); // ~75

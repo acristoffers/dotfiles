@@ -4,10 +4,7 @@
   inputs = {
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
-    flake-utils = {
-      follows = "chaotic/flake-utils";
-      url = "github:numtide/flake-utils";
-    };
+    flake-utils.url = "github:numtide/flake-utils";
 
     nixpkgs = {
       follows = "chaotic/nixpkgs";

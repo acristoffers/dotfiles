@@ -106,6 +106,7 @@ const IconGridCommon = {
 
         width /= scaleFactor;
         height /= scaleFactor;
+        height *= opt.APP_GRID_PAGE_HEIGHT_SCALE;
 
         const spacing = opt.APP_GRID_SPACING;
         const iconSize = opt.APP_GRID_ICON_SIZE > 0 ? opt.APP_GRID_ICON_SIZE : opt.APP_GRID_ICON_SIZE_DEFAULT;
@@ -135,6 +136,7 @@ const IconGridCommon = {
 
         this._gridModes = [{ columns, rows }];
         this._setGridMode(0);
+        this._ready = true;
     },
 };
 
@@ -154,12 +156,18 @@ const IconGridLayoutCommon = {
                 : opt.APP_GRID_ICON_SIZE_DEFAULT;
         }
 
-        const columnSpacingPerPage = opt.APP_GRID_SPACING * (nColumns - 1);
-        const rowSpacingPerPage = opt.APP_GRID_SPACING * (nRows - 1);
+        const spacing = this._isFolder
+            ? opt.APP_GRID_FOLDER_SPACING
+            : opt.APP_GRID_SPACING;
+
+        const columnSpacingPerPage = spacing * (nColumns - 1);
+        const rowSpacingPerPage = spacing * (nRows - 1);
         const itemPadding = 55;
 
         const width = (this._gridWidth ? this._gridWidth : this._pageWidth) / scaleFactor;
-        const height = (this._gridHeight ? this._gridHeight : this._pageHeight) / scaleFactor;
+        let height = (this._gridHeight ? this._gridHeight : this._pageHeight) / scaleFactor;
+        if (!this._isFolder)
+            height = Math.floor(height * opt.APP_GRID_PAGE_HEIGHT_SCALE);
         if (!width || !height)
             return opt.APP_GRID_ICON_SIZE_DEFAULT;
 
@@ -167,11 +175,11 @@ const IconGridLayoutCommon = {
 
         let iconSizes = Object.values(IconSize).sort((a, b) => b - a);
         // limit max icon size for folders and fully adaptive folder grids, the whole range is for the main grid with active folders
-        if (this._isFolder && opt.APP_GRID_FOLDER_ADAPTIVE && opt.APP_GRID_FOLDER_ICON_SIZE < 0)
+        if (this._isFolder /* && opt.APP_GRID_FOLDER_ADAPTIVE*/ && opt.APP_GRID_FOLDER_ICON_SIZE < 0)
             iconSizes = iconSizes.slice(iconSizes.indexOf(opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT), -1);
         else if (this._isFolder)
             iconSizes = iconSizes.slice(iconSizes.indexOf(IconSize.LARGE), -1);
-        else if (opt.APP_GRID_ADAPTIVE && opt.APP_GRID_ICON_SIZE < 0)
+        else if (/* opt.APP_GRID_ADAPTIVE &&*/ opt.APP_GRID_ICON_SIZE < 0)
             iconSizes = iconSizes.slice(iconSizes.indexOf(opt.APP_GRID_ICON_SIZE_DEFAULT), -1);
 
         let sizeInvalid = false;
@@ -198,6 +206,7 @@ const IconGridLayoutCommon = {
                 width - usedWidth - columnSpacingPerPage;
             const emptyVSpace =
                 height - usedHeight - rowSpacingPerPage;
+
 
             if (emptyHSpace >= 0 && emptyVSpace >= 0)
                 return size;
