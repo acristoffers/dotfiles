@@ -31,7 +31,6 @@ in
     "${config.xdg.configHome}/git/config".source = ./dotfiles/git/config;
     "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
-    "${config.xdg.configHome}/p10k".source = ./dotfiles/p10k;
     "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
     "${config.xdg.configHome}/tridactyl".source = ./dotfiles/tridactyl;
     "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;

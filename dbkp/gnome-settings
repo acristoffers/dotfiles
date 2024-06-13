@@ -841,12 +841,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
