@@ -205,7 +205,7 @@ rec {
     enable = true;
     pinentryPackage = pkgs.pinentry-gnome3;
   };
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
   programs.git.enable = true;
   programs.git.lfs.enable = true;
   programs.htop.enable = true;
