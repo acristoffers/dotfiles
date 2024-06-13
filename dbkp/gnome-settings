@@ -597,7 +597,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 460)
+initial-size=(948, 514)
 maximized=false
 
 [org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
