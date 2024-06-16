@@ -513,11 +513,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1718204493,
-        "narHash": "sha256-o44kZz4mM86s4YToQw4xiwlswmm4rxrM8GNSHVLwoRU=",
+        "lastModified": 1718463695,
+        "narHash": "sha256-7sbDTWabzMIlSP/sF/7zMjdwBpX17oGTEqYvmPdfinU=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "3a9d15dfe806c355e0aa5b27681ecabe834c65fc",
+        "rev": "85c582ac4651a4a3dbaba14694ef2ad194f3101e",
         "type": "gitlab"
       },
       "original": {
@@ -584,11 +584,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1718276843,
-        "narHash": "sha256-/YqoEILRf00Y0uv0mG/GliPdJYlod95UYJNdpOH5mMo=",
+        "lastModified": 1718524917,
+        "narHash": "sha256-o69bSNBKlGCZlpyYbPucjkdPc8NqEQgVL0YqS8G+Po4=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "e02c1b4d7bffaadc7f1769b03bf92b1d0d1b310d",
+        "rev": "03d663494e95249569806d4afbe5d6cf30b2f2ac",
         "type": "github"
       },
       "original": {
@@ -738,11 +738,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1718005740,
-        "narHash": "sha256-CDmKtLKCM52aVlAzNSO70KKI4bwUUDMu92ThpxH2kbE=",
+        "lastModified": 1718524898,
+        "narHash": "sha256-xS7T+0eRcOPlhrpiQdDFCy47oJBu8KbGsnWJBXFiUHY=",
         "owner": "acristoffers",
         "repo": "wbproto-beautifier",
-        "rev": "07d89ed3f23b57b0176e649551ab699cc9ebd0d8",
+        "rev": "233a556a231be654ad02b0768aaebbaaaf59dce9",
         "type": "github"
       },
       "original": {
