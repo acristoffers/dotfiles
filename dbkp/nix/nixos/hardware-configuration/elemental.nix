@@ -30,7 +30,7 @@
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
-  hardware.opengl.extraPackages = with pkgs; [
+  hardware.graphics.extraPackages = with pkgs; [
     intel-media-driver
     intel-ocl
     vaapiVdpau

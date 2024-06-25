@@ -45,8 +45,9 @@
   security.lockKernelModules = false;
   security.unprivilegedUsernsClone = true;
   security.allowSimultaneousMultithreading = true; # Allow hyperthreading
+  services.power-profiles-daemon.enable = false;
 
-  nix.settings.secret-key-files = ["/home/alan/.ssh/nix-store"];
+  nix.settings.secret-key-files = [ "/home/alan/.ssh/nix-store" ];
   nix.sshServe.enable = true;
   nix.sshServe.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEfkBMu/0qcgSq3Er6pCR/BiVg+mv9p6Wi/N129f202 alan@Alan-NixOS-SteamDeck" ];
 }
