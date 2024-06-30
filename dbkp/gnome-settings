@@ -847,6 +847,7 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -984,7 +985,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1719732044
 first-run=false
-flatpak-purge-timestamp=int64 1719646833
+flatpak-purge-timestamp=int64 1719739175
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

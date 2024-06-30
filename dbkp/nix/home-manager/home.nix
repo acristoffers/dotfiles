@@ -29,6 +29,7 @@ in
     "${config.xdg.configHome}/doom".source = ./dotfiles/doom;
     "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
     "${config.xdg.configHome}/git/config".source = ./dotfiles/git/config;
+    "${config.xdg.configHome}/git/ignore".source = ./dotfiles/git/ignore;
     "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
     "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
