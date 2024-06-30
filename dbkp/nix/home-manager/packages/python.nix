@@ -1,6 +1,6 @@
 pkgs:
 
-with pkgs; (python311.withPackages (p: with p; [
+with pkgs; (python312.withPackages (p: with p; [
   argcomplete
   autopep8
   black-macchiato
