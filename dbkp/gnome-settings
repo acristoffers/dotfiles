@@ -28,12 +28,12 @@ height=647
 width=1268
 
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/shell/extensions/rectangle/'
-saved-view='/org/gnome/shell/extensions/rectangle/'
+saved-pathbar-path='/org/gnome/desktop/wm/preferences/theme'
+saved-view='/org/gnome/desktop/wm/preferences/theme'
 show-warning=false
-window-height=985
+window-height=647
 window-is-maximized=false
-window-width=1267
+window-width=1268
 
 [desktop/ibus/general]
 preload-engines=@as []
@@ -175,7 +175,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='background'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -386,7 +386,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -537,15 +537,15 @@ window-size=(-1, -1)
 
 [org/gnome/file-roller/listing]
 list-mode='as-folder'
-name-column-width=398
+name-column-width=293
 show-path=false
 sort-method='name'
 sort-type='descending'
 
 [org/gnome/file-roller/ui]
 sidebar-width=200
-window-height=465
-window-width=948
+window-height=460
+window-width=843
 
 [org/gnome/gnome-system-monitor]
 current-tab='disks'
@@ -796,8 +796,8 @@ enabled-connections=@as []
 app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'kvantummanager.desktop': <{'position': <13>}>, 'cups.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'nixos-manual.desktop': <{'position': <18>}>, 'qt5ct.desktop': <{'position': <19>}>, 'qt6ct.desktop': <{'position': <20>}>, 'org.gnome.Software.desktop': <{'position': <21>}>, 'org.gnome.TextEditor.desktop': <{'position': <22>}>, 'org.gnome.Tour.desktop': <{'position': <23>}>}, {'virt-manager.desktop': <{'position': <0>}>, 'xterm.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Loupe.desktop': <{'position': <3>}>, 'org.gnome.Music.desktop': <{'position': <4>}>, 'org.gnome.Epiphany.desktop': <{'position': <5>}>}]
 command-history=['gl', 'r', 'lg']
 disable-user-extensions=false
-disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com']
-enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'blur-my-shell@aunetx', 'quick-settings-avatar@d-go', 'vertical-workspaces@G-dH.github.com', 'rectangle@acristoffers.me', 'transparent-top-bar@zhanghai.me', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'clipboard-indicator@tudmotu.com']
+disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com', 'light-style@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'run-or-raise@edvard.cz', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'quick-settings-avatar@d-go', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'clipboard-indicator@tudmotu.com', 'smart-auto-move@khimaros.com', 'transparent-top-bar@zhanghai.me', 'vertical-workspaces@G-dH.github.com', 'rectangle@acristoffers.me']
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null', 'GtkBuilder.registerClass', "import Adw from 'gi:/adw'", "import Adw from 'gi://Adw';", 'Adw', 'Gtk']
@@ -922,6 +922,20 @@ animation-duration=150
 center-mouse-to-focused-window=false
 move-window-to-active-workspace=false
 
+[org/gnome/shell/extensions/smart-auto-move]
+activate-workspace=true
+debug-logging=false
+freeze-saves=false
+ignore-position=false
+ignore-workspace=false
+match-threshold=0.69999999999999996
+overrides='{}'
+save-frequency=1000
+saved-windows='{"Signal":[{"id":1350404514,"hash":1350404514,"sequence":4,"title":"Signal","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":true}],"org.telegram.desktop":[{"id":996409955,"hash":996409955,"sequence":2,"title":"Geralda e Sousa","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":false},{"id":1350404513,"hash":1350404513,"sequence":3,"title":"Telegram","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":true}],"discord":[{"id":1350404515,"hash":1350404515,"sequence":5,"title":"Friends - Discord","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":true},{"id":1350404511,"hash":1350404511,"sequence":1,"title":"Discord Updater","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":1130,"y":559,"width":300,"height":350,"occupied":false}],"org.gnome.Fractal":[{"id":1350404512,"hash":1350404512,"sequence":2,"title":"Fractal","workspace":2,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":true}],"org.mozilla.firefox":[{"id":160766851,"hash":160766851,"sequence":7,"title":"Instagram — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false},{"id":160766857,"hash":160766857,"sequence":13,"title":"Web Player - Pocket Casts — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false},{"id":996409961,"hash":996409961,"sequence":8,"title":"Accueil - Achat de timbres fiscaux électroniques — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false},{"id":260124756,"hash":260124756,"sequence":7,"title":"Direct • Instagram — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false},{"id":260124777,"hash":260124777,"sequence":28,"title":"Extension: (Bitwarden Password Manager) - Bitwarden — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":1090,"y":401,"width":380,"height":667,"occupied":false},{"id":1770056631,"hash":1770056631,"sequence":7,"title":"(2) YouTube — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false},{"id":1350404518,"hash":1350404518,"sequence":8,"title":"regreSSHion: Old OpenSSH Vuln Returns With A Vengeance - YouTube — Mozilla Firefox","workspace":0,"maximized":0,"fullscreen":true,"above":false,"monitor":0,"x":0,"y":0,"width":2560,"height":1440,"occupied":true}],"kitty":[{"id":1350404517,"hash":1350404517,"sequence":7,"title":"tmux","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":true}],"com.mattjakeman.ExtensionManager":[{"id":1770056633,"hash":1770056633,"sequence":9,"title":"Extension Manager","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":19,"y":44,"width":843,"height":1395,"occupied":false}],"thunderbird-esr":[{"id":1350404516,"hash":1350404516,"sequence":6,"title":"Inbox - Unified Folders - Mozilla Thunderbird","workspace":3,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":true},{"id":1770056632,"hash":1770056632,"sequence":8,"title":"Inbox - Unified Folders - Mozilla Thunderbird","workspace":3,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":8,"y":37,"width":2544,"height":1395,"occupied":false}],"org.gnome.Loupe":[{"id":260124772,"hash":260124772,"sequence":23,"title":"tile-center-symbolic.svg","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":470,"y":256,"width":1619,"height":957,"occupied":false}],"org.gnome.Nautilus":[{"id":996409965,"hash":996409965,"sequence":12,"title":"placement-icons","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":505,"width":843,"height":460,"occupied":false},{"id":1352061758,"hash":1352061758,"sequence":11,"title":"Downloads","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":858,"y":504,"width":843,"height":460,"occupied":false}],"okular":[{"id":996409979,"hash":996409979,"sequence":26,"title":"tile-center.svg  — Okular","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":843,"height":1395,"occupied":false}],"Gimp-2.10":[{"id":996409983,"hash":996409983,"sequence":30,"title":"[tile-center] (imported)-1.0 (RGB color 8-bit gamma integer, GIMP built-in sRGB, 1 layer) 1814x1020 – GIMP","workspace":1,"maximized":3,"fullscreen":false,"above":false,"monitor":0,"x":0,"y":29,"width":2560,"height":1411,"occupied":false}],"org.inkscape.Inkscape":[{"id":996409987,"hash":996409987,"sequence":34,"title":"tile-fourth-first.svg - Inkscape","workspace":1,"maximized":3,"fullscreen":false,"above":false,"monitor":0,"x":0,"y":29,"width":2560,"height":1411,"occupied":false}],"org.gnome.Software":[{"id":996409992,"hash":996409992,"sequence":39,"title":"Software","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":843,"height":1395,"occupied":false}],"com.github.finefindus.eyedropper":[{"id":1352061765,"hash":1352061765,"sequence":18,"title":"Eyedropper","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":505,"width":843,"height":460,"occupied":false}],"org.gnome.Settings":[{"id":1352061752,"hash":1352061752,"sequence":5,"title":"Settings","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":843,"height":1395,"occupied":false}],"org.gnome.tweaks":[{"id":1352061760,"hash":1352061760,"sequence":13,"title":"GNOME Tweaks","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":646,"y":388,"width":1268,"height":694,"occupied":false}],"dconf-editor":[{"id":3449765714,"hash":3449765714,"sequence":13,"title":"dconf Editor","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":646,"y":388,"width":1268,"height":694,"occupied":false}],"org.gnome.FileRoller":[{"id":1352061762,"hash":1352061762,"sequence":15,"title":"rectangle.zip ","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":505,"width":843,"height":460,"occupied":false}],"emacs":[{"id":1352061818,"hash":1352061818,"sequence":71,"title":"2024.ledger – Doom Emacs","workspace":1,"maximized":0,"fullscreen":false,"above":false,"monitor":0,"x":859,"y":37,"width":1693,"height":1395,"occupied":false}]}'
+startup-delay=2500
+sync-frequency=100
+sync-mode='RESTORE'
+
 [org/gnome/shell/extensions/vertical-workspaces]
 dash-bg-gs3-style=false
 dash-position=2
@@ -983,7 +997,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1719732044
+check-timestamp=int64 1720249469
 first-run=false
 flatpak-purge-timestamp=int64 1719739175
 install-timestamp=int64 1711806735

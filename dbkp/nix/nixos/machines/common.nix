@@ -181,7 +181,7 @@ rec {
   environment.systemPackages = with pkgs; [
     (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
     evolution-data-server-gtk4
-    gnome3.gnome-tweaks
+    gnome-tweaks
     gocryptfs
     iputils
     kitty
@@ -252,7 +252,7 @@ rec {
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
-  programs.ssh.askPassword = mkForce "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass";
+  programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
   powerManagement.enable = true;
 
