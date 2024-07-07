@@ -62,7 +62,6 @@ with pkgs; [
   nix-index
   nixpkgs-fmt
   nodePackages_latest.sass
-  nodePackages_latest.uglify-js
   nodePackages_latest.yarn
   nodejs_22
   openssl_3_2
@@ -85,6 +84,7 @@ with pkgs; [
   tokei # counts code lines
   tree
   tridactyl-native
+  uglify-js
   unzip
   uutils-coreutils-noprefix
   watch
