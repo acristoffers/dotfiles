@@ -2,22 +2,14 @@
   description = "My NixOS Configuration";
 
   inputs = {
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs = {
-      follows = "chaotic/nixpkgs";
-      url = "github:NixOS/nixpkgs/nixos-unstable";
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    jovian = {
-      follows = "chaotic/jovian";
-      url = "github:Jovian-Experiments/Jovian-NixOS";
-    };
+    jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
   };
 
-  outputs = { nixpkgs, flake-utils, jovian, chaotic, ... }:
+  outputs = { nixpkgs, flake-utils, jovian, ... }:
     let
       nixosSystem = system: modules: nixpkgs.lib.nixosSystem {
         inherit modules;
@@ -37,12 +29,10 @@
       formatter = perSystem.formatter;
       nixosConfigurations = {
         Alan-NixOS-SteamDeck = nixosSystem "x86_64-linux" [
-          chaotic.nixosModules.default
           jovian.nixosModules.default
           ./machines/steamdeck.nix
         ];
         Alan-NixOS-Elemental = nixosSystem "x86_64-linux" [
-          chaotic.nixosModules.default
           ./machines/elemental.nix
         ];
       };

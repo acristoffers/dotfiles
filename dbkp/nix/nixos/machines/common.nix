@@ -276,7 +276,6 @@ rec {
       "https://cache.nixos.org"
       "https://jovian-nixos.cachix.or"
       "https://nix-community.cachix.org"
-      "https://nyx.chaotic.cx"
     ];
     allowed-users = [ "alan" ];
     trusted-users = [ "root" "alan" ];
