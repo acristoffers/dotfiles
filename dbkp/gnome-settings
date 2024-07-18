@@ -847,7 +847,6 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -997,9 +996,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1721062314
+check-timestamp=int64 1721322505
 first-run=false
-flatpak-purge-timestamp=int64 1720944367
+flatpak-purge-timestamp=int64 1721237847
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
@@ -1062,7 +1061,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(26, 23)
+window-position=(806, 478)
 window-size=(948, 465)
 
 [org/virt-manager/virt-manager]
