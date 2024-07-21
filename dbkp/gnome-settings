@@ -28,7 +28,7 @@ height=647
 width=1268
 
 [ca/desrt/dconf-editor]
-saved-pathbar-path='/org/gnome/desktop/interface/color-scheme'
+saved-pathbar-path='overview'
 saved-view='/org/gnome/desktop/interface/color-scheme'
 show-warning=false
 window-height=647
@@ -587,6 +587,7 @@ zoom-level=17
 [org/gnome/mutter]
 center-new-windows=true
 dynamic-workspaces=false
+overlay-key=''
 
 [org/gnome/nautilus/compression]
 default-compression-format='tar.xz'
@@ -786,7 +787,7 @@ command="flatpak run org.mozilla.firefox -new-tab 'https://linkedin.com'"
 name='LinkedIn'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5]
-binding='<Super>space'
+binding=''
 command='albert toggle'
 name='Albert'
 
@@ -853,6 +854,7 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -988,7 +990,7 @@ switch-to-application-7=@as []
 switch-to-application-8=@as []
 switch-to-application-9=@as []
 toggle-message-tray=['F12']
-toggle-overview=@as []
+toggle-overview=['<Super>space']
 toggle-quick-settings=['<Super>c']
 
 [org/gnome/shell/weather]
