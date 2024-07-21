@@ -40,7 +40,8 @@ preload-engines=@as []
 version='1.5.27'
 
 [desktop/ibus/panel/emoji]
-favorites=['º']
+favorites=['º', '🤦\u200d♂️', '😃', '🤦🏼\u200d♀️']
+hotkey=['<Super>period']
 
 [org/fedorahosted/background-logo-extension]
 logo-position='bottom-right'
@@ -58,6 +59,11 @@ preedit-background='none'
 preedit-foreground='none'
 preedit-underline=0
 use-us-layout=false
+
+[org/freedesktop/ibus/engine/typing-booster]
+dictionary='fr,pt_BR,en_US'
+dictionaryinstalltimestamp='2024-07-21 17:17:53'
+inputmethod='NoIME'
 
 [org/freedesktop/tracker/miner/files]
 index-recursive-directories=['&MUSIC', '&DOCUMENTS', '&PICTURES', '&DOWNLOAD', '&VIDEOS', '/home/alan/Documents/Dropbox/Universidade/Doutorado', '/home/alan/Documents/Dropbox']
@@ -175,7 +181,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='keyboard'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -217,9 +223,9 @@ automatic-timezone=false
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
+mru-sources=[('xkb', 'us+intl'), ('ibus', 'typing-booster'), ('xkb', 'us'), ('xkb', 'ru+phonetic_mac')]
 show-all-sources=true
-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
+sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('ibus', 'typing-booster')]
 xkb-options=['caps:escape', 'shift:both_capslock', 'compose:rwin']
 
 [org/gnome/desktop/interface]
@@ -841,14 +847,12 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50

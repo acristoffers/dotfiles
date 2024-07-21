@@ -38,6 +38,8 @@ rec {
     noto-fonts-emoji
     open-sans
     ubuntu_font_family
+    hunspellDicts.en-us-large
+    hunspellDicts.fr-any
   ];
 
   hardware.bluetooth.enable = true;
@@ -45,29 +47,35 @@ rec {
 
   # Set your time zone.
   time.timeZone = "Europe/Paris";
-  # time.timeZone = "America/Sao_Paulo";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_CTYPE = "en_US.UTF-8";
-    LC_NUMERIC = "pt_BR.UTF-8";
-    LC_TIME = "pt_BR.UTF-8";
-    LC_COLLATE = "pt_BR.UTF-8";
-    LC_MONETARY = "fr_FR.UTF-8";
-    LC_MESSAGES = "en_US.UTF-8";
-    LC_PAPER = "pt_BR.UTF-8";
-    LC_NAME = "fr_FR.UTF-8";
-    LC_ADDRESS = "fr_FR.UTF-8";
-    LC_TELEPHONE = "fr_FR.UTF-8";
-    LC_MEASUREMENT = "fr_FR.UTF-8";
-    LC_IDENTIFICATION = "fr_FR.UTF-8";
+  i18n = {
+    # Select internationalisation properties.
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_CTYPE = "en_US.UTF-8";
+      LC_NUMERIC = "pt_BR.UTF-8";
+      LC_TIME = "pt_BR.UTF-8";
+      LC_COLLATE = "pt_BR.UTF-8";
+      LC_MONETARY = "fr_FR.UTF-8";
+      LC_MESSAGES = "en_US.UTF-8";
+      LC_PAPER = "pt_BR.UTF-8";
+      LC_NAME = "fr_FR.UTF-8";
+      LC_ADDRESS = "fr_FR.UTF-8";
+      LC_TELEPHONE = "fr_FR.UTF-8";
+      LC_MEASUREMENT = "fr_FR.UTF-8";
+      LC_IDENTIFICATION = "fr_FR.UTF-8";
+    };
+    supportedLocales = [
+      "en_US.UTF-8/UTF-8"
+      "fr_FR.UTF-8/UTF-8"
+      "pt_BR.UTF-8/UTF-8"
+    ];
+    inputMethod = {
+      enable = true;
+      type = "ibus";
+      ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
+    };
   };
-  i18n.supportedLocales = [
-    "en_US.UTF-8/UTF-8"
-    "fr_FR.UTF-8/UTF-8"
-    "pt_BR.UTF-8/UTF-8"
-  ];
 
   location.provider = "geoclue2";
 
