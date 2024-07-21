@@ -91,6 +91,7 @@ with pkgs; [
   wget
   which
   yamlfmt
+  yq # for a tmux plugin
   zip
   zlib
 ]
