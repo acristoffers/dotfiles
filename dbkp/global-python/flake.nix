@@ -19,6 +19,7 @@
             ninja
             openblas
             pkg-config
+            poetry
             suitesparse
           ];
         in

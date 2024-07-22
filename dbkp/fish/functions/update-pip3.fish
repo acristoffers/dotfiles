@@ -18,12 +18,12 @@ function update-pip3
 
   echo Fixing poetry
   rm -rf ~/.local/share/pip
-  pip3 install -qq --ignore-installed poetry
+  # pip3 install -qq --ignore-installed poetry
 
-  if not type -q poetry
-    echo "poetry not found"
-    exit 1
-  end
+  # if not type -q poetry
+  #   echo "poetry not found"
+  #   exit 1
+  # end
 
   if not test -d ~/.config/global-python
     echo "~/.config/global-python does not exist."
