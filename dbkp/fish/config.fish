@@ -62,7 +62,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -x PYTHON (which python3)
   set -x JULIA_NUM_THREADS 8
   set -x FZF_DEFAULT_COMMAND 'fd --type f --hidden --exclude .git'
-  set -x FZF_LEGACY_KEYBINDINGS 0
+  set -x FZF_DEFAULT_OPTS '--height 70% --tmux 70% --layout reverse --border'
   set -x MANPAGER "$(which less) -R --use-color -Ddg -Du+y"
   set -x DOOMPAGER $MANPAGER
   set -x CARGO_HOME "$XDG_DATA_HOME"/cargo
@@ -154,6 +154,6 @@ end
 
 if status --is-interactive
   _git_fetch_on_cd
-  fzf_configure_bindings --directory=\ef
+  fzf --fish | source
   ~/.nix-profile/bin/starship init fish | source
 end
