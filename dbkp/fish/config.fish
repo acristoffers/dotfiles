@@ -61,8 +61,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -x EDITOR (readlink -f (which nvim))
   set -x PYTHON (which python3)
   set -x JULIA_NUM_THREADS 8
-  set -x FZF_DEFAULT_COMMAND 'ag --hidden -g "" .'
-  set -x FZF_FIND_FILE_COMMAND 'ag --hidden -g "" $dir'
+  set -x FZF_DEFAULT_COMMAND 'fd --type f --hidden --exclude .git'
   set -x FZF_LEGACY_KEYBINDINGS 0
   set -x MANPAGER "$(which less) -R --use-color -Ddg -Du+y"
   set -x DOOMPAGER $MANPAGER
