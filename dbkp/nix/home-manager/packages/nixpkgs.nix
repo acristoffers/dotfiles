@@ -75,6 +75,7 @@ with pkgs; [
   ripgrep
   rsync
   rustup
+  sesh
   shellcheck
   shfmt
   starship
