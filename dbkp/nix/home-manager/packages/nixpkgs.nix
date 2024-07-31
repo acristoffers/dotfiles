@@ -57,7 +57,6 @@ with pkgs; [
   mdcat
   mediainfo
   moreutils
-  mysql-workbench
   nix
   nix-index
   nixpkgs-fmt
