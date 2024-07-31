@@ -159,7 +159,12 @@ rec {
         ) {
         return polkit.Result.YES;
       }
-    })
+    });
+    polkit.addRule(function(action, subject) {
+      if (action.id.startsWith("org.freedesktop.Flatpak") && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+      }
+    });
   '';
   security.wrappers = {
     ping = {
