@@ -3,7 +3,7 @@
 argparse --name=title 'w/wall=' 's#size' -- $argv
 and argparse --min-args=1 -- $argv
 or begin
-  echo "Usage: title [--wall=C|-wc] [-80] text"
+  echo "Usage: title [--wall=C|-wC] [-80] text"
   echo "  Prints a title with C as char for the walls and containing text."
   echo "  -80 sets the size of the frame. Defaults to \$COLUMNS up to at most 80."
   return
@@ -13,7 +13,7 @@ set text (string join ' ' $argv)
 set text_len (string length $text)
 
 set wall '#'
-if test -n "$_flag_wall" 
+if test -n "$_flag_wall"
   set wall (string sub -l1 $_flag_wall)
 end
 

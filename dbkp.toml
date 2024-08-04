@@ -63,6 +63,10 @@ EncryptionSalt = ["", ""]
   Name = "starship.toml"
   Path = "~/.config/starship.toml"
 
+[[Files]]
+  Name = "clang-format"
+  Path = "~/.clang-format"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
