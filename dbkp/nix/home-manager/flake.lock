@@ -615,11 +615,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723150562,
-        "narHash": "sha256-tniJLEy6RDSog8XUUuw4neo2aJZFT3MjRgYiryWz1CY=",
+        "lastModified": 1723151595,
+        "narHash": "sha256-6aoCpp5nWySkvSqt6dv63AXR4hzGSbROP83Sbcbh2Jk=",
         "owner": "acristoffers",
         "repo": "tmux-tui",
-        "rev": "c237926f4928295fdf88de4d6b85ff37ae429064",
+        "rev": "63ebc098c9b85c0f249d6864c689dfa72b66b0ce",
         "type": "github"
       },
       "original": {
