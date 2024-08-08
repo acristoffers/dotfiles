@@ -244,6 +244,27 @@
         "type": "github"
       }
     },
+    "gitignore_5": {
+      "inputs": {
+        "nixpkgs": [
+          "tmux-tui",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709087332,
+        "narHash": "sha256-HG2cCnktfHsKV0s4XW83gU3F57gaTljL9KNSuG6bnQs=",
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hercules-ci",
+        "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -251,11 +272,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1722630065,
-        "narHash": "sha256-QfM/9BMRkCmgWzrPDK+KbgJOUlSJnfX4OvsUupEUZvA=",
+        "lastModified": 1723015306,
+        "narHash": "sha256-jQnFEtH20/OsDPpx71ntZzGdRlpXhUENSQCGTjn//NA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "afc892db74d65042031a093adb6010c4c3378422",
+        "rev": "b3d5ea65d88d67d4ec578ed11d4d2d51e3de525e",
         "type": "github"
       },
       "original": {
@@ -411,11 +432,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1722524500,
-        "narHash": "sha256-jHxxeNomuuCdiiaGp3frv6eXrT+SpriyGPLuniaMyeI=",
+        "lastModified": 1723129307,
+        "narHash": "sha256-eEHRlikrCjbD/qvrN64QCP1pNaTNJObUYW1yt6j7Lb8=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "cc67fdf03f819dc556a8bc0954b8b86d26508d58",
+        "rev": "f27e92090eb3fdfee3f30428457ac30ae8017a9a",
         "type": "gitlab"
       },
       "original": {
@@ -442,11 +463,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1722421184,
-        "narHash": "sha256-/DJBI6trCeVnasdjUo9pbnodCLZcFqnVZiLUfqLH4jA=",
+        "lastModified": 1722813957,
+        "narHash": "sha256-IAoYyYnED7P8zrBFMnmp7ydaJfwTnwcnqxUElC1I26Y=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9f918d616c5321ad374ae6cb5ea89c9e04bf3e58",
+        "rev": "cb9a96f23c491c081b38eab96d22fa958043c9fa",
         "type": "github"
       },
       "original": {
@@ -484,11 +505,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1722714691,
-        "narHash": "sha256-lPP3WL8ksArqkrtRgi35iKBhbX84C8d1ugoY5/V0RQQ=",
+        "lastModified": 1722864005,
+        "narHash": "sha256-DGCftfVcVzYmkDhS31ZSHLO+q3wVegZvNs9ILxV9B84=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "5005dcd559c813138d2cc3b4fd8336942e803846",
+        "rev": "bf635547b8793b27faec620364c6dd160003e235",
         "type": "github"
       },
       "original": {
@@ -548,6 +569,7 @@
         "nixpkgs": "nixpkgs_2",
         "nvim": "nvim",
         "remove-trash": "remove-trash",
+        "tmux-tui": "tmux-tui",
         "void": "void",
         "webots": "webots"
       }
@@ -579,6 +601,30 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tmux-tui": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "gitignore": "gitignore_5",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1723150562,
+        "narHash": "sha256-tniJLEy6RDSog8XUUuw4neo2aJZFT3MjRgYiryWz1CY=",
+        "owner": "acristoffers",
+        "repo": "tmux-tui",
+        "rev": "c237926f4928295fdf88de4d6b85ff37ae429064",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acristoffers",
+        "repo": "tmux-tui",
         "type": "github"
       }
     },

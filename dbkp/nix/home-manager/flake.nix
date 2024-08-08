@@ -38,6 +38,10 @@
     bib-converter.url = "github:acristoffers/bib-converter";
     bib-converter.inputs.nixpkgs.follows = "nixpkgs";
     bib-converter.inputs.flake-utils.follows = "flake-utils";
+
+    tmux-tui.url = "github:acristoffers/tmux-tui";
+    tmux-tui.inputs.nixpkgs.follows = "nixpkgs";
+    tmux-tui.inputs.flake-utils.follows = "flake-utils";
   };
 
   outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
