@@ -38,9 +38,8 @@ function set-vars
     set -Ux EDITOR (readlink -f (which nvim))
     set -Ux PYTHON (which python3)
     set -Ux JULIA_NUM_THREADS 8
-    set -Ux FZF_DEFAULT_COMMAND 'ag --hidden -g "" .'
-    set -Ux FZF_FIND_FILE_COMMAND 'ag --hidden -g "" $dir'
-    set -Ux FZF_LEGACY_KEYBINDINGS 0
+    set -Ux FZF_DEFAULT_COMMAND 'fd --type f --hidden --exclude .git'
+    set -Ux FZF_DEFAULT_OPTS '--height 70% --tmux 70% --layout reverse --border'
     set -Ux MANPAGER "$(which less) -R --use-color -Ddg -Du+y"
     set -Ux DOOMPAGER $MANPAGER
     set -Ux CARGO_HOME "$XDG_DATA_HOME"/cargo

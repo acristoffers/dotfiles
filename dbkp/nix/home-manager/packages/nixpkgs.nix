@@ -11,6 +11,7 @@ with pkgs; [
   curl
   dogdns
   du-dust
+  duf
   elmPackages.elm
   elmPackages.elm-format
   elmPackages.elm-json

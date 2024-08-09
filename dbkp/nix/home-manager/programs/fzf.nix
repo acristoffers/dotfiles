@@ -5,6 +5,6 @@
   enableBashIntegration = true;
   enableFishIntegration = false;
   enableZshIntegration = true;
-  defaultCommand = "ag --hidden -g '' .";
-  fileWidgetCommand = "ag --hidden -g '' $dir";
+  defaultCommand = "fd --type f --hidden --exclude .git";
+  fileWidgetCommand = "fd --type f --hidden --exclude .git";
 }
