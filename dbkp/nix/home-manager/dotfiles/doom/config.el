@@ -76,7 +76,7 @@
   (setq! ledger-amount "Loading...")
   (defun ledger-update-amount ()
     (setq! ledger-amount
-           (string-remove-suffix "\n" (shell-command-to-string "fish -c 'fin | rg BNP | string trim'"))))
+           (string-remove-suffix "\n" (shell-command-to-string "fish -c 'fin | rg Revolut | string trim | head -n 1'"))))
   (doom-modeline-def-segment ledger
     "Ledger ammount in bank"
     (propertize ledger-amount 'face 'doom-modeline-info))
@@ -379,13 +379,13 @@
           (fstart (backward-sexp-until delim start))
           (fend (forward-sexp-until delim end outer)))
     (list (max start fstart) (min end fend))))
-(evil-define-text-object inner-subsentence (count &optional beg end type)
+(evil-define-text-object inner-subsentence (count &optional _ _ _)
   (subsentence-range (list ?: ?\; ?. ?,) nil))
-(evil-define-text-object outer-subsentence (count &optional beg end type)
+(evil-define-text-object outer-subsentence (count &optional _ _ _)
   (subsentence-range (list ?: ?\; ?. ?,) t))
-(evil-define-text-object inner-commas (count &optional beg end type)
+(evil-define-text-object inner-commas (count &optional _ _ _)
   (subsentence-range (list ?,) nil))
-(evil-define-text-object outer-commas (count &optional beg end type)
+(evil-define-text-object outer-commas (count &optional _ _ _)
   (subsentence-range (list ?,) t))
 
 ;; Reselect last sected region
@@ -552,35 +552,35 @@
   (evil-paste-after 1))
 
 ;; Sets up a version of ([{<>}]) objects with lookahead (vim-like)
-(evil-define-text-object evil-a-paren-lookahead (count &optional beg end type)
+(evil-define-text-object evil-a-paren-lookahead (count &optional beg end _)
   "Select a parenthesis."
   :extend-selection nil
   (evil-select-paren-lookahead ?\( ?\) beg end type count t))
-(evil-define-text-object evil-inner-paren-lookahead (count &optional beg end type)
+(evil-define-text-object evil-inner-paren-lookahead (count &optional beg end _)
   "Select inner parenthesis."
   :extend-selection nil
   (evil-select-paren-lookahead ?\( ?\) beg end type count))
-(evil-define-text-object evil-a-bracket-lookahead (count &optional beg end type)
+(evil-define-text-object evil-a-bracket-lookahead (count &optional beg end _)
   "Select a square bracket."
   :extend-selection nil
   (evil-select-paren-lookahead ?\[ ?\] beg end type count t))
-(evil-define-text-object evil-inner-bracket-lookahead (count &optional beg end type)
+(evil-define-text-object evil-inner-bracket-lookahead (count &optional beg end _)
   "Select inner square bracket."
   :extend-selection nil
   (evil-select-paren-lookahead ?\[ ?\] beg end type count))
-(evil-define-text-object evil-a-curly-lookahead (count &optional beg end type)
+(evil-define-text-object evil-a-curly-lookahead (count &optional beg end _)
   "Select a curly bracket (\"brace\")."
   :extend-selection nil
   (evil-select-paren-lookahead ?{ ?} beg end type count t))
-(evil-define-text-object evil-inner-curly-lookahead (count &optional beg end type)
+(evil-define-text-object evil-inner-curly-lookahead (count &optional beg end _)
   "Select inner curly bracket (\"brace\")."
   :extend-selection nil
   (evil-select-paren-lookahead ?{ ?} beg end type count))
-(evil-define-text-object evil-an-angle-lookahead (count &optional beg end type)
+(evil-define-text-object evil-an-angle-lookahead (count &optional beg end _)
   "Select an angle bracket."
   :extend-selection nil
   (evil-select-paren-lookahead ?< ?> beg end type count t))
-(evil-define-text-object evil-inner-angle-lookahead (count &optional beg end type)
+(evil-define-text-object evil-inner-angle-lookahead (count &optional beg end _)
   "Select inner angle bracket."
   :extend-selection nil
   (evil-select-paren-lookahead ?< ?> beg end type count))
@@ -610,11 +610,10 @@
 (global-set-key (kbd "M-L" ) #'centaur-tabs-move-current-tab-to-right)
 
 ;; Fixes workspace selection
-(when IS-LINUX
-  (dotimes (n 9)
-    (global-set-key
-     (kbd (format "s-%d" n))
-     (lambda () (interactive) (+workspace/switch-to (1- n))))))
+(dotimes (n 9)
+  (global-set-key
+   (kbd (format "s-%d" n))
+   (lambda () (interactive) (+workspace/switch-to (1- n)))))
 
 ;; Make evil-mode up/down operate in screen lines instead of logical lines
 (define-key evil-normal-state-map "j" #'evil-next-visual-line)
@@ -632,15 +631,10 @@
 ;; A paste operator
 (define-key evil-normal-state-map "gP" #'paste-over)
 
-;; Fix ⌥ in macOS
-(when IS-MAC
-  (setq! mac-option-modifier 'meta)
-  (setq! mac-right-option-modifier 'nil))
-
 ;; Fix env file not being loaded. It's a workaround for a bug and should not be
 ;; necessary.
 (when (not (executable-find "texlua"))
   (doom-load-envvars-file doom-env-file))
 
 ;; Switch to the first workspace after loading a session
-(advice-add 'doom/quickload-session :after (lambda (a) (+workspace/switch-to-0)))
+(advice-add 'doom/quickload-session :after (lambda (_) (+workspace/switch-to-0)))
