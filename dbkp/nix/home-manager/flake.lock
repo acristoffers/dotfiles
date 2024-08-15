@@ -272,11 +272,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723015306,
-        "narHash": "sha256-jQnFEtH20/OsDPpx71ntZzGdRlpXhUENSQCGTjn//NA=",
+        "lastModified": 1723399884,
+        "narHash": "sha256-97wn0ihhGqfMb8WcUgzzkM/TuAxce2Gd20A8oiruju4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "b3d5ea65d88d67d4ec578ed11d4d2d51e3de525e",
+        "rev": "086f619dd991a4d355c07837448244029fc2d9ab",
         "type": "github"
       },
       "original": {
@@ -432,11 +432,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723302096,
-        "narHash": "sha256-WSLkAws173JKaYhyEBSxEU24qJzcrz2uxIQuvWjf81w=",
+        "lastModified": 1723647699,
+        "narHash": "sha256-dw4HJAC9BSkge9dIrC2vUdgXw+h/UA+FGxigPQ8UE/I=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "0bd929d516486f22dccfdbd065f9ccb562ebc7e4",
+        "rev": "d881819a85a0a098a268b52a6a170d8a23c0ad9e",
         "type": "gitlab"
       },
       "original": {
@@ -463,11 +463,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1723175592,
-        "narHash": "sha256-M0xJ3FbDUc4fRZ84dPGx5VvgFsOzds77KiBMW/mMTnI=",
+        "lastModified": 1723362943,
+        "narHash": "sha256-dFZRVSgmJkyM0bkPpaYRtG/kRMRTorUIDj8BxoOt1T4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5e0ca22929f3342b19569b21b2f3462f053e497b",
+        "rev": "a58bc8ad779655e790115244571758e8de055e3d",
         "type": "github"
       },
       "original": {
@@ -505,11 +505,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1723368881,
-        "narHash": "sha256-DwHK7fahGVIMIPhYh72vxEfmj7yJqsvmVaRMPsfht1o=",
+        "lastModified": 1723397809,
+        "narHash": "sha256-6KzswCCvuxboTTm1YO41EWT7iwZYxKtxLRfiPNHsHsE=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "5e1f723b02050886e25d8a89dfa8184ef7f52467",
+        "rev": "dcd18f1768c89915486a90dda9aa5a7f67764806",
         "type": "github"
       },
       "original": {
@@ -615,11 +615,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723393391,
-        "narHash": "sha256-+4IzQOBzMLygYdS4xmFMJLMmyVoTZ+zIlZf7Ds3rAzo=",
+        "lastModified": 1723658116,
+        "narHash": "sha256-NlgXZFOcwlxo6ZjTc3EGtSeBrsuHbNFZCVj2UN0BW2g=",
         "owner": "acristoffers",
         "repo": "tmux-tui",
-        "rev": "6ad7fde18d0f93b1163742984061d48475e047f4",
+        "rev": "8178c8c973236ec79d95067c9dc3a249fb82b292",
         "type": "github"
       },
       "original": {
