@@ -17,7 +17,7 @@ with pkgs; [
   elmPackages.elm-json
   elmPackages.elm-live
   emacs-all-the-icons-fonts
-  emacs29
+  emacs29-pgtk
   emacsPackages.cask
   epstool
   fastfetch

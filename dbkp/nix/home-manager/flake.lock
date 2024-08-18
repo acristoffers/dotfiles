@@ -408,7 +408,7 @@
     },
     "naersk_3": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1713520724,
@@ -432,11 +432,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723647699,
-        "narHash": "sha256-dw4HJAC9BSkge9dIrC2vUdgXw+h/UA+FGxigPQ8UE/I=",
+        "lastModified": 1723734100,
+        "narHash": "sha256-5s43dC24VLvEKlVhA/iw9JYY9PMSXGCCNGQou0AMpLE=",
         "owner": "doronbehar",
         "repo": "nix-matlab",
-        "rev": "d881819a85a0a098a268b52a6a170d8a23c0ad9e",
+        "rev": "ad4f018d15929f412ff944c8bf8e1378275f0d6b",
         "type": "gitlab"
       },
       "original": {
@@ -463,11 +463,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1723362943,
-        "narHash": "sha256-dFZRVSgmJkyM0bkPpaYRtG/kRMRTorUIDj8BxoOt1T4=",
+        "lastModified": 1723637854,
+        "narHash": "sha256-med8+5DSWa2UnOqtdICndjDAEjxr5D7zaIiK4pn0Q7c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a58bc8ad779655e790115244571758e8de055e3d",
+        "rev": "c3aa7b8938b17aebd2deecf7be0636000d62a2b9",
         "type": "github"
       },
       "original": {
@@ -478,6 +478,22 @@
       }
     },
     "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1723221148,
+        "narHash": "sha256-7pjpeQlZUNQ4eeVntytU3jkw9dFK3k1Htgk2iuXjaD8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "154bcb95ad51bc257c2ce4043a725de6ca700ef6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 0,
         "narHash": "sha256-mdTQw2XlariysyScCv2tTE45QSU9v/ezLcHJ22f0Nxc=",
@@ -497,9 +513,7 @@
         "git-worktree-git": "git-worktree-git",
         "lsp-setup-git": "lsp-setup-git",
         "matlab-lsp": "matlab-lsp",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_3",
         "ouroboros-git": "ouroboros-git",
         "wbproto-beautifier": "wbproto-beautifier",
         "zls": "zls"
@@ -615,11 +629,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1723658116,
-        "narHash": "sha256-NlgXZFOcwlxo6ZjTc3EGtSeBrsuHbNFZCVj2UN0BW2g=",
+        "lastModified": 1723804920,
+        "narHash": "sha256-dFfyt1QWmCFNhb4CDYvnAhGpkd311ZHtuHZvxQ7+CBQ=",
         "owner": "acristoffers",
         "repo": "tmux-tui",
-        "rev": "8178c8c973236ec79d95067c9dc3a249fb82b292",
+        "rev": "b4bfc3837176130cb9b711e52958c0090e4b7227",
         "type": "github"
       },
       "original": {

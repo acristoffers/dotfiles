@@ -10,6 +10,7 @@ function update-doom
   if not type -q doom
     git clone --depth 1 https://github.com/doomemacs/doomemacs $XDG_CONFIG_HOME/emacs
     $XDG_CONFIG_HOME/emacs/bin/doom install
+    touch $XDG_CONFIG_HOME/emacs/custom.el
     scfg
   end
 

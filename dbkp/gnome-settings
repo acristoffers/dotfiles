@@ -40,7 +40,7 @@ preload-engines=@as []
 version='1.5.27'
 
 [desktop/ibus/panel/emoji]
-favorites=['º', '🤦\u200d♂️', '😃', '🤦🏼\u200d♀️']
+favorites=['º', '🤦\u200d♂️', '😃', '🤦🏼\u200d♀️', '🦄', '🦇', '🫚', '🍸', 'ៈ']
 hotkey=['<Super>period']
 
 [org/fedorahosted/background-logo-extension]
@@ -73,7 +73,8 @@ index-single-directories=['&DOWNLOAD', '$HOME']
 first-run=false
 
 [org/gnome/Console]
-last-window-size=(1267, 1032)
+last-window-maximised=false
+last-window-size=(1693, 1395)
 
 [org/gnome/Contacts]
 did-initial-setup=true
@@ -181,7 +182,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='background'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -450,8 +451,8 @@ mouse-button-modifier='<Super>'
 ask-for-default=false
 
 [org/gnome/epiphany/state]
-is-maximized=false
-window-size=(1904, 1032)
+is-maximized=true
+window-size=(2560, 1411)
 
 [org/gnome/evince/default]
 continuous=true
@@ -854,6 +855,7 @@ prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1003,9 +1005,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1723704121
+check-timestamp=int64 1723964648
 first-run=false
-flatpak-purge-timestamp=int64 1723574993
+flatpak-purge-timestamp=int64 1723971788
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

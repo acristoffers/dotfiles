@@ -10,7 +10,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = "github:acristoffers/nvim-flake";
-    nvim.inputs.nixpkgs.follows = "nixpkgs";
+    # nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.flake-utils.follows = "flake-utils";
 
     remove-trash.url = "github:acristoffers/remove-trash";

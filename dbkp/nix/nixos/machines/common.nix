@@ -2,7 +2,6 @@
 
 with lib;
 rec {
-  # Bootloader.
   boot.loader.grub.enable = false;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -45,11 +44,9 @@ rec {
   hardware.bluetooth.enable = true;
   hardware.graphics.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Europe/Paris";
 
   i18n = {
-    # Select internationalisation properties.
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
       LC_CTYPE = "en_US.UTF-8";
@@ -70,16 +67,10 @@ rec {
       "fr_FR.UTF-8/UTF-8"
       "pt_BR.UTF-8/UTF-8"
     ];
-    inputMethod = {
-      enable = true;
-      type = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [ uniemoji ];
-    };
   };
 
   location.provider = "geoclue2";
 
-  # Enable networking
   networking = {
     networkmanager = {
       enable = true;
@@ -117,10 +108,8 @@ rec {
     };
   };
 
-  # Configure console keymap
   console.keyMap = "us-acentos";
 
-  # Enable CUPS to print documents.
   services.printing = {
     enable = true;
     drivers = with pkgs; [
@@ -226,8 +215,6 @@ rec {
   qt.enable = true;
   qt.platformTheme = "qt5ct";
 
-  # List services that you want to enable:
-
   services.flatpak.enable = true;
   services.locate = {
     enable = true;
@@ -261,7 +248,6 @@ rec {
 
   systemd.services.NetworkManager-wait-online.enable = false;
 
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   programs.ssh.startAgent = true;
   programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
@@ -316,8 +302,8 @@ rec {
   # Hardening
   programs.firejail.enable = true;
   security.chromiumSuidSandbox.enable = true;
-  services.clamav.daemon.enable = true;
-  services.clamav.updater.enable = true;
+  # services.clamav.daemon.enable = true;
+  # services.clamav.updater.enable = true;
   systemd.coredump.enable = false;
 
   # Prevents core dump files
