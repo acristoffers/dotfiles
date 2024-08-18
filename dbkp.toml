@@ -67,6 +67,10 @@ EncryptionSalt = ["", ""]
   Name = "clang-format"
   Path = "~/.clang-format"
 
+[[Files]]
+  Name = "tmux-tui"
+  Path = "~/.config/tmux-tui"
+
 [[Commands]]
   Name = "gnome-settings"
   Backup = "dconf dump /"
