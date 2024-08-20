@@ -4,13 +4,13 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = "github:acristoffers/nvim-flake";
-    # nvim.inputs.nixpkgs.follows = "nixpkgs";
+    nvim.inputs.nixpkgs.follows = "nixpkgs";
     nvim.inputs.flake-utils.follows = "flake-utils";
 
     remove-trash.url = "github:acristoffers/remove-trash";
