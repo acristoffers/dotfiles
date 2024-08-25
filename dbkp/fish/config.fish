@@ -12,6 +12,7 @@ alias tree "exa --tree"
 alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
 alias v nvim
 alias vim "nvim --noplugin"
+alias up update
 
 abbr doc "pushd ~/Documents/Dropbox/Universidade/Doutorado"
 abbr docs "pushd ~/Documents/Dropbox/Documentos"

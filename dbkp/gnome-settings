@@ -182,7 +182,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='background'
+last-panel='display'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -849,7 +849,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1005,9 +1005,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1724175151
+check-timestamp=int64 1724575986
 first-run=false
-flatpak-purge-timestamp=int64 1723971788
+flatpak-purge-timestamp=int64 1724575924
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

@@ -59,7 +59,7 @@
     shown_boxes = "cpu proc";
     swap_disk = true;
     temp_scale = "celsius";
-    theme = "dracula";
+    color_theme = "dracula";
     theme_background = false;
     truecolor = true;
     update_ms = 1000;
