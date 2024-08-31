@@ -35,7 +35,7 @@ with pkgs; [
   git-lfs
   glab
   gnome-extensions-cli
-  gnome.gnome-sound-recorder
+  gnome-sound-recorder
   gnugrep
   gnumake
   gnupg
