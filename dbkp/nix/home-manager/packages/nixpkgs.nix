@@ -80,6 +80,7 @@ with pkgs; [
   starship
   taplo
   termdown
+  texlab
   tmux
   tokei # counts code lines
   tree

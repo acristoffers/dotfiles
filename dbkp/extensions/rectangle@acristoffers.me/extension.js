@@ -278,7 +278,7 @@ export default class GnomeRectangle extends Extension {
             this.shortcuts.delete(key);
         }
         const [shortcut] = this.gsettings?.get_strv(key) ?? [''];
-        if (shortcut.length != 0) {
+        if (shortcut != null && shortcut.length != 0) {
             action = this.keyManager?.add(shortcut, () => this.manage(i, rs, cs, r, c));
             if (action != null && action > 0) {
                 this.shortcuts.set(key, action);
