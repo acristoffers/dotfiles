@@ -182,7 +182,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='applications'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -465,10 +465,10 @@ enable-spellchecking=true
 fullscreen=false
 inverted-colors=false
 show-sidebar=false
-sidebar-page='thumbnails'
+sidebar-page='links'
 sidebar-size=226
 sizing-mode='automatic'
-window-ratio=(1.8587114697711338, 5.4680150517403572)
+window-ratio=(1.4161403037226177, 1.6569860670633931)
 zoom=1.0
 
 [org/gnome/evolution-data-server]
@@ -1013,9 +1013,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1725781510
+check-timestamp=int64 1726384033
 first-run=false
-flatpak-purge-timestamp=int64 1725788649
+flatpak-purge-timestamp=int64 1726391171
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

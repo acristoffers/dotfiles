@@ -3,7 +3,6 @@
 {
   enable = true;
   theme = "Dracula";
-  # Kitty has to be installed in the OS level to work on non-NixOS systems.
   package = pkgs.emptyDirectory;
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";

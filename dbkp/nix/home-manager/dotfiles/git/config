@@ -28,5 +28,3 @@
   format = ssh
 [user]
   signingkey = /home/alan/.ssh/id.pub
-[commit]
-  gpgsign = true
