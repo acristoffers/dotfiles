@@ -4,7 +4,7 @@ let
   homeDirectory = "/home/${username}";
 in
 {
-  nix.package = pkgs.nix;
+  nix.package = pkgs.nixVersions.latest;
 
   nix.extraOptions = ''
     auto-optimise-store = true
