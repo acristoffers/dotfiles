@@ -182,8 +182,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='applications'
-window-state=(843, 1395, false)
+last-panel='display'
+window-state=(1267, 1035, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -393,7 +393,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -608,7 +608,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 460)
+initial-size=(948, 514)
 maximized=false
 
 [org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
@@ -648,6 +648,14 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/d9f53e8f-83d4-4084-abc9-f156073552be]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/df30de1b-1f3e-46c3-b3ca-55ea47826f58]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/e2b13804-7ee4-4c26-9d73-ce68ec45c064]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -852,13 +860,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1013,9 +1022,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1726384033
+check-timestamp=int64 1727004493
 first-run=false
-flatpak-purge-timestamp=int64 1726391171
+flatpak-purge-timestamp=int64 1727007828
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
@@ -1061,7 +1070,7 @@ sort-directories-first=true
 sort-order='ascending'
 type-format='category'
 view-type='grid'
-window-size=(843, 460)
+window-size=(948, 514)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
