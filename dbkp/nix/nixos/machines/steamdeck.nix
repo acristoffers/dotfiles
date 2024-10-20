@@ -58,7 +58,7 @@ rec {
     libsForQt5.plasma-framework
     libsForQt5.plasma-workspace
     libsForQt5.qt5.qtvirtualkeyboard
-    steamPackages.steam
+    steam-unwrapped
     steamdeck-firmware
   ];
 

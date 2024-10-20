@@ -64,7 +64,7 @@ with pkgs; [
   nodePackages_latest.sass
   nodePackages_latest.yarn
   nodejs_22
-  openssl_3_2
+  openssl
   p7zip
   pandoc
   peaclock

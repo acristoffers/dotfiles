@@ -182,8 +182,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
-window-state=(1267, 1035, false)
+last-panel='bluetooth'
+window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
