@@ -28,7 +28,7 @@ let Me;
 let _;
 let opt;
 
-let SEARCH_MAX_WIDTH;
+const SEARCH_MAX_WIDTH = 1092;
 
 export const SearchModule = class {
     constructor(me) {
@@ -110,16 +110,14 @@ export const SearchModule = class {
 
     _updateSearchViewWidth(reset = false) {
         const searchContent = Main.overview.searchController._searchResults._content;
-        if (!SEARCH_MAX_WIDTH) { // just store original value;
-            const themeNode = searchContent.get_theme_node();
-            const width = themeNode.get_max_width();
-            SEARCH_MAX_WIDTH = width;
-        }
 
         if (reset) {
             searchContent.set_style('');
         } else {
-            let width = Math.round(SEARCH_MAX_WIDTH * opt.SEARCH_VIEW_SCALE);
+            let width = SEARCH_MAX_WIDTH;
+            if (Me.Util.monitorHasLowResolution())
+                width = Math.round(width * 0.8);
+            width = Math.round(width * opt.SEARCH_VIEW_SCALE);
             searchContent.set_style(`max-width: ${width}px;`);
         }
     }
@@ -204,24 +202,39 @@ const AppSearchProvider = {
 
         let results = appInfoList.map(app => app.get_id());
 
+        if (opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked)
+            this._filterAppGrid(results);
+
         results = results.concat(this._systemActions.getMatchingActions(terms));
 
         return new Promise(resolve => resolve(results));
     },
 
+    _filterAppGrid(results) {
+        const icons = Main.overview._overview.controls._appDisplay._orderedItems;
+        icons.forEach(icon => {
+            icon.visible = results.includes(icon.id);
+        });
+    },
+
     // App search result size
     createResultObject(resultMeta) {
+        let iconSize = opt.SEARCH_ICON_SIZE;
+        if (!iconSize) {
+            iconSize = Me.Util.monitorHasLowResolution()
+                ? 64
+                : 96;
+        }
+
         if (resultMeta.id.endsWith('.desktop')) {
             const icon = new AppDisplay.AppIcon(this._appSys.lookup_app(resultMeta['id']), {
                 expandTitleOnHover: false,
             });
-            icon.icon.setIconSize(opt.SEARCH_ICON_SIZE);
+            icon.icon.setIconSize(iconSize);
             return icon;
         } else {
+            this._iconSize = iconSize;
             return new SystemActionIcon(this, resultMeta);
-            // icon.icon._setSizeManually = true;
-            // icon.icon.setIconSize(opt.SEARCH_ICON_SIZE);
-            // return icon;
         }
     },
 };
@@ -232,8 +245,10 @@ const SystemActionIcon = GObject.registerClass({
 }, class SystemActionIcon extends Search.GridSearchResult {
     _init(provider, metaInfo, resultsView) {
         super._init(provider, metaInfo, resultsView);
+        if (!Clutter.Container)
+            this.add_style_class_name('grid-search-result-46');
         this.icon._setSizeManually = true;
-        this.icon.setIconSize(opt.SEARCH_ICON_SIZE);
+        this.icon.setIconSize(provider._iconSize);
     }
 
     activate() {
@@ -331,6 +346,58 @@ const SearchResultsView = {
                 this._statusText.set_text(_('Searching…'));
             else
                 this._statusText.set_text(_('No results.'));
+        }
+    },
+
+    _highlightFirstVisibleAppGridIcon() {
+        const appDisplay = Main.overview._overview.controls._appDisplay;
+        // appDisplay.grab_key_focus();
+        for (const icon of appDisplay._orderedItems) {
+            if (icon.visible) {
+                appDisplay.selectApp(icon.id);
+                break;
+            }
+        }
+    },
+
+    _maybeSetInitialSelection() {
+        if (opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked) {
+            this._highlightFirstVisibleAppGridIcon();
+            return;
+        }
+
+        let newDefaultResult = null;
+
+        let providers = this._providers;
+        for (let i = 0; i < providers.length; i++) {
+            let provider = providers[i];
+            let display = provider.display;
+
+            if (!display.visible)
+                continue;
+
+            let firstResult = display.getFirstResult();
+            if (firstResult) {
+                newDefaultResult = firstResult;
+                break; // select this one!
+            }
+        }
+
+        if (newDefaultResult !== this._defaultResult) {
+            this._setSelected(this._defaultResult, false);
+            this._setSelected(newDefaultResult, this._highlightDefault);
+
+            this._defaultResult = newDefaultResult;
+        }
+    },
+
+    highlightDefault(highlight) {
+        if (opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked) {
+            if (highlight)
+                this._highlightFirstVisibleAppGridIcon();
+        } else {
+            this._highlightDefault = highlight;
+            this._setSelected(this._defaultResult, highlight);
         }
     },
 };

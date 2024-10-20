@@ -50,6 +50,7 @@ in
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
+    wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
   };
 
   qt.enable = true;

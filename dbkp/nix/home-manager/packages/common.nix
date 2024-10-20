@@ -14,7 +14,7 @@ let
     system = builtins.currentSystem;
     src = ./.;
     postInstall = ''
-      mkdir -p $out/share/fish/vendor_conf.d 
+      mkdir -p $out/share/fish/vendor_conf.d
       echo "" > $out/share/fish/vendor_conf.d/load-fzf-key-bindings.fish
     '';
   };

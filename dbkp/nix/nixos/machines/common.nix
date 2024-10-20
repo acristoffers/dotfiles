@@ -108,6 +108,13 @@ rec {
     };
   };
 
+  services.displayManager = {
+    autoLogin = {
+      enable = true;
+      user = "alan";
+    };
+  };
+
   console.keyMap = "us-acentos";
 
   services.printing = {

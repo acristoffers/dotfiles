@@ -11,14 +11,16 @@
 'use strict';
 
 import St from 'gi://St';
+import GLib from 'gi://GLib';
 
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as IconGrid from 'resource:///org/gnome/shell/ui/iconGrid.js';
 
 let Me;
 let opt;
 
 // added sizes for better scaling
-const IconSize = {
+export const IconSize = {
     LARGEST: 256,
     224: 224,
     208: 208,
@@ -88,25 +90,44 @@ const IconGridCommon = {
         return layoutManager.getItemsAtPage(page);
     },
 
+    _shouldUpdateGrid(width, height) {
+        if (this.layoutManager._isFolder)
+            return false;
+        else if (this._currentMode === -1)
+            return true;
+
+        // Update if page size changed
+        // Page dimensions may change within a small range
+        const range = 5;
+        return (Math.abs(width - (this._gridForWidth ?? 0)) > range) ||
+               (Math.abs(height - (this._gridForHeight ?? 0)) > range);
+    },
+
     _findBestModeForSize(width, height) {
         // this function is for main grid only, folder grid calculation is in appDisplay.AppFolderDialog class
-        if (this._currentMode > -1 || this.layoutManager._isFolder)
+        if (!this._shouldUpdateGrid(width, height))
             return;
 
+        this._gridForWidth = width;
+        this._gridForHeight = height;
+
+        this._updateDefaultIconSize();
         const { pagePadding } = this.layout_manager;
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         const itemPadding = 55;
 
+        // pagePadding is already affected by the scaleFactor
         width -= pagePadding.left + pagePadding.right;
         height -= pagePadding.top + pagePadding.bottom;
 
-        // store grid max dimensions for icon size algorithm
+        // Sync with _findBestIconSize()
+        this.layoutManager._gridSizeChanged = true;
         this.layoutManager._gridWidth = width;
         this.layoutManager._gridHeight = height;
 
+        // All widgets are affected by the scaleFactor so we need to apply it also on the page size
         width /= scaleFactor;
         height /= scaleFactor;
-        height *= opt.APP_GRID_PAGE_HEIGHT_SCALE;
 
         const spacing = opt.APP_GRID_SPACING;
         const iconSize = opt.APP_GRID_ICON_SIZE > 0 ? opt.APP_GRID_ICON_SIZE : opt.APP_GRID_ICON_SIZE_DEFAULT;
@@ -135,8 +156,45 @@ const IconGridCommon = {
         }
 
         this._gridModes = [{ columns, rows }];
+        this._currentMode = -1;
         this._setGridMode(0);
-        this._ready = true;
+        this.layoutManager.updateIconSize();
+        // Call _redisplay() from timeout to avoid allocation errors
+        GLib.idle_add(GLib.PRIORITY_LOW, () =>
+            Main.overview._overview.controls.appDisplay._redisplay()
+        );
+    },
+
+    _updateDefaultIconSize() {
+        // Reduce default icon size for low resolution screens and high screen scales
+        if (Me.Util.monitorHasLowResolution()) {
+            opt.APP_GRID_ICON_SIZE_DEFAULT = opt.APP_GRID_ACTIVE_PREVIEW && !opt.APP_GRID_USAGE ? 128 : 64;
+            opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT = 64;
+        } else {
+            opt.APP_GRID_ICON_SIZE_DEFAULT = opt.APP_GRID_ACTIVE_PREVIEW && !opt.APP_GRID_USAGE ? 192 : 96;
+        }
+    },
+
+    // Workaround for the upstream bug
+    // https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5753
+    // https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5240
+    // https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/6892
+    // The appGridLayout._currentPage is not updated when the page is changed in the grid
+    // For example, when user navigates app icons using a keyboard
+    // Related issues open on GNOME's gitlab:
+    after_goToPage() {
+        if (this._delegate._appGridLayout._currentPage !== this._currentPage)
+            this._delegate._appGridLayout.goToPage(this._currentPage);
+    },
+
+    // Workaround for the upstream bug
+    // https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/7700
+    // Return INVALID target if x or y is out of the grid view to prevent pages[page] undefined error (horizontal orientation only)
+    getDropTarget(x, y) {
+        if (x < 0 || y < 0)
+            return [0, 0, 0]; // [0, 0, DragLocation.INVALID]
+        const layoutManager = this.layout_manager;
+        return layoutManager.getDropTarget(x, y, this._currentPage);
     },
 };
 
@@ -145,11 +203,16 @@ const IconGridLayoutCommon = {
         if (this.fixedIconSize !== -1)
             return this.fixedIconSize;
 
+        if (!this._isFolder && !this._gridSizeChanged)
+            return this._iconSize;
+        this._gridSizeChanged = false;
+
+
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         const nColumns = this.columnsPerPage;
         const nRows = this.rowsPerPage;
 
-        // if grid is not defined return default icon size
+        // If grid is not defined, return default icon size
         if (nColumns < 1 && nRows < 1) {
             return this._isFolder
                 ? opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT
@@ -166,20 +229,19 @@ const IconGridLayoutCommon = {
 
         const width = (this._gridWidth ? this._gridWidth : this._pageWidth) / scaleFactor;
         let height = (this._gridHeight ? this._gridHeight : this._pageHeight) / scaleFactor;
-        if (!this._isFolder)
-            height = Math.floor(height * opt.APP_GRID_PAGE_HEIGHT_SCALE);
+
         if (!width || !height)
             return opt.APP_GRID_ICON_SIZE_DEFAULT;
 
         const [firstItem] = this._container;
 
         let iconSizes = Object.values(IconSize).sort((a, b) => b - a);
-        // limit max icon size for folders and fully adaptive folder grids, the whole range is for the main grid with active folders
-        if (this._isFolder /* && opt.APP_GRID_FOLDER_ADAPTIVE*/ && opt.APP_GRID_FOLDER_ICON_SIZE < 0)
+        // Limit max icon size for folders and fully adaptive folder grids, the whole range is for the main grid with active folders
+        if (this._isFolder && opt.APP_GRID_FOLDER_ICON_SIZE < 0)
             iconSizes = iconSizes.slice(iconSizes.indexOf(opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT), -1);
         else if (this._isFolder)
             iconSizes = iconSizes.slice(iconSizes.indexOf(IconSize.LARGE), -1);
-        else if (/* opt.APP_GRID_ADAPTIVE &&*/ opt.APP_GRID_ICON_SIZE < 0)
+        else if (opt.APP_GRID_ICON_SIZE < 0)
             iconSizes = iconSizes.slice(iconSizes.indexOf(opt.APP_GRID_ICON_SIZE_DEFAULT), -1);
 
         let sizeInvalid = false;
@@ -206,7 +268,6 @@ const IconGridLayoutCommon = {
                 width - usedWidth - columnSpacingPerPage;
             const emptyVSpace =
                 height - usedHeight - rowSpacingPerPage;
-
 
             if (emptyHSpace >= 0 && emptyVSpace >= 0)
                 return size;
@@ -252,7 +313,9 @@ const IconGridLayoutCommon = {
             page = this._findBestPageToAppend(page);
 
         this._shouldEaseItems = true;
-        this._container.add_child(item);
+
+        if (!this._container.get_children().includes(item))
+            this._container.add_child(item);
         this._addItemToPage(item, page, index);
     },
 
@@ -315,6 +378,28 @@ const IconGridLayoutCommon = {
         this._pages[pageIndex].children.splice(index, 0, item);
         this._updateVisibleChildrenForPage(pageIndex);
         this._relocateSurplusItems(pageIndex);
+    },
+
+    _relocateSurplusItems(pageIndex) {
+        // Avoid recursion during relocations in _redisplay()
+        if (this._skipRelocateSurplusItems)
+            return;
+
+        const visiblePageItems = this._pages[pageIndex].visibleChildren;
+        const itemsPerPage = this.columnsPerPage * this.rowsPerPage;
+
+        // No overflow
+        if (visiblePageItems.length <= itemsPerPage)
+            return;
+
+        const nExtraItems = visiblePageItems.length - itemsPerPage;
+        for (let i = 0; i < nExtraItems; i++) {
+            const overflowIndex = visiblePageItems.length - i - 1;
+            const overflowItem = visiblePageItems[overflowIndex];
+
+            this._removeItemData(overflowItem);
+            this._addItemToPage(overflowItem, pageIndex + 1, 0);
+        }
     },
 
     _findBestPageToAppend(startPage) {

@@ -10,14 +10,11 @@
 
 'use strict';
 
-import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
-import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
 
 import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
@@ -78,6 +75,8 @@ export default class VShell extends Extension.Extension {
         opt = Me.opt;
 
         Me.Util.init(Me);
+
+        Me.updateMessageDialog = new Me.Util.RestartMessage();
     }
 
     _cleanGlobals() {
@@ -123,6 +122,8 @@ export default class VShell extends Extension.Extension {
         this._disposeModules();
 
         console.debug(`${Me.metadata.name}: disabled`);
+        Me.updateMessageDialog.destroy();
+        Me.updateMessageDialog = null;
         this._cleanGlobals();
     }
 
@@ -171,6 +172,11 @@ export default class VShell extends Extension.Extension {
 
     _activateVShell() {
         this._enabled = true;
+
+        if (!this._delayedStartup && !Main.sessionMode.isLocked) {
+            Me.updateMessageDialog.showMessage();
+            this._delayedStartup = false;
+        }
 
         this._originalGetNeighbor = Meta.Workspace.prototype.get_neighbor;
 
@@ -231,8 +237,6 @@ export default class VShell extends Extension.Extension {
         // switch PageUp/PageDown workspace switcher shortcuts
         this._switchPageShortcuts();
 
-        // hide status message if shown
-        this._showStatusMessage(false);
         this._prevDash = null;
 
         // restore default animation speed
@@ -313,7 +317,7 @@ export default class VShell extends Extension.Extension {
 
     _updateConnections() {
         if (!this._monitorsChangedConId)
-            this._monitorsChangedConId = Main.layoutManager.connect('monitors-changed', () => this._adaptToSystemChange(2000, true));
+            this._monitorsChangedConId = Main.layoutManager.connect('monitors-changed', () => this._adaptToSystemChange());
 
         if (!this._showingOverviewConId)
             this._showingOverviewConId = Main.overview.connect('showing', this._onShowingOverview.bind(this));
@@ -463,11 +467,6 @@ export default class VShell extends Extension.Extension {
         if (Main.sessionMode.isLocked)
             this._sessionLockActive = true;
 
-        if (!this._sessionLockActive && !Main.layoutManager._startingUp && opt.APP_GRID_PERFORMANCE) {
-            // Avoid showing status at startup, can cause freeze
-            this._showStatusMessage();
-        }
-
         if (!Main.sessionMode.isLocked)
             this._sessionLockActive = false;
 
@@ -507,15 +506,14 @@ export default class VShell extends Extension.Extension {
 
                 const dash = Main.overview.dash;
                 if (!full) {
+                    console.warn(`[${Me.metadata.name}] Warning: Updating overrides ...`);
                     this._prevDash = dash._workId;
-                    console.warn(`[${Me.metadata.name}] Warning: Dash has been replaced, updating overrides ...`);
                     Me._resetInProgress = true;
                     // Only update modules that might be affected by the dock extension
                     this._repairOverrides();
                     Me._resetInProgress = false;
                 } else {
-                    console.warn(`[${Me.metadata.name}] Warning: Updating overrides ...`);
-                    // If monitor configuration changed, update all
+                    console.warn(`[${Me.metadata.name}] Warning: Rebuilding V-Shell ...`);
                     Me._resetInProgress = true;
                     this._activateVShell();
                     Me._resetInProgress = false;
@@ -536,6 +534,7 @@ export default class VShell extends Extension.Extension {
         Me.Modules.panelModule.update();
         Me.Modules.dashModule.update();
         this._updateSettings();
+        Main.overview._overview.controls._setBackground();
     }
 
     _updateSettings(settings, key) {
@@ -545,7 +544,6 @@ export default class VShell extends Extension.Extension {
         // avoid overload while loading profile - update only once
         // delayed gsettings writes are processed alphabetically
         if (key === 'aaa-loading-profile') {
-            this._showStatusMessage();
             if (this._timeouts.loadingProfile)
                 GLib.source_remove(this._timeouts.loadingProfile);
             this._timeouts.loadingProfile = GLib.timeout_add(
@@ -554,7 +552,9 @@ export default class VShell extends Extension.Extension {
                     this._activateVShell();
                     this._timeouts.loadingProfile = 0;
                     return GLib.SOURCE_REMOVE;
-                });
+                }
+            );
+            Me.updateMessageDialog.showMessage();
         }
         if (this._timeouts.loadingProfile)
             return;
@@ -577,13 +577,6 @@ export default class VShell extends Extension.Extension {
         }
 
         opt.DASH_VISIBLE = opt.DASH_VISIBLE && !Me.Util.getEnabledExtensions('dash-to-panel@jderose9.github.com').length;
-
-        const monitorWidth = global.display.get_monitor_geometry(global.display.get_primary_monitor()).width;
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
-        if (monitorWidth / scaleFactor < 1600) {
-            opt.APP_GRID_ICON_SIZE_DEFAULT = opt.APP_GRID_ACTIVE_PREVIEW && !opt.APP_GRID_USAGE ? 128 : 64;
-            opt.APP_GRID_FOLDER_ICON_SIZE_DEFAULT = 64;
-        }
 
         // adjust search entry style for OM2
         if (opt.OVERVIEW_MODE2)
@@ -620,8 +613,6 @@ export default class VShell extends Extension.Extension {
         if (key?.endsWith('-module')) {
             for (let module of this._getModuleList()) {
                 if (opt.options[module] && key === opt.options[module][1]) {
-                    if (key === 'app-display-module')
-                        this._showStatusMessage();
                     Me.Modules[module].update();
                     break;
                 }
@@ -676,6 +667,8 @@ export default class VShell extends Extension.Extension {
         case 'new-window-monitor-fix':
             this._updateNewWindowConnection();
             break;
+        case 'click-empty-close':
+            Me.Modules.overviewControlsModule.update();
         }
 
         if (key?.includes('app-grid') ||
@@ -683,10 +676,8 @@ export default class VShell extends Extension.Extension {
             key?.includes('dot-style') ||
             key === 'show-search-entry' ||
             key === 'ws-thumbnail-scale' ||
-            key === 'ws-thumbnail-scale-appgrid') {
-            this._showStatusMessage();
+            key === 'ws-thumbnail-scale-appgrid')
             Me.Modules.appDisplayModule.update();
-        }
     }
 
     _switchPageShortcuts() {
@@ -772,52 +763,6 @@ export default class VShell extends Extension.Extension {
         settings.set_strv(keyMoveDown, moveDown);
     }
 
-    // Status dialog that appears during updating V-Shell configuration and blocks inputs
-    _showStatusMessage(show = true) {
-        if ((show && Me._resetInProgress) || Main.layoutManager._startingUp || !Main.overview._overview.controls._appDisplay._sortOrderedItemsAlphabetically)
-            return;
-
-        if (Me._vShellMessageTimeoutId) {
-            GLib.source_remove(Me._vShellMessageTimeoutId);
-            Me._vShellMessageTimeoutId = 0;
-        }
-
-        if (Me._vShellStatusMessage && !show) {
-            Me._vShellStatusMessage.close();
-            Me._vShellStatusMessage.destroy();
-            Me._vShellStatusMessage = null;
-        }
-
-        if (!show)
-            return;
-
-        if (!Me._vShellStatusMessage) {
-            const sm = new /* Main.*/RestartMessage(_('Updating V-Shell...'));
-            sm.set_style('background-color: rgba(0,0,0,0.3);');
-            if (!this._delayedStartup)
-                sm.open();
-            this._delayedStartup = false;
-            Me._vShellStatusMessage = sm;
-        }
-
-        // just for case the message wasn't removed from appDisplay after App Grid realization
-        Me._vShellMessageTimeoutId = GLib.timeout_add_seconds(
-            GLib.PRIORITY_DEFAULT,
-            5,
-            () => {
-                if (Me._vShellStatusMessage) {
-                    Me._vShellStatusMessage.close();
-                    Me._vShellStatusMessage.destroy();
-                    Me._vShellStatusMessage = null;
-                    Me._resetInProgress = false;
-                }
-
-                Me._vShellMessageTimeoutId = 0;
-                return GLib.SOURCE_REMOVE;
-            }
-        );
-    }
-
     _getNeighbor(direction) {
         // workspace matrix is supported
         const activeIndex = this.index();
@@ -865,26 +810,3 @@ export default class VShell extends Extension.Extension {
         return global.workspace_manager.get_workspace_by_index(neighborExists || wraparound ? index : activeIndex);
     }
 }
-
-const RestartMessage = GObject.registerClass({
-    // Registered name should be unique
-    GTypeName: `RestartMessage${Math.floor(Math.random() * 1000)}`,
-}, class RestartMessage extends ModalDialog.ModalDialog {
-    _init(message) {
-        super._init({
-            shellReactive: true,
-            styleClass: 'restart-message headline',
-            shouldFadeIn: false,
-            destroyOnClose: true,
-        });
-
-        let label = new St.Label({
-            text: message,
-            x_align: Clutter.ActorAlign.CENTER,
-            y_align: Clutter.ActorAlign.CENTER,
-        });
-
-        this.contentLayout.add_child(label);
-        this.buttonLayout.hide();
-    }
-});

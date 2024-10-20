@@ -13,10 +13,11 @@
   "settings-schema": "org.gnome.shell.extensions.vertical-workspaces",
   "shell-version": [
     "45",
-    "46"
+    "46",
+    "47"
   ],
   "url": "https://github.com/G-dH/vertical-workspaces",
   "uuid": "vertical-workspaces@G-dH.github.com",
-  "version": 65,
-  "version-name": "46.3.1"
+  "version": 70,
+  "version-name": "47.0"
 }

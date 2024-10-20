@@ -14,10 +14,10 @@
       <default>350</default>
     </key>
     <key type="i" name="ws-preview-scale">
-      <default>100</default>
+      <default>95</default>
     </key>
     <key type="i" name="secondary-ws-preview-scale">
-      <default>100</default>
+      <default>95</default>
     </key>
     <key type="b" name="secondary-ws-preview-shift">
       <default>false</default>
@@ -77,7 +77,7 @@
       <default>13</default>
     </key>
     <key type="i" name="dash-max-icon-size">
-      <default>48</default>
+      <default>0</default>
     </key>
     <key type="i" name="dash-bg-opacity">
       <default>20</default>
@@ -89,7 +89,7 @@
       <default>18</default>
     </key>
     <key type="b" name="dash-bg-gs3-style">
-      <default>true</default>
+      <default>false</default>
     </key>
     <key type="i" name="running-dot-style">
       <default>1</default>
@@ -155,10 +155,10 @@
       <default>0</default>
     </key>
     <key type="i" name="search-icon-size">
-      <default>96</default>
+      <default>0</default>
     </key>
     <key type="i" name="search-width-scale">
-      <default>104</default>
+      <default>100</default>
     </key>
     <key type="i" name="app-grid-icon-size">
       <default>-1</default>
@@ -214,6 +214,9 @@
     <key type="i" name="app-grid-page-height-scale">
       <default>90</default>
     </key>
+    <key type="b" name="app-grid-show-page-arrows">
+      <default>true</default>
+    </key>
     <key type="i" name="dash-show-windows-before-activation">
       <default>1</default>
     </key>
@@ -237,6 +240,9 @@
     </key>
     <key type="i" name="search-max-results-rows">
       <default>5</default>
+    </key>
+    <key type="i" name="search-app-grid-mode">
+      <default>0</default>
     </key>
     <key type="i" name="panel-visibility">
       <default>0</default>
@@ -308,7 +314,7 @@
       <default>0</default>
     </key>
     <key type="b" name="click-empty-close">
-      <default>true</default>
+      <default>false</default>
     </key>
     <key type="b" name="new-window-focus-fix">
       <default>false</default>
@@ -317,7 +323,7 @@
       <default>false</default>
     </key>
     <key type="b" name="app-grid-performance">
-      <default>true</default>
+      <default>false</default>
     </key>
     <key name='highlighting-style' type='i'>
       <default>1</default>
@@ -393,7 +399,7 @@
         'workspaceThumbnailsPosition': '1',
         'wsMaxSpacing': '350',
         'wsPreviewScale': '95',
-        'secWsPreviewScale': '100',
+        'secWsPreviewScale': '95',
         'secWsPreviewShift': 'false',
         'wsThumbnailsFull': 'false',
         'secWsThumbnailsPosition': '2',
@@ -404,7 +410,7 @@
         'showWsTmbLabelsOnHover': 'false',
         'closeWsButtonMode': '2',
         'secWsTmbPositionAdjust': '-80',
-        'dashMaxIconSize': '64',
+        'dashMaxIconSize': '0',
         'centerDashToWs': 'false',
         'showAppsIconPosition': '1',
         'wsThumbnailScale': '13',
@@ -418,7 +424,6 @@
         'dashBgRadius': '0',
         'dashBgGS3Style': 'true',
         'runningDotStyle': '1',
-        'enablePageShortcuts': 'false',
         'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'false',
         'wsPreviewBgRadius': '30',
@@ -438,8 +443,8 @@
         'overviewMode': '0',
         'wsSwitcherMode': '0',
         'workspaceSwitcherAnimation': '1',
-        'searchIconSize': '96',
-        'searchViewScale': '104',
+        'searchIconSize': '0',
+        'searchViewScale': '100',
         'appGridIconSize': '-1',
         'appGridColumns': '0',
         'appGridRows': '0',
@@ -458,9 +463,11 @@
         'appGridPageHeightScale': '90',
         'appGridSpacing': '12',
         'appGridFolderSpacing': '12',
+        'appGridShowPageArrows': 'false',
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
+        'searchAppGridMode': '0',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -490,7 +497,6 @@
         'overviewEscBehavior': '0',
         'newWindowFocusFix': 'false',
         'newWindowMonitorFix': '0',
-        'appGridPerformance': 'true',
         'highlightingStyle': '1',
 
         'workspaceSwitcherPopupModule': 'true',
@@ -520,8 +526,8 @@
       <default>{
         'workspaceThumbnailsPosition': '5',
         'wsMaxSpacing': '80',
-        'wsPreviewScale': '100',
-        'secWsPreviewScale': '100',
+        'wsPreviewScale': '95',
+        'secWsPreviewScale': '95',
         'secWsPreviewShift': 'false',
         'wsThumbnailsFull': 'false',
         'secWsThumbnailsPosition': '2',
@@ -532,7 +538,7 @@
         'showWsTmbLabelsOnHover': 'false',
         'closeWsButtonMode': '2',
         'secWsTmbPositionAdjust': '0',
-        'dashMaxIconSize': '64',
+        'dashMaxIconSize': '0',
         'centerDashToWs': 'false',
         'showAppsIconPosition': '1',
         'wsThumbnailScale': '5',
@@ -546,7 +552,6 @@
         'dashBgRadius': '0',
         'dashBgGS3Style': 'false',
         'runningDotStyle': '1',
-        'enablePageShortcuts': 'true',
         'showWsSwitcherBg': 'false',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
@@ -566,8 +571,8 @@
         'overviewMode': '0',
         'wsSwitcherMode': '0',
         'workspaceSwitcherAnimation': '0',
-        'searchIconSize': '96',
-        'searchViewScale': '104',
+        'searchIconSize': '0',
+        'searchViewScale': '100',
         'appGridIconSize': '-1',
         'appGridColumns': '0',
         'appGridRows': '0',
@@ -583,12 +588,14 @@
         'appGridActivePreview': 'false',
         'appGridFolderCenter': 'true',
         'appGridPageWidthScale': '80',
-        'appGridPageHeightScale': '100',
+        'appGridPageHeightScale': '90',
         'appGridSpacing': '12',
         'appGridFolderSpacing': '12',
+        'appGridShowPageArrows': 'true',
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
+        'searchAppGridMode': '0',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -618,7 +625,6 @@
         'overviewEscBehavior': '0',
         'newWindowFocusFix': 'false',
         'newWindowMonitorFix': '0',
-        'appGridPerformance': 'true',
         'highlightingStyle': '1',
 
         'workspaceSwitcherPopupModule': 'true',
@@ -649,7 +655,7 @@
         'workspaceThumbnailsPosition': '0',
         'wsMaxSpacing': '350',
         'wsPreviewScale': '95',
-        'secWsPreviewScale': '100',
+        'secWsPreviewScale': '95',
         'secWsPreviewShift': 'false',
         'wsThumbnailsFull': 'false',
         'secWsThumbnailsPosition': '2',
@@ -659,8 +665,8 @@
         'showWsTmbLabels': '3',
         'showWsTmbLabelsOnHover': 'false',
         'closeWsButtonMode': '2',
-        'secWsTmbPositionAdjust': '0',
-        'dashMaxIconSize': '48',
+        'secWsTmbPositionAdjust': '-100',
+        'dashMaxIconSize': '0',
         'centerDashToWs': 'false',
         'showAppsIconPosition': '0',
         'wsThumbnailScale': '13',
@@ -674,7 +680,6 @@
         'dashBgRadius': '0',
         'dashBgGS3Style': 'false',
         'runningDotStyle': '1',
-        'enablePageShortcuts': 'true',
         'showWsSwitcherBg': 'false',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
@@ -694,8 +699,8 @@
         'overviewMode': '1',
         'wsSwitcherMode': '0',
         'workspaceSwitcherAnimation': '1',
-        'searchIconSize': '96',
-        'searchViewScale': '104',
+        'searchIconSize': '0',
+        'searchViewScale': '100',
         'appGridIconSize': '-1',
         'appGridColumns': '0',
         'appGridRows': '0',
@@ -714,9 +719,11 @@
         'appGridPageHeightScale': '90',
         'appGridSpacing': '12',
         'appGridFolderSpacing': '12',
+        'appGridShowPageArrows': 'false',
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
+        'searchAppGridMode': '0',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -746,7 +753,6 @@
         'overviewEscBehavior': '0',
         'newWindowFocusFix': 'false',
         'newWindowMonitorFix': '0',
-        'appGridPerformance': 'true',
         'highlightingStyle': '1',
 
         'workspaceSwitcherPopupModule': 'true',
@@ -777,7 +783,7 @@
         'workspaceThumbnailsPosition': '6',
         'wsMaxSpacing': '65',
         'wsPreviewScale': '95',
-        'secWsPreviewScale': '100',
+        'secWsPreviewScale': '95',
         'secWsPreviewShift': 'false',
         'wsThumbnailsFull': 'false',
         'secWsThumbnailsPosition': '2',
@@ -788,7 +794,7 @@
         'showWsTmbLabelsOnHover': 'false',
         'closeWsButtonMode': '2',
         'secWsTmbPositionAdjust': '0',
-        'dashMaxIconSize': '48',
+        'dashMaxIconSize': '0',
         'centerDashToWs': 'false',
         'showAppsIconPosition': '1',
         'wsThumbnailScale': '10',
@@ -802,7 +808,6 @@
         'dashBgRadius': '0',
         'dashBgGS3Style': 'false',
         'runningDotStyle': '1',
-        'enablePageShortcuts': 'true',
         'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
@@ -822,8 +827,8 @@
         'overviewMode': '2',
         'wsSwitcherMode': '0',
         'workspaceSwitcherAnimation': '1',
-        'searchIconSize': '96',
-        'searchViewScale': '104',
+        'searchIconSize': '0',
+        'searchViewScale': '100',
         'appGridIconSize': '-1',
         'appGridColumns': '0',
         'appGridRows': '0',
@@ -839,12 +844,14 @@
         'appGridActivePreview': 'true',
         'appGridFolderCenter': 'false',
         'appGridPageWidthScale': '80',
-        'appGridPageHeightScale': '100',
+        'appGridPageHeightScale': '90',
         'appGridSpacing': '12',
         'appGridFolderSpacing': '12',
+        'appGridShowPageArrows': 'true',
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
+        'searchAppGridMode': '0',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -874,7 +881,6 @@
         'overviewEscBehavior': '0',
         'newWindowFocusFix': 'false',
         'newWindowMonitorFix': '0',
-        'appGridPerformance': 'true',
         'highlightingStyle': '1',
 
         'workspaceSwitcherPopupModule': 'true',

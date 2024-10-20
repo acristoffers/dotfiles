@@ -30,7 +30,7 @@ export const Options = class Options {
                 400,
                 () => {
                     this._gsettings.apply();
-                    this._updateCachedSettings();
+                    this._updateSettings();
                     this._writeTimeoutId = 0;
                     return GLib.SOURCE_REMOVE;
                 }
@@ -105,9 +105,11 @@ export const Options = class Options {
             appGridPageHeightScale: ['int', 'app-grid-page-height-scale'],
             appGridSpacing: ['int', 'app-grid-spacing'],
             appGridFolderSpacing: ['int', 'app-grid-folder-spacing'],
+            appGridShowPageArrows: ['boolean', 'app-grid-show-page-arrows'],
             searchWindowsOrder: ['int', 'search-windows-order'],
             searchFuzzy: ['boolean', 'search-fuzzy'],
             searchMaxResultsRows: ['int', 'search-max-results-rows'],
+            searchAppGridMode: ['int', 'search-app-grid-mode'],
             dashShowWindowsBeforeActivation: ['int', 'dash-show-windows-before-activation'],
             dashIconScroll: ['int', 'dash-icon-scroll'],
             dashIsolateWorkspaces: ['boolean', 'dash-isolate-workspaces'],
@@ -166,6 +168,7 @@ export const Options = class Options {
             profileName4: ['string', 'profile-name-4'],
         };
         this.cachedOptions = {};
+        this._updateSettings();
     }
 
     connect(name, callback) {
@@ -289,6 +292,10 @@ export const Options = class Options {
 
     _updateSettings() {
         this._updateCachedSettings();
+
+        // Basic spacing of the overview elements
+        this.SPACING = 12;
+
         this.DASH_BG_ALPHA = this.get('dashBgOpacity') / 100;
         this.DASH_BG_OPACITY = this.get('dashBgOpacity') * 2.5;
         this.DASH_BG_COLOR = this.get('dashBgColor');
@@ -327,6 +334,8 @@ export const Options = class Options {
         this.WS_TMB_POSITION = this.get('workspaceThumbnailsPosition');
         this.ORIENTATION = this.WS_TMB_POSITION > 4 ? 0 : 1;
         this.WORKSPACE_MAX_SPACING = this.get('wsMaxSpacing');
+        this.WS_MAX_SPACING_OFF_SCREEN = 350;
+        this.FORCE_SINGLE_WS_TRANSITION = false;
         // ORIENTATION || DASH_LEFT || DASH_RIGHT ? 350 : 80;
         this.SHOW_WS_TMB = ![4, 9].includes(this.WS_TMB_POSITION); // 4, 9 - disable
         this.WS_TMB_FULL = this.get('wsThumbnailsFull');
@@ -351,29 +360,16 @@ export const Options = class Options {
         this.SHOW_WST_LABELS_ON_HOVER = this.get('showWsTmbLabelsOnHover');
         this.CLOSE_WS_BUTTON_MODE = this.get('closeWsButtonMode');
 
-        this.MAX_THUMBNAIL_SCALE = this.get('wsThumbnailScale') / 100;
-        if (this.MAX_THUMBNAIL_SCALE === 0) {
-            this.MAX_THUMBNAIL_SCALE = 0.01;
-            this.SHOW_WS_TMB = false;
-        }
-        this.MAX_THUMBNAIL_SCALE_APPGRID = this.get('wsThumbnailScaleAppGrid') / 100;
+        this.MAX_THUMBNAIL_SCALE = this.get('wsThumbnailScale') / 100 + 0.01;
+        this.MAX_THUMBNAIL_SCALE_APPGRID = this.get('wsThumbnailScaleAppGrid') / 100 + 0.01;
         this.SHOW_WS_TMB_APPGRID = true;
-        if (this.MAX_THUMBNAIL_SCALE_APPGRID === 0) {
-            this.MAX_THUMBNAIL_SCALE_APPGRID = 0.01;
-            this.SHOW_WS_TMB_APPGRID = false;
-        }
         this.MAX_THUMBNAIL_SCALE_STABLE = this.MAX_THUMBNAIL_SCALE === this.MAX_THUMBNAIL_SCALE_APPGRID;
-
-        this.SEC_MAX_THUMBNAIL_SCALE = this.get('secWsThumbnailScale') / 100;
-        if (this.SEC_MAX_THUMBNAIL_SCALE === 0) {
-            this.SEC_MAX_THUMBNAIL_SCALE = 0.01;
-            this.SHOW_SEC_WS_TMB = false;
-        }
+        this.SEC_MAX_THUMBNAIL_SCALE = this.get('secWsThumbnailScale') / 100 + 0.01;
 
         this.WS_PREVIEW_SCALE = this.get('wsPreviewScale') / 100;
         this.SEC_WS_PREVIEW_SCALE = this.get('secWsPreviewScale') / 100;
         // calculate number of possibly visible neighbor previews according to ws scale
-        this.NUMBER_OF_VISIBLE_NEIGHBORS = Math.round(1 + (1 - this.WS_PREVIEW_SCALE) / 4);
+        this.NUMBER_OF_VISIBLE_NEIGHBORS = Math.round(2 + (1 - this.WS_PREVIEW_SCALE));
 
         this.SHOW_WS_TMB_BG = this.get('showWsSwitcherBg') && this.SHOW_WS_TMB;
         this.WS_PREVIEW_BG_RADIUS = this.get('wsPreviewBgRadius');
@@ -416,6 +412,7 @@ export const Options = class Options {
         this.SEARCH_MAX_ROWS = this.get('searchMaxResultsRows');
         this.SEARCH_FUZZY = this.get('searchFuzzy');
         this.SEARCH_DELAY = 0;
+        this.SEARCH_APP_GRID_MODE = this.get('searchAppGridMode');
 
         this.APP_GRID_ALLOW_INCOMPLETE_PAGES = this.get('appGridIncompletePages');
         this.APP_GRID_ICON_SIZE = this.get('appGridIconSize');
@@ -424,7 +421,7 @@ export const Options = class Options {
         this.APP_GRID_ADAPTIVE = !this.APP_GRID_COLUMNS && !this.APP_GRID_ROWS;
 
         this.APP_GRID_ORDER = this.get('appGridOrder');
-        this.APP_GRID_ALPHABET = [1, 2].includes(this.APP_GRID_ORDER);
+        this.APP_GRID_ALPHABET = [1, 2, 4].includes(this.APP_GRID_ORDER);
         this.APP_GRID_FOLDERS_FIRST = this.APP_GRID_ORDER === 1;
         this.APP_GRID_FOLDERS_LAST = this.APP_GRID_ORDER === 2;
         this.APP_GRID_USAGE = this.APP_GRID_ORDER === 3;
@@ -459,15 +456,16 @@ export const Options = class Options {
         this.APP_GRID_FOLDER_CENTER = this.get('appGridFolderCenter');
         this.APP_GRID_PAGE_WIDTH_SCALE = this.get('appGridPageWidthScale') / 100;
         this.APP_GRID_PAGE_HEIGHT_SCALE = this.get('appGridPageHeightScale') / 100;
+        this.APP_GRID_SHOW_PAGE_ARROWS = this.get('appGridShowPageArrows');
 
-        this.APP_GRID_ICON_SIZE_DEFAULT = this.APP_GRID_ACTIVE_PREVIEW && !this.APP_GRID_USAGE ? 176 : 96;
+        // Default icon sizes updates in the IconGrid._findBestModeForSize()
+        this.APP_GRID_ICON_SIZE_DEFAULT = this.APP_GRID_ACTIVE_PREVIEW && !this.APP_GRID_USAGE ? 192 : 96;
         this.APP_GRID_FOLDER_ICON_SIZE_DEFAULT = 96;
 
         this.APP_GRID_PERFORMANCE = this.get('appGridPerformance');
 
-        this.WINDOW_SEARCH_ORDER = this.get('searchWindowsOrder');
-
         this.PANEL_POSITION_TOP = this.get('panelPosition') === 0;
+        this.PANEL_POSITION_BOTTOM = this.get('panelPosition') === 1;
         this.PANEL_MODE = this.get('panelVisibility');
         this.PANEL_DISABLED = this.PANEL_MODE === 2;
         this.PANEL_OVERVIEW_ONLY = this.PANEL_MODE === 1;
@@ -520,8 +518,6 @@ export const Options = class Options {
 
         this.ESC_BEHAVIOR = this.get('overviewEscBehavior');
         this.CLICK_EMPTY_CLOSE = this.get('clickEmptyClose');
-
-        this.WINDOW_THUMBNAIL_ENABLED = !!Me.Util.getEnabledExtensions('window-thumbnails').length;
 
         this.FIX_NEW_WINDOW_FOCUS = this.get('newWindowFocusFix');
         this.FIX_NEW_WINDOW_MONITOR = this.get('newWindowMonitorFix');

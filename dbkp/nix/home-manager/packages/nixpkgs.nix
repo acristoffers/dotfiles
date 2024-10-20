@@ -58,8 +58,8 @@ with pkgs; [
   mdcat
   mediainfo
   moreutils
-  nix
   nix-index
+  nixVersions.latest
   nixpkgs-fmt
   nodePackages_latest.sass
   nodePackages_latest.yarn

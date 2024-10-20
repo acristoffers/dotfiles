@@ -11,6 +11,7 @@ with pkgs; (python312.withPackages (p: with p; [
   neovim
   numpy
   pip
+  pipx
   pygobject-stubs
   pygobject3
   scipy

@@ -102,12 +102,16 @@ export default class VShell extends ExtensionPreferences {
         // options item format:
         // (text, caption, widget, settings-variable, [options for combo], sensitivity-depends-on-bool-variable)
 
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Custom Profiles'),
-                _('Sets of settings that can help you with the initial customization')
-            )
-        );
+        optionList.push(itemFactory.getRowWidget(
+            _('Custom Profiles'),
+            null
+        ));
+
+        optionList.push(itemFactory.getRowWidget(
+            _('Save your configurations'),
+            _("The predefined sets of settings, which can help you with the initial configuration and exploring V-Shell's possibilities, can be renamed and overridden by your own configurations"),
+            itemFactory.newLabel()
+        ));
 
         optionList.push(itemFactory.getRowWidget(
             _('Profile 1'),
@@ -273,7 +277,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspace Thumbnails Max Scale - Window Picker'),
-                _('Adjusts maximum size of the workspace thumbnails in the overview (% relative to display width)'),
+                _('Adjusts the maximum size of the workspace thumbnails in the overview (percentage relative to display width)'),
                 wsThumbnailScale,
                 'wsThumbnailScale'
             )
@@ -329,11 +333,11 @@ export default class VShell extends ExtensionPreferences {
         });
 
         const wsSpacingScale = itemFactory.newScale(wsSpacingAdjustment);
-        wsSpacingScale.add_mark(350, Gtk.PositionType.TOP, null);
+        wsSpacingScale.add_mark(this.opt.WS_MAX_SPACING_OFF_SCREEN, Gtk.PositionType.TOP, null);
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspaces Spacing'),
-                _('Adjusts spacing between workspace previews so you can control how much of the adjacent workspaces overlap to the current workspace overview. Default value should set the adjacent workspaces off-screen.'),
+                _('Adjusts spacing in pixels between workspace previews, allowing you to control how much the adjacent workspaces overlap in the current workspace overview. Setting the value above 349 pixels disables the visibility of workspaces other than the current one during transitions to/from the app grid view, which can also save some graphical resources if many windows are open on other workspaces'),
                 wsSpacingScale,
                 'wsMaxSpacing'
             )
@@ -392,7 +396,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Search Results Width'),
-                _('Adjusts maximum width of search results view (% relative to default). This allows to fit more (or less) app icons into the app search result'),
+                _('Adjusts the maximum width of search results view (percentage relative to default). This allows to fit more (or less) app icons into the app search result'),
                 searchViewScale,
                 'searchViewScale',
                 null,
@@ -455,7 +459,7 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Horizontal Position (% from left)'),
+                _('Horizontal Position (percentage from the left)'),
                 _('This popup shows up when you switch workspace using a keyboard shortcut or gesture outside of the overview. You can disable it on the "Behavior" tab. If you want more control over the popup, try the "Workspace Switcher Manager" extension'),
                 hScale,
                 'wsSwPopupHPosition',
@@ -476,7 +480,7 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Vertical Position (% from top)'),
+                _('Vertical Position (percentage from the top)'),
                 null,
                 vScale,
                 'wsSwPopupVPosition',
@@ -580,7 +584,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspace Thumbnails Max Scale'),
-                _('Adjusts maximum size of the workspace thumbnails (% relative to display width / height) for secondary monitors'),
+                _('Adjusts maximum size of the workspace thumbnails (percentage relative to the display width / height) for secondary monitors'),
                 secWsThumbnailScale,
                 'secWsThumbnailScale'
             )
@@ -594,7 +598,7 @@ export default class VShell extends ExtensionPreferences {
         });
 
         const wsSecScaleScale = itemFactory.newScale(wsSecScaleAdjustment);
-        wsScaleScale.add_mark(100, Gtk.PositionType.TOP, null);
+        wsScaleScale.add_mark(95, Gtk.PositionType.TOP, null);
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspace Preview Scale'),
@@ -633,17 +637,18 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Dash Max Icon Size'),
-                _('Maximum size of Dash icons in pixels'),
+                _('Maximum size of Dash icons in pixels. Adaptive option switches between default 64 and 48 for low resolution displays'),
                 itemFactory.newDropDown(),
                 'dashMaxIconSize',
                 [
-                    [_('128'), 128],
-                    [_('112'), 112],
-                    [_('96'),   96],
-                    [_('80'),   80],
-                    [_('64'),   64],
-                    [_('48'),   48],
-                    [_('32'),   32],
+                    [_('Adaptive (Default)'),  0],
+                    [_('128'),     128],
+                    [_('112'),     112],
+                    [_('96'),       96],
+                    [_('80'),       80],
+                    [_('64'),       64],
+                    [_('48'),       48],
+                    [_('32'),       32],
                 ],
                 'dashModule'
             )
@@ -858,10 +863,11 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('App Search Icon Size'),
-                _('Size of results provided by the App Search Provider - smaller size allows to fit more results'),
+                _('Size of results provided by the App Search Provider - smaller size allows to fit more results. Adaptive option switches between default 96 and 64 for low resolution displays'),
                 itemFactory.newDropDown(),
                 'searchIconSize',
                 [
+                    [_('Adaptive'), 0],
                     [_('128'), 128],
                     [_('112'), 112],
                     [_('96 (Default)'), 96],
@@ -1127,11 +1133,11 @@ export default class VShell extends ExtensionPreferences {
                 [
                     [_('Disable'), 0],
                     [_('Follow Global Overview Mode'), 1],
-                    [_('Overview - Window Picker'), 2],
+                    [_('Overview - Window Picker (Default)'), 2],
                     [_('Applications'), 3],
                     [_('Overview - Static WS Preview'), 4],
                     [_('Overview - Static Workspace'), 5],
-                    [_('Search Windows'), 6],
+                    [_('Search Windows (requires WSP extension)'), 6],
                 ],
                 'layoutModule'
             )
@@ -1319,6 +1325,20 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('App Grid Search Mode'),
+                _('Select how the search should behave when initiated from the app grid view. The "Filtered App Grid View" option shows all resulting app icons sorted by usage in the app grid view instead of switching to the default search view'),
+                itemFactory.newDropDown(),
+                'searchAppGridMode',
+                [
+                    [_('Search View (Default)'), 0],
+                    [_('Filtered App Grid View'), 1],
+                ],
+                'searchModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('Enable Fuzzy Match'),
                 _('Enabling the fuzzy match allows you to skip letters in the pattern you are searching for and find "Firefox" even if you type "ffx". Works only for the App, Windows, Extensions and Recent files search providers'),
                 itemFactory.newSwitch(),
@@ -1344,7 +1364,7 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Animation Speed'),
-                _('Adjusts the global animation speed in % of the default duration - higher value means slower animation'),
+                _('Adjusts the global animation speed in percentage of the default duration - higher value means slower animation'),
                 animationSpeedScale,
                 'animationSpeedFactor'
             )
@@ -1525,6 +1545,7 @@ export default class VShell extends ExtensionPreferences {
                 'appGridOrder',
                 [
                     [_('Custom (Default)'), 0],
+                    [_('Alphabet'), 4],
                     [_('Alphabet - Folders First'), 1],
                     [_('Alphabet - Folders Last'), 2],
                     [_('Usage - No Folders'), 3],
@@ -1844,6 +1865,18 @@ export default class VShell extends ExtensionPreferences {
                 'appDisplayModule'
             )
         );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Show Page Navigation Buttons'),
+                _("You can hide the page navigation buttons if you don't need them or want to get more space for icons. The buttons are hidden automatically when there is only one page in the app grid"),
+                itemFactory.newSwitch(),
+                'appGridShowPageArrows',
+                null,
+                'appDisplayModule'
+            )
+        );
+
 
         // --------------------------------------------------------------------------------------
 

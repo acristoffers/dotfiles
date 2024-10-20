@@ -15,8 +15,8 @@
 	 to cover the spacing between dash and the edge of the screen
 	 so the icons will be selectable even at the edge
 	 this spacing must be accounted for in overview allocate() */
-	padding-right: 16px;
-	padding-left: 16px;
+	padding-right: 24px;
+	padding-left: 24px;
 	/*spacing between icons*/
 	padding-top: 1px;
 	padding-bottom: 1px;
@@ -64,14 +64,14 @@
 }
 
 #dash.vertical-gs3-left {
-	margin-right: 6px;
+	margin-right: 12px;
 	margin-left: 0px;
 	padding: 0px;
 }
 
 #dash.vertical-gs3-right {
 	margin-right: 0px;
-	margin-left: 6px;
+	margin-left: 12px;
 	padding: 0px;
 }
 
@@ -154,16 +154,19 @@
 }
 
 .page-indicators-horizontal {
-	margin: 0;
-	margin-bottom: 18px;
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 
 .page-indicators-vertical {
-	margin: 0;
-	margin-right: 18px;
+	margin-left: 0px;
+	margin-right: 10px;
 }
 
 .search-entry{
+	margin: 0;
+	margin-top: 12px;
+	margin-bottom: 6px;
 	background-color: rgba(200, 200, 200, 0.1);
 	color: white;
 	border-color: rgba(160, 160, 160, 0.4);
@@ -200,9 +203,15 @@
 /* Reduce edge fading of search results scroll view */
 .vfade { -st-vfade-offset: 34px; }
 .hfade { -st-hfade-offset: 34px; }
+
+StButton#vhandle,
 .search-section-content {
 	background-color: rgba(200, 200, 200, 0.08);
 	border: solid 1px rgba(150, 150, 150, 0.3);
+}
+
+.search-section {
+	spacing: 12px;
 }
 
 /* "no results" / "searching..." text*/
@@ -226,12 +235,9 @@
 
 /* reduce spacing between app icons in search results */
 .grid-search-results {
-	spacing: 4px;
-}
-
-/* hide vertical scroll bar, it's distracting in the search results */
-StButton#vhandle {
-	background-color: transparent;
+	spacing: 8px;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 .show-apps-icon-horizontal-hide {
@@ -269,18 +275,16 @@ StButton#vhandle {
 }
 
 .prev-page-indicator {
-	background: rgba(255, 255, 255, 0.1);
-	background-gradient-start: rgba(255, 255, 255, 0.1);
-	background-gradient-end: transparent;
+	background-gradient-start: transparent;
+	background-gradient-end: rgba(255, 255, 255, 0.05);
 	background-gradient-direction: vertical;
-	border-radius: 100px 100px 0px 0px;
+	border-radius: 0px 0px 30px 30px;
 }
 .next-page-indicator {
-	background: rgba(255, 255, 255, 0.1);
-	background-gradient-start: transparent;
-	background-gradient-end: rgba(255, 255, 255, 0.1);
+	background-gradient-start: rgba(255, 255, 255, 0.05);
+	background-gradient-end: transparent;
 	background-gradient-direction: vertical;
-	border-radius: 0px 0px 100px 100px;
+	border-radius: 30px 30px 0px 0px;
 
 }
 
@@ -296,7 +300,7 @@ StButton#vhandle {
 }
 
 .app-folder-dialog-container {
-	padding: 30px;
+	padding: 18px;
 }
 
 .app-folder-dialog {
@@ -316,11 +320,17 @@ StButton#vhandle {
 .page-navigation-arrow,
 .search-provider-icon,
 .list-search-result,
+.grid-search-result,
 .overview-tile {
 	 background-color: transparent;
- }
- 
- /* Needed only for 46+, but doesn't hurt 45 */
+}
+
+/* GS 47 removed the top margin that V-Shell needs */
+#dash.dash-46 {
+	 margin-top: 12px;
+}
+
+/* Needed only for 46+, but doesn't hurt 45 */
 #dash.dash-46 .overview-tile:hover .overview-icon,
 #dash.dash-46 .overview-tile:focus .overview-icon,
 #dash.dash-46 .overview-tile:selected .overview-icon,
@@ -344,6 +354,9 @@ StButton#vhandle {
 #searchResults .overview-tile:hover,
 #searchResults .overview-tile:focus,
 #searchResults .overview-tile:selected,
+.grid-search-result-46:hover,
+.grid-search-result-46:focus,
+.grid-search-result-46:selected,
 .app-folder-dialog .overview-tile:hover,
 .app-folder-dialog .overview-tile:focus,
 .app-folder-dialog .overview-tile:selected,
@@ -373,10 +386,12 @@ StButton#vhandle {
 
 #dash.vertical-46-gs3-left {
 	margin-left: 0px;
+	margin-right: 12px;
 }
 
 #dash.vertical-46-gs3-right {
 	margin-right: 0px;
+	margin-left: 12px;
 }
 
 #dash.vertical-46 .overview-tile,
@@ -384,7 +399,7 @@ StButton#vhandle {
 	margin: 0px;
 	background-color: transparent;
 	/* this padding should keep the dash 6px from the screen edge */
-	padding: 0, 18px;
+	padding: 0, 24px;
 }
 
 #dash.vertical-46 .dash-separator {

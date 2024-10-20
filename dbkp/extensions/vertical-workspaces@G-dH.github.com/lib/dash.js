@@ -140,6 +140,7 @@ export const DashModule = class {
                 ? 'vertical-46'
                 : 'vertical'
             );
+
             this._setOrientation(Clutter.Orientation.VERTICAL);
         } else {
             this._setOrientation(Clutter.Orientation.HORIZONTAL);
@@ -213,6 +214,7 @@ export const DashModule = class {
     }
 
     _resetStyle(dash) {
+        dash.remove_style_class_name('dash-46');
         dash.remove_style_class_name('vertical');
         dash.remove_style_class_name('vertical-46');
         dash.remove_style_class_name('vertical-gs3-left');
@@ -663,7 +665,14 @@ const DashCommon = {
         const [, , buttonWidth, buttonHeight] = firstButton.get_preferred_size();
         let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
 
-        let availWidth, availHeight, maxIconSize;
+        let maxIconSize = opt.MAX_ICON_SIZE;
+        if (!maxIconSize) {
+            maxIconSize = Me.Util.monitorHasLowResolution()
+                ? 48
+                : 64;
+        }
+
+        let availWidth, availHeight;
         if (dashHorizontal) {
             availWidth = maxContent.x2 - maxContent.x1;
             // Subtract icon padding and box spacing from the available width
@@ -677,7 +686,7 @@ const DashCommon = {
             availHeight -= themeNode.get_vertical_padding();
             availHeight -= buttonHeight - iconHeight;
 
-            maxIconSize = Math.min(availWidth / iconChildren.length, availHeight, opt.MAX_ICON_SIZE * scaleFactor);
+            maxIconSize = Math.min(availWidth / iconChildren.length, availHeight, maxIconSize * scaleFactor);
         } else {
             availWidth = this._maxWidth;
             availWidth -= this._background.get_theme_node().get_horizontal_padding();
@@ -689,7 +698,7 @@ const DashCommon = {
                             (iconChildren.length - 1) * spacing +
                             2 * this._background.get_theme_node().get_vertical_padding();
 
-            maxIconSize = Math.min(availWidth, availHeight / iconChildren.length, opt.MAX_ICON_SIZE * scaleFactor);
+            maxIconSize = Math.min(availWidth, availHeight / iconChildren.length, maxIconSize * scaleFactor);
         }
 
         let iconSizes = BaseIconSizes.map(s => s * scaleFactor);
@@ -1064,6 +1073,10 @@ const DashIconCommon = {
         // _updateDotStyle() has been added in GS 46.2 to apply translation_y value from the CSS on style change
         if (shellVersion46 && !this._updateDotStyle && !opt.DASH_VERTICAL)
             this._dot.translation_y = 8;
+
+        // GS 46.0 (Ubuntu) only
+        if (opt.DASH_VERTICAL)
+            this._dot.translationY = 0;
     },
 
     _updateRunningStyle() {
