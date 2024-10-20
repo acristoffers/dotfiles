@@ -436,11 +436,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1728464682,
-        "narHash": "sha256-QSOAhZZAQdKTs3zUFFlq9r87RV7Cxi59jaQo7mVwHHA=",
+        "lastModified": 1729420610,
+        "narHash": "sha256-QUOZTLxsP9E834DGEog+8IOxhY6hKC96aAZTnsPrr3M=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "0f69f87b9256c82e30d6039db8a4feb8a7ed2f90",
+        "rev": "948f06867c16cae4a0be376a2d04f73f12956a74",
         "type": "github"
       },
       "original": {
@@ -687,11 +687,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1724328603,
-        "narHash": "sha256-5udGQrqbdxkQ/nIuI0KAdohxuZtOzYhxVuERUkqde+E=",
+        "lastModified": 1729339835,
+        "narHash": "sha256-E7BK/IY4j9aLcWyo290ya5MmfBhFWgBBkHg69AqRcJw=",
         "owner": "mitchellh",
         "repo": "zig-overlay",
-        "rev": "1f0785c9b064455d5ba78002470f6dfad65de2a8",
+        "rev": "5aa48f75dcfd6a4f46bd6e0a1cb263652e25e4ec",
         "type": "github"
       },
       "original": {
@@ -714,11 +714,11 @@
         "zig-overlay": "zig-overlay"
       },
       "locked": {
-        "lastModified": 1724341248,
-        "narHash": "sha256-4f2BhcZxhBpTRCNa16n1DsLvsmOynRwqqJxp1YdGoGM=",
+        "lastModified": 1729353227,
+        "narHash": "sha256-0WkHLHLxgFVgNJi32zcrrx3O+n83dupdleIVJlnHL/k=",
         "owner": "acristoffers",
         "repo": "zls",
-        "rev": "b481aaeac81ffccffb0ce5cf2f05310f3661c6b2",
+        "rev": "a6bdd0bb5653ca316d96aa8f94395c98a9ffb4e1",
         "type": "github"
       },
       "original": {
