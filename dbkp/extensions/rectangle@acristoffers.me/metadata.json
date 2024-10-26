@@ -5,9 +5,10 @@
   "settings-schema": "org.gnome.shell.extensions.rectangle",
   "shell-version": [
     "45",
-    "46"
+    "46",
+    "47"
   ],
   "url": "https://github.com/acristoffers/gnome-rectangle",
   "uuid": "rectangle@acristoffers.me",
-  "version": 22
+  "version": 23
 }

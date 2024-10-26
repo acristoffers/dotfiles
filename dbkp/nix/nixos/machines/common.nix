@@ -33,7 +33,7 @@ rec {
     liberation_ttf
     lmmath
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     open-sans
     ubuntu_font_family
@@ -105,13 +105,6 @@ rec {
     xkb = {
       layout = "us";
       variant = "intl";
-    };
-  };
-
-  services.displayManager = {
-    autoLogin = {
-      enable = true;
-      user = "alan";
     };
   };
 
@@ -197,6 +190,7 @@ rec {
     libsForQt5.qtstyleplugin-kvantum
     parted
     plocate
+    podman-compose
     pulseaudioFull
     qt6Packages.qtstyleplugin-kvantum
     uutils-coreutils-noprefix

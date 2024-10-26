@@ -69,6 +69,9 @@ inputmethod='NoIME'
 index-recursive-directories=['&MUSIC', '&DOCUMENTS', '&PICTURES', '&DOWNLOAD', '&VIDEOS', '/home/alan/Documents/Dropbox/Universidade/Doutorado', '/home/alan/Documents/Dropbox']
 index-single-directories=['&DOWNLOAD', '$HOME']
 
+[org/gnome/Characters]
+recent-characters=['🙈', '🤦']
+
 [org/gnome/Connections]
 first-run=false
 
@@ -163,7 +166,7 @@ word-size=64
 [org/gnome/calendar]
 active-view='month'
 window-maximized=false
-window-size=(2385, 1305)
+window-size=(1904, 1035)
 
 [org/gnome/cheese]
 burst-delay=1000
@@ -182,7 +185,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='multitasking'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -595,6 +598,7 @@ zoom-level=17
 center-new-windows=true
 dynamic-workspaces=false
 overlay-key=''
+workspaces-only-on-primary=true
 
 [org/gnome/nautilus/compression]
 default-compression-format='tar.xz'
@@ -738,13 +742,13 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads/Defense/Documents'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Pictures'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Pictures'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -866,13 +870,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1027,9 +1032,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1729413931
+check-timestamp=int64 1729933866
 first-run=false
-flatpak-purge-timestamp=int64 1729417468
+flatpak-purge-timestamp=int64 1729950055
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
