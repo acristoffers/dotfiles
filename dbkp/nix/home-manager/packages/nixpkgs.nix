@@ -4,6 +4,7 @@ with pkgs; [
   (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
   (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
+  appstream
   bibtool
   blesh
   cacert
@@ -28,6 +29,7 @@ with pkgs; [
   fish
   fishPlugins.fzf-fish
   fishPlugins.puffer
+  flatpak-builder
   gawk
   gh
   ghostscript

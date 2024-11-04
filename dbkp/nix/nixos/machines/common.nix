@@ -120,8 +120,8 @@ rec {
   };
 
   services.gnome = {
-    tracker.enable = true;
-    tracker-miners.enable = true;
+    tinysparql.enable = true;
+    localsearch.enable = true;
   };
 
   services.samba.enable = true;
