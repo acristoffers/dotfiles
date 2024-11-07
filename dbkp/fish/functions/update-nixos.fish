@@ -9,6 +9,7 @@ function update-nixos
   if test -z "$_flag_switch"
     set action boot
   else
+    echo Switching
     set action switch
   end
 
