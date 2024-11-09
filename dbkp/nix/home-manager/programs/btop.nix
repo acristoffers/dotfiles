@@ -1,5 +1,4 @@
 { config, pkgs }:
-
 {
   enable = true;
   settings = {
@@ -59,7 +58,7 @@
     shown_boxes = "cpu proc";
     swap_disk = true;
     temp_scale = "celsius";
-    color_theme = "dracula";
+    color_theme = "catppuccin";
     theme_background = false;
     truecolor = true;
     update_ms = 1000;

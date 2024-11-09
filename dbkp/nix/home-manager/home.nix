@@ -26,6 +26,7 @@ in
   fonts.fontconfig.enable = true;
 
   home.file = {
+    "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;
     "${config.xdg.configHome}/doom".source = ./dotfiles/doom;
     "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
     "${config.xdg.configHome}/git/config".source = ./dotfiles/git/config;
@@ -34,7 +35,7 @@ in
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
     "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
     "${config.xdg.configHome}/tridactyl".source = ./dotfiles/tridactyl;
-    "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;
+    "${config.xdg.configHome}/btop/themes/catppuccin.theme".source = ./dotfiles/btop/themes/catppuccin.theme;
   };
 
   programs = {
