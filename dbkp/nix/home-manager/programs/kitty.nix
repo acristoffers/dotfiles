@@ -2,7 +2,7 @@
 
 {
   enable = true;
-  themeFile = "Dracula";
+  themeFile = "Catppuccin-Mocha";
   package = pkgs.emptyDirectory;
   font = {
     name = "JetBrainsMonoNL Nerd Font Mono";

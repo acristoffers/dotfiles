@@ -1,43 +1,55 @@
 format = """
 $os\
-[](bg:violet fg:purple)\
+[│](fg:overlay0)\
 $directory\
-[ ](fg:violet)\
+[> ]()
 """
 
 right_format = """
-[ ](fg:gray)\
 $shell\
-[](bg:gray fg:violet)\
 ${custom.other}\
-[](bg:violet fg:green)\
 $hostname\
-[](bg:green fg:orange)\
 $nix_shell\
-[](bg:orange fg:purple)\
 $git_branch$git_status\
-[](fg:purple)
 """
 
 add_newline = false
-palette = "dracula"
+palette = "catppuccin_mocha"
 
-[palettes.dracula]
-black = '#000000'
-white = '#FFFFFF'
-purple = '#5F60AF'
-violet = '#AF87FF'
-orange = '#FFB86C'
-green = '#A6E22E'
-gray = "#44475A"
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
 
 [os]
 format = "[ $symbol ]($style)"
-style = "bg:purple fg:white"
+style = "fg:sapphire"
 disabled = false
-
 [directory]
-style = "bg:violet fg:black"
+style = "fg:lavender"
 format = "[ $path ]($style)"
 truncation_length = 1
 truncation_symbol = ""
@@ -49,11 +61,11 @@ NixOS = ""
 
 [git_branch]
 symbol = ""
-style = "bg:purple fg:white"
-format = '([ $symbol $branch ]($style))'
+style = "fg:sky"
+format = '([│](fg:overlay0)[ $symbol $branch ]($style))'
 
 [git_status]
-style = "bg:purple fg:white"
+style = "fg:sky"
 format = '([$all_status$ahead_behind ]($style))'
 stashed = '\$$count'
 ahead = "⇡$count"
@@ -70,17 +82,17 @@ typechanged = ""
 
 [nix_shell]
 symbol = ""
-style = "bg:orange fg:black"
-format = "[ $symbol $state ]($style)"
+style = "fg:red"
+format = "[│](fg:overlay0)[ $symbol $state ]($style)"
 
 [hostname]
 ssh_symbol = ""
-style = "bg:green fg:black"
-format = "[ $ssh_symbol $hostname ]($style)"
+style = "fg:peach"
+format = "[│](fg:overlay0)[ $ssh_symbol $hostname ]($style)"
 
 [shell]
 disabled = false
-style = "bg:gray fg:white"
+style = "fg:lavender"
 format = '[ $indicator ]($style)'
 bash_indicator = "Bash"
 fish_indicator = "Fish"
@@ -88,7 +100,7 @@ zsh_indicator = "ZSH"
 
 [custom.other]
 command = "echo $STARSHIP_CUSTOM_SEGMENT"
-style = "bg:violet fg:black"
-format = '[ $output ]($style)'
+style = "fg:mauve"
+format = '[│](fg:overlay0)[ $output ]($style)'
 when = 'env | grep STARSHIP_CUSTOM_SEGMENT'
 shell = ["bash", "--noprofile", "--norc"]

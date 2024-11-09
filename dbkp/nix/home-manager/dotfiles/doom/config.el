@@ -8,7 +8,7 @@
        doom-font (font-spec :family "JetBrainsMono Nerd Font Mono" :size 12.0)
        doom-unicode-font (font-spec :family "JetBrainsMono Nerd Font Mono")
        doom-variable-pitch-font (font-spec :family "JetBrainsMono Nerd Font")
-       doom-theme 'doom-dracula
+       doom-theme 'catppuccin
        custom-file (expand-file-name "~/.config/emacs/custom.el")
        confirm-kill-emacs nil
        org-directory (expand-file-name "~/.org/")

@@ -7,7 +7,7 @@
   extraConfig = ''
     return {
       audible_bell = "Disabled",
-      color_scheme = "Dracula",
+      color_scheme = "Catppuccin Mocha",
       default_prog = { "tmux" },
       enable_tab_bar = false,
       exit_behavior = "Close",

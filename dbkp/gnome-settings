@@ -186,7 +186,7 @@ size=(843, 459)
 
 [org/gnome/control-center]
 last-panel='display'
-window-state=(843, 1395, false)
+window-state=(843, 1392, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -1035,9 +1035,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1730959874
+check-timestamp=int64 1731140361
 first-run=false
-flatpak-purge-timestamp=int64 1730796256
+flatpak-purge-timestamp=int64 1731150292
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

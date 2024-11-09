@@ -1,7 +1,7 @@
 umask 077
 ulimit -n 2048
 
-fish_config theme choose "Dracula Official"
+fish_config theme choose "Catppuccin"
 
 alias bell "echo -e '\a'"
 alias btop "btop -p 0"
@@ -85,6 +85,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -gx GTK2_RC_FILES "$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
   set -gx XCOMPOSEFILE "$XDG_CONFIG_HOME"/X11/xcompose
   set -gx NIX_PATH nixpkgs=$HOME/.nix-defexpr/channels/nixos
+  set -gx HOSTNAME (hostnamectl hostname)
 
   add-to-path-if-exists $HOME/bin
   add-to-path-if-exists $HOME/.bin
