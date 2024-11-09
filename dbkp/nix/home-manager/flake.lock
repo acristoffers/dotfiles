@@ -399,11 +399,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1731162995,
-        "narHash": "sha256-jlDtQRNCYQkf/o/7XOfEfc4MgQzDXCaW3ELS3wRQR1A=",
+        "lastModified": 1731178469,
+        "narHash": "sha256-+zpsiFW1Bcoa7zodGZuYWFIBPjQvWpdu3+6oUbAs+BI=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "25a2d1af8d4bfaa6bb4bf7114d33c3bf400e2aa9",
+        "rev": "4fa2631368147cc384e591da71cd5bc865395ea2",
         "type": "github"
       },
       "original": {
