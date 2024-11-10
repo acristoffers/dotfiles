@@ -873,14 +873,13 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1035,9 +1034,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1731140361
+check-timestamp=int64 1731227907
 first-run=false
-flatpak-purge-timestamp=int64 1731150292
+flatpak-purge-timestamp=int64 1731235038
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
@@ -1100,7 +1099,7 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(26, 23)
+window-position=(2726, 478)
 window-size=(948, 465)
 
 [org/virt-manager/virt-manager]

@@ -46,10 +46,10 @@ crust = "#11111b"
 
 [os]
 format = "[ $symbol ]($style)"
-style = "fg:sapphire"
+style = "fg:green"
 disabled = false
 [directory]
-style = "fg:lavender"
+style = "fg:blue"
 format = "[ $path ]($style)"
 truncation_length = 1
 truncation_symbol = ""

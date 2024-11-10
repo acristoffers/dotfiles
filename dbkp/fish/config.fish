@@ -154,6 +154,10 @@ if test -f $XDG_DATA_HOME/secrets.fish
   source $XDG_DATA_HOME/secrets.fish
 end
 
+if not test -f ~/.cache/starship/init.nu
+  starship init nu > ~/.cache/starship/init.nu
+end
+
 if status --is-interactive
   _git_fetch_on_cd
   fzf --fish | source
