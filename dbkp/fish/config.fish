@@ -149,6 +149,7 @@ bind \cq "commandline -rt ''"
 bind \ek "commandline -r  ''"
 bind \er "commandline -rp ''"
 bind \ej "commandline -rj ''"
+bind \cc _fzf_search_directory
 
 if test -f $XDG_DATA_HOME/secrets.fish
   source $XDG_DATA_HOME/secrets.fish

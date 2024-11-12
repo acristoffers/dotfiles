@@ -4,6 +4,7 @@
   enable = true;
   autosuggestion.enable = false;
   syntaxHighlighting.enable = false;
+  enableCompletion = false;
   dotDir = ".config/zsh";
   history = {
     size = 10000;
@@ -33,30 +34,29 @@
     fi
     source "''${ZINIT_HOME}/zinit.zsh"
 
-    zinit light zsh-users/zsh-autosuggestions
+    zinit snippet OMZP::command-not-found
+    zinit snippet OMZP::dnf
+    zinit snippet OMZP::git
+
     zinit light zsh-users/zsh-completions
+    zinit light marlonrichert/zsh-autocomplete
+    zinit light zsh-users/zsh-autosuggestions
     zinit light zsh-users/zsh-syntax-highlighting
     zinit light Aloxaf/fzf-tab
 
-    zinit snippet OMZP::dnf
-    zinit snippet OMZP::fzf
-    zinit snippet OMZP::git
-    zinit snippet OMZP::command-not-found
+    autoload -Uz colors && colors
 
-    autoload -Uz compinit && compinit
-    zinit cdreplay -q
-
-    bindkey -e # Emacs mode
+    bindkey -e   # Emacs mode
     bindkey '^p' history-search-backward
     bindkey '^n' history-search-forward
+    bindkey '^U' backward-kill-line
+    bindkey 'k' kill-whole-line
 
-    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
     zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
-    zstyle ':completion:*' menu no
-    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+    zstyle ':completion:*:git-checkout:*' sort false
+    zstyle ':completion:*' fzf-search-display true
 
-    alias ls="ls --color"
+    alias ls="eza --group-directories-first --git --icons"
     alias v="nvim"
 
     HISTSIZE=10000
@@ -70,9 +70,10 @@
     setopt hist_save_no_dups
     setopt hist_ignore_dups
     setopt hist_find_no_dups
+    setopt glob_star_short
+    setopt menucomplete
 
     if [[ $- == *i* ]]; then
-      eval "$(fzf --zsh)"
       eval "$(zoxide init --cmd j zsh)"
       eval "$(starship init zsh)"
     fi
