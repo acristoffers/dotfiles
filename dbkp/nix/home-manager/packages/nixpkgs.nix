@@ -27,6 +27,7 @@ with pkgs; [
   file
   findutils
   fish
+  fishPlugins.bass
   fishPlugins.fzf-fish
   fishPlugins.puffer
   flatpak-builder

@@ -12,7 +12,9 @@
   };
   shellAliases = {
     lg = "lazygit";
+    ls="eza --group-directories-first --git --icons";
     scfg = "source ~/.config/zsh/.zshrc";
+    v="nvim";
   };
   initExtraFirst = ''
     umask 077;
@@ -39,25 +41,22 @@
     zinit snippet OMZP::git
 
     zinit light zsh-users/zsh-completions
-    zinit light marlonrichert/zsh-autocomplete
     zinit light zsh-users/zsh-autosuggestions
+    zinit light marlonrichert/zsh-autocomplete
     zinit light zsh-users/zsh-syntax-highlighting
     zinit light Aloxaf/fzf-tab
 
-    autoload -Uz colors && colors
-
-    bindkey -e   # Emacs mode
+    # Emacs mode
+    bindkey -e
     bindkey '^p' history-search-backward
     bindkey '^n' history-search-forward
     bindkey '^U' backward-kill-line
     bindkey 'k' kill-whole-line
 
     zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+    zstyle ':completion:*' menu no
     zstyle ':completion:*:git-checkout:*' sort false
-    zstyle ':completion:*' fzf-search-display true
-
-    alias ls="eza --group-directories-first --git --icons"
-    alias v="nvim"
+    zstyle ':fzf-tab:*' show-group none
 
     HISTSIZE=10000
     HISTFILE="''${XDG_DATA_HOME}/zsh/history"
@@ -71,7 +70,17 @@
     setopt hist_ignore_dups
     setopt hist_find_no_dups
     setopt glob_star_short
-    setopt menucomplete
+
+    function expand_dots() {
+      if [[ $BUFFER == *".." ]]; then
+        BUFFER="''${BUFFER%..}../."
+        CURSOR=''${#BUFFER}
+      fi
+      zle self-insert
+    }
+
+    zle -N expand_dots
+    bindkey '.' expand_dots
 
     if [[ $- == *i* ]]; then
       eval "$(zoxide init --cmd j zsh)"
