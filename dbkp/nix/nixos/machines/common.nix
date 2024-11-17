@@ -292,6 +292,34 @@ rec {
     };
   };
 
+  services.kanata = {
+    enable = true;
+    keyboards.default = {
+      extraDefCfg = "process-unmapped-keys yes";
+      config = ''
+        (defsrc
+          a s d f j k l ;)
+
+        (defvar
+          tap-time  150
+          hold-time 200)
+
+        (defalias
+          a       (tap-hold $tap-time $hold-time a lsft)
+          s       (tap-hold $tap-time $hold-time s lctl)
+          d       (tap-hold $tap-time $hold-time d lalt)
+          f       (tap-hold $tap-time $hold-time f lmet)
+          j       (tap-hold $tap-time $hold-time j lmet)
+          k       (tap-hold $tap-time $hold-time k lalt)
+          l       (tap-hold $tap-time $hold-time l lctl)
+          ;       (tap-hold $tap-time $hold-time ; lsft))
+
+        (deflayer base
+                  @a @s @d @f @j @k @l @;)
+      '';
+    };
+  };
+
   security.doas.enable = true;
   security.sudo.enable = false;
   security.doas.extraRules = [{

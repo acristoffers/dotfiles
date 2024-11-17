@@ -3,8 +3,7 @@ function update-nixos
 
   sudo nix-channel --update
 
-  argparse 'd/debug' -- $argv
-  argparse 's/switch' -- $argv
+  argparse 'd/debug' 's/switch' -- $argv
 
   if test -z "$_flag_switch"
     set action boot
