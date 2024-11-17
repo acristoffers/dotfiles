@@ -616,6 +616,7 @@ show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
 initial-size=(843, 460)
+initial-size-file-chooser=(890, 550)
 maximized=false
 
 [org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
@@ -679,7 +680,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis/fr'
 
 [org/gnome/portal/filechooser/com.discordapp.Discord]
 last-folder-path='/home/alan/Downloads'
@@ -729,6 +730,9 @@ last-folder-path='/home/alan/Downloads/projects'
 [org/gnome/portal/filechooser/org.gnome.Fractal]
 last-folder-path='/home/alan/Pictures'
 
+[org/gnome/portal/filechooser/org.gnome.Papers]
+last-folder-path='/home/alan/Downloads/interpreter'
+
 [org/gnome/portal/filechooser/org.gnome.Settings]
 last-folder-path='/home/alan/Downloads/OpenVPN/steamdeck'
 
@@ -745,7 +749,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads/Defense/Documents'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -873,14 +877,12 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1035,9 +1037,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1731478490
+check-timestamp=int64 1731748901
 first-run=false
-flatpak-purge-timestamp=int64 1731398756
+flatpak-purge-timestamp=int64 1731756038
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

@@ -20,6 +20,7 @@ org.electronjs.Electron2.BaseApp
 org.fedoraproject.MediaWriter
 org.gimp.GIMP
 org.gnome.Fractal
+org.gnome.Papers
 org.gnome.World.PikaBackup
 org.kde.digikam
 org.kde.elisa

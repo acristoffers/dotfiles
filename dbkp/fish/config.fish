@@ -156,6 +156,7 @@ if test -f $XDG_DATA_HOME/secrets.fish
 end
 
 if not test -f ~/.cache/starship/init.nu
+  mkdir -p ~/.cache/starship
   starship init nu > ~/.cache/starship/init.nu
 end
 
