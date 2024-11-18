@@ -2,7 +2,7 @@
 
 let
   dicts = import ./dicts.nix pkgs;
-  linux = import ./linux.nix { inherit pkgs; nix-matlab = inputs.nix-matlab; };
+  linux = import ./linux.nix { inherit pkgs; };
   nixpkgs = import ./nixpkgs.nix pkgs;
   perl5 = import ./perl.nix pkgs;
   python3 = import ./python.nix pkgs;

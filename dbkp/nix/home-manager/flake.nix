@@ -21,9 +21,6 @@
     void.inputs.nixpkgs.follows = "nixpkgs";
     void.inputs.flake-utils.follows = "flake-utils";
 
-    nix-matlab.url = "gitlab:doronbehar/nix-matlab";
-    nix-matlab.inputs.nixpkgs.follows = "nixpkgs";
-
     webots.url = "github:acristoffers/webots-flake";
     webots.inputs.nixpkgs.follows = "nixpkgs";
     webots.inputs.flake-utils.follows = "flake-utils";
