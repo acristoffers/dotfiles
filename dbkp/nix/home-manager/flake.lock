@@ -247,11 +247,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1731887066,
-        "narHash": "sha256-uw7K/RsYioJicV79Nl39yjtfhdfTDU2aRxnBgvFhkZ8=",
+        "lastModified": 1732025103,
+        "narHash": "sha256-qjEI64RKvDxRyEarY0jTzrZMa8ebezh2DEZmJJrpVdo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f3a2ff69586f3a54b461526e5702b1a2f81e740a",
+        "rev": "a46e702093a5c46e192243edbd977d5749e7f294",
         "type": "github"
       },
       "original": {
@@ -343,6 +343,22 @@
         "type": "github"
       }
     },
+    "nu-scripts": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1731244477,
+        "narHash": "sha256-ee06x4Txa58vHEheyYoLx/KOX3Y6Np3HDgK/BZI5Dfw=",
+        "owner": "nushell",
+        "repo": "nu_scripts",
+        "rev": "1ed7ef9401f3793fb946ef3add82f05f091299ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nushell",
+        "repo": "nu_scripts",
+        "type": "github"
+      }
+    },
     "nvim": {
       "inputs": {
         "copilot-lualine-git": "copilot-lualine-git",
@@ -362,11 +378,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1731859393,
-        "narHash": "sha256-0SfD7pAbicSglKbQ+6f2hxx2HfmWjd5/NQoMvaDx9ls=",
+        "lastModified": 1732030075,
+        "narHash": "sha256-MulC28/pEbRIsWVkKUPDLPnopv4fRxe27HI0von9/7c=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "f856f45ab0aebfe128303783322dbe5a39d632d1",
+        "rev": "907f9b78b364934b19403fda3bb948a0b3fe021e",
         "type": "github"
       },
       "original": {
@@ -422,6 +438,7 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
+        "nu-scripts": "nu-scripts",
         "nvim": "nvim",
         "remove-trash": "remove-trash",
         "tmux-tui": "tmux-tui",

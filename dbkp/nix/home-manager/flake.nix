@@ -36,6 +36,9 @@
     tmux-tui.url = "github:acristoffers/tmux-tui";
     tmux-tui.inputs.nixpkgs.follows = "nixpkgs";
     tmux-tui.inputs.flake-utils.follows = "flake-utils";
+
+    nu-scripts.url = "github:nushell/nu_scripts";
+    nu-scripts.flake = false;
   };
 
   outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:

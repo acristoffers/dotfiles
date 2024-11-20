@@ -67,6 +67,9 @@ with pkgs; [
   nodePackages_latest.sass
   nodePackages_latest.yarn
   nodejs_22
+  nushellPlugins.dbus
+  nushellPlugins.formats
+  nushellPlugins.units
   openssl
   p7zip
   pandoc
