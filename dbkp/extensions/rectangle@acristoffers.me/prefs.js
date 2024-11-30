@@ -24,6 +24,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         const marginRight = builder.get_object("margins-right");
         const marginBottom = builder.get_object("margins-bottom");
         const marginLeft = builder.get_object("margins-left");
+        const shrinkStep = builder.get_object("shrink-step");
         settings.bind('animate-movement', animationEnabled, 'active', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('animation-duration', animationDuration, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('padding-inner', paddingInner, 'value', Gio.SettingsBindFlags.DEFAULT);
@@ -32,6 +33,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         settings.bind('margin-right', marginRight, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('margin-bottom', marginBottom, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('margin-left', marginLeft, 'value', Gio.SettingsBindFlags.DEFAULT);
+        settings.bind('shrink-step', shrinkStep, 'value', Gio.SettingsBindFlags.DEFAULT);
     }
     shortcutsPage(builder, settings) {
         const restore = builder.get_object("restore-defaults-button");
@@ -123,6 +125,8 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         "tile-two-thirds-center",
         "tile-two-thirds-left",
         "tile-two-thirds-right",
+        "tile-shrink",
+        "tile-expand",
     ];
 }
 /*

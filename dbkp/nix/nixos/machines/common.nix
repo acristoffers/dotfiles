@@ -28,17 +28,19 @@ rec {
   fonts.enableGhostscriptFonts = true;
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs;  [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
     dejavu_fonts
+    hunspellDicts.en-us-large
+    hunspellDicts.fr-any
     liberation_ttf
     lmmath
+    nerd-fonts.inconsolata
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.meslo-lg
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
     open-sans
     ubuntu_font_family
-    hunspellDicts.en-us-large
-    hunspellDicts.fr-any
   ];
 
   hardware.bluetooth.enable = true;

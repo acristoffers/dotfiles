@@ -195,6 +195,9 @@ screen-reader-enabled=false
 [org/gnome/desktop/a11y/keyboard]
 enable=false
 
+[org/gnome/desktop/a11y/magnifier]
+mag-factor=2.0
+
 [org/gnome/desktop/app-folders]
 folder-children=['Utilities', 'YaST']
 
@@ -746,7 +749,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Audio/Music'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis/build'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Articles/Thesis'
@@ -1039,9 +1042,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1732082941
+check-timestamp=int64 1732954658
 first-run=false
-flatpak-purge-timestamp=int64 1732090077
+flatpak-purge-timestamp=int64 1732961793
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

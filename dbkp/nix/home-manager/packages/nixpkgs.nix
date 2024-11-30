@@ -1,7 +1,6 @@
 pkgs:
 
 with pkgs; [
-  (nerdfonts.override { fonts = [ "JetBrainsMono" "Meslo" "Inconsolata" ]; })
   (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
   appstream
@@ -61,6 +60,9 @@ with pkgs; [
   mdcat
   mediainfo
   moreutils
+  nerd-fonts.inconsolata
+  nerd-fonts.jetbrains-mono
+  nerd-fonts.meslo-lg
   nix-index
   nixVersions.latest
   nixpkgs-fmt
