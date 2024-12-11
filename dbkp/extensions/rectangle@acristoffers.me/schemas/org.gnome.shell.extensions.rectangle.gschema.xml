@@ -383,12 +383,12 @@
       <description>Move To Monitor: Right</description>
     </key>
     <key type="as" name="tile-shrink">
-      <default><![CDATA[['<Super>-']]]></default>
+      <default><![CDATA[['<Super>minus']]]></default>
       <summary>Shrink window</summary>
       <description>Shrinks the window by a fixed amount</description>
     </key>
     <key type="as" name="tile-expand">
-      <default><![CDATA[['<Super>+']]]></default>
+      <default><![CDATA[['<Super>equal']]]></default>
       <summary>Expand window</summary>
       <description>Expands the window by a fixed amount</description>
     </key>

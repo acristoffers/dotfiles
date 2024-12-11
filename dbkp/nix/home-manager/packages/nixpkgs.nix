@@ -34,6 +34,7 @@ with pkgs; [
   gh
   ghostscript
   git
+  git-graph
   git-lfs
   glab
   gnome-extensions-cli

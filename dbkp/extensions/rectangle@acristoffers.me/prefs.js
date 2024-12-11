@@ -14,6 +14,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         const settings = this.getSettings();
         this.generalPage(builder, settings);
         this.shortcutsPage(builder, settings);
+        return Promise.resolve();
     }
     generalPage(builder, settings) {
         const animationEnabled = builder.get_object("animation-enabled");
