@@ -185,8 +185,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
-window-state=(843, 1392, false)
+last-panel='keyboard'
+window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -438,17 +438,17 @@ theme-name='freedesktop'
 [org/gnome/desktop/wm/keybindings]
 close=['<Super>w']
 minimize=['<Super>x']
-move-to-workspace-1=['<Shift><Control>F1']
-move-to-workspace-2=['<Shift><Control>F2']
-move-to-workspace-3=['<Shift><Control>F3']
-move-to-workspace-4=['<Shift><Control>F4']
+move-to-workspace-1=['<Shift><Super>1']
+move-to-workspace-2=['<Shift><Super>2']
+move-to-workspace-3=['<Shift><Super>3']
+move-to-workspace-4=['<Shift><Super>4']
 show-desktop=['<Shift><Super>d']
 switch-input-source=@as []
 switch-input-source-backward=@as []
-switch-to-workspace-1=['<Control>F1']
-switch-to-workspace-2=['<Control>F2']
-switch-to-workspace-3=['<Control>F3']
-switch-to-workspace-4=['<Control>F4']
+switch-to-workspace-1=['<Super>1']
+switch-to-workspace-2=['<Super>2']
+switch-to-workspace-3=['<Super>3']
+switch-to-workspace-4=['<Super>4']
 toggle-fullscreen=['<Control><Alt>f']
 
 [org/gnome/desktop/wm/preferences]
@@ -880,7 +880,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1016,9 +1016,9 @@ use-active-window=false
 
 [org/gnome/shell/keybindings]
 focus-active-notification=['<Alt><Super>n']
-screenshot=['<Shift><Super>3']
+screenshot=@as []
 screenshot-window=['<Shift><Super>5']
-show-screenshot-ui=['<Shift><Super>4']
+show-screenshot-ui=@as []
 switch-to-application-1=@as []
 switch-to-application-2=@as []
 switch-to-application-3=@as []
