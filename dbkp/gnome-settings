@@ -185,8 +185,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='keyboard'
-window-state=(843, 1395, false)
+last-panel='wifi'
+window-state=(843, 1051, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -402,7 +402,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -880,14 +880,12 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1043,9 +1041,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1733904176
+check-timestamp=int64 1734864165
 first-run=false
-flatpak-purge-timestamp=int64 1733904112
+flatpak-purge-timestamp=int64 1734871298
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
