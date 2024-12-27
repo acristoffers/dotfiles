@@ -37,13 +37,19 @@
     tmux-tui.inputs.nixpkgs.follows = "nixpkgs";
     tmux-tui.inputs.flake-utils.follows = "flake-utils";
 
+    ledger.url = "github:ledger/ledger";
+    ledger.inputs.nixpkgs.follows = "nixpkgs";
+
     nu-scripts.url = "github:nushell/nu_scripts";
     nu-scripts.flake = false;
   };
 
   outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
     let
-      pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       homeConfigForUser = username: inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
