@@ -2,7 +2,7 @@ build==1.2.2.post1 ; python_version >= "3.11" and python_version < "3.13"
 cachecontrol[filecache]==0.14.1 ; python_version >= "3.11" and python_version < "3.13"
 certifi==2024.12.14 ; python_version >= "3.11" and python_version < "3.13"
 cffi==1.17.1 ; python_version >= "3.11" and python_version < "3.13" and (sys_platform == "darwin" or sys_platform == "linux") and (sys_platform == "darwin" or platform_python_implementation != "PyPy")
-charset-normalizer==3.4.0 ; python_version >= "3.11" and python_version < "3.13"
+charset-normalizer==3.4.1 ; python_version >= "3.11" and python_version < "3.13"
 cleo==2.1.0 ; python_version >= "3.11" and python_version < "3.13"
 colorama==0.4.6 ; python_version >= "3.11" and python_version < "3.13" and os_name == "nt"
 crashtest==0.4.1 ; python_version >= "3.11" and python_version < "3.13"
