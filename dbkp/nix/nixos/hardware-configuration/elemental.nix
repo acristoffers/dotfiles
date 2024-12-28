@@ -6,7 +6,7 @@
   boot.extraModulePackages = [ ];
   boot.initrd.availableKernelModules = [ "vmd" "xhci_pci" "ahci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "vfio" "vfio_pci" "vfio_virqfd" "kvm-intel" ];
 
   boot.initrd.luks.devices = {
     "luks-bc6920fb-944d-48e5-8f73-3f57179ca527" = {

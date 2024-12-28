@@ -37,9 +37,6 @@
     tmux-tui.inputs.nixpkgs.follows = "nixpkgs";
     tmux-tui.inputs.flake-utils.follows = "flake-utils";
 
-    ledger.url = "github:ledger/ledger";
-    ledger.inputs.nixpkgs.follows = "nixpkgs";
-
     nu-scripts.url = "github:nushell/nu_scripts";
     nu-scripts.flake = false;
   };

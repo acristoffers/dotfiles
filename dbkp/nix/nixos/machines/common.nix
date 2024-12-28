@@ -21,7 +21,7 @@ rec {
   };
   environment.etc."profile.local".text = ''
     alias sudo=doas
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.gcc.cc.lib}/lib
+    # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.gcc.cc.lib}/lib
   '';
 
   fonts.enableDefaultPackages = true;
@@ -247,6 +247,7 @@ rec {
       };
     };
     libvirtd.enable = true;
+    spiceUSBRedirection.enable = true;
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;

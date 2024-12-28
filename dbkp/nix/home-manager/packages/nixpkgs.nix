@@ -55,7 +55,7 @@ with pkgs; [
   ispell
   jq
   killall
-  # ledger
+  ledger
   less
   man-pages
   mdcat

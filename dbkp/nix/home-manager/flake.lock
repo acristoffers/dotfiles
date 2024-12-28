@@ -247,37 +247,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1735053786,
-        "narHash": "sha256-Gm+0DcbUS338vvkwyYWms5jsWlx8z8MeQBzcnIDuIkw=",
+        "lastModified": 1735381016,
+        "narHash": "sha256-CyCZFhMUkuYbSD6bxB/r43EdmDE7hYeZZPTCv0GudO4=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "35b98d20ca8f4ca1f6a2c30b8a2c8bb305a36d84",
+        "rev": "10e99c43cdf4a0713b4e81d90691d22c6a58bdf2",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "ref": "master",
         "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "ledger": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1733444584,
-        "narHash": "sha256-8X2OnsZ0Yvjx8xQichiN3VSkKyMKuQjTJo255Y/xEGk=",
-        "owner": "ledger",
-        "repo": "ledger",
-        "rev": "3df64038f6ec928d8c7caaa7e3ff5432e82055ad",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ledger",
-        "repo": "ledger",
         "type": "github"
       }
     },
@@ -457,7 +437,6 @@
         "dbkp": "dbkp",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
-        "ledger": "ledger",
         "nixpkgs": "nixpkgs",
         "nu-scripts": "nu-scripts",
         "nvim": "nvim",

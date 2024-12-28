@@ -15,5 +15,4 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage tmux-tui "default")
   (flakePackage void "default")
   # (flakePackage webots "default")
-  (flakePackage ledger "ledger")
 ])
