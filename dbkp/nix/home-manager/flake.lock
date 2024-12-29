@@ -81,6 +81,22 @@
         "type": "github"
       }
     },
+    "flake-compat_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -114,6 +130,45 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_3"
+      },
+      "locked": {
+        "lastModified": 1705309234,
+        "narHash": "sha256-uNRRNRKmJyCRC/8y1RqBkqWBLM034y4qN7EprSdmgyA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "1ef2e671c3b0c19053962c07dbda38332dcebf26",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "ghostty": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs-stable": "nixpkgs-stable",
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "zig": "zig"
+      },
+      "locked": {
+        "lastModified": 1735482298,
+        "narHash": "sha256-GzzFpYis/ZdvI6QqaNXW7PhbCXgrg1DMT2ZxP5Uz8C0=",
+        "owner": "ghostty-org",
+        "repo": "ghostty",
+        "rev": "579de8e491845b52e42d32a5dc3deaeb159ea4bc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ghostty-org",
+        "repo": "ghostty",
         "type": "github"
       }
     },
@@ -329,15 +384,47 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1735420271,
-        "narHash": "sha256-sXjgqlHgKU949vogaoNCKqh4PKGjSvfqrmM6OY5ld+Y=",
+        "lastModified": 1735482985,
+        "narHash": "sha256-FNsXTqZJthxNb0Y6onkprOmeib2lu3VE57PqPu3T2Bs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f91fbd1624814dd032f7978f4df8f7fc0d9ed803",
+        "rev": "4506ece030a0c82d078edd0360ea8af6b4d94035",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-stable": {
+      "locked": {
+        "lastModified": 1733423277,
+        "narHash": "sha256-TxabjxEgkNbCGFRHgM/b9yZWlBj60gUOUnRT/wbVQR8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e36963a147267afc055f7cf65225958633e536bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "release-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1733229606,
+        "narHash": "sha256-FLYY5M0rpa5C2QAE3CKLYAM6TwbKicdRK6qNrSHlNrE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "566e53c2ad750c84f6d31f9ccb9d00f823165550",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -435,14 +522,14 @@
         "bib-converter": "bib-converter",
         "dbkp": "dbkp",
         "flake-utils": "flake-utils",
+        "ghostty": "ghostty",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nu-scripts": "nu-scripts",
         "nvim": "nvim",
         "remove-trash": "remove-trash",
         "tmux-tui": "tmux-tui",
-        "void": "void",
-        "webots": "webots"
+        "void": "void"
       }
     },
     "systems": {
@@ -461,6 +548,21 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -579,47 +681,35 @@
         "type": "github"
       }
     },
-    "webots": {
+    "zig": {
       "inputs": {
-        "flake-utils": [
-          "flake-utils"
+        "flake-compat": [
+          "ghostty"
         ],
+        "flake-utils": "flake-utils_2",
         "nixpkgs": [
-          "nixpkgs"
-        ],
-        "webots": "webots_2"
+          "ghostty",
+          "nixpkgs-stable"
+        ]
       },
       "locked": {
-        "lastModified": 1724572793,
-        "narHash": "sha256-9mMIc3k6wAH6p+2xybsGxzEf/TgvYcGYyvIYNHprolU=",
-        "owner": "acristoffers",
-        "repo": "webots-flake",
-        "rev": "3a863fa643383490c7afbaae0ff9e594ac8210a0",
+        "lastModified": 1717848532,
+        "narHash": "sha256-d+xIUvSTreHl8pAmU1fnmkfDTGQYCn2Rb/zOwByxS2M=",
+        "owner": "mitchellh",
+        "repo": "zig-overlay",
+        "rev": "02fc5cc555fc14fda40c42d7c3250efa43812b43",
         "type": "github"
       },
       "original": {
-        "owner": "acristoffers",
-        "repo": "webots-flake",
+        "owner": "mitchellh",
+        "repo": "zig-overlay",
         "type": "github"
-      }
-    },
-    "webots_2": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1687878853,
-        "narHash": "sha256-m97KFWFIjEb9NQfiVklGMTn/8Ix/p3jG4L3fJO2PSCY=",
-        "type": "tarball",
-        "url": "https://github.com/cyberbotics/webots/releases/download/R2023b/webots-R2023b-x86-64.tar.bz2"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://github.com/cyberbotics/webots/releases/download/R2023b/webots-R2023b-x86-64.tar.bz2"
       }
     },
     "zig-overlay": {
       "inputs": {
-        "flake-compat": "flake-compat",
-        "flake-utils": "flake-utils_2",
+        "flake-compat": "flake-compat_2",
+        "flake-utils": "flake-utils_3",
         "nixpkgs": [
           "nvim",
           "zls",

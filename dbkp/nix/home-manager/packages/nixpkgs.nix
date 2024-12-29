@@ -20,6 +20,7 @@ with pkgs; [
   emacs29-pgtk
   emacsPackages.cask
   epstool
+  expect
   fastfetch
   fd
   ffmpeg
@@ -65,6 +66,7 @@ with pkgs; [
   nerd-fonts.jetbrains-mono
   nerd-fonts.meslo-lg
   nix-index
+  nix-output-monitor
   nixVersions.latest
   nixpkgs-fmt
   nodePackages_latest.sass

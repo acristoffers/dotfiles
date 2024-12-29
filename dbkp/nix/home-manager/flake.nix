@@ -21,10 +21,6 @@
     void.inputs.nixpkgs.follows = "nixpkgs";
     void.inputs.flake-utils.follows = "flake-utils";
 
-    webots.url = "github:acristoffers/webots-flake";
-    webots.inputs.nixpkgs.follows = "nixpkgs";
-    webots.inputs.flake-utils.follows = "flake-utils";
-
     dbkp.url = "github:acristoffers/dbkp";
     dbkp.inputs.nixpkgs.follows = "nixpkgs";
     dbkp.inputs.flake-utils.follows = "flake-utils";
@@ -36,6 +32,8 @@
     tmux-tui.url = "github:acristoffers/tmux-tui";
     tmux-tui.inputs.nixpkgs.follows = "nixpkgs";
     tmux-tui.inputs.flake-utils.follows = "flake-utils";
+
+    ghostty.url = "github:ghostty-org/ghostty";
 
     nu-scripts.url = "github:nushell/nu_scripts";
     nu-scripts.flake = false;
