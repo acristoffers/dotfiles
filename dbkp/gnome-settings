@@ -832,12 +832,12 @@ sleep-inactive-ac-type='nothing'
 enabled-connections=@as []
 
 [org/gnome/shell]
-app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'gnome-system-monitor.desktop': <{'position': <12>}>, 'kvantummanager.desktop': <{'position': <13>}>, 'cups.desktop': <{'position': <14>}>, 'Utilities': <{'position': <15>}>, 'nvim.desktop': <{'position': <16>}>, 'yelp.desktop': <{'position': <17>}>, 'nixos-manual.desktop': <{'position': <18>}>, 'qt5ct.desktop': <{'position': <19>}>, 'qt6ct.desktop': <{'position': <20>}>, 'org.gnome.Software.desktop': <{'position': <21>}>, 'org.gnome.TextEditor.desktop': <{'position': <22>}>, 'org.gnome.Tour.desktop': <{'position': <23>}>}, {'virt-manager.desktop': <{'position': <0>}>, 'xterm.desktop': <{'position': <1>}>, 'org.gnome.Calendar.desktop': <{'position': <2>}>, 'org.gnome.Loupe.desktop': <{'position': <3>}>, 'org.gnome.Music.desktop': <{'position': <4>}>, 'org.gnome.Epiphany.desktop': <{'position': <5>}>}]
+app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'kvantummanager.desktop': <{'position': <12>}>, 'cups.desktop': <{'position': <13>}>, 'Utilities': <{'position': <14>}>, 'nvim.desktop': <{'position': <15>}>, 'yelp.desktop': <{'position': <16>}>, 'nixos-manual.desktop': <{'position': <17>}>, 'qt5ct.desktop': <{'position': <18>}>, 'qt6ct.desktop': <{'position': <19>}>, 'org.gnome.Software.desktop': <{'position': <20>}>, 'org.gnome.TextEditor.desktop': <{'position': <21>}>, 'org.gnome.Tour.desktop': <{'position': <22>}>, 'virt-manager.desktop': <{'position': <23>}>, 'xterm.desktop': <{'position': <24>}>, 'org.gnome.Calendar.desktop': <{'position': <25>}>, 'org.gnome.Loupe.desktop': <{'position': <26>}>}, {'org.gnome.Music.desktop': <{'position': <0>}>, 'org.gnome.Epiphany.desktop': <{'position': <1>}>, 'auto-cpufreq-gtk.desktop': <{'position': <2>}>, 'com.bitwarden.desktop.desktop': <{'position': <3>}>, 'com.brave.Browser.desktop': <{'position': <4>}>, 'btop.desktop': <{'position': <5>}>, 'io.dbeaver.DBeaverCommunity.desktop': <{'position': <6>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <7>}>, 'org.kde.digikam.desktop': <{'position': <8>}>, 'com.dropbox.Client.desktop': <{'position': <9>}>, 'org.kde.elisa.desktop': <{'position': <10>}>, 'emacs.desktop': <{'position': <11>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <12>}>, 'com.github.finefindus.eyedropper.desktop': <{'position': <13>}>, 'org.fedoraproject.MediaWriter.desktop': <{'position': <14>}>, 'fish.desktop': <{'position': <15>}>, 'com.github.tchx84.Flatseal.desktop': <{'position': <16>}>, 'com.github.johnfactotum.Foliate.desktop': <{'position': <17>}>, 'ghostty.desktop': <{'position': <18>}>, 'org.gimp.GIMP.desktop': <{'position': <19>}>, 'org.pipewire.Helvum.desktop': <{'position': <20>}>, 'org.inkscape.Inkscape.desktop': <{'position': <21>}>, 'org.keepassxc.KeePassXC.desktop': <{'position': <22>}>, 'kitty.desktop': <{'position': <23>}>, 'me.acristoffers.Lachesis.desktop': <{'position': <24>}>, 'org.libreoffice.LibreOffice.desktop': <{'position': <25>}>, 'org.libreoffice.LibreOffice.base.desktop': <{'position': <26>}>}, {'org.libreoffice.LibreOffice.calc.desktop': <{'position': <0>}>, 'org.libreoffice.LibreOffice.draw.desktop': <{'position': <1>}>, 'org.libreoffice.LibreOffice.impress.desktop': <{'position': <2>}>, 'org.libreoffice.LibreOffice.math.desktop': <{'position': <3>}>, 'org.libreoffice.LibreOffice.writer.desktop': <{'position': <4>}>, 'com.mongodb.Compass.desktop': <{'position': <5>}>, 'org.kde.okular.desktop': <{'position': <6>}>, 'org.gnome.Papers.desktop': <{'position': <7>}>, 'org.gnome.World.PikaBackup.desktop': <{'position': <8>}>, 'com.github.marhkb.Pods.desktop': <{'position': <9>}>, 'net.davidotek.pupgui2.desktop': <{'position': <10>}>, 'org.rncbc.qpwgraph.desktop': <{'position': <11>}>, 'org.sabnzbd.sabnzbd.desktop': <{'position': <12>}>, 'io.github.mhogomchungu.sirikali.desktop': <{'position': <13>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <14>}>, 'com.spotify.Client.desktop': <{'position': <15>}>, 'com.valvesoftware.Steam.desktop': <{'position': <16>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <17>}>, 'com.transmissionbt.Transmission.desktop': <{'position': <18>}>, 'org.videolan.VLC.desktop': <{'position': <19>}>, 'org.wezfurlong.wezterm.desktop': <{'position': <20>}>, 'com.github.xournalpp.xournalpp.desktop': <{'position': <21>}>, 'us.zoom.Zoom.desktop': <{'position': <22>}>, 'org.zotero.Zotero.desktop': <{'position': <23>}>}]
 command-history=['gl', 'r', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com', 'light-style@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']
 enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'clipboard-indicator@tudmotu.com', 'smart-auto-move@khimaros.com', 'transparent-top-bar@zhanghai.me', 'vertical-workspaces@G-dH.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'quick-settings-avatar@d-go', 'rectangle@acristoffers.me', 'run-or-raise@edvard.cz']
-favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'emacsclient.desktop', 'kitty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
+favorite-apps=['org.gnome.Nautilus.desktop', 'org.mozilla.firefox.desktop', 'com.mitchellh.ghostty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
 last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null', 'GtkBuilder.registerClass', "import Adw from 'gi:/adw'", "import Adw from 'gi://Adw';", 'Adw', 'Gtk']
 remember-mount-password=false
@@ -880,13 +880,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1042,9 +1043,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1735469251
+check-timestamp=int64 1735746743
 first-run=false
-flatpak-purge-timestamp=int64 1735470171
+flatpak-purge-timestamp=int64 1735679696
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690
@@ -1111,8 +1112,8 @@ window-position=(26, 23)
 window-size=(948, 465)
 
 [org/virt-manager/virt-manager]
-manager-window-height=423
-manager-window-width=843
+manager-window-height=477
+manager-window-width=948
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -1240,6 +1241,7 @@ vm-window-size=(2544, 1355)
 
 [org/virt-manager/virt-manager/vms/b9cfb599b95f4238bda8c399d9a4f236]
 autoconnect=1
+resize-guest=1
 vm-window-size=(1904, 998)
 
 [org/virt-manager/virt-manager/vms/b9d1ea3a978940e6a68ebdbb8a3ad4e5]

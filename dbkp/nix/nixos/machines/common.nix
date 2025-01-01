@@ -177,7 +177,7 @@ rec {
   users.users.alan = {
     isNormalUser = true;
     description = "Álan Crístoffer e Sousa";
-    extraGroups = [ "libvirtd" "networkmanager" "render" "video" "wheel" ];
+    extraGroups = [ "libvirtd" "networkmanager" "render" "video" "wheel" "vboxusers" ];
     packages = [ ];
   };
 
@@ -248,6 +248,10 @@ rec {
     };
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
+    virtualbox.host = {
+      enable = true;
+      enableExtensionPack = true;
+    };
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;

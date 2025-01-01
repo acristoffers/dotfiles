@@ -159,11 +159,11 @@
         "zig": "zig"
       },
       "locked": {
-        "lastModified": 1735482298,
-        "narHash": "sha256-GzzFpYis/ZdvI6QqaNXW7PhbCXgrg1DMT2ZxP5Uz8C0=",
+        "lastModified": 1735689283,
+        "narHash": "sha256-LOZRScnB8Q9ylmlXnt2j2v4Aj1b5JZTdSeKYaFL1RDw=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "579de8e491845b52e42d32a5dc3deaeb159ea4bc",
+        "rev": "60611b8a4a1d5b3c1097cce85eb0311de0696cfa",
         "type": "github"
       },
       "original": {
@@ -302,11 +302,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735381016,
-        "narHash": "sha256-CyCZFhMUkuYbSD6bxB/r43EdmDE7hYeZZPTCv0GudO4=",
+        "lastModified": 1735735907,
+        "narHash": "sha256-/AOGn9qJMjrZQyWYbObHTKmWDUP0q9+0TAXOJnq6ik0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "10e99c43cdf4a0713b4e81d90691d22c6a58bdf2",
+        "rev": "59a4c43e9ba6db24698c112720a58a334117de83",
         "type": "github"
       },
       "original": {
@@ -384,15 +384,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1735482985,
-        "narHash": "sha256-FNsXTqZJthxNb0Y6onkprOmeib2lu3VE57PqPu3T2Bs=",
+        "lastModified": 1735617354,
+        "narHash": "sha256-5zJyv66q68QZJZsXtmjDBazGnF0id593VSy+8eSckoo=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4506ece030a0c82d078edd0360ea8af6b4d94035",
+        "rev": "69b9a8c860bdbb977adfa9c5e817ccb717884182",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -432,11 +433,11 @@
     "nu-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1735305035,
-        "narHash": "sha256-SstIYp97dUX0+R3wN1yufDNHpKzppuCOlGUp6u503Ws=",
+        "lastModified": 1735740940,
+        "narHash": "sha256-ecowjZzSTxoeD0lgnbD9KgNZ7ibBk02xf5W6M/LFTak=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "a83a40dff05e91daf90bb42e7a23c5e70c85a759",
+        "rev": "d3166850631a1205edef05a2ba8cb0892a0c58f1",
         "type": "github"
       },
       "original": {
