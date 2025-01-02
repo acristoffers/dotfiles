@@ -1045,7 +1045,7 @@ document-type='photo'
 [org/gnome/software]
 check-timestamp=int64 1735746743
 first-run=false
-flatpak-purge-timestamp=int64 1735679696
+flatpak-purge-timestamp=int64 1735797474
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

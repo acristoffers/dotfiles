@@ -41,6 +41,13 @@
     };
   };
 
+  virtualisation = {
+    virtualbox.host = {
+      enable = true;
+      enableExtensionPack = true;
+    };
+  };
+
   # Undo some hardening
   security.lockKernelModules = false;
   security.unprivilegedUsernsClone = true;

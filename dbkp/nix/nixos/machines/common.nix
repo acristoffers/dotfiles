@@ -248,10 +248,6 @@ rec {
     };
     libvirtd.enable = true;
     spiceUSBRedirection.enable = true;
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
