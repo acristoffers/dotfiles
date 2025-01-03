@@ -3,6 +3,7 @@
 with lib;
 rec {
   boot.loader.grub.enable = false;
+  boot.loader.grub.configurationLimit = 5;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.timeout = 1;
