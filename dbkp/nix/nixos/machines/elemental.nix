@@ -12,6 +12,8 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
   environment.memoryAllocator.provider = "libc";
 
+  services.desktopManager.cosmic.enable = true;
+
   environment.systemPackages = with pkgs; [
     auto-cpufreq
   ];
@@ -38,13 +40,6 @@
         governor = "performance";
         turbo = "auto";
       };
-    };
-  };
-
-  virtualisation = {
-    virtualbox.host = {
-      enable = true;
-      enableExtensionPack = true;
     };
   };
 

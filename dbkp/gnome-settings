@@ -618,7 +618,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 460)
+initial-size=(948, 514)
 initial-size-file-chooser=(890, 550)
 maximized=false
 
@@ -1043,9 +1043,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1735887200
+check-timestamp=int64 1737283262
 first-run=false
-flatpak-purge-timestamp=int64 1735919604
+flatpak-purge-timestamp=int64 1737285748
 install-timestamp=int64 1711806735
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1714803690

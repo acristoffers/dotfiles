@@ -4,7 +4,7 @@
   config = {
     theme = "catppuccin";
   };
-  extraPackages = with pkgs.bat-extras; [ /* batdiff */ batman batgrep batwatch batpipe prettybat ];
+  # extraPackages = with pkgs.bat-extras; [ /* batdiff */ batman batgrep batwatch batpipe prettybat ];
   themes = {
     dracula = {
       src = pkgs.fetchFromGitHub {

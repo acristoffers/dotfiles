@@ -7,13 +7,24 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+
+    cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    cosmic.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { nixpkgs, flake-utils, jovian, ... }:
+  outputs = { nixpkgs, flake-utils, jovian, cosmic, ... }:
     let
       nixosSystem = system: modules: nixpkgs.lib.nixosSystem {
-        inherit modules;
         inherit system;
+        modules = modules ++ [
+          {
+            nix.settings = {
+              substituters = [ "https://cosmic.cachix.org/" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+            };
+          }
+          cosmic.nixosModules.default
+        ];
         pkgs = import nixpkgs {
           inherit system;
           config = {
