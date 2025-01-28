@@ -10,6 +10,7 @@
 
 'use strict';
 
+import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Clutter from 'gi://Clutter';
 import St from 'gi://St';
@@ -120,7 +121,7 @@ const WorkspaceThumbnailCommon = {
                 const wsIndex = this.metaWorkspace.index();
                 let label = `${wsIndex + 1}`;
                 if (opt.SHOW_WST_LABELS === 2) { // 2 - index + workspace name
-                    const settings = Me.getSettings('org.gnome.desktop.wm.preferences');
+                    const settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.wm.preferences' });
                     const wsLabels = settings.get_strv('workspace-names');
                     if (wsLabels.length > wsIndex && wsLabels[wsIndex])
                         label += `: ${wsLabels[wsIndex]}`;
@@ -182,6 +183,9 @@ const WorkspaceThumbnailCommon = {
                     return GLib.SOURCE_REMOVE;
                 });
             });
+
+            if (opt.SHOW_WST_LABELS_ON_HOVER)
+                this._wsLabel.opacity = 0;
         }
 
         if (opt.CLOSE_WS_BUTTON_MODE) {
@@ -229,9 +233,6 @@ const WorkspaceThumbnailCommon = {
             this._lastCloseClickTime = 0;
         }
 
-        if (opt.SHOW_WST_LABELS_ON_HOVER)
-            this._wsLabel.opacity = 0;
-
         this.connect('enter-event', () => {
             if (opt.CLOSE_WS_BUTTON_MODE && (!Meta.prefs_get_dynamic_workspaces() || (Meta.prefs_get_dynamic_workspaces() && global.workspace_manager.get_n_workspaces() - 1 !== this.metaWorkspace.index())))
                 this._closeButton.opacity = 200;
@@ -267,7 +268,7 @@ const WorkspaceThumbnailCommon = {
 
             // full brightness of the thumbnail bg draws unnecessary attention
             // there is a grey bg under the wallpaper
-            this._bgManager.backgroundActor.opacity = 220;
+            // this._bgManager.backgroundActor.opacity = 220;
         }
 
         this.connect('destroy', () => {
@@ -327,23 +328,12 @@ const WorkspaceThumbnailCommon = {
             } else {
                 this.metaWorkspace.activate(time);
             }
-        } else if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && wsIndex < lastWsIndex) {
+        } else if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && wsIndex <= lastWsIndex) {
             if (stateAdjustment.value > 1)
                 stateAdjustment.value = 1;
 
-
-            // spread windows
-            // in OVERVIEW MODE 2 windows are not spread and workspace is not scaled
-            // we need to repeat transition to the overview state 1 (window picker), but with spreading windows animation
             if (this.metaWorkspace.active) {
-                Main.overview.searchController._setSearchActive(false);
-                opt.WORKSPACE_MODE = 1;
-                // setting value to 0 would reset WORKSPACE_MODE
-                stateAdjustment.value = 0.01;
-                stateAdjustment.ease(1, {
-                    duration: 200,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                });
+                Me.Util.exposeWindowsWithOverviewTransition();
             } else {
                 // switch ws
                 this.metaWorkspace.activate(time);
@@ -422,6 +412,8 @@ const WorkspaceThumbnailCommon = {
 const ThumbnailsBoxCommon = {
     after__init(scrollAdjustment, monitorIndex, orientation = opt.ORIENTATION) {
         this._boxOrientation = orientation;
+        // Block propagation of the button-release-event
+        this.connect('button-release-event', () => Clutter.EVENT_STOP);
     },
 
     _activateThumbnailAtPoint(stageX, stageY, time, activateCurrent = false) {

@@ -113,6 +113,10 @@ export const Options = class Options {
             dashShowWindowsBeforeActivation: ['int', 'dash-show-windows-before-activation'],
             dashIconScroll: ['int', 'dash-icon-scroll'],
             dashIsolateWorkspaces: ['boolean', 'dash-isolate-workspaces'],
+            appMenuForceQuit: ['boolean', 'app-menu-force-quit'],
+            appMenuCloseWinsWs: ['boolean', 'app-menu-close-wins-ws'],
+            appMenuMoveApp: ['boolean', 'app-menu-move-app'],
+            appMenuWindowTmb: ['boolean', 'app-menu-window-tmb'],
             searchWindowsIconScroll: ['int', 'search-windows-icon-scroll'],
             panelVisibility: ['int', 'panel-visibility'],
             panelPosition: ['int', 'panel-position'],
@@ -331,11 +335,15 @@ export const Options = class Options {
 
         this.MAX_ICON_SIZE = this.get('dashMaxIconSize');
 
+        this.APP_MENU_FORCE_QUIT = this.get('appMenuForceQuit');
+        this.APP_MENU_CLOSE_WINS_WS = this.get('appMenuCloseWinsWs');
+        this.APP_MENU_MOVE_APP = this.get('appMenuMoveApp');
+        this.APP_MENU_WINDOW_TMB = this.get('appMenuWindowTmb');
+
         this.WS_TMB_POSITION = this.get('workspaceThumbnailsPosition');
         this.ORIENTATION = this.WS_TMB_POSITION > 4 ? 0 : 1;
         this.WORKSPACE_MAX_SPACING = this.get('wsMaxSpacing');
         this.WS_MAX_SPACING_OFF_SCREEN = 350;
-        this.FORCE_SINGLE_WS_TRANSITION = false;
         // ORIENTATION || DASH_LEFT || DASH_RIGHT ? 350 : 80;
         this.SHOW_WS_TMB = ![4, 9].includes(this.WS_TMB_POSITION); // 4, 9 - disable
         this.WS_TMB_FULL = this.get('wsThumbnailsFull');
@@ -362,7 +370,6 @@ export const Options = class Options {
 
         this.MAX_THUMBNAIL_SCALE = this.get('wsThumbnailScale') / 100 + 0.01;
         this.MAX_THUMBNAIL_SCALE_APPGRID = this.get('wsThumbnailScaleAppGrid') / 100 + 0.01;
-        this.SHOW_WS_TMB_APPGRID = true;
         this.MAX_THUMBNAIL_SCALE_STABLE = this.MAX_THUMBNAIL_SCALE === this.MAX_THUMBNAIL_SCALE_APPGRID;
         this.SEC_MAX_THUMBNAIL_SCALE = this.get('secWsThumbnailScale') / 100 + 0.01;
 
@@ -411,8 +418,8 @@ export const Options = class Options {
         this.SEARCH_VIEW_SCALE = this.get('searchViewScale') / 100;
         this.SEARCH_MAX_ROWS = this.get('searchMaxResultsRows');
         this.SEARCH_FUZZY = this.get('searchFuzzy');
-        this.SEARCH_DELAY = 0;
-        this.SEARCH_APP_GRID_MODE = this.get('searchAppGridMode');
+        this.SEARCH_DELAY = this.SEARCH_VIEW_ANIMATION ? 100 : 0;
+        this.SEARCH_APP_GRID_MODE = this.get('searchAppGridMode') && this.get('appDisplayModule');
 
         this.APP_GRID_ALLOW_INCOMPLETE_PAGES = this.get('appGridIncompletePages');
         this.APP_GRID_ICON_SIZE = this.get('appGridIconSize');
@@ -479,6 +486,8 @@ export const Options = class Options {
         this.WS_SW_POPUP_MODE = this.get('wsSwPopupMode');
 
         this.WS_ANIMATION = this.get('workspaceAnimation');
+        this.WS_ANIMATION_SINGLE = this.WS_ANIMATION === 1;
+        this.WS_ANIMATION_ALL = this.WS_ANIMATION === 2;
         this.WS_WRAPAROUND = this.get('wsSwitcherWraparound');
         this.WS_IGNORE_LAST = this.get('wsSwitcherIgnoreLast');
         this.WS_SWITCHER_CURRENT_MONITOR = this.get('wsSwitcherMode') === 1;
@@ -528,6 +537,7 @@ export const Options = class Options {
         this.HIGHLIGHT_NONE = this.HIGHLIGHTING_STYLE === 2;
 
         this.DELAY_STARTUP = this.get('delayStartup');
+        this.DELAY_OVERVIEW_ANIMATION = true;
     }
 
     _getAnimationDirection() {

@@ -125,16 +125,20 @@ const OverviewCommon = {
         }
 
         this._syncGrab();
+        if (controls._stateAdjustment.value <= 1 && !controls._searchController.searchActive)
+            Me.Util.activateKeyboardForWorkspaceView();
     },
 
-    // Workaround - should probably be fixed elsewhere in the upstream code
-    // If a new window is opened from the overview
-    // and is realized before the overview animation is complete,
-    // the new window will not get focus
     after__hideDone() {
+        this.resetOverviewMode();
+
         if (!opt.FIX_NEW_WINDOW_FOCUS)
             return;
 
+        // Workaround - should probably be fixed elsewhere in the upstream code
+        // If a new window is opened from the overview
+        // and is realized before the overview animation is complete,
+        // the new window will not get focus
         const workspace = global.workspace_manager.get_active_workspace();
         const recentDesktopWin = global.display.get_tab_list(1, workspace)[0];
         let recentNormalWin = null;
@@ -160,3 +164,4 @@ const OverviewCommon = {
             recentWin.activate(global.get_current_time());
     },
 };
+

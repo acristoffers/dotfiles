@@ -131,7 +131,7 @@ export function openPreferences(metadata) {
     }
 
     if (!metaWin || (metaWin && !isMe)) {
-        // delay to avoid errors if previous prefs window has been colsed
+        // delay to avoid errors if previous prefs window has been closed
         GLib.idle_add(GLib.PRIORITY_LOW, () => {
             try {
                 Main.extensionManager.openExtensionPrefs(metadata.uuid, '', {});
@@ -144,12 +144,14 @@ export function openPreferences(metadata) {
 
 export function activateSearchProvider(prefix = '') {
     const searchEntry = Main.overview.searchEntry;
-    if (!searchEntry.get_text() || !searchEntry.get_text().startsWith(prefix)) {
+    const searchEntryText = searchEntry.get_text();
+    if (!searchEntryText || (searchEntryText && !searchEntry.get_text().startsWith(prefix))) {
         prefix = `${prefix} `;
         const position = prefix.length;
         searchEntry.set_text(prefix);
         searchEntry.get_first_child().set_cursor_position(position);
         searchEntry.get_first_child().set_selection(position, position);
+        searchEntry.grab_key_focus();
     } else {
         searchEntry.set_text('');
     }
@@ -172,32 +174,49 @@ export function reorderWorkspace(direction = 0) {
         global.workspace_manager.reorder_workspace(activeWs, targetIdx);
 }
 
+// In WINDOW_PICKER mode, enable keyboard navigation
+// by focusing on the active window's preview
 export function activateKeyboardForWorkspaceView() {
-    Main.ctrlAltTabManager._items.forEach(i => {
-        if (i.sortGroup === 1 && i.name === 'Windows')
-            Main.ctrlAltTabManager.focusGroup(i);
-    });
-}
+    const currentWindowActor = global.display.focus_window?.get_compositor_private();
+    if (!currentWindowActor)
+        return;
 
-export function exposeWindows(adjustment, activateKeyboard) {
-    // expose windows for static overview modes
-    if (!adjustment.value && !Main.overview._animationInProgress) {
-        if (adjustment.value === 0) {
-            adjustment.value = 0;
-            adjustment.ease(1, {
-                duration: 200,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => {
-                    if (activateKeyboard) {
-                        Main.ctrlAltTabManager._items.forEach(i => {
-                            if (i.sortGroup === 1 && i.name === 'Windows')
-                                Main.ctrlAltTabManager.focusGroup(i);
-                        });
-                    }
-                },
-            });
+    const activeWorkspace = global.workspace_manager.get_active_workspace().index();
+    const nMonitors = global.display.get_n_monitors();
+    for (let monitor = 0; monitor < nMonitors; monitor++) {
+        // secondary monitor
+        let windows = Main.overview._overview.controls._workspacesDisplay._workspacesViews[monitor]._workspacesView?._workspaces[activeWorkspace]._windows;
+        if (!windows) // primary monitor
+            windows = Main.overview._overview.controls._workspacesDisplay._workspacesViews[monitor]._workspaces[activeWorkspace]._windows;
+        for (const win of windows) {
+            if (win._windowActor === currentWindowActor) {
+                win.grab_key_focus();
+                break;
+            }
         }
     }
+}
+
+export function exposeWindows() {
+    Main.overview._overview.controls._workspacesDisplay._workspacesViews.forEach(
+        view => {
+            view.exposeWindows();
+        }
+    );
+}
+
+export function exposeWindowsWithOverviewTransition() {
+    // in OVERVIEW MODE 2 windows are not spread and workspace is not scaled
+    // we need to repeat transition to the overview state 1 (window picker), but with spreading windows animation
+    const stateAdjustment = Main.overview._overview.controls._stateAdjustment;
+    Me.opt.WORKSPACE_MODE = 1;
+    // setting value to 0 would reset WORKSPACE_MODE
+    stateAdjustment.value = 0.01;
+    stateAdjustment.ease(1, {
+        duration: 200,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => activateKeyboardForWorkspaceView(),
+    });
 }
 
 export function isShiftPressed(state = null) {

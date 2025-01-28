@@ -211,7 +211,13 @@ const AppSearchProvider = {
     },
 
     _filterAppGrid(results) {
-        const icons = Main.overview._overview.controls._appDisplay._orderedItems;
+        const appDisplay = Main.overview._overview.controls._appDisplay;
+        let icons = appDisplay._orderedItems;
+        icons.forEach(icon => {
+            icon.visible = true;
+        });
+        appDisplay._redisplay(results);
+        icons = appDisplay._orderedItems;
         icons.forEach(icon => {
             icon.visible = results.includes(icon.id);
         });
@@ -245,8 +251,6 @@ const SystemActionIcon = GObject.registerClass({
 }, class SystemActionIcon extends Search.GridSearchResult {
     _init(provider, metaInfo, resultsView) {
         super._init(provider, metaInfo, resultsView);
-        if (!Clutter.Container)
-            this.add_style_class_name('grid-search-result-46');
         this.icon._setSizeManually = true;
         this.icon.setIconSize(provider._iconSize);
     }

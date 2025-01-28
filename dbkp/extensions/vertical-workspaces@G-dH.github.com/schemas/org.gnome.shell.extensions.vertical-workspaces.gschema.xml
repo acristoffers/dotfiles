@@ -226,6 +226,18 @@
     <key type="b" name="dash-isolate-workspaces">
       <default>false</default>
     </key>
+    <key type="b" name="app-menu-force-quit">
+      <default>true</default>
+    </key>
+    <key type="b" name="app-menu-close-wins-ws">
+      <default>true</default>
+    </key>
+    <key type="b" name="app-menu-move-app">
+      <default>true</default>
+    </key>
+    <key type="b" name="app-menu-window-tmb">
+      <default>true</default>
+    </key>
     <key type="i" name="search-windows-icon-scroll">
       <default>1</default>
     </key>
@@ -242,7 +254,7 @@
       <default>5</default>
     </key>
     <key type="i" name="search-app-grid-mode">
-      <default>0</default>
+      <default>1</default>
     </key>
     <key type="i" name="panel-visibility">
       <default>0</default>
@@ -467,7 +479,7 @@
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
-        'searchAppGridMode': '0',
+        'searchAppGridMode': '1',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -552,7 +564,7 @@
         'dashBgRadius': '0',
         'dashBgGS3Style': 'false',
         'runningDotStyle': '1',
-        'showWsSwitcherBg': 'false',
+        'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
         'showBgInOverview': 'true',
@@ -563,7 +575,7 @@
         'smoothBlurTransitions': 'false',
         'appGridAnimation': '4',
         'searchViewAnimation': '0',
-        'workspaceAnimation': '1',
+        'workspaceAnimation': '2',
         'animationSpeedFactor': '100',
         'winPreviewIconSize': '1',
         'winTitlePosition': '0',
@@ -595,7 +607,7 @@
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
-        'searchAppGridMode': '0',
+        'searchAppGridMode': '1',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -723,7 +735,7 @@
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
-        'searchAppGridMode': '0',
+        'searchAppGridMode': '1',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',
@@ -851,7 +863,7 @@
         'searchWindowsOrder': '1',
         'searchFuzzy': 'false',
         'searchMaxResultsRows': '5',
-        'searchAppGridMode': '0',
+        'searchAppGridMode': '1',
         'dashShowWindowsBeforeActivation': '1',
         'dashIconScroll': '1',
         'dashIsolateWorkspaces': 'false',

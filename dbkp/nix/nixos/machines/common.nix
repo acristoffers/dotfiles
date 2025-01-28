@@ -223,7 +223,6 @@ rec {
   services.locate = {
     enable = true;
     interval = "hourly";
-    localuser = null;
     package = pkgs.plocate;
   };
   services.mysql = {

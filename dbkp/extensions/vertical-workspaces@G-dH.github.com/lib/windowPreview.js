@@ -186,7 +186,7 @@ const WindowPreviewCommon = {
                 } else if (opt.WIN_PREVIEW_MID_BTN_ACTION === 2) {
                     this._searchAppWindowsAction();
                     return Clutter.EVENT_STOP;
-                } else if (opt.WIN_PREVIEW_SEC_BTN_ACTION === 3 && global.windowThumbnails) {
+                } else if (opt.WIN_PREVIEW_MID_BTN_ACTION === 3 && global.windowThumbnails) {
                     this._removeLaters();
                     global.windowThumbnails?.createThumbnail(metaWindow);
                     return Clutter.EVENT_STOP;
@@ -382,13 +382,13 @@ const WindowPreviewCommon = {
         if (opt.OVERVIEW_MODE === 1) {
             // spread windows on hover
             this._wsStateConId = this.connect('enter-event', () => {
-                // don't spread windows if user don't use pointer device at this moment
+                // prevent spreading windows immediately after entering overview
                 if (global.get_pointer()[0] === opt.showingPointerX || Main.overview._overview._controls._stateAdjustment.value < 1)
                     return;
 
                 opt.WORKSPACE_MODE = 1;
                 const view = this._workspace.get_parent();
-                view.exposeWindows(this._workspace.metaWorkspace.index());
+                view.exposeWindows();
                 this.disconnect(this._wsStateConId);
             });
         }
@@ -500,8 +500,7 @@ const WindowPreviewCommon = {
             return;
 
         this._overlayShown = true;
-        if (opt.WIN_TITLES_POSITION === 2)
-            this._restack();
+        this._restack();
 
         // If we're supposed to animate and an animation in our direction
         // is already happening, let that one continue
@@ -550,11 +549,15 @@ const WindowPreviewCommon = {
             return;
         this._overlayShown = false;
 
-        if (opt.ALWAYS_ACTIVATE_SELECTED_WINDOW && Main.overview._overview.controls._stateAdjustment.value < 1)
+        // When leaving overview, mark the window for activation if needed
+        // The marked window is activated during _onDestroy()
+        const leavingOverview = Main.overview._overview.controls._stateAdjustment.value < 1;
+        if (opt.ALWAYS_ACTIVATE_SELECTED_WINDOW && leavingOverview)
             this._activateSelected = true;
 
-
-        if (opt.WIN_TITLES_POSITION === 2)
+        // Prevent restacking the preview if it should remain on top
+        // while leaving overview
+        if (!(opt.ALWAYS_ACTIVATE_SELECTED_WINDOW && leavingOverview))
             this._restack();
 
         // If we're supposed to animate and an animation in our direction

@@ -194,8 +194,7 @@ export default class VShell extends ExtensionPreferences {
                 _('Adjusts the position of the dash on the axis given by the orientation of the workspaces'),
                 dashPositionScale,
                 'dashPositionAdjust',
-                null,
-                'dashModule'
+                null
             )
         );
 
@@ -882,7 +881,7 @@ export default class VShell extends ExtensionPreferences {
 
         const maxSearchResultsAdjustment = new Gtk.Adjustment({
             upper: 50,
-            lower: 5,
+            lower: 1,
             step_increment: 1,
             page_increment: 5,
         });
@@ -1234,6 +1233,56 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('App Menu')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Add Force Quit'),
+                _('Adds a "Force Quit" menu item to the application menu that appears when right-clicking an app icon'),
+                itemFactory.newSwitch(),
+                'appMenuForceQuit',
+                null,
+                'dashModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Add Close Windows on Current Workspace'),
+                _('Adds a "Close Windows on Current Workspace" menu item to the application menu that appears when right-clicking an app icon'),
+                itemFactory.newSwitch(),
+                'appMenuCloseWinsWs',
+                null,
+                'dashModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Add Move App to Current Workspace'),
+                _('Adds a "Move App to Current Workspace" menu item to the application menu that appears when right-clicking an app icon'),
+                itemFactory.newSwitch(),
+                'appMenuMoveApp',
+                null,
+                'dashModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Add Create Window Thumbnail'),
+                _('Requires WTMB extension installed and enabled. Adds a "Create Window Thumbnail" menu item to the application menu that appears when right-clicking an app icon'),
+                itemFactory.newSwitch(),
+                'appMenuWindowTmb',
+                null,
+                'dashModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('Workspace Thumbnails')
             )
         );
@@ -1408,12 +1457,13 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspace Preview Animation'),
-                _('When entering / leaving the App Grid / Search view, the workspace preview can animate to/from workspace thumbnail.'),
+                _('When entering or leaving the App Grid, the workspace preview can animate to/from workspace thumbnails'),
                 itemFactory.newDropDown(),
                 'workspaceAnimation',
                 [
                     [_('Disable'), 0],
-                    [_('Enable'), 1],
+                    [_('Active Workspace Only'), 1],
+                    [_('All Workspaces'), 2],
                 ]
             )
         );

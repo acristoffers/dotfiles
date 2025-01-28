@@ -8,3 +8,4 @@ font-thicken = true
 theme = catppuccin-mocha
 window-decoration = false
 window-theme = dark
+gtk-titlebar = false

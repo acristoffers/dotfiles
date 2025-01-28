@@ -71,6 +71,12 @@ export const AppDisplayModule = class {
         this._appGridLayoutConId =  0;
         this._origAppViewItemAcceptDrop =  null;
         this._updateFolderIcons =  0;
+
+        // By default appDisplay.name (which can be used to address styling) is not set
+        // In GS 46+ we need to adapt the appDisplay style even if the appDisplay module is disabled,
+        // to allow the use of wallpaper in the overview
+        if (shellVersion46)
+            Main.overview._overview.controls._appDisplay.name = 'app-display';
     }
 
     cleanGlobals() {
@@ -78,6 +84,7 @@ export const AppDisplayModule = class {
         opt = null;
         _ = null;
         _appDisplay = null;
+        Main.overview._overview.controls._appDisplay.name = null;
     }
 
     update(reset) {
@@ -111,7 +118,6 @@ export const AppDisplayModule = class {
 
         this._applyOverrides();
         this._updateAppDisplay();
-        _appDisplay.add_style_class_name('app-display-46');
 
         console.debug('  AppDisplayModule - Activated');
     }
@@ -126,8 +132,6 @@ export const AppDisplayModule = class {
         const reset = true;
         this._updateAppDisplay(reset);
         this._restoreOverviewGroup();
-
-        _appDisplay.remove_style_class_name('app-display-46');
 
         console.debug('  AppDisplayModule - Disabled');
     }
@@ -363,7 +367,7 @@ const AppDisplayCommon = {
     },
 
     // apps load adapted for custom sorting and including dash items
-    _loadApps() {
+    _loadApps(results) {
         let appIcons = [];
         const runningApps = Shell.AppSystem.get_default().get_running().map(a => a.id);
 
@@ -387,7 +391,7 @@ const AppDisplayCommon = {
 
         const appsInsideFolders = new Set();
         this._folderIcons = [];
-        if (!opt.APP_GRID_USAGE) {
+        if (!(opt.APP_GRID_USAGE || results)) {
             let folders = this._folderSettings.get_strv('folder-children');
             folders.forEach(id => {
                 let path = `${this._folderSettings.path}folders/${id}/`;
@@ -680,8 +684,8 @@ const BaseAppViewCommon = {
         this._grid.layoutManager._shouldEaseItems = false;
     },
 
-    // Adds sorting options
-    _redisplay() {
+    // Adds sorting options / support app search provider
+    _redisplay(results) {
         // different options for main app grid and app folders
         const thisIsFolder = this instanceof AppDisplay.FolderView;
         const thisIsAppDisplay = !thisIsFolder;
@@ -699,7 +703,7 @@ const BaseAppViewCommon = {
         const oldApps = this._orderedItems.slice();
         const oldAppIds = oldApps.map(icon => icon.id);
 
-        const newApps = this._loadApps();
+        const newApps = this._loadApps(results);
         const newAppIds = newApps.map(icon => icon.id);
 
         const addedApps = newApps.filter(icon => !oldAppIds.includes(icon.id));
@@ -719,7 +723,10 @@ const BaseAppViewCommon = {
         let allowIncompletePages = thisIsAppDisplay && opt.APP_GRID_ALLOW_INCOMPLETE_PAGES;
 
         const customOrder = !((opt.APP_GRID_ORDER && thisIsAppDisplay) || (opt.APP_FOLDER_ORDER && thisIsFolder));
-        if (!customOrder) {
+
+        if (results) {
+            newApps.sort((a, b) => results.indexOf(a.app?.id) - results.indexOf(b.app?.id));
+        } else if (!customOrder) {
             allowIncompletePages = false;
 
             // Sort by name
@@ -770,7 +777,7 @@ const BaseAppViewCommon = {
         });
         // When a placeholder icon was added to the custom sorted grid during DND from a folder
         // update its initial position on the page
-        if (customOrder)
+        if (customOrder && !results)
             newApps.sort(this._compareItems.bind(this));
 
         this._orderedItems = newApps;
@@ -1086,11 +1093,7 @@ const AppGridCommon = {
 
 const FolderIcon = {
     after__init() {
-        this.button_mask = St.ButtonMask.ONE | St.ButtonMask.TWO;
-        if (shellVersion46)
-            this.add_style_class_name('app-folder-46');
-        else
-            this.add_style_class_name('app-folder-45');
+        this.button_mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     },
 
     open() {
@@ -1370,6 +1373,7 @@ const AppFolderDialog = {
         this.child.add_action(clickAction);
         // Redundant, added just because of extensions.gnome.org rules
         this.connect('destroy', this._removePopdownTimeout.bind(this));
+        this._viewBox.add_style_class_name('app-folder-dialog-translucent');
     },
 
     after__addFolderNameEntry() {
@@ -1798,7 +1802,11 @@ const AppFolderDialog = {
             opacity: 0,
         });
 
+        // Add a short delay to account for the dialog update time
+        // and prevent incomplete animation that disrupts the user experience
+        const delay = 20;
         this.child.ease({
+            delay,
             translation_x: dialogOffsetX,
             translation_y: dialogOffsetY,
             scale_x: 1,
@@ -1809,6 +1817,7 @@ const AppFolderDialog = {
         });
 
         appDisplay.ease({
+            delay,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
             mode: Clutter.AnimationMode.EASE_OUT_QUAD,

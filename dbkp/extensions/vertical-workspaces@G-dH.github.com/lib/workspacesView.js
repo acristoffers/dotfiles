@@ -159,7 +159,6 @@ const WorkspacesViewCommon = {
 
     // normal view 0, spread windows 1
     _getWorkspaceModeForOverviewState(state) {
-
         switch (state) {
         case ControlsState.HIDDEN:
             return 0;
@@ -210,8 +209,8 @@ const WorkspacesViewCommon = {
             // if we disable workspaces that we can't or don't need to see, transition animations will be noticeably smoother
             // only the current ws needs to be visible during overview transition animations
             //                        and only current and adjacent ws when switching ws
-            w.visible =
-                (this._animating && wsScrollProgress && distanceToCurrentWorkspace <= (opt.NUMBER_OF_VISIBLE_NEIGHBORS + 1)) ||
+            w.visible = opt.WS_ANIMATION_ALL ||
+                ((this._animating && wsScrollProgress && distanceToCurrentWorkspace <= (opt.NUMBER_OF_VISIBLE_NEIGHBORS + 1)) ||
                 scaleProgress === 1 ||
                 (opt.WORKSPACE_MAX_SPACING >= opt.WS_MAX_SPACING_OFF_SCREEN &&
                     distanceToCurrentWorkspace <= opt.NUMBER_OF_VISIBLE_NEIGHBORS &&
@@ -222,7 +221,7 @@ const WorkspacesViewCommon = {
                 (distanceToCurrentWorkspace <= opt.NUMBER_OF_VISIBLE_NEIGHBORS &&
                     currentState <= ControlsState.WINDOW_PICKER &&
                     (initialState < ControlsState.APP_GRID && finalState < ControlsState.APP_GRID)
-                );
+                ));
 
             // after transition from APP_GRID to WINDOW_PICKER state,
             // adjacent workspaces are hidden and we need them to show up
@@ -263,7 +262,7 @@ const WorkspacesViewCommon = {
         });
     },
 
-    exposeWindows(workspaceIndex = null, callback) {
+    exposeWindows(workspaceIndex = null) {
         let adjustments = [];
         if (workspaceIndex === null) {
             this._workspaces.forEach(ws => {
@@ -276,14 +275,9 @@ const WorkspacesViewCommon = {
         opt.WORKSPACE_MODE = 1;
         adjustments.forEach(adj => {
             if (adj.value === 0) {
-                adj.value = 0;
                 adj.ease(1, {
                     duration: 200,
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onComplete: () => {
-                        if (callback)
-                            callback();
-                    },
                 });
             }
         });
@@ -298,7 +292,7 @@ const SecondaryMonitorDisplayCommon = {
 
 const SecondaryMonitorDisplayVertical = {
     _getThumbnailParamsForState(state) {
-
+        const spacing = opt.SPACING;
         let opacity, scale, translationX;
         switch (state) {
         case ControlsState.HIDDEN:
@@ -306,7 +300,7 @@ const SecondaryMonitorDisplayVertical = {
             scale = 1;
             translationX = 0;
             if (!Main.layoutManager._startingUp && (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2))
-                translationX = this._thumbnails.width * (opt.SEC_WS_TMB_LEFT ? -1 : 1);
+                translationX = (this._thumbnails.width + spacing) * (opt.SEC_WS_TMB_LEFT ? -1 : 1);
 
             break;
         case ControlsState.WINDOW_PICKER:
@@ -357,11 +351,11 @@ const SecondaryMonitorDisplayVertical = {
 
             let offset = Math.round(width - wsTmbWidth - wsBoxWidth - spacing) / 2;
 
-            const wsbX = startX + opt.SEC_WS_TMB_LEFT
+            const wsbX = startX + (opt.SEC_WS_TMB_LEFT
                 ? wsTmbWidth + spacing + offset
-                : offset;
+                : offset);
 
-            const wsbY = Math.round((startY + height - wsBoxHeight) / 2);
+            const wsbY = Math.round(startY + (height - wsBoxHeight) / 2);
 
             workspaceBox.set_origin(wsbX, wsbY);
             workspaceBox.set_size(wsBoxWidth, wsBoxHeight);
@@ -532,8 +526,7 @@ const SecondaryMonitorDisplayVertical = {
 
 const SecondaryMonitorDisplayHorizontal = {
     _getThumbnailParamsForState(state) {
-        // const { ControlsState } = OverviewControls;
-
+        const spacing = opt.SPACING;
         let opacity, scale, translationY;
         switch (state) {
         case ControlsState.HIDDEN:
@@ -541,7 +534,7 @@ const SecondaryMonitorDisplayHorizontal = {
             scale = 1;
             translationY = 0;
             if (!Main.layoutManager._startingUp && (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2))
-                translationY = this._thumbnails.height * (opt.SEC_WS_TMB_TOP ? -1 : 1);
+                translationY = (this._thumbnails.height + spacing) * (opt.SEC_WS_TMB_TOP ? -1 : 1);
 
             break;
         case ControlsState.WINDOW_PICKER:
@@ -592,11 +585,11 @@ const SecondaryMonitorDisplayHorizontal = {
 
             let offset = Math.round(height - wsTmbHeight - wsBoxHeight - spacing) / 2;
 
-            const wsbX = Math.round((startX + width - wsBoxWidth) / 2);
+            const wsbX = Math.round(startX + (width - wsBoxWidth) / 2);
 
-            const wsbY = startY + opt.SEC_WS_TMB_TOP
+            const wsbY = startY + (opt.SEC_WS_TMB_TOP
                 ? wsTmbHeight + spacing + offset
-                : offset;
+                : offset);
 
             workspaceBox.set_origin(wsbX, wsbY);
             workspaceBox.set_size(wsBoxWidth, wsBoxHeight);
@@ -760,7 +753,6 @@ const ExtraWorkspaceViewCommon = {
         const adjustment = this._workspace._background._stateAdjustment;
         opt.WORKSPACE_MODE = 1;
         if (adjustment.value === 0) {
-            adjustment.value = 0;
             adjustment.ease(1, {
                 duration: 200,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
@@ -934,24 +926,16 @@ const WorkspacesDisplayCommon = {
         case Clutter.KEY_Tab:
             if (Main.overview.searchController.searchActive) {
                 Main.overview.searchEntry.grab_key_focus();
-            } else if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && state === 1) {
-                // expose windows by "clicking" on ws thumbnail
-                // in this case overview stateAdjustment will be used for transition
-                Main.overview._overview.controls._thumbnailsBox._activateThumbnailAtPoint(0, 0, global.get_current_time(), true);
-                Main.ctrlAltTabManager._items.forEach(i => {
-                    if (i.sortGroup === 1 && i.name === 'Windows')
-                        Main.ctrlAltTabManager.focusGroup(i);
-                });
-            } else if (opt.OVERVIEW_MODE && !opt.WORKSPACE_MODE && state === 1) {
-                // expose windows for OVERVIEW_MODE 1
-                const wsIndex = global.workspace_manager.get_active_workspace().index();
-                // after expose animation activate keyboard for window selection
-                const callback = Me.Util.activateKeyboardForWorkspaceView;
-                this._workspacesViews.forEach(
-                    view => {
-                        view.exposeWindows(wsIndex, callback);
-                    }
-                );
+            } else if (!opt.WORKSPACE_MODE && state <= 1) {
+                if (opt.OVERVIEW_MODE2)
+                    Main.overview._overview.controls._updateSearchStyle(true);
+                // spread windows in OVERVIEW_MODE
+                if (state < 1)
+                    opt.WORKSPACE_MODE = 1;
+                else if (opt.OVERVIEW_MODE2)
+                    Me.Util.exposeWindowsWithOverviewTransition();
+                else
+                    Me.Util.exposeWindows();
             } else {
                 if (state === 2)
                     return Clutter.EVENT_PROPAGATE;
