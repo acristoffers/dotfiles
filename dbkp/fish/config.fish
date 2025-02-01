@@ -70,7 +70,7 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -x GNUPGHOME "$XDG_DATA_HOME"/gnupg
   set -x NIXPKGS_ALLOW_UNFREE 1
   set -x PIP_PREFIX $HOME/.local/share/pip
-  set -x PYTHONPATH $HOME/.local/share/pip/lib/python3.11/site-packages
+  set -x PYTHONPATH $HOME/.local/share/pip/lib/python3.12/site-packages
   set -x XDG_DATA_DIRS $HOME/.nix-profile/share:$HOME/.local/share:$XDG_DATA_DIRS
   set -x MAILDIR $HOME/.local/share/mail
   set -x _JAVA_OPTIONS -Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java

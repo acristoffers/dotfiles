@@ -80,6 +80,7 @@ with pkgs; [
   pandoc
   peaclock
   poetry
+  poetryPlugins.poetry-plugin-export
   pstree
   rage
   renameutils
