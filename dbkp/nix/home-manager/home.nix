@@ -48,7 +48,7 @@ in
     fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
     kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit config; inherit pkgs; };
-    nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; inherit inputs; };
+    # nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; inherit inputs; };
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };

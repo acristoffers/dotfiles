@@ -12,6 +12,8 @@ com.mongodb.Compass
 com.spotify.Client
 com.transmissionbt.Transmission
 com.valvesoftware.Steam
+io.dbeaver.DBeaverCommunity
+me.acristoffers.Lachesis
 net.davidotek.pupgui2
 org.fedoraproject.MediaWriter
 org.gimp.GIMP

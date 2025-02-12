@@ -185,8 +185,8 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='power'
-window-state=(843, 1051, false)
+last-panel='network'
+window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -618,7 +618,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(948, 514)
+initial-size=(1268, 694)
 initial-size-file-chooser=(890, 550)
 maximized=false
 
@@ -638,6 +638,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/329cdf1b-5864-4dd2-8cf7-f2c82aa43bb8]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/354ee097-ece0-4d40-b5bd-0dc5da3728a4]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -647,6 +651,10 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/88a5bcf5-f96f-4432-9616-fa3931fd7187]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/93b62b24-3bb0-4271-b827-9e8b30469e9c]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -667,6 +675,10 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/e2b13804-7ee4-4c26-9d73-ce68ec45c064]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/f88e248f-0c3c-4e9b-8a39-226c564bdaff]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -710,7 +722,7 @@ last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5k
 last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/gnome-wifi-panel]
-last-folder-path='/home/alan/Downloads/OpenVPN/steamdeck'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/io.github.mhogomchungu.sirikali]
 last-folder-path='/home/alan/Documents/.bl'
@@ -1043,9 +1055,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1738408449
+check-timestamp=int64 1739343995
 first-run=false
-flatpak-purge-timestamp=int64 1738306847
+flatpak-purge-timestamp=int64 1739347532
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1738045431

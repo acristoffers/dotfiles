@@ -8,9 +8,10 @@
   "shell-version": [
     "45",
     "46",
-    "47"
+    "47",
+    "48"
   ],
   "url": "https://github.com/vchlum/notification-timeout",
   "uuid": "notification-timeout@chlumskyvaclav.gmail.com",
-  "version": 12
+  "version": 13
 }
