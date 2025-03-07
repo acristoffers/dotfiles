@@ -402,7 +402,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -618,7 +618,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1268, 694)
+initial-size=(843, 460)
 initial-size-file-chooser=(890, 550)
 maximized=false
 
@@ -651,6 +651,10 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/88a5bcf5-f96f-4432-9616-fa3931fd7187]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/8de7402b-67bf-4612-8179-14e0389b81d4]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -770,7 +774,7 @@ last-folder-path='/home/alan/Downloads'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Developer/GitHub/Void'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -1028,9 +1032,10 @@ use-active-window=false
 
 [org/gnome/shell/keybindings]
 focus-active-notification=['<Alt><Super>n']
+open-new-window-application-4=@as []
 screenshot=@as []
 screenshot-window=['<Shift><Super>5']
-show-screenshot-ui=@as []
+show-screenshot-ui=['<Control><Super>4']
 switch-to-application-1=@as []
 switch-to-application-2=@as []
 switch-to-application-3=@as []
@@ -1055,9 +1060,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1739343995
+check-timestamp=int64 1741251245
 first-run=false
-flatpak-purge-timestamp=int64 1739347532
+flatpak-purge-timestamp=int64 1741312379
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1738045431

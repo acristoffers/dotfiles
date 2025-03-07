@@ -4,6 +4,7 @@ com.brave.Browser
 com.discordapp.Discord
 com.dropbox.Client
 com.github.finefindus.eyedropper
+com.github.johnfactotum.Foliate
 com.github.marhkb.Pods
 com.github.tchx84.Flatseal
 com.github.xournalpp.xournalpp
@@ -18,6 +19,7 @@ net.davidotek.pupgui2
 org.fedoraproject.MediaWriter
 org.gimp.GIMP
 org.gnome.Fractal
+org.gnome.Papers
 org.gnome.World.PikaBackup
 org.kde.digikam
 org.kde.elisa

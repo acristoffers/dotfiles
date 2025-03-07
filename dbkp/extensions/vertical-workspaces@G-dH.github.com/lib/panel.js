@@ -11,6 +11,7 @@
 'use strict';
 
 import Clutter from 'gi://Clutter';
+import Graphene from 'gi://Graphene';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Overview from 'resource:///org/gnome/shell/ui/overview.js';
@@ -29,8 +30,6 @@ export const PanelModule = class {
         this.moduleEnabled = false;
         this._overrides = null;
 
-        this._showingOverviewConId = 0;
-        this._hidingOverviewConId = 0;
         this._styleChangedConId = 0;
     }
 
@@ -66,34 +65,9 @@ export const PanelModule = class {
         if (!this._overrides)
             this._overrides = new Me.Util.Overrides();
 
-        const panelBox = Main.layoutManager.panelBox;
-
         this._setPanelPosition();
         this._updateStyleChangedConnection();
-
-        if (!opt.PANEL_MODE) {
-            this._updateOverviewConnection(true);
-            this._reparentPanel(false);
-            panelBox.translation_y = 0;
-            Main.panel.opacity = 255;
-            this._setPanelStructs(true);
-        } else if (opt.PANEL_OVERVIEW_ONLY) {
-            if (opt.SHOW_WS_PREVIEW_BG) {
-                this._reparentPanel(true);
-                this._showPanel(true);
-            } else {
-                // if ws preview bg is disabled, panel can stay in uiGroup
-                this._reparentPanel(false);
-                this._showPanel(false);
-            }
-            this._updateOverviewConnection();
-            // _connectPanel();
-        } else if (opt.PANEL_DISABLED) {
-            this._updateOverviewConnection(true);
-            this._reparentPanel(false);
-            this._showPanel(false);
-            // _connectPanel();
-        }
+        this._updatePanelVisibility();
         this._setPanelStructs(!opt.PANEL_MODE);
         Main.layoutManager._updateHotCorners();
         Main.overview._overview.controls.layoutManager._updateWorkAreaBox();
@@ -106,15 +80,10 @@ export const PanelModule = class {
     _disableModule() {
         const reset = true;
         this._setPanelPosition(reset);
-        this._updateOverviewConnection(reset);
         this._reparentPanel(false);
-
+        this._updatePanelVisibility(reset);
         this._updateStyleChangedConnection(reset);
 
-        const panelBox = Main.layoutManager.panelBox;
-        panelBox.translation_y = 0;
-        Main.panel.opacity = 255;
-        this._setPanelStructs(true);
         if (this._overrides)
             this._overrides.removeAll();
         this._overrides = null;
@@ -153,44 +122,16 @@ export const PanelModule = class {
             Main.panel.add_style_pseudo_class('overview');
     }
 
-    _updateOverviewConnection(reset = false) {
-        if (reset) {
-            if (this._hidingOverviewConId) {
-                Main.overview.disconnect(this._hidingOverviewConId);
-                this._hidingOverviewConId = 0;
-            }
-            if (this._showingOverviewConId) {
-                Main.overview.disconnect(this._showingOverviewConId);
-                this._showingOverviewConId = 0;
-            }
-        } else {
-            if (!this._hidingOverviewConId) {
-                this._hidingOverviewConId = Main.overview.connect('hiding', () => {
-                    if (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2)
-                        this._showPanel(false);
-                });
-            }
-            if (!this._showingOverviewConId) {
-                this._showingOverviewConId = Main.overview.connect('showing', () => {
-                    if (Main.layoutManager._startingUp)
-                        return;
-                    this._updateStyle();
-                    if (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2 || Main.layoutManager.panelBox.translation_y)
-                        this._showPanel(true);
-                });
-            }
-        }
-    }
-
     _reparentPanel(reparent = false) {
-        const panel = Main.layoutManager.panelBox;
-        if (reparent && panel.get_parent() === Main.layoutManager.uiGroup && !Main.sessionMode.isLocked) {
-            Main.layoutManager.uiGroup.remove_child(panel);
-            Main.layoutManager.overviewGroup.add_child(panel);
-        } else if ((!reparent || Main.sessionMode.isLocked) && panel.get_parent() === Main.layoutManager.overviewGroup) {
-            Main.layoutManager.overviewGroup.remove_child(panel);
-            // return the panel at default position, panel shouldn't cover objects that should be above
-            Main.layoutManager.uiGroup.insert_child_at_index(panel, 4);
+        const panelBox = Main.layoutManager.panelBox;
+        const controlsManager = Main.overview._overview.controls;
+        if (reparent && panelBox.get_parent() !== controlsManager && !Main.sessionMode.isLocked) {
+            Main.layoutManager.uiGroup.remove_child(panelBox);
+            controlsManager.add_child(panelBox);
+        } else if ((!reparent || Main.sessionMode.isLocked) && panelBox.get_parent() === controlsManager) {
+            controlsManager.remove_child(panelBox);
+            // return the panel at default position, panelshouldn't cover objects that should be above
+            Main.layoutManager.uiGroup.insert_child_at_index(panelBox, 4);
         }
     }
 
@@ -199,49 +140,49 @@ export const PanelModule = class {
             if (a.actor === Main.layoutManager.panelBox)
                 a.affectsStruts = state;
         });
-
-        // workaround to force maximized windows to resize after removing affectsStruts
-        // simulation of minimal swipe gesture to the opposite direction
-        // todo - needs better solution!!!!!!!!!!!
-        // const direction = _getAppGridAnimationDirection() === 2 ? 1 : -1;
-        // Main.overview._swipeTracker._beginTouchSwipe(null, global.get_current_time(), 1, 1);
-        // Main.overview._swipeTracker._updateGesture(null, global.get_current_time(), direction, 1);
-        // GLib.timeout_add(0, 50, () => Main.overview._swipeTracker._endGesture(global.get_current_time(), 1, true));*/
     }
 
-    _showPanel(show = true) {
+    _updatePanelVisibility(reset = false) {
+        if (Main.layoutManager._startingUp && !opt.PANEL_MODE)
+            return;
+
         const panelBox = Main.layoutManager.panelBox;
-        const panelHeight = Main.panel.height;
-        const overviewGroup = Main.layoutManager.overviewGroup;
+        const controlsManager = Main.overview._overview.controls;
 
-        if (panelBox.get_parent() === overviewGroup)
-            overviewGroup.set_child_above_sibling(panelBox, null);
+        let scale_y = 0;
 
-        if (show) {
-            panelBox.translation_y = opt.PANEL_POSITION_TOP ? -panelHeight : panelHeight;
-            Main.panel.opacity = 255;
-            let delay = 0;
-            // Panel animation needs to wait until overview is visible
-            if (opt.DELAY_OVERVIEW_ANIMATION)
-                delay = global.display.get_tab_list(0, null).length * opt.DELAY_PER_WINDOW + 50;
+        if (!reset) {
+            if (!opt.PANEL_MODE) { // panel always visible
+                if (panelBox.get_parent() === controlsManager)
+                    panelBox.scale_y = 0;
+                scale_y = 1;
+                this._reparentPanel(false);
+            } else if (opt.PANEL_OVERVIEW_ONLY) {
+                if (panelBox.get_parent() !== controlsManager && !Main.layoutManager.overviewGroup.visible)
+                    scale_y = 0.;
+                else
+                    scale_y = 1;
+                controlsManager.set_child_below_sibling(panelBox, controlsManager._workspacesDisplay);
+            }
+
+            // Panel should always scale towards the monitor edge
+            // Pivot point sets the stable point for transformations
+            panelBox.pivot_point = new Graphene.Point({ x: 0, y: opt.PANEL_POSITION_TOP ? 0 : 1 });
+
             panelBox.ease({
-                delay,
-                duration: ANIMATION_TIME,
-                translation_y: 0,
-                onComplete: () => {
+                duration: Main.layoutManager._startingUp ? 0 : ANIMATION_TIME,
+                scale_y,
+                onStopped: () => {
+                    this._reparentPanel(opt.PANEL_OVERVIEW_ONLY);
+                    panelBox.scale_y = opt.PANEL_DISABLED ? 0 : 1;
                     this._setPanelStructs(!opt.PANEL_MODE);
                 },
             });
-        } else if (!Main.layoutManager._startingUp) {
-            panelBox.translation_y = 0;
-            panelBox.ease({
-                duration: ANIMATION_TIME,
-                translation_y: opt.PANEL_POSITION_TOP ? -panelHeight : panelHeight,
-                onComplete: () => {
-                    Main.panel.opacity = 0;
-                    this._setPanelStructs(!opt.PANEL_MODE);
-                },
-            });
+        } else {
+            panelBox.pivot_point = new Graphene.Point({ x: 0, y: 0 });
+            this._reparentPanel(false);
+            panelBox.scale_y = 1;
+            this._setPanelStructs(true);
         }
     }
 };

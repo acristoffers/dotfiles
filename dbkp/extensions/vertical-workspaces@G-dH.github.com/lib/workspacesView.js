@@ -3,7 +3,7 @@
  * workspacesView.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2024
+ * @copyright  2022 - 2025
  * @license    GPL-3.0
  *
  */
@@ -135,6 +135,10 @@ const WorkspacesViewCommon = {
         if (!workspace)
             return 0;
 
+        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
+        if (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE)
+            return opt.WORKSPACE_MIN_SPACING * scaleFactor;
+
         let availableSpace;
         let workspaceSize;
         if (vertical) {
@@ -146,7 +150,6 @@ const WorkspacesViewCommon = {
         }
 
         const spacing = (availableSpace - workspaceSize * 0.4) * (1 - fitMode);
-        const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         return Math.clamp(spacing,
             opt.WORKSPACE_MIN_SPACING * scaleFactor,
             opt.WORKSPACE_MAX_SPACING * scaleFactor);
@@ -203,8 +206,10 @@ const WorkspacesViewCommon = {
             const distanceToCurrentWorkspace = Math.abs(distance);
 
             const scaleProgress = 1 - Math.clamp(distanceToCurrentWorkspace, 0, 1);
-            // const scale = Util.lerp(0.94, 1, scaleProgress);
-            // w.set_scale(scale, scale);
+            if (!opt.OVERVIEW_MODE2 || opt.WORKSPACE_MODE) {
+                const scale = Util.lerp(0.94, 1, scaleProgress);
+                w.set_scale(scale, scale);
+            }
 
             // if we disable workspaces that we can't or don't need to see, transition animations will be noticeably smoother
             // only the current ws needs to be visible during overview transition animations

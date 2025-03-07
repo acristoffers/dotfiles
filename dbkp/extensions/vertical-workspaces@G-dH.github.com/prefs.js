@@ -1018,15 +1018,6 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Smooth Blur Transitions'),
-                _('Allows for smoother blur transitions, but can affect the overall smoothness of overview animations on weak hardware'),
-                itemFactory.newSwitch(),
-                'smoothBlurTransitions'
-            )
-        );
-
         return optionList;
     }
     // ----------------------------------------------------------------
@@ -1312,7 +1303,7 @@ export default class VShell extends ExtensionPreferences {
                 itemFactory.newDropDown(),
                 'closeWsButtonMode',
                 [
-                    [_('Disable'), 0],
+                    [_('Hide'), 0],
                     [_('Single Click'), 1],
                     [_('Double Click'), 2],
                     [_('Ctrl Key + Click'), 3],
@@ -1890,6 +1881,32 @@ export default class VShell extends ExtensionPreferences {
                 itemFactory.newSwitch(),
                 'appGridFolderCenter',
                 null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Show Close Folder Button'),
+                _('The folder can be closed by right-clicking on the folder dialog or by left-clicking outside of it. However, in some situations, the close button can be useful'),
+                itemFactory.newSwitch(),
+                'appFolderCloseButton',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Remove Folder Button'),
+                _('The Remove Folder button lets you move all icons from the folder to the main app grid and delete the folder at once'),
+                itemFactory.newDropDown(),
+                'appFolderRemoveButton',
+                [
+                    [_('Hide (Default)'), 0],
+                    [_('Single Click'), 1],
+                    [_('Double Click'), 2],
+                ],
                 'appDisplayModule'
             )
         );

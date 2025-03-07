@@ -3,7 +3,7 @@
  * appDisplay.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2024
+ * @copyright  2022 - 2025
  * @license    GPL-3.0
  *
  */
@@ -244,9 +244,8 @@ export const AppDisplayModule = class {
 
     _updateLayout(settings, key) {
         // Reset the app grid only if the user layout has been completely removed
-        if (!settings.get_value(key).deep_unpack().length) {
+        if (!settings.get_value(key).deep_unpack().length)
             this._repopulateAppDisplay();
-        }
     }
 
     _repopulateAppDisplay(reset = false, callback) {
@@ -343,9 +342,8 @@ export const AppDisplayModule = class {
 function _getViewFromIcon(icon) {
     icon = icon._sourceItem ? icon._sourceItem : icon;
     for (let parent = icon.get_parent(); parent; parent = parent.get_parent()) {
-        if (parent instanceof AppDisplay.AppDisplay || parent instanceof AppDisplay.FolderView) {
+        if (parent instanceof AppDisplay.AppDisplay || parent instanceof AppDisplay.FolderView)
             return parent;
-        }
     }
     return null;
 }
@@ -374,7 +372,7 @@ const AppDisplayCommon = {
         this._appInfoList = Shell.AppSystem.get_default().get_installed().filter(appInfo => {
             try {
                 appInfo.get_id(); // catch invalid file encodings
-            } catch (e) {
+            } catch {
                 return false;
             }
 
@@ -577,10 +575,10 @@ const BaseAppViewCommon = {
         const overrides = new Me.Util.Overrides();
         if (opt.ORIENTATION) {
             overrides.addOverride('FolderGridLayoutVertical', this._appGridLayout, BaseAppViewGridLayoutVertical);
-            this._pageIndicators.set_style('margin-right: 12px;');
+            this._pageIndicators.set_style('margin-right: 22px;');
         } else {
             overrides.addOverride('FolderGridLayoutHorizontal', this._appGridLayout, BaseAppViewGridLayoutHorizontal);
-            this._pageIndicators.set_style('margin-bottom: 12px;');
+            this._pageIndicators.set_style('margin-bottom: 22px;');
         }
     },
 
@@ -593,9 +591,15 @@ const BaseAppViewCommon = {
         this._swipeTracker.orientation = orientation;
         this._swipeTracker._reset();
 
-        this._adjustment = vertical
-            ? this._scrollView.get_vscroll_bar().adjustment
-            : this._scrollView.get_hscroll_bar().adjustment;
+        if (this._scrollView.get_vadjustment) {
+            this._adjustment = vertical
+                ? this._scrollView.get_vadjustment()
+                : this._scrollView.get_hadjustment();
+        } else {
+            this._adjustment = vertical
+                ? this._scrollView.get_vscroll_bar().adjustment
+                : this._scrollView.get_hscroll_bar().adjustment;
+        }
 
         this._prevPageArrow.pivot_point = new Graphene.Point({ x: 0.5, y: 0.5 });
         this._prevPageArrow.rotation_angle_z = vertical ? 90 : 0;
@@ -604,8 +608,14 @@ const BaseAppViewCommon = {
         this._nextPageArrow.rotation_angle_z = vertical ? 90 : 0;
 
         const pageIndicators = this._pageIndicators;
-        pageIndicators.vertical = vertical;
-        this._box.vertical = !vertical;
+        if (pageIndicators.orientation !== undefined) { // since GNOME 48
+            pageIndicators.orientation = orientation;
+            this._box.orientation = orientation;
+        } else {
+            pageIndicators.vertical = vertical;
+            this._box.vertical = !vertical;
+        }
+
         pageIndicators.x_expand = !vertical;
         pageIndicators.y_align = vertical ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.START;
         pageIndicators.x_align = vertical ? Clutter.ActorAlign.START : Clutter.ActorAlign.CENTER;
@@ -672,9 +682,8 @@ const BaseAppViewCommon = {
                 position = index % itemsPerPage;
             }
 
-            if (currentPage !== page || currentPosition !== position) {
+            if (currentPage !== page || currentPosition !== position)
                 this._moveItem(icon, page, position);
-            }
         });
 
         this._grid.layoutManager._skipRelocateSurplusItems = false;
@@ -734,9 +743,9 @@ const BaseAppViewCommon = {
 
             // Sort by usage
             if ((opt.APP_GRID_USAGE && thisIsAppDisplay) ||
-                (opt.APP_FOLDER_USAGE && thisIsFolder)) {
+                (opt.APP_FOLDER_USAGE && thisIsFolder))
                 newApps.sort((a, b) => Shell.AppUsage.get_default().compare(a.app?.id, b.app?.id));
-            }
+
 
             // Sort favorites first
             if (!opt.APP_GRID_EXCLUDE_FAVORITES && opt.APP_GRID_DASH_FIRST) {
@@ -753,9 +762,9 @@ const BaseAppViewCommon = {
             }
 
             // Sort running first
-            if (!opt.APP_GRID_EXCLUDE_RUNNING && opt.APP_GRID_DASH_FIRST) {
+            if (!opt.APP_GRID_EXCLUDE_RUNNING && opt.APP_GRID_DASH_FIRST)
                 newApps.sort((a, b) => a.app?.get_state() !== Shell.AppState.RUNNING && b.app?.get_state() === Shell.AppState.RUNNING);
-            }
+
 
             // Sort folders first
             if (thisIsAppDisplay && opt.APP_GRID_FOLDERS_FIRST)
@@ -1335,7 +1344,7 @@ const FolderGrid = GObject.registerClass({
         Math.round(Math.min(...this._view._pageIndicators.get_size()));// / scaleFactor);// ~28;
         padding.left = opt.ORIENTATION ? pageIndicatorSize : 0;
         padding.right = 0;
-        padding.top = opt.ORIENTATION ? 0 : pageIndicatorSize;
+        padding.top = 0;
         padding.bottom = 0;
         this.layoutManager.pagePadding = padding;
     }
@@ -1380,83 +1389,106 @@ const AppFolderDialog = {
         // edit-folder-button class has been replaced with icon-button class which is not transparent in 46
         this._editButton.add_style_class_name('edit-folder-button');
 
-        // Edit button
-        this._removeButton = new St.Button({
-            style_class: 'icon-button edit-folder-button',
-            button_mask: St.ButtonMask.ONE,
-            toggle_mode: false,
-            reactive: true,
-            can_focus: true,
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.CENTER,
-            child: new St.Icon({
-                icon_name: 'user-trash-symbolic',
-                icon_size: 16,
-            }),
-        });
-
-        this._removeButton.connect('clicked', () => {
-            if (Date.now() - this._removeButton._lastClick < Clutter.Settings.get_default().double_click_time) {
-                // Close dialog to avoid crashes
-                this._isOpen = false;
-                this._grabHelper.ungrab({ actor: this });
-                this.emit('open-state-changed', false);
-                this.hide();
-                this._popdownCallbacks.forEach(func => func());
-                this._popdownCallbacks = [];
-                _appDisplay.ease({
-                    opacity: 255,
-                    duration: FOLDER_DIALOG_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                });
-
-                // Reset all keys to delete the relocatable schema
-                this._view._deletingFolder = true; // Upstream property
-                let keys = this._folder.settings_schema.list_keys();
-                for (const key of keys)
-                    this._folder.reset(key);
-
-                let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-                let folders = settings.get_strv('folder-children');
-                folders.splice(folders.indexOf(this._view._id), 1);
-
-                // remove all abandoned folders (usually my own garbage and unwanted default folders...)
-                /* const appFolders = _appDisplay._folderIcons.map(icon => icon._id);
-                folders.forEach(folder => {
-                    if (!appFolders.includes(folder)) {
-                        folders.splice(folders.indexOf(folder._id), 1);
-                    }
-                });*/
-                settings.set_strv('folder-children', folders);
-
-                this._view._deletingFolder = false;
-                return;
+        // Center title
+        if (!opt.APP_FOLDER_CLOSE_BUTTON !== !opt.APP_FOLDER_REMOVE_BUTTON) {
+            if (opt.APP_FOLDER_CLOSE_BUTTON) {
+                // Add second empty actor to keep the title centered
+                const ghostButton = new Clutter.Actor();
+                this._entryBox.add_child(ghostButton);
+                ghostButton.add_constraint(new Clutter.BindConstraint({
+                    source: this._editButton,
+                    coordinate: Clutter.BindCoordinate.SIZE,
+                }));
+                this._entryBox.set_child_at_index(ghostButton, 0);
+            } else {
+                // Remove the default empty actor which will be replaced by the remove folder button
+                this._entryBox.remove_child(this._entryBox.get_first_child());
             }
-            this._removeButton._lastClick = Date.now();
-        });
+        }
 
-        this._entryBox.add_child(this._removeButton);
-        this._entryBox.set_child_at_index(this._removeButton, 0);
+        // Remove Button
+        if (opt.APP_FOLDER_REMOVE_BUTTON) {
+            this._removeButton = new St.Button({
+                style_class: 'icon-button edit-folder-button',
+                button_mask: St.ButtonMask.ONE,
+                toggle_mode: false,
+                reactive: true,
+                can_focus: true,
+                x_align: Clutter.ActorAlign.END,
+                y_align: Clutter.ActorAlign.CENTER,
+                child: new St.Icon({
+                    icon_name: 'user-trash-symbolic',
+                    icon_size: 16,
+                }),
+            });
 
-        this._closeButton = new St.Button({
-            style_class: 'icon-button edit-folder-button',
-            button_mask: St.ButtonMask.ONE,
-            toggle_mode: false,
-            reactive: true,
-            can_focus: true,
-            x_align: Clutter.ActorAlign.END,
-            y_align: Clutter.ActorAlign.CENTER,
-            child: new St.Icon({
-                icon_name: 'window-close-symbolic',
-                icon_size: 16,
-            }),
-        });
+            this._removeButton.connect('clicked', () => {
+                if (opt.APP_FOLDER_REMOVE_BUTTON === 1 ||
+                    (opt.APP_FOLDER_REMOVE_BUTTON === 2 && Date.now() - this._removeButton._lastClick < Clutter.Settings.get_default().double_click_time)) {
+                    // Close dialog to avoid crashes
+                    this._isOpen = false;
+                    this._grabHelper.ungrab({ actor: this });
+                    this.emit('open-state-changed', false);
+                    this.hide();
+                    this._popdownCallbacks.forEach(func => func());
+                    this._popdownCallbacks = [];
+                    _appDisplay.ease({
+                        opacity: 255,
+                        duration: FOLDER_DIALOG_ANIMATION_TIME,
+                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    });
 
-        this._closeButton.connect('clicked', () => {
-            this.popdown();
-        });
+                    // Reset all keys to delete the relocatable schema
+                    this._view._deletingFolder = true; // Upstream property
+                    let keys = this._folder.settings_schema.list_keys();
+                    for (const key of keys)
+                        this._folder.reset(key);
 
-        this._entryBox.add_child(this._closeButton);
+                    let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+                    let folders = settings.get_strv('folder-children');
+                    folders.splice(folders.indexOf(this._view._id), 1);
+
+                    // remove all abandoned folders (usually my own garbage and unwanted default folders...)
+                    /* const appFolders = _appDisplay._folderIcons.map(icon => icon._id);
+                    folders.forEach(folder => {
+                        if (!appFolders.includes(folder)) {
+                            folders.splice(folders.indexOf(folder._id), 1);
+                        }
+                    });*/
+                    settings.set_strv('folder-children', folders);
+
+                    this._view._deletingFolder = false;
+                    return;
+                }
+                this._removeButton._lastClick = Date.now();
+            });
+
+            this._entryBox.add_child(this._removeButton);
+            this._entryBox.set_child_at_index(this._removeButton, 0);
+        }
+
+        // Close button
+        if (opt.APP_FOLDER_CLOSE_BUTTON) {
+            this._closeButton = new St.Button({
+                style_class: 'icon-button edit-folder-button',
+                button_mask: St.ButtonMask.ONE,
+                toggle_mode: false,
+                reactive: true,
+                can_focus: true,
+                x_align: Clutter.ActorAlign.END,
+                y_align: Clutter.ActorAlign.CENTER,
+                child: new St.Icon({
+                    icon_name: 'window-close-symbolic',
+                    icon_size: 16,
+                }),
+            });
+
+            this._closeButton.connect('clicked', () => {
+                this.popdown();
+            });
+
+            this._entryBox.add_child(this._closeButton);
+        }
     },
 
     popup() {
@@ -1471,6 +1503,9 @@ const AppFolderDialog = {
 
         if (!this._isOpen)
             return;
+
+        // Always open the folder on the first page. 'false' to skip animation
+        this._view.goToPage(0, false);
 
         this.get_parent().set_child_above_sibling(this, null);
 
