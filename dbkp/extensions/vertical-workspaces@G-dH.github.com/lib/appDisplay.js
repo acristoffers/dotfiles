@@ -124,6 +124,7 @@ export const AppDisplayModule = class {
 
     _disableModule() {
         Me.Modules.iconGridModule.update(true);
+        _appDisplay.setGridPageNulling(true);
 
         if (this._overrides)
             this._overrides.removeAll();
@@ -210,6 +211,7 @@ export const AppDisplayModule = class {
                     return GLib.SOURCE_REMOVE;
                 });
             }
+            _appDisplay.setGridPageNulling(!opt.APP_GRID_REMEMBER_PAGE);
         }
     }
 
@@ -580,6 +582,13 @@ const BaseAppViewCommon = {
             overrides.addOverride('FolderGridLayoutHorizontal', this._appGridLayout, BaseAppViewGridLayoutHorizontal);
             this._pageIndicators.set_style('margin-bottom: 22px;');
         }
+
+        this.setGridPageNulling(!opt.APP_GRID_REMEMBER_PAGE);
+        // This callback is executed after the overrides are removed
+        this.connect('destroy', () => {
+            if (this._overviewHiddenId)
+                Main.overview.disconnect(this._overviewHiddenId);
+        });
     },
 
     _adaptForOrientation(orientation, folder) {
@@ -610,7 +619,9 @@ const BaseAppViewCommon = {
         const pageIndicators = this._pageIndicators;
         if (pageIndicators.orientation !== undefined) { // since GNOME 48
             pageIndicators.orientation = orientation;
-            this._box.orientation = orientation;
+            this._box.orientation = vertical
+                ? Clutter.Orientation.HORIZONTAL
+                : Clutter.Orientation.VERTICAL;
         } else {
             pageIndicators.vertical = vertical;
             this._box.vertical = !vertical;
@@ -724,7 +735,8 @@ const BaseAppViewCommon = {
 
         // Remove old app icons
         removedApps.forEach(icon => {
-            this._removeItem(icon);
+            if (this._items.has(icon.id))
+                this._removeItem(icon);
             icon.destroy();
         });
 
@@ -876,6 +888,15 @@ const BaseAppViewCommon = {
             this._maybeMoveItem(dragEvent);
 
         return DND.DragMotionResult.CONTINUE;
+    },
+
+    setGridPageNulling(active = false) {
+        if (active && !this._overviewHiddenId) {
+            this._overviewHiddenId = Main.overview.connect('hidden', () => this.goToPage(0));
+        } else if (!active && this._overviewHiddenId) {
+            Main.overview.disconnect(this._overviewHiddenId);
+            this._overviewHiddenId = 0;
+        }
     },
 };
 
@@ -1383,6 +1404,9 @@ const AppFolderDialog = {
         // Redundant, added just because of extensions.gnome.org rules
         this.connect('destroy', this._removePopdownTimeout.bind(this));
         this._viewBox.add_style_class_name('app-folder-dialog-translucent');
+
+        // Hide the dialog immediately after an app is activated and overview is hiding
+        Main.overview.connectObject('hiding', () => this.hide(), this);
     },
 
     after__addFolderNameEntry() {
@@ -1503,9 +1527,6 @@ const AppFolderDialog = {
 
         if (!this._isOpen)
             return;
-
-        // Always open the folder on the first page. 'false' to skip animation
-        this._view.goToPage(0, false);
 
         this.get_parent().set_child_above_sibling(this, null);
 
@@ -1964,6 +1985,10 @@ const AppFolderDialog = {
         this._switchActor(this._entry, this._folderNameLabel);
         // This line has been added in 47 to fix focus after editing the folder name
         this.navigate_focus(this, St.DirectionType.TAB_FORWARD, false);
+    },
+
+    after__onDestroy() {
+        Main.overview.disconnectObject(this);
     },
 };
 

@@ -240,7 +240,7 @@ const ControlsManagerCommon = {
         this._updateWorkspacesDisplay(currentState, opacity);
         this._updateAppDisplay(initialState, finalState, progress, opacity);
         this._updateOverviewTransitions(initialState, finalState, progress);
-        this._updateOverviewStackOrder(currentState);
+        this._updateOverviewStackOrder(currentState, initialState, finalState);
     },
 
     _getOpacityForState(state) {
@@ -369,11 +369,11 @@ const ControlsManagerCommon = {
         }
     },
 
-    _updateOverviewStackOrder(currentState) {
+    _updateOverviewStackOrder(currentState, initialState, finalState) {
         // getStateTransitionParams() doesn't recognize reverse direction of a swipe gesture
         // which means that initialState is always lower than finalState when swipe gesture is used
-        const staticWorkspace  = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE; // && !(initialState === ControlsState.WINDOW_PICKER && opt.WORKSPACE_MODE);
-        const dashShouldBeAbove = staticWorkspace || currentState >= 1;
+        const staticWorkspace  = opt.OVERVIEW_MODE2 && (!opt.WORKSPACE_MODE || !Main.overview._animationInProgress); // && !(initialState === ControlsState.WINDOW_PICKER && opt.WORKSPACE_MODE);
+        const dashShouldBeAbove = staticWorkspace || (currentState >= 1 && Math.abs(finalState - initialState) < 2);
 
         if (!this._dashIsAbove && dashShouldBeAbove)
             this._setDashAboveSiblings();
@@ -462,10 +462,24 @@ const ControlsManagerCommon = {
 
     _searchAppGridMode(searchActive) {
         const appSearchModeActive = opt.SEARCH_APP_GRID_MODE && this.dash.showAppsButton.checked;
-        if (searchActive && appSearchModeActive)
+        if (searchActive && appSearchModeActive) {
             this._activateSearchAppGridMode();
-        else
+        } else if (Main.overview._shown) {
             this._deactivateSearchAppGridMode();
+        } else {
+            // If the overview is hiding at this moment,
+            // an app might be activated
+            // Wait until the launch animation finishes
+            _timeouts.cancelAppGridSearch = GLib.timeout_add(
+                GLib.PRIORITY_DEFAULT,
+                250 * St.Settings.get().slow_down_factor,
+                () => {
+                    this._deactivateSearchAppGridMode();
+                    _timeouts.cancelAppGridSearch = 0;
+                    return GLib.SOURCE_REMOVE;
+                }
+            );
+        }
         return appSearchModeActive;
     },
 

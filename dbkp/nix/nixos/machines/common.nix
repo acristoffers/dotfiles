@@ -118,7 +118,7 @@ rec {
     drivers = with pkgs; [
       gutenprint
       gutenprintBin
-      hplipWithPlugin
+      # hplipWithPlugin
     ];
   };
 
@@ -282,6 +282,9 @@ rec {
     allowed-users = [ "alan" ];
     trusted-users = [ "root" "alan" ];
   };
+  nix.extraOptions = ''
+    download-buffer-size = 209715200 # 200 MB
+  '';
 
   services.avahi = {
     enable = true;

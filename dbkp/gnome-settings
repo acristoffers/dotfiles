@@ -196,7 +196,7 @@ screen-reader-enabled=false
 enable=false
 
 [org/gnome/desktop/a11y/magnifier]
-mag-factor=2.0
+mag-factor=3.0
 
 [org/gnome/desktop/app-folders]
 folder-children=['Utilities', 'YaST']
@@ -402,7 +402,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -619,7 +619,7 @@ show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
 initial-size=(843, 460)
-initial-size-file-chooser=(890, 550)
+initial-size-file-chooser=(843, 460)
 maximized=false
 
 [org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
@@ -768,7 +768,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Developer/GitHub/kwin-rectangle'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -1060,9 +1060,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1741251245
+check-timestamp=int64 1743241563
 first-run=false
-flatpak-purge-timestamp=int64 1741312379
+flatpak-purge-timestamp=int64 1743212638
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1738045431
@@ -1160,7 +1160,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/debian-12.4.0-amd64-netinst.iso']
+isos=['/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -1170,6 +1170,10 @@ network-traffic=false
 autoconnect=1
 resize-guest=1
 vm-window-size=(2560, 1374)
+
+[org/virt-manager/virt-manager/vms/062a069537684a35bda395c758017276]
+autoconnect=1
+vm-window-size=(2544, 1358)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1
