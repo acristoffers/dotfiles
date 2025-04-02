@@ -43,6 +43,10 @@ version='1.5.27'
 favorites=['º', '🤦\u200d♂️', '😃', '🤦🏼\u200d♀️', '🦄', '🦇', '🫚', '🍸', 'ៈ']
 hotkey=['<Super>period']
 
+[me/acristoffers/void]
+dark-theme=true
+use-system=true
+
 [org/fedorahosted/background-logo-extension]
 logo-position='bottom-right'
 
@@ -768,7 +772,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Developer/GitHub/kwin-rectangle'
+last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.signal.Signal]
 last-folder-path='/home/alan/Downloads'
@@ -1060,9 +1064,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1743241563
+check-timestamp=int64 1743585754
 first-run=false
-flatpak-purge-timestamp=int64 1743212638
+flatpak-purge-timestamp=int64 1743553286
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1738045431

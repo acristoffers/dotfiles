@@ -6,6 +6,8 @@
 [user]
   name = Álan Crístoffer
   email = acristoffers@startmail.com
+[includeIf "gitdir:~/git/"]
+  path = gitconfig.vitibot
 [colum]
   ui = auto
 [pull]
@@ -21,6 +23,7 @@
 [merge "tool.nvim"]
   cmd = nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
 [merge]
+  conflictstyle = zdiff3
   tool = nvimdiff
 [credential]
   helper = store --file=/home/alan/.local/share/git/credentials
@@ -28,3 +31,21 @@
   format = ssh
 [user]
   signingkey = /home/alan/.ssh/id.pub
+[color.decorate]
+  HEAD = bold "#"cba6f7
+  branch = bold "#"89dceb
+  remoteBranch = bold "#"74c7ec
+  tag = bold "#"f9e2af
+  stash = bold "#"f38ba8
+  grafted = bold "#"a6e3a1
+  replace = bold "#"b4befe
+[grep]
+  lineNumber = true
+  patternType = perl
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  dark = true      # or light = true, or omit for auto-detection

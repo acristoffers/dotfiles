@@ -33,6 +33,10 @@
     };
     git = {
       mainBranches = [ "main" "develop" "master" ];
+      paging = {
+        colorArg = "always";
+        pager = "delta --dark --paging=never";
+      };
     };
     promptToReturnFromSubprocess = false;
   };

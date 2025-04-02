@@ -9,6 +9,7 @@ with pkgs; [
   cacert
   cowsay
   curl
+  delta
   dogdns
   du-dust
   duf

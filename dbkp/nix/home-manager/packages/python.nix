@@ -3,7 +3,7 @@ pkgs:
 with pkgs; (python312.withPackages (p: with p; [
   argcomplete
   autopep8
-  black-macchiato
+  black
   flake8
   git-filter-repo
   ipython
