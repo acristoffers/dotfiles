@@ -139,7 +139,7 @@
        :desc "Delete surrounding FCall"            "dSF" #'delete-surrounding-fcall
        :desc "Open folder in File Manager"         "o i" #'centaur-tabs-open-directory-in-external-application
        (:prefix "f"
-        :desc "Open Ledger" "L" (lambda (&rest _) (interactive) (find-file "~/.org/finances/2024.ledger"))))
+        :desc "Open Ledger" "L" (lambda (&rest _) (interactive) (find-file "~/.org/finances/2025.ledger"))))
       (:after evil-org
        :map evil-org-mode-map
        :desc "Next field"                   "C-c l" #'org-table-next-field
