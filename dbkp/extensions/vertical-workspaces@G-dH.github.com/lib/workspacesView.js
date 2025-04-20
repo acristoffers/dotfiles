@@ -179,7 +179,7 @@ const WorkspacesViewCommon = {
         case ControlsState.WINDOW_PICKER:
             return opt.WORKSPACE_MODE;
         case ControlsState.APP_GRID:
-            return (this._monitorIndex !== global.display.get_primary_monitor() || !opt.WS_ANIMATION) && !opt.OVERVIEW_MODE ? 1 : 0;
+            return (this._monitorIndex !== global.display.get_primary_monitor() || !opt.WS_ANIMATION) && opt.WORKSPACE_MODE ? 1 : 0;
         }
 
         return 0;
@@ -247,13 +247,13 @@ const WorkspacesViewCommon = {
                 w.remove_all_transitions();
                 w.visible = true;
                 const directionNext = distance > 0;
-                if (!opt.ORIENTATION) {
-                    const width = w.width * 0.6 * opt.WS_PREVIEW_SCALE;
-                    w.translation_x = directionNext ? -width : width;
-                }
+
                 if (opt.ORIENTATION) {
                     const height = w.height * 0.6 * opt.WS_PREVIEW_SCALE;
                     w.translation_y = directionNext ? -height : height;
+                } else {
+                    const width = w.width * 0.6 * opt.WS_PREVIEW_SCALE;
+                    w.translation_x = directionNext ? -width : width;
                 }
 
                 w.opacity = 10;
@@ -294,6 +294,10 @@ const WorkspacesViewCommon = {
                 adj.ease(1, {
                     duration: 200,
                     mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onComplete: () => {
+                        if (opt.OVERVIEW_SELECT_WINDOW)
+                            Me.Util.activateKeyboardForWorkspaceView();
+                    },
                 });
             }
         });
@@ -772,6 +776,10 @@ const ExtraWorkspaceViewCommon = {
             adjustment.ease(1, {
                 duration: 200,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => {
+                    if (opt.OVERVIEW_SELECT_WINDOW)
+                        Me.Util.activateKeyboardForWorkspaceView();
+                },
             });
         }
     },
@@ -862,11 +870,6 @@ const WorkspacesDisplayCommon = {
 
             if (direction) {
                 Me.Util.reorderWorkspace(direction);
-                // make all workspaces on primary monitor visible for case the new position is hidden
-                const primaryMonitorIndex = global.display.get_primary_monitor();
-                Main.overview._overview._controls._workspacesDisplay._workspacesViews[primaryMonitorIndex]._workspaces.forEach(w => {
-                    w.visible = true;
-                });
                 return Clutter.EVENT_STOP;
             }
         }
@@ -886,18 +889,14 @@ const WorkspacesDisplayCommon = {
         const vertical = workspaceManager.layout_rows === -1;
         const rtl = this.get_text_direction() === Clutter.TextDirection.RTL;
         const state = this._overviewAdjustment.value;
+        const modifierState = event.get_state();
+        const isShiftPressed = Me.Util.isShiftPressed(modifierState);
+        const isCtrlPressed = Me.Util.isCtrlPressed(modifierState);
+        const isAltPressed = Me.Util.isAltPressed(modifierState);
+        const isSuperPressed = Me.Util.isSuperPressed(modifierState);
 
         let which;
         switch (symbol) {
-        case Clutter.KEY_Return:
-        case Clutter.KEY_KP_Enter:
-            if (Me.Util.isCtrlPressed()) {
-                Main.ctrlAltTabManager._items.forEach(i => {
-                    if (i.sortGroup === 1 && i.name === 'Dash')
-                        Main.ctrlAltTabManager.focusGroup(i);
-                });
-            }
-            return Clutter.EVENT_STOP;
         case Clutter.KEY_Page_Up:
             if (vertical)
                 which = Meta.MotionDirection.UP;
@@ -921,24 +920,25 @@ const WorkspacesDisplayCommon = {
             which = workspaceManager.n_workspaces - 1;
             break;
         case Clutter.KEY_space:
-            if (Me.Util.isCtrlPressed() && Me.Util.isShiftPressed())
+            if (isCtrlPressed && isShiftPressed)
                 Me.Util.openPreferences();
-            else if (Me.Util.isAltPressed())
+            else if (isAltPressed || isSuperPressed)
                 Me.Util.focusDash();
-            else if (Me.Util.getEnabledExtensions('extensions-search-provider').length && Me.Util.isCtrlPressed())
+            else if (Me.Util.getEnabledExtensions('extensions-search-provider').length && isCtrlPressed)
                 Me.Util.activateSearchProvider(Me.ESP_PREFIX);
             else if (Me.Util.getEnabledExtensions('windows-search-provider').length)
                 Me.Util.activateSearchProvider(Me.WSP_PREFIX);
-
-
             return Clutter.EVENT_STOP;
         case Clutter.KEY_Down:
         case Clutter.KEY_Left:
         case Clutter.KEY_Right:
         case Clutter.KEY_Up:
         case Clutter.KEY_Tab:
-            if (symbol === Clutter.KEY_Tab && Me.Util.isSuperPressed(event.get_state())) {
-                Me.Util.focusDash();
+        case Clutter.KEY_ISO_Left_Tab:
+            if ([Clutter.KEY_Tab, Clutter.KEY_ISO_Left_Tab].includes(symbol) &&
+                isSuperPressed && global.display.get_n_monitors() === 1
+            ) {
+                Me.Util.switchToNextWorkspace(event);
                 return Clutter.EVENT_STOP;
             }
             if (Main.overview.searchController.searchActive) {
@@ -960,6 +960,22 @@ const WorkspacesDisplayCommon = {
             }
 
             return Clutter.EVENT_STOP;
+        case Clutter.KEY_Delete:
+            if (isCtrlPressed && isShiftPressed) {
+                Me.Util.closeWorkspace(
+                    global.workspace_manager.get_active_workspace(),
+                    global.display.get_primary_monitor()
+                );
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
+        case Clutter.KEY_Return:
+        case Clutter.KEY_KP_Enter:
+            if (isSuperPressed) {
+                Me.Util.focusDash();
+                return Clutter.EVENT_STOP;
+            }
+            return Clutter.EVENT_PROPAGATE;
         default:
             return Clutter.EVENT_PROPAGATE;
         }
@@ -975,7 +991,7 @@ const WorkspacesDisplayCommon = {
             // Otherwise it is a workspace index
             ws = workspaceManager.get_workspace_by_index(which);
 
-        if (Me.Util.isShiftPressed()) {
+        if (isShiftPressed) {
             let direction;
             if (which === Meta.MotionDirection.UP || which === Meta.MotionDirection.LEFT)
                 direction = -1;
@@ -983,10 +999,6 @@ const WorkspacesDisplayCommon = {
                 direction = 1;
             if (direction)
                 Me.Util.reorderWorkspace(direction);
-                // make all workspaces on primary monitor visible for case the new position is hidden
-            Main.overview._overview._controls._workspacesDisplay._workspacesViews[0]._workspaces.forEach(w => {
-                w.visible = true;
-            });
             return Clutter.EVENT_STOP;
         }
 

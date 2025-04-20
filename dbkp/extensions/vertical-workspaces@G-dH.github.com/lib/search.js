@@ -28,7 +28,7 @@ let Me;
 let _;
 let opt;
 
-const SEARCH_MAX_WIDTH = 1092;
+const SEARCH_MAX_WIDTH = 1104;
 
 export const SearchModule = class {
     constructor(me) {
@@ -145,7 +145,7 @@ const AppSearchProvider = {
             });
         }
 
-        const pattern = terms.join(' ');
+        let pattern = terms.join(' ');
 
         let appInfoList = Shell.AppSystem.get_default().get_installed();
 
@@ -161,9 +161,11 @@ const AppSearchProvider = {
             let name;
             let shouldShow = false;
             if (appInfo.get_display_name) {
-                // show only launchers that should be visible in this DE
-                shouldShow = appInfo.should_show() && this._parentalControlsManager.shouldShowApp(appInfo);
-
+                const cmd = appInfo.get_commandline();
+                const isSettingsLauncher = cmd?.includes('gnome-control-center');
+                // show only launchers that should be visible in this DE and Settings sections launchers if enabled
+                shouldShow = (appInfo.should_show() && this._parentalControlsManager.shouldShowApp(appInfo)) ||
+                    (opt.SEARCH_INCLUDE_SETTINGS && isSettingsLauncher);
                 if (shouldShow) {
                     let id = appInfo.get_id().split('.');
                     id = id[id.length - 2] || '';
@@ -174,7 +176,14 @@ const AppSearchProvider = {
                     let categories = appInfo.get_string('Categories')?.replace(/;/g, ' ') || '';
                     let keywords = appInfo.get_string('Keywords')?.replace(/;/g, ' ') || '';
                     name = `${dispName} ${id}`;
-                    string = `${dispName} ${gName} ${baseName} ${description} ${categories} ${keywords} ${id}`;
+                    let packageType = '';
+                    if (cmd?.includes('snapd'))
+                        packageType += ' !Snap!';
+                    else if (cmd?.includes('flatpak'))
+                        packageType += ' !Flatpak!';
+                    else if (cmd?.toLowerCase().includes('.appimage'))
+                        packageType += ' !AppImage!';
+                    string = `${dispName} ${gName} ${baseName} ${description} ${categories} ${keywords} ${id} ${packageType}`;
                 }
             }
 
@@ -205,8 +214,19 @@ const AppSearchProvider = {
         if (opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked)
             this._filterAppGrid(results);
 
-        results = results.concat(this._systemActions.getMatchingActions(terms));
+        let sysActionList = Array.from(this._systemActions._actions.keys());
+        const match = opt.SEARCH_FUZZY ? Me.Util.fuzzyMatch : Me.Util.strictMatch;
+        pattern = pattern.replace(/^\.\./, '');
+        sysActionList = sysActionList.filter(id =>
+            match(pattern, `${this._systemActions.getName(id)} ${this._systemActions._actions.get(id).keywords.join(' ')}`) > -1
+        );
+        sysActionList.sort((a, b) => Me.Util.isMoreRelevant(
+            `${this._systemActions.getName(a)} ${this._systemActions._actions.get(a).keywords.join(' ')}`,
+            `${this._systemActions.getName(b)} ${this._systemActions._actions.get(a).keywords.join(' ')}`,
+            pattern)
+        );
 
+        results = results.concat(sysActionList);
         return new Promise(resolve => resolve(results));
     },
 
@@ -342,10 +362,12 @@ const SearchResultsView = {
             return display.getFirstResult() !== null;
         });
 
-        this._scrollView.visible = haveResults;
-        this._statusBin.visible = !haveResults;
+        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
 
-        if (!haveResults) {
+        this._scrollView.visible = haveResults || staticWorkspace;
+        this._statusBin.visible = !haveResults && !staticWorkspace;
+
+        if (!haveResults && !staticWorkspace) {
             if (this.searchInProgress)
                 this._statusText.set_text(_('Searching…'));
             else

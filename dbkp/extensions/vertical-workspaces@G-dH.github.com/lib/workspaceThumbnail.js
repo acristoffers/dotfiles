@@ -3,7 +3,7 @@
  * workspaceThumbnail.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2024
+ * @copyright  2022 - 2025
  * @license    GPL-3.0
  *
  */
@@ -23,6 +23,7 @@ import * as AppDisplay from 'resource:///org/gnome/shell/ui/appDisplay.js';
 import * as OverviewControls from 'resource:///org/gnome/shell/ui/overviewControls.js';
 import * as WorkspaceThumbnail from 'resource:///org/gnome/shell/ui/workspaceThumbnail.js';
 import * as Background from 'resource:///org/gnome/shell/ui/background.js';
+import { TransientSignalHolder } from 'resource:///org/gnome/shell/misc/signalTracker.js';
 
 let Me;
 let opt;
@@ -257,14 +258,16 @@ const WorkspaceThumbnailCommon = {
         });
 
         if (opt.SHOW_WS_TMB_BG) {
+            const backgroundGroup = new Meta.BackgroundGroup();
             this._bgManager = new Background.BackgroundManager({
                 monitorIndex: this.monitorIndex,
-                container: this._viewport,
+                container: backgroundGroup,
                 vignette: false,
                 controlPosition: false,
             });
 
-            this._viewport.set_child_below_sibling(this._bgManager.backgroundActor, null);
+            this._viewport.add_child(backgroundGroup);
+            this._viewport.set_child_below_sibling(backgroundGroup, null);
 
             // full brightness of the thumbnail bg draws unnecessary attention
             // there is a grey bg under the wallpaper
@@ -281,14 +284,12 @@ const WorkspaceThumbnailCommon = {
             if (this._updateLabelTimeout)
                 GLib.source_remove(this._updateLabelTimeout);
 
-            if (this._bgManager)
-                this._bgManager.destroy();
+            this._bgManager?.destroy();
         });
     },
 
     _closeWorkspace() {
         // CLOSE_WS_BUTTON_MODE 1: single click, 2: double-click, 3: Ctrl
-
         if (opt.CLOSE_WS_BUTTON_MODE === 2) {
             const doubleClickTime = Clutter.Settings.get_default().double_click_time;
             const clickDelay = Date.now() - this._lastCloseClickTime;
@@ -300,15 +301,7 @@ const WorkspaceThumbnailCommon = {
             return;
         }
 
-        // close windows on this monitor
-        const windows = global.display.get_tab_list(0, null).filter(
-            w => w.get_monitor() === this.monitorIndex && w.get_workspace() === this.metaWorkspace
-        );
-
-        for (let i = 0; i < windows.length; i++) {
-            if (!windows[i].is_on_all_workspaces())
-                windows[i].delete(global.get_current_time() + i);
-        }
+        Me.Util.closeWorkspace(this.metaWorkspace, this.monitorIndex);
     },
 
     activate(time) {
@@ -393,16 +386,14 @@ const WorkspaceThumbnailCommon = {
         } else if (!source.app && source.shellWorkspaceLaunch) {
             // While unused in our own drag sources, shellWorkspaceLaunch allows
             // extensions to define custom actions for their drag sources.
+            // V-Shell only adds actor to the dictionary
+            // so the shellWorkspaceLaunch() can get the position of the dragged clone
             source.shellWorkspaceLaunch({
                 workspace: this.metaWorkspace.index(),
                 timestamp: time,
+                actor,
             });
             return true;
-        } else if (source instanceof AppDisplay.FolderIcon) {
-            for (let app of source.view._apps) {
-                // const app = Shell.AppSystem.get_default().lookup_app(id);
-                app.open_new_window(this.metaWorkspace.index());
-            }
         }
 
         return false;
@@ -446,7 +437,6 @@ const ThumbnailsBoxCommon = {
                 !(source instanceof AppDisplay.FolderIcon))
                 return false;
 
-
             let isWindow = !!source.metaWindow;
 
             let newWorkspaceIndex;
@@ -468,15 +458,13 @@ const ThumbnailsBoxCommon = {
             } else if (!source.app && source.shellWorkspaceLaunch) {
                 // While unused in our own drag sources, shellWorkspaceLaunch allows
                 // extensions to define custom actions for their drag sources.
+                // V-Shell only adds actor to the dictionary
+                // so the shellWorkspaceLaunch() can get the position of the dragged clone
                 source.shellWorkspaceLaunch({
                     workspace: newWorkspaceIndex,
                     timestamp: time,
+                    actor,
                 });
-            } else if (source instanceof AppDisplay.FolderIcon) {
-                for (let app of source.view._apps) {
-                    // const app = Shell.AppSystem.get_default().lookup_app(id);
-                    app.open_new_window(newWorkspaceIndex);
-                }
             }
 
             if (source.app || (!source.app && source.shellWorkspaceLaunch)) {
@@ -552,6 +540,78 @@ const ThumbnailsBoxCommon = {
             return source.metaWindow ? DND.DragMotionResult.MOVE_DROP : DND.DragMotionResult.COPY_DROP;
         else
             return DND.DragMotionResult.CONTINUE;
+    },
+
+    _createThumbnails() {
+        if (this._thumbnails.length > 0)
+            return;
+
+        const { workspaceManager } = global;
+        this._transientSignalHolder = new TransientSignalHolder(this);
+        workspaceManager.connectObject(
+            'notify::n-workspaces', this._workspacesChanged.bind(this),
+            'active-workspace-changed', () => this._updateIndicator(),
+            'workspaces-reordered', () => {
+                this._animateReorder();
+            }, this._transientSignalHolder);
+        Main.overview.connectObject('windows-restacked',
+            this._syncStacking.bind(this), this._transientSignalHolder);
+
+        this._targetScale = 0;
+        this._scale = 0;
+        this._pendingScaleUpdate = false;
+        this._unqueueUpdateStates();
+
+        this._stateCounts = {};
+        for (let key in ThumbnailState)
+            this._stateCounts[ThumbnailState[key]] = 0;
+
+        this.addThumbnails(0, workspaceManager.n_workspaces);
+
+        this._updateShouldShow();
+    },
+
+    _animateReorder() {
+        // Store the original position of each thumbnail
+        // so it can be used while thumbnails are still transitioning
+        // from the previous reorder.
+        if (!this._thumbnailsPositionMap) {
+            this._thumbnailsPositionMap = [];
+            this._thumbnails.forEach(tmb =>
+                // For some reason the affected thumbnails returns zero position in the thumbnailsBox.
+                // Therefore we have to get absolute position on the screen.
+                this._thumbnailsPositionMap.push(tmb.get_transformed_position())
+            );
+        }
+
+        this._thumbnails.forEach((tmb, index, thumbnails) => {
+            const newPosition = tmb.metaWorkspace.index();
+            // The thumbnail of the workspace being reordered should remain on top during the transition.
+            if (tmb.metaWorkspace.active)
+                tmb.get_parent().set_child_below_sibling(tmb, this._indicator);
+            if (index !== newPosition) {
+                let [newX, newY] = this._thumbnailsPositionMap[newPosition];
+                let [x, y] = this._thumbnailsPositionMap[index];
+                tmb.ease({
+                    duration: 250,
+                    translation_x: newX - x,
+                    translation_y: newY - y,
+                    onComplete: () => {
+                        delete this._thumbnailsPositionMap;
+                        this._thumbnails.forEach(t => {
+                            thumbnails[newPosition].translation_x = 0;
+                            thumbnails[newPosition].translation_y = 0;
+                            t.translation_x = 0;
+                            t.translation_y = 0;
+                        });
+                        this._thumbnails.sort((a, b) => {
+                            return a.metaWorkspace.index() - b.metaWorkspace.index();
+                        });
+                        this.queue_relayout();
+                    },
+                });
+            }
+        });
     },
 
     _updateStates() {

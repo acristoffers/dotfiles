@@ -3,7 +3,7 @@
  * windowPreview.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2024
+ * @copyright  2022 - 2025
  * @license    GPL-3.0
  *
  */
@@ -379,20 +379,6 @@ const WindowPreviewCommon = {
         if (opt.ALWAYS_SHOW_WIN_TITLES)
             this._title.show();
 
-        if (opt.OVERVIEW_MODE === 1) {
-            // spread windows on hover
-            this._wsStateConId = this.connect('enter-event', () => {
-                // prevent spreading windows immediately after entering overview
-                if (global.get_pointer()[0] === opt.showingPointerX || Main.overview._overview._controls._stateAdjustment.value < 1)
-                    return;
-
-                opt.WORKSPACE_MODE = 1;
-                const view = this._workspace.get_parent();
-                view.exposeWindows();
-                this.disconnect(this._wsStateConId);
-            });
-        }
-
         if (opt.OVERVIEW_MODE) {
             // show window icon and title on ws windows spread
             this._stateAdjustmentSigId = this._workspace.stateAdjustment.connect('notify::value', this._updateIconScale.bind(this));
@@ -418,6 +404,71 @@ const WindowPreviewCommon = {
             laters.remove(this._longPressLater);
             delete this._longPressLater;
         }
+    },
+
+    _activate() {
+        // If another window is currently selected,
+        // show the overlay without animation
+        // to keep this window on top of others
+        // during the transition from the overview.
+        this.showOverlay(false);
+
+        opt.CANCEL_ALWAYS_ACTIVATE_SELECTED = true;
+        this.emit('selected', global.get_current_time());
+    },
+
+    vfunc_enter_event(event) {
+        // Ignore this event if the mouse hasn't been used since triggering the overview
+        if (global.get_pointer()[0] === opt.showingPointerX)
+            return Clutter.EVENT_PROPAGATE;
+
+        if (opt.OVERVIEW_MODE === 1 && !opt.WORKSPACE_MODE && Main.overview._overview._controls._stateAdjustment.value === 1) {
+            // Spread windows on hover
+            Me.Util.exposeWindows();
+        }
+
+        this.showOverlay(true);
+        return Shell.WindowPreview.prototype.vfunc_enter_event.bind(this)(event);
+    },
+
+    vfunc_key_press_event(event) {
+        let symbol = event.get_key_symbol();
+
+        switch (symbol) {
+        case Clutter.KEY_Return:
+        case Clutter.KEY_KP_Enter:
+            if (Me.Util.isSuperPressed(event.get_state()))
+                Me.Util.focusDash();
+            else
+                this._activate();
+            return Clutter.EVENT_STOP;
+        case Clutter.KEY_Delete:
+            if (!Me.Util.isCtrlPressed() && !Me.Util.isShiftPressed()) {
+                // Close window
+                this._deleteAll();
+                return Clutter.EVENT_STOP;
+            }
+            break;
+        case Clutter.KEY_Tab:
+        case Clutter.KEY_ISO_Left_Tab:
+            if (Me.Util.isSuperPressed(event.get_state())) {
+                if (global.display.get_n_monitors() === 1)
+                    Me.Util.switchToNextWorkspace(event);
+                else
+                    this._switchMonitorFocus();
+                return Clutter.EVENT_STOP;
+            }
+            break;
+        }
+
+        return Shell.WindowPreview.prototype.vfunc_key_press_event.bind(this)(event);
+    },
+
+    _switchMonitorFocus() {
+        const nMonitors = global.display.get_n_monitors();
+        const currentMonitorIndex = this.metaWindow.get_monitor();
+        const nextMonitorIndex = (currentMonitorIndex + 1) % nMonitors;
+        Me.Util.activateKeyboardForWorkspaceView(nextMonitorIndex);
     },
 
     _searchAppWindowsAction() {
@@ -602,8 +653,50 @@ const WindowPreviewCommon = {
         return [topOverlap, bottomOverlap];
     },
 
+    property_windowCenter: {
+        get() {
+            // This the easiest way to change the default window sorting in the overview
+            // which uses position of the windows on the screen to minimize travel
+            if (opt.SORT_OVERVIEW_WINDOWS_MRU) {
+                return {
+                    x: global.display.get_tab_list(0, null).indexOf(this.metaWindow),
+                    y: global.display.get_tab_list(0, null).indexOf(this.metaWindow),
+                };
+            } else if (opt.SORT_OVERVIEW_WINDOWS_STABLE) {
+                return {
+                    x: this.metaWindow.get_stable_sequence(),
+                    y: this.metaWindow.get_stable_sequence(),
+                };
+            } else {
+                return {
+                    x: this._cachedBoundingBox.x + this._cachedBoundingBox.width / 2,
+                    y: this._cachedBoundingBox.y + this._cachedBoundingBox.height / 2,
+                };
+            }
+        },
+    },
+
+    property_overlayEnabled: {
+        set(enabled) {
+            this._overlayEnabled = enabled;
+            this.notify('overlay-enabled');
+
+            if (!enabled)
+                this.hideOverlay(false);
+            else if (global.get_pointer()[0] !== opt.showingPointerX && (this['has-pointer'] || global.stage.key_focus === this))
+                this.showOverlay(true);
+        },
+    },
+
+    removeOverlayTimeout() {
+        if (this._idleHideOverlayId) {
+            GLib.source_remove(this._idleHideOverlayId);
+            this._idleHideOverlayId = 0;
+        }
+    },
+
     _onDestroy() {
-        if (this._activateSelected)
+        if (this._activateSelected && !opt.CANCEL_ALWAYS_ACTIVATE_SELECTED)
             this._activate();
 
         this.metaWindow._delegate = null;

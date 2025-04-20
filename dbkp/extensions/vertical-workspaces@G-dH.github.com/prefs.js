@@ -943,10 +943,15 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
-                _('Show Wallpaper'),
-                _('Replaces the solid grey background in the overview with the current desktop wallpaper'),
-                itemFactory.newSwitch(),
-                'showBgInOverview'
+                _('Show wallpaper'),
+                _('Replaces the solid grey background in the overview with the current desktop wallpaper. If you have a weak computer or prefer low system load and want to blur the wallpaper, the "Fast Blur Transitions" option is for you'),
+                itemFactory.newDropDown(),
+                'showOverviewBackground',
+                [
+                    [_('Disable (Default)'), 0],
+                    [_('Enable - Fast Blur Transitions'), 1],
+                    [_('Enable - Smooth Blur Transitions'), 2],
+                ]
             )
         );
 
@@ -960,10 +965,31 @@ export default class VShell extends ExtensionPreferences {
         const bgBrightnessScale = itemFactory.newScale(brightnessBgAdjustment);
         optionList.push(
             itemFactory.getRowWidget(
-                _('Brightness'),
+                _('Brightness - Window Picker'),
                 _('Brightness of the background wallpaper in the overview'),
                 bgBrightnessScale,
-                'overviewBgBrightness'
+                'overviewBgBrightness',
+                null,
+                'showOverviewBackground'
+            )
+        );
+
+        const appGridBrightnessBgAdjustment = new Gtk.Adjustment({
+            upper: 100,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 10,
+        });
+
+        const appGridBrightnessScale = itemFactory.newScale(appGridBrightnessBgAdjustment);
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Brightness - App Grid'),
+                _('Brightness of the background wallpaper in the application menu'),
+                appGridBrightnessScale,
+                'appGridBgBrightness',
+                null,
+                'showOverviewBackground'
             )
         );
 
@@ -977,15 +1003,17 @@ export default class VShell extends ExtensionPreferences {
         const searchBgBrightnessScale = itemFactory.newScale(searchBrightnessBgAdjustment);
         optionList.push(
             itemFactory.getRowWidget(
-                _('Brightness for Search View'),
-                _('Allows you to set a lower background brightness for search view mode where text visibility is more important'),
+                _('Brightness - Search View'),
+                _('Allows you to set a lower background brightness for search view where text visibility is more important'),
                 searchBgBrightnessScale,
-                'searchBgBrightness'
+                'searchBgBrightness',
+                null,
+                'showOverviewBackground'
             )
         );
 
         const blurBgAdjustment = new Gtk.Adjustment({
-            upper: 100,
+            upper: 300,
             lower: 0,
             step_increment: 1,
             page_increment: 10,
@@ -997,12 +1025,14 @@ export default class VShell extends ExtensionPreferences {
                 _('Blur Window Picker Background'),
                 _('Sets the amount of background blur in the window picker view'),
                 bgBlurScale,
-                'overviewBgBlurSigma'
+                'overviewBgBlurSigma',
+                null,
+                'showOverviewBackground'
             )
         );
 
         const blurAppBgAdjustment = new Gtk.Adjustment({
-            upper: 100,
+            upper: 300,
             lower: 0,
             step_increment: 1,
             page_increment: 10,
@@ -1014,7 +1044,9 @@ export default class VShell extends ExtensionPreferences {
                 _('Blur App Grid/Search View Background'),
                 _('Sets the amount of background blur in the app grid and search results views'),
                 bgAppBlurScale,
-                'appGridBgBlurSigma'
+                'appGridBgBlurSigma',
+                null,
+                'showOverviewBackground'
             )
         );
 
@@ -1120,7 +1152,6 @@ export default class VShell extends ExtensionPreferences {
                     [_('Applications (Default)'), 1],
                     [_('Search Windows (requires WSP extension)'), 2],
                     [_('Overview - Window Picker'), 3],
-                // [_('Search Recent Files'), 4],
                 ],
                 'overlayKeyModule'
             )
@@ -1313,6 +1344,63 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('Workspace Preview')
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Sort Windows'),
+                _('Sort windows in the overview differently from the default screen position. The stable sequence is determined by the order in which the windows were opened'),
+                itemFactory.newDropDown(),
+                'overviewSortWindows',
+                [
+                    [_('Position (Default)'), 0],
+                    [_('Most Recently Used'), 1],
+                    [_('Stable Sequence'), 2],
+                ],
+                'windowPreviewModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Initial Window Selection'),
+                _('Automatically select a window in the overview and ignore the pointer to speed up keyboard navigation'),
+                itemFactory.newDropDown(),
+                'overviewSelectWindow',
+                [
+                    [_('Pointer (Default)'), 0],
+                    [_('First'), 1],
+                    [_('Currently Focused'), 2],
+                    [_('Previously Focused'), 3],
+                ]
+            )
+        );
+
+        const winHeightCompAdjustment = new Gtk.Adjustment({
+            upper: 100,
+            lower: 0,
+            step_increment: 10,
+            page_increment: 10,
+        });
+
+        const winHeightCompScale = itemFactory.newScale(winHeightCompAdjustment);
+        winHeightCompScale.add_mark(50, Gtk.PositionType.TOP, null);
+        winHeightCompScale.add_mark(100, Gtk.PositionType.TOP, null);
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Window Height Compensation'),
+                _('Controls the amount of height compensation for smaller window thumbnails relative to the tallest one. 0 keeps the original scale ratio, while 100 makes all thumbnails the same height'),
+                winHeightCompScale,
+                'winPreviewHeightCompensation',
+                null,
+                'workspaceModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('Window Preview')
             )
         );
@@ -1400,7 +1488,20 @@ export default class VShell extends ExtensionPreferences {
                 _('Enable Fuzzy Match'),
                 _('Enabling the fuzzy match allows you to skip letters in the pattern you are searching for and find "Firefox" even if you type "ffx". Works only for the App, Windows, Extensions and Recent files search providers'),
                 itemFactory.newSwitch(),
-                'searchFuzzy'
+                'searchFuzzy',
+                null,
+                'searchModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Include Settings Panels in App Results'),
+                _('The GNOME Settings app provides launchers for all its panels/sections. This option adds them alongside other apps, allowing you to access individual settings more quickly'),
+                itemFactory.newSwitch(),
+                'searchIncludeSettings',
+                null,
+                'searchModule'
             )
         );
 

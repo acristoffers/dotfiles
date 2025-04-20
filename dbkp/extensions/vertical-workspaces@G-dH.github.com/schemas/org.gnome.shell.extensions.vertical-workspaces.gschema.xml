@@ -106,16 +106,19 @@
     <key type="i" name="ws-preview-bg-radius">
       <default>30</default>
     </key>
-    <key type="b" name="show-bg-in-overview">
-      <default>true</default>
+    <key type="i" name="show-overview-background">
+      <default>1</default>
     </key>
     <key type="i" name="overview-bg-blur-sigma">
-      <default>30</default>
+      <default>100</default>
     </key>
     <key type="i" name="app-grid-bg-blur-sigma">
-      <default>40</default>
+      <default>100</default>
     </key>
     <key type="i" name="overview-bg-brightness">
+      <default>60</default>
+    </key>
+    <key type="i" name="app-grid-bg-brightness">
       <default>60</default>
     </key>
     <key type="i" name="search-bg-brightness">
@@ -265,6 +268,9 @@
     <key type="i" name="search-app-grid-mode">
       <default>1</default>
     </key>
+    <key type="b" name="search-include-settings">
+      <default>true</default>
+    </key>
     <key type="i" name="panel-visibility">
       <default>0</default>
     </key>
@@ -328,6 +334,9 @@
     <key type="i" name="window-icon-click-action">
       <default>1</default>
     </key>
+    <key type="i" name="win-preview-height-compensation">
+      <default>50</default>
+    </key>
     <key type="i" name="overlay-key-primary">
       <default>1</default>
     </key>
@@ -339,6 +348,12 @@
     </key>
     <key type="b" name="click-empty-close">
       <default>false</default>
+    </key>
+    <key type="i" name="overview-sort-windows">
+      <default>0</default>
+    </key>
+    <key type="i" name="overview-select-window">
+      <default>0</default>
     </key>
     <key type="b" name="new-window-focus-fix">
       <default>false</default>
@@ -451,11 +466,11 @@
         'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'false',
         'wsPreviewBgRadius': '30',
-        'showBgInOverview': 'true',
         'overviewBgBrightness': '30',
+        'appGridBgBrightness': '30',
         'searchBgBrightness': '30',
         'overviewBgBlurSigma': '0',
-        'appGridBgBlurSigma': '40',
+        'appGridBgBlurSigma': '100',
         'smoothBlurTransitions': 'false',
         'appGridAnimation': '4',
         'searchViewAnimation': '0',
@@ -579,15 +594,15 @@
         'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
-        'showBgInOverview': 'true',
+        'overviewBgBrightness': '50',
         'overviewBgBrightness': '50',
         'searchBgBrightness': '30',
         'overviewBgBlurSigma': '50',
-        'appGridBgBlurSigma': '40',
+        'appGridBgBlurSigma': '100',
         'smoothBlurTransitions': 'false',
         'appGridAnimation': '4',
         'searchViewAnimation': '0',
-        'workspaceAnimation': '2',
+        'workspaceAnimation': '1',
         'animationSpeedFactor': '100',
         'winPreviewIconSize': '1',
         'winTitlePosition': '0',
@@ -707,11 +722,11 @@
         'showWsSwitcherBg': 'false',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
-        'showBgInOverview': 'true',
+        'overviewBgBrightness': '60',
         'overviewBgBrightness': '60',
         'searchBgBrightness': '30',
         'overviewBgBlurSigma': '30',
-        'appGridBgBlurSigma': '80',
+        'appGridBgBlurSigma': '100',
         'smoothBlurTransitions': 'false',
         'appGridAnimation': '4',
         'searchViewAnimation': '0',
@@ -835,11 +850,11 @@
         'showWsSwitcherBg': 'true',
         'showWsPreviewBg': 'true',
         'wsPreviewBgRadius': '30',
-        'showBgInOverview': 'true',
+        'overviewBgBrightness': '60',
         'overviewBgBrightness': '60',
         'searchBgBrightness': '30',
         'overviewBgBlurSigma': '80',
-        'appGridBgBlurSigma': '80',
+        'appGridBgBlurSigma': '100',
         'smoothBlurTransitions': 'false',
         'appGridAnimation': '4',
         'searchViewAnimation': '3',

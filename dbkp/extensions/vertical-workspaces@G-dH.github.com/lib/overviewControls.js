@@ -170,7 +170,7 @@ export const OverviewControlsModule = class {
         this._tmbBoxClickConnection = Main.overview._overview.controls._thumbnailsBox.connect('button-release-event', () => Clutter.EVENT_STOP);
 
         overview.reactive = true;
-        this._clickEmptyConId = overview.connect('button-release-event', (actor, event) => {
+        this._clickEmptyConId = overview.connect('button-press-event', (actor, event) => {
             const button = event.get_button();
             const overviewState = overview.controls._stateAdjustment.value;
             const buttonPrimary = button === Clutter.BUTTON_PRIMARY;
@@ -188,8 +188,11 @@ const ControlsManagerCommon = {
         this._searchController.prepareToEnterOverview();
         this._workspacesDisplay.prepareToEnterOverview();
 
-        if (!Main.layoutManager._startingUp) {
+        //                                  gestureBegin() calls this method always,
+        //                                  even if the gesture begins when overview is open
+        if (!Main.layoutManager._startingUp && !Main.overview._overview.controls._stateAdjustment.value >= 1) {
             Main.overview._overview.controls.opacity = 255;
+            this._searchInProgress = false;
 
             // Workaround for thumbnailsBox not re-scaling after switching workspace outside of overview using a trackpad
             this._thumbnailsBox._updateIndicator();
@@ -199,11 +202,16 @@ const ControlsManagerCommon = {
                 this._appDisplay._redisplay();
 
             // store pointer X coordinate for OVERVIEW_MODE 1 - to prevent immediate switch to WORKSPACE_MODE 1 if the mouse pointer is steady
-            opt.showingPointerX = global.get_pointer()[0];
+            if (opt.OVERVIEW_SELECT_WINDOW || opt.OVERVIEW_MODE)
+                opt.showingPointerX = global.get_pointer()[0];
 
-            this._setWorkspacesDisplayAboveSiblings();
             this._updateSearchStyle();
+
+            // Prevent various glitches after configuration changed, including unlocking screen
+            this._setWorkspacesDisplayAboveSiblings();
             this._updateBackgroundsConfiguration();
+            this.setInitialTranslations();
+            opt.CANCEL_ALWAYS_ACTIVATE_SELECTED = false;
         }
     },
 
@@ -271,7 +279,7 @@ const ControlsManagerCommon = {
         this._workspacesDisplay.setPrimaryWorkspaceVisible(workspacesDisplayVisible);
 
         if (!opt.WS_ANIMATION || (!opt.SHOW_WS_TMB && opt.SHOW_WS_PREVIEW_BG)) {
-            this._workspacesDisplay.opacity = opacity;
+            this._workspacesDisplay.opacity = Math.max(0, opacity - (255 - opacity));
         } else if (!opt.SHOW_WS_TMB_BG && opt.SHOW_WS_PREVIEW_BG) {
             // fade out ws wallpaper during transition to ws switcher if ws switcher background disabled
             const workspaces = this._workspacesDisplay._workspacesViews[global.display.get_primary_monitor()]?._workspaces;
@@ -310,15 +318,12 @@ const ControlsManagerCommon = {
         )
             return;
 
-        const [dashTranslationX, dashTranslationY, tmbTranslationX, tmbTranslationY, searchTranslationY] =
-                    this._getOverviewTranslations(dash, tmbBox, searchEntryBin);
+        const [dashTranslationX, dashTranslationY, tmbTranslationX, tmbTranslationY, searchTranslationY, panelTranslationY] =
+                    this._getOverviewTranslations(dash, tmbBox, searchEntryBin, panelBox);
         tmbBox._translationOriginal = [tmbTranslationX, tmbTranslationY];
         dash._translationOriginal = [dashTranslationX, dashTranslationY];
         searchEntryBin._translationOriginal = searchTranslationY;
-        if (opt.PANEL_OVERVIEW_ONLY && (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2))
-            panelBox._translationOriginal = (opt.PANEL_POSITION_TOP ? -1 : 1) * panelBox.height;
-        else
-            panelBox._translationOriginal = 0;
+        panelBox._translationOriginal = panelTranslationY;
     },
 
     _updateOverviewTransitions(initialState, finalState, progress) {
@@ -500,12 +505,15 @@ const ControlsManagerCommon = {
         if (this._searchAppGridMode(searchActive) && searchActive)
             return;
 
+        this.set_child_above_sibling(this._searchEntryBin, this._searchController);
         this._fadeWorkspaces(searchActive);
         this._fadeSearchResults(searchActive);
         this._fadeAppDisplay(searchActive);
         // reuse overview transition, just replace APP_GRID with the search view
         this._shiftOverviewStateIfNeeded(searchActive, finalState);
         this._animateSearchResultsIfNeeded(searchActive);
+        if (opt.SHOW_BG_IN_OVERVIEW && this._bgManagerWindowPicker)
+            this._updateBackground(this._bgManagerWindowPicker, this._stateAdjustment);
     },
 
     _shiftOverviewStateIfNeeded(searchActive, finalState) {
@@ -596,14 +604,13 @@ const ControlsManagerCommon = {
         }
     },
 
-
     _fadeAppDisplay(searchActive) {
         if (this.dash.showAppsButton.checked) {
             this._appDisplay.visible = true;
 
             this._appDisplay.ease({
                 opacity: searchActive ? 1 : 255,
-                duration: SIDE_CONTROLS_ANIMATION_TIME,
+                duration: SIDE_CONTROLS_ANIMATION_TIME / 2,
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
@@ -717,8 +724,9 @@ const ControlsManagerCommon = {
         }
 
         const searchEntryBin = this._searchEntryBin;
+        const panelBox = Main.layoutManager.panelBox;
         const [dashTranslationX, dashTranslationY, tmbTranslationX, tmbTranslationY, searchTranslationY] =
-             this._getOverviewTranslations(dash, tmbBox, searchEntryBin);
+             this._getOverviewTranslations(dash, tmbBox, searchEntryBin, panelBox);
 
         const onStopped = function () {
             // running init callback again causes issues (multiple connections)
@@ -881,8 +889,16 @@ const ControlsManagerCommon = {
         const dash = this.dash;
         const tmbBox = this._thumbnailsBox;
         const searchEntryBin = this._searchEntryBin;
-        const [dashTranslationX, dashTranslationY, tmbTranslationX, tmbTranslationY, searchTranslationY] =
-             this._getOverviewTranslations(dash, tmbBox, searchEntryBin);
+        const panelBox = Main.layoutManager.panelBox;
+        const [
+            dashTranslationX,
+            dashTranslationY,
+            tmbTranslationX,
+            tmbTranslationY,
+            searchTranslationY,
+            panelTranslationY,
+        ] = this._getOverviewTranslations(dash, tmbBox, searchEntryBin, panelBox);
+
         if (!Me.Util.dashNotDefault()) {
             dash.translation_x = dashTranslationX;
             dash.translation_y = dashTranslationY;
@@ -890,13 +906,14 @@ const ControlsManagerCommon = {
         tmbBox.translation_x = tmbTranslationX;
         tmbBox.translation_y = tmbTranslationY;
         searchEntryBin.translation_y = searchTranslationY;
+        panelBox.translation_y = panelTranslationY;
     },
 
-    _getOverviewTranslations(dash, tmbBox, searchEntryBin) {
+    _getOverviewTranslations(dash, tmbBox, searchEntryBin, panelBox) {
         const animationsDisabled = !St.Settings.get().enable_animations ||
             ((opt.SHOW_WS_PREVIEW_BG && !opt.OVERVIEW_MODE2) && !Main.layoutManager._startingUp);
         if (animationsDisabled)
-            return [0, 0, 0, 0, 0];
+            return [0, 0, 0, 0, 0, 0];
 
         let searchTranslationY = 0;
         if (searchEntryBin.visible) {
@@ -912,7 +929,12 @@ const ControlsManagerCommon = {
 
         let tmbTranslationX = 0, tmbTranslationY = 0;
         if (tmbBox.visible) {
-            const { width: tmbWidth, height: tmbHeight } = tmbBox;
+            let { width: tmbWidth, height: tmbHeight } = tmbBox;
+            // Before overview is shown, tmb size may be unavailable
+            if (tmbWidth === Infinity)
+                tmbWidth = 1000; // Make it enough to move it off-screen
+            if (tmbHeight === Infinity)
+                tmbHeight = 1000;
             let offset = 10;
             if (dash?.visible) {
                 if (opt.DASH_LEFT && opt.WS_TMB_POSITION === 3)
@@ -924,7 +946,7 @@ const ControlsManagerCommon = {
                 if (opt.DASH_BOTTOM && opt.WS_TMB_POSITION === 2)
                     offset += dash.height;
             }
-            offset += Main.panel.height;
+            offset += panelBox.height;
 
             switch (opt.WS_TMB_POSITION) {
             case 3:
@@ -949,13 +971,13 @@ const ControlsManagerCommon = {
             const { width: dashWidth, height: dashHeight } = dash;
             switch (position) {
             case 0:
-                dashTranslationY = -dashHeight - dash.margin_bottom - Main.panel.height;
+                dashTranslationY = -dashHeight - dash.margin_bottom - panelBox.height;
                 break;
             case 1:
                 dashTranslationX = dashWidth;
                 break;
             case 2:
-                dashTranslationY = dashHeight + dash.margin_bottom + Main.panel.height;
+                dashTranslationY = dashHeight + dash.margin_bottom + panelBox.height;
                 break;
             case 3:
                 dashTranslationX = -dashWidth;
@@ -963,7 +985,21 @@ const ControlsManagerCommon = {
             }
         }
 
-        return [dashTranslationX, dashTranslationY, tmbTranslationX, tmbTranslationY, searchTranslationY];
+        let panelTranslationY = 0;
+        if (opt.PANEL_OVERVIEW_ONLY && (!opt.SHOW_WS_PREVIEW_BG || opt.OVERVIEW_MODE2)) {
+            panelTranslationY = opt.PANEL_POSITION_TOP
+                ? -panelBox.height
+                : panelBox.height;
+        }
+
+        return [
+            dashTranslationX,
+            dashTranslationY,
+            tmbTranslationX,
+            tmbTranslationY,
+            searchTranslationY,
+            panelTranslationY,
+        ];
     },
 
     animateToOverview(state, callback) {
@@ -1019,12 +1055,18 @@ const ControlsManagerCommon = {
     },
 
     _setBackground(reset = false) {
+        // Shell.ShaderEffect used to have a bug causing memory leaks
+        // Workaround is reusing one effect
+        // instead of destroying it and creating another one
+        if (!this._unusedBlurEffects)
+            this._unusedBlurEffects = [];
         this._destroyBackgroundGroup();
         if (reset || (!opt.SHOW_BG_IN_OVERVIEW && opt.SHOW_WS_PREVIEW_BG))
             return;
 
         this._createBackgroundGroup();
         this._bgManagers = this._initializeBackgroundManagers();
+        this._sortBgActorsStack();
     },
 
     _destroyBackgroundGroup() {
@@ -1033,20 +1075,25 @@ const ControlsManagerCommon = {
     },
 
     _createBackgroundGroup() {
+        const overviewGroup = Main.layoutManager.overviewGroup;
         this._vshellBackgroundGroup = new Meta.BackgroundGroup({ name: 'VShellBackgroundGroup' });
-        Main.layoutManager.overviewGroup.add_child(this._vshellBackgroundGroup);
+        overviewGroup.add_child(this._vshellBackgroundGroup);
+        overviewGroup.set_child_below_sibling(this._vshellBackgroundGroup, Main.overview._overview);
         this._vshellBackgroundGroup.connect('destroy', () => this._destroyBgManagers());
     },
 
     _destroyBgManagers() {
         if (this._bgManagers) {
             this._bgManagers.forEach(bg => {
-                if (bg._fadeSignal)
-                    this._stateAdjustment.disconnect(bg._fadeSignal);
+                if (bg._overviewStateId)
+                    this._stateAdjustment.disconnect(bg._overviewStateId);
+                if (bg._bgChangedId)
+                    bg.disconnect(bg._bgChangedId);
                 bg.destroy();
             });
         }
         delete this._bgManagers;
+        delete this._bgManagerWindowPicker;
     },
 
     _initializeBackgroundManagers() {
@@ -1056,43 +1103,61 @@ const ControlsManagerCommon = {
     _createMonitorBackgrounds(monitor) {
         const isPrimary = monitor.index === global.display.get_primary_monitor();
 
-        const createBgManager = () => new Background.BackgroundManager({
-            monitorIndex: monitor.index,
-            container: this._vshellBackgroundGroup,
-            vignette: true,
-        });
+        const createBgManager = () => {
+            const bg = new Background.BackgroundManager({
+                monitorIndex: monitor.index,
+                container: this._vshellBackgroundGroup,
+                vignette: true,
+            });
+            bg.backgroundActor.content.brightness = 1;
+            bg.backgroundActor.content.vignette_sharpness = 0;
+            bg.backgroundActor.connect('destroy', actor => {
+                const blurEffect = actor.get_effect('blur');
+                if (blurEffect) {
+                    actor.remove_effect(blurEffect);
+                    this._unusedBlurEffects.push(blurEffect);
+                }
+            });
+            return bg;
+        };
 
         // Applying a single blur effect with varying blur amounts can be resource-intensive,
         // causing stuttering in overview animations.
         // To optimize performance, we create multiple differently blurred background layers
         // and use opacity transitions between them. This approach is more efficient
         // for the graphics card, resulting in smoother animations.
+        // But we still support direct radius control as an option
         const bgManagerWindowPicker = createBgManager();
-        bgManagerWindowPicker.backgroundActor.name = 'Window-Picker';
+        bgManagerWindowPicker._name = opt.FAKE_BLUR_TRANSITION ? 'Window-Picker' : 'Overview Wallpaper';
 
         let bgManagerBase;
-        const baseBgManagerNeeded = !opt.SHOW_WS_PREVIEW_BG;
+        const baseBgManagerNeeded = !opt.SHOW_WS_PREVIEW_BG && opt.FAKE_BLUR_TRANSITION;
         if (baseBgManagerNeeded) {
             bgManagerBase = createBgManager();
-            bgManagerBase.backgroundActor.name = 'Base';
-            bgManagerWindowPicker._baseBgActor = bgManagerBase.backgroundActor;
-            bgManagerBase.backgroundActor.content.vignette_sharpness = 0;
+            bgManagerBase._name = 'Base';
+            bgManagerWindowPicker._bgManagerBase = bgManagerBase;
             bgManagerBase.backgroundActor.content.brightness = 1;
         }
 
-        bgManagerWindowPicker._fadeSignal = this._stateAdjustment.connect('notify::value', v =>
-            this._updateBackground(bgManagerWindowPicker, v.value, v));
+        bgManagerWindowPicker._overviewStateId = this._stateAdjustment.connect('notify::value', stateAdjustment =>
+            this._updateBackground(bgManagerWindowPicker, stateAdjustment));
+        bgManagerWindowPicker._bgChangedId = bgManagerWindowPicker.connect('changed', bgManager => {
+            // Wait until the background image is fully replaced
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                this._sortBgActorsStack();
+                this._updateBackground(bgManager, this._stateAdjustment);
+            });
+        });
 
         let bgManagers;
         // If opt.APP_GRID_BG_BLUR_SIGMA === opt.OVERVIEW_BG_BLUR_SIGMA
         // we don't need another background actor
-        if (isPrimary && opt.APP_GRID_BG_BLUR_SIGMA !== opt.OVERVIEW_BG_BLUR_SIGMA) {
+        if (isPrimary && opt.FAKE_BLUR_TRANSITION && (opt.APP_GRID_BG_BLUR_SIGMA !== opt.OVERVIEW_BG_BLUR_SIGMA)) {
             const bgManagerAppGrid = createBgManager();
-            bgManagerAppGrid.backgroundActor.name = 'App-Grid';
+            bgManagerAppGrid._name = 'App-Grid';
             bgManagerAppGrid._primary = true;
 
             Object.assign(bgManagerWindowPicker, { _primary: true, _bgManagerAppGrid: bgManagerAppGrid });
-            this._vshellBackgroundGroup.set_child_above_sibling(bgManagerAppGrid.backgroundActor, bgManagerWindowPicker.backgroundActor);
 
             bgManagers = [bgManagerBase, bgManagerWindowPicker, bgManagerAppGrid];
         } else {
@@ -1103,61 +1168,100 @@ const ControlsManagerCommon = {
         if (!baseBgManagerNeeded)
             bgManagers.shift();
 
+        this._updateBackground(bgManagerWindowPicker, this._stateAdjustment);
+        if (isPrimary) { // Needed when switching search from the app grid
+            this._bgManagerWindowPicker = bgManagerWindowPicker;
+            bgManagerWindowPicker.connect('dedtroy', () => {
+                delete this._bgManagerWindowPicker;
+            });
+        }
         return bgManagers;
     },
 
-    _updateBackground(bgManager, stateValue, stateAdjustment) {
+    _sortBgActorsStack() {
+        // Set background actors name
+        // every time the actors are replaced
+        this._bgManagers.forEach(bgManager => {
+            bgManager.backgroundActor.name = bgManager._name;
+        });
+
+        // Sort background actors
+        // every time the actors are replaced
+        this._vshellBackgroundGroup.get_children().forEach(actor => {
+            if (actor?.name === 'App-Grid')
+                this._vshellBackgroundGroup.set_child_above_sibling(actor, null);
+            else if (actor?.name === 'Base')
+                this._vshellBackgroundGroup.set_child_below_sibling(actor, null);
+        });
+    },
+
+    _updateBackground(bgManager, stateAdjustment) {
         const searchActive = this._searchController.searchActive;
-        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !this.dash.showAppsButton.checked;
+        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
         const { currentState } = stateAdjustment.getStateTransitionParams();
+        const stateValue = opt.FAKE_BLUR_TRANSITION || (opt.SHOW_WS_PREVIEW_BG && currentState < ControlsState.WINDOW_PICKER)
+            ? Math.ceil(currentState)
+            : currentState;
 
         if (!opt.SHOW_BG_IN_OVERVIEW && !opt.SHOW_WS_PREVIEW_BG) {
             if (!(staticWorkspace && stateValue <= 1))
                 this._fadeWallpaper(bgManager, stateValue, staticWorkspace);
         } else {
             const targetBg = currentState > 1 && bgManager._bgManagerAppGrid ? bgManager._bgManagerAppGrid : bgManager;
-            this._setBgBrightness(targetBg, Math.ceil(stateValue), staticWorkspace, searchActive);
+            this._setBgBrightness(targetBg, stateValue, staticWorkspace, searchActive);
             if (opt.OVERVIEW_BG_BLUR_SIGMA || opt.APP_GRID_BG_BLUR_SIGMA)
-                this._setBlurEffect(targetBg, Math.ceil(stateValue), staticWorkspace, searchActive);
+                this._setBlurEffect(targetBg, stateValue, staticWorkspace);
 
-            const progress = opt.SHOW_WS_PREVIEW_BG && currentState <= 1 ? 1 : currentState;
-            bgManager.backgroundActor.opacity = Math.min(progress, 1) * 255;
-            bgManager._bgManagerAppGrid?.backgroundActor.set_opacity(Math.max(progress - 1, 0) * 255);
+            let progress = opt.SHOW_WS_PREVIEW_BG && currentState <= 1 ? 1 : currentState;
+            if (!bgManager._bgManagerAppGrid && progress > 1 && staticWorkspace)
+                progress -= 1;
+            if (opt.FAKE_BLUR_TRANSITION) {
+                bgManager.backgroundActor.opacity = Math.min(progress, 1) * 255;
+                bgManager._bgManagerAppGrid?.backgroundActor.set_opacity(Math.max(progress - 1, 0) * 255);
+            }
         }
     },
 
     _setBgBrightness(bgManager, stateValue, staticWorkspace, searchActive) {
+        if (!opt.SHOW_BG_IN_OVERVIEW) {
+            bgManager.backgroundActor.content.brightness = 1;
+            return;
+        }
+
         const overviewBrightness = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 1 : opt.OVERVIEW_BG_BRIGHTNESS;
-        let secBrightness = searchActive ? opt.SEARCH_BG_BRIGHTNESS : opt.OVERVIEW_BG_BRIGHTNESS;
+        let secBrightness = searchActive ? opt.SEARCH_BG_BRIGHTNESS : opt.APP_GRID_BG_BRIGHTNESS;
         if (staticWorkspace && !this._appDisplay.visible)
             secBrightness = overviewBrightness;
 
-        const vignette = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 0 : 0.2;
-        let brightness = 1, vignetteSharpness = 0;
+        // const vignette = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 0 : 0.2;
+        let brightness = 1; // , vignetteSharpness = 0;
 
-        if ((opt.SHOW_WS_PREVIEW_BG && stateValue < 1) || (opt.SHOW_WS_PREVIEW_BG && staticWorkspace)) {
+        if ((opt.SHOW_WS_PREVIEW_BG && stateValue < 1) || (opt.SHOW_WS_PREVIEW_BG && staticWorkspace))
             brightness = overviewBrightness;
-            vignetteSharpness = vignette;
-        } else if (stateValue === 1 || (stateValue > 1 && !bgManager._primary)) {
+            // vignetteSharpness = vignette;
+        else if (stateValue === 1 || (stateValue > 1 && !bgManager._primary))
             brightness = overviewBrightness;
-            vignetteSharpness = vignette;
-        } else if (stateValue === 0) {
+            // vignetteSharpness = vignette;
+        else if (stateValue === 0)
             brightness = 1;
-        } else if (stateValue < 1) {
+        else if (stateValue < 1)
             brightness = Util.lerp(1, overviewBrightness, stateValue);
-            vignetteSharpness = Util.lerp(0, vignette, stateValue);
-        } else if (stateValue > 1 && bgManager._primary) {
+            // vignetteSharpness = Util.lerp(0, vignette, stateValue);
+        else if (stateValue > 1 && bgManager._primary)
             brightness = Util.lerp(overviewBrightness, secBrightness, stateValue - 1);
-            vignetteSharpness = vignette;
-        }
+            // vignetteSharpness = vignette;
 
-        bgManager.backgroundActor.content.vignette_sharpness = vignetteSharpness;
+        // bgManager.backgroundActor.content.vignette_sharpness = vignetteSharpness;
         bgManager.backgroundActor.content.brightness = brightness;
+    },
+
+    _getRadiusProperty(blurEffect) {
+        return blurEffect.sigma === undefined ? 'radius' : 'sigma';
     },
 
     _setBlurEffect(bgManager, stateValue, staticWorkspace) {
         const blurEffect = this._getBlurEffect(bgManager);
-        const radiusProperty = blurEffect.sigma === undefined ? 'radius' : 'sigma';
+        const radiusProperty = this._getRadiusProperty(blurEffect);
 
         const overviewBlurRadius = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 0 : opt.OVERVIEW_BG_BLUR_SIGMA;
         const appGridBlurRadius = staticWorkspace && !blurEffect[radiusProperty] && !this._appDisplay.visible ? overviewBlurRadius : opt.APP_GRID_BG_BLUR_SIGMA;
@@ -1180,17 +1284,23 @@ const ControlsManagerCommon = {
     },
 
     _fadeWallpaper(bgManager, stateValue, staticWorkspace) {
-        bgManager.backgroundActor.remove_effect_by_name('blur');
         let value = staticWorkspace && stateValue > 1 ? stateValue - 1 : stateValue;
         bgManager.backgroundActor.opacity = 0;
         bgManager._bgManagerAppGrid?.backgroundActor.set_opacity(0);
-        bgManager._baseBgActor?.set_opacity(Util.lerp(255, 0, Math.min(value, 1)));
+        bgManager = opt.FAKE_BLUR_TRANSITION ? bgManager._bgManagerBase : bgManager;
+        bgManager.backgroundActor.set_opacity(Util.lerp(255, 0, Math.min(value, 1)));
     },
 
     _getBlurEffect(bgManager) {
         let blurEffect = bgManager.backgroundActor.get_effect('blur');
         if (!blurEffect) {
-            blurEffect = new Shell.BlurEffect({ brightness: 1, mode: Shell.BlurMode.ACTOR });
+            if (this._unusedBlurEffects.length) {
+                blurEffect = this._unusedBlurEffects[0];
+                blurEffect[this._getRadiusProperty(blurEffect)] = 0;
+                this._unusedBlurEffects.shift();
+            } else {
+                blurEffect = new Shell.BlurEffect({ brightness: 1, mode: Shell.BlurMode.ACTOR });
+            }
             bgManager.backgroundActor.add_effect_with_name('blur', blurEffect);
         }
         return blurEffect;
@@ -1369,6 +1479,8 @@ const ControlsManagerLayoutVertical = {
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
         const spacing = opt.SPACING;
 
+        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
+
         // Panel
         const panelX = 0;
         let panelY = 0;
@@ -1521,7 +1633,7 @@ const ControlsManagerLayoutVertical = {
 
         // searchEntry
         const [searchEntryHeight] = this._searchEntry.get_preferred_height(width - wsTmbWidth);
-        const searchEntryY = startY + topBoxOffset;
+        const searchEntryY = startY + topBoxOffset + (staticWorkspace ? spacing : 0);
 
         const searchX = startX +
             (opt.CENTER_SEARCH_VIEW || this._xAlignCenter
@@ -1539,8 +1651,12 @@ const ControlsManagerLayoutVertical = {
         this._searchEntry.allocate(childBox);
 
         // searchResults
-        const searchY = startY + topBoxOffset + searchEntryHeight + spacing;
-        const searchHeight = height - topBoxOffset - bottomBoxOffset - searchEntryHeight - 2 * spacing;
+        const searchY = staticWorkspace
+            ? searchEntryY - 4
+            : startY + topBoxOffset + searchEntryHeight + spacing;
+        const searchHeight = staticWorkspace
+            ? height - topBoxOffset - bottomBoxOffset
+            : height - topBoxOffset - bottomBoxOffset - searchEntryHeight - 2 * spacing;
 
         childBox.set_origin(searchX, searchY);
         childBox.set_size(searchWidth, searchHeight);
@@ -1614,6 +1730,8 @@ const ControlsManagerLayoutHorizontal = {
 
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
         const spacing = opt.SPACING;
+
+        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
 
         // Panel
         const panelX = 0;
@@ -1766,7 +1884,7 @@ const ControlsManagerLayoutHorizontal = {
         const bottomBoxOffsetAppGrid = (opt.DASH_BOTTOM ? dashHeight : spacing) + (opt.WS_TMB_BOTTOM ? wsTmbHeightAppGrid + spacing : 0);
 
         // searchEntry
-        const searchEntryY = startY + topBoxOffset;
+        const searchEntryY = startY + topBoxOffset + (staticWorkspace ? spacing : 0);
 
         const searchX = startX +
             (opt.CENTER_SEARCH_VIEW || this._xAlignCenter
@@ -1784,8 +1902,12 @@ const ControlsManagerLayoutHorizontal = {
         this._searchEntry.allocate(childBox);
 
         // searchResults
-        const searchY = startY + topBoxOffset + searchEntryHeight + spacing;
-        const searchHeight = height - topBoxOffset - bottomBoxOffset - searchEntryHeight - 2 * spacing;
+        const searchY = staticWorkspace
+            ? searchEntryY - 4
+            : startY + topBoxOffset + searchEntryHeight + spacing;
+        const searchHeight = staticWorkspace
+            ? height - topBoxOffset - bottomBoxOffset
+            : height - topBoxOffset - bottomBoxOffset - searchEntryHeight - 2 * spacing;
 
         childBox.set_origin(searchX, searchY);
         childBox.set_size(searchWidth, searchHeight);

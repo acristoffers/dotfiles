@@ -60,7 +60,13 @@ export class Overrides extends InjectionManager {
         if (!override)
             return false;
 
-        this.overrideProto(override.prototype, override.originals, name);
+        if (name.startsWith('property_')) {
+            const propertyName = name.slice('property_'.length);
+            Object.defineProperty(override.prototype, propertyName, override);
+        } else {
+            this.overrideProto(override.prototype, override.originals, name);
+        }
+
         delete this._overrides[name];
         return true;
     }
@@ -91,6 +97,15 @@ export class Overrides extends InjectionManager {
                     return res;
                 };
                 backup[actualSymbol] = fn;
+            } else if (symbol.startsWith('property_')) {
+                const propertyName = symbol.slice('property_'.length);
+                const fnName = Object.getOwnPropertyNames(overrides[symbol])[0];
+                if (originals && originals[symbol])
+                    backup[symbol] = originals[symbol];
+                else
+                    backup[symbol] = { [fnName]: Object.getOwnPropertyDescriptor(proto, propertyName)[fnName] };
+
+                Object.defineProperty(proto, propertyName, overrides[symbol]);
             } else if (overrides[symbol] !== null) {
                 backup[symbol] = proto[symbol];
                 this._installMethod(proto, symbol, overrides[symbol]);
@@ -172,37 +187,110 @@ export function reorderWorkspace(direction = 0) {
     let targetIdx = activeWsIdx + direction;
     if (targetIdx > -1 && targetIdx < global.workspace_manager.get_n_workspaces())
         global.workspace_manager.reorder_workspace(activeWs, targetIdx);
+    // update scale and visibility of all workspace previews
+    const workspacesViews = Main.overview._overview.controls._workspacesDisplay._workspacesViews;
+    workspacesViews.forEach(v => {
+        if (v._workspacesView) { // test whether it's a secondary monitor
+            if (v._workspacesView._updateWorkspacesState) // which supports workspaces
+                v._workspacesView._updateWorkspacesState(); // update workspace previews of the secondary monitor
+        } else { // update workspace previews of the primary monitor
+            v._updateWorkspacesState();
+        }
+    });
 }
 
 // In WINDOW_PICKER mode, enable keyboard navigation
 // by focusing on the active window's preview
-export function activateKeyboardForWorkspaceView() {
-    const currentWindowActor = global.display.focus_window?.get_compositor_private();
-    if (!currentWindowActor)
+export function activateKeyboardForWorkspaceView(monitorIndex) {
+    // Delay to prevent window selection from being stolen by the pointer
+    const monitorIndexDefined = monitorIndex !== undefined;
+    const activeWorkspace = global.workspace_manager.get_active_workspace();
+    const activeWorkspaceIndex = activeWorkspace.index();
+    const selectFirst =
+            !Me.opt.OVERVIEW_SELECT_WINDOW ||
+            Me.opt.OVERVIEW_SELECT_FIRST_WINDOW ||
+            monitorIndexDefined;
+
+    // Get meta windows for the current workspace in the MRU order
+    let wsWindows = global.display.get_tab_list(0, activeWorkspace);
+
+    // If monitor index is defined, filter out other monitors' windows
+    if (monitorIndexDefined)
+        wsWindows = wsWindows.filter(win => win.get_monitor() === monitorIndex);
+
+    if (!wsWindows.length)
         return;
 
-    const activeWorkspace = global.workspace_manager.get_active_workspace().index();
-    const nMonitors = global.display.get_n_monitors();
-    for (let monitor = 0; monitor < nMonitors; monitor++) {
+    // Find actor of the window that should be selected
+    let windowActor;
+    if (!selectFirst) {
+        if (Me.opt.OVERVIEW_SELECT_CURRENT_WINDOW || (Me.opt.OVERVIEW_SELECT_PREVIOUS_WINDOW && !wsWindows[1]))
+            windowActor = wsWindows[0].get_compositor_private();
+        else if (Me.opt.OVERVIEW_SELECT_PREVIOUS_WINDOW && wsWindows[1])
+            windowActor = wsWindows[1].get_compositor_private();
+    }
+
+    // Get window previews for the monitor
+    const getMonitorWindows = monitor => {
         let windows;
         const workspacesView = Main.overview._overview.controls._workspacesDisplay._workspacesViews[monitor];
         if (workspacesView._workspaces) // secondary monitor workspaces
-            windows = workspacesView._workspaces[activeWorkspace]._windows;
+            windows = workspacesView._workspaces[activeWorkspaceIndex]._windows;
         else if (workspacesView._workspacesView._workspace) // secondary monitor no workspaces
             windows = workspacesView._workspacesView._workspace._windows;
         else // primary monitor workspaces
-            windows = workspacesView._workspacesView._workspaces[activeWorkspace]._windows;
+            windows = workspacesView._workspacesView._workspaces[activeWorkspaceIndex]._windows;
 
-        if (!windows)
-            return;
+        return windows;
+    };
 
+    // Find and select window preview
+    const selectWindowPreview = windows => {
         for (const win of windows) {
-            if (win._windowActor === currentWindowActor) {
+            if (win._windowActor === windowActor) {
                 win.grab_key_focus();
-                break;
+                win.showOverlay(true);
+                win.removeOverlayTimeout();
+                return true;
             }
         }
+        return false;
+    };
+
+    const updateWindowActorIfNeeded = windows => {
+        if (selectFirst) // The window list is reversed
+            windowActor = windows[windows.length - 1]._windowActor;
+    };
+
+    let windows;
+    if (monitorIndexDefined) {
+        windows = getMonitorWindows(monitorIndex);
+        updateWindowActorIfNeeded(windows);
+        selectWindowPreview(windows);
+    } else {
+        const nMonitors = global.display.get_n_monitors();
+        for (let monitor = 0; monitor < nMonitors; monitor++) {
+            windows = getMonitorWindows(monitor);
+            updateWindowActorIfNeeded(windows);
+            if (windows && selectWindowPreview(windows))
+                return;
+        }
     }
+}
+
+export function switchToNextWorkspace(event) {
+    let direction;
+    if  (Me.Util.isShiftPressed(event.get_state()))
+        direction = Me.opt.ORIENTATION ? Meta.MotionDirection.UP : Meta.MotionDirection.LEFT;
+    else
+        direction = Me.opt.ORIENTATION ? Meta.MotionDirection.DOWN : Meta.MotionDirection.RIGHT;
+    const wsWrapAround = Me.opt.WS_WRAPAROUND;
+    Me.opt.WS_WRAPAROUND = true;
+    const currentWorkspace = global.workspace_manager.get_active_workspace();
+    const nextWorkspace = currentWorkspace.get_neighbor(direction);
+    nextWorkspace.activate(global.get_current_time());
+    activateKeyboardForWorkspaceView();
+    Me.opt.WS_WRAPAROUND = wsWrapAround;
 }
 
 export function exposeWindows() {
@@ -373,7 +461,7 @@ function* collectFromDatadirs(subdir, includeUserDir) {
         try {
             fileEnum = dir.enumerate_children('standard::name,standard::type',
                 Gio.FileQueryInfoFlags.NONE, null);
-        } catch (e) {
+        } catch {
             fileEnum = null;
         }
         if (fileEnum !== null) {
@@ -427,6 +515,59 @@ export function monitorHasLowResolution(monitorIndex, resolutionLimit) {
     const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
     const monitorResolution = monitorGeometry.width * monitorGeometry.height;
     return (monitorResolution / scaleFactor) < resolutionLimit;
+}
+
+// Untouched function from the original IconGrid module, unfortunately not exported
+const APPICON_ANIMATION_OUT_SCALE = 3;
+const APPICON_ANIMATION_OUT_TIME = 250;
+export function zoomOutActorAtPos(actor, x, y) {
+    const monitor = Main.layoutManager.findMonitorForActor(actor);
+    if (!monitor)
+        return;
+
+    const actorClone = new Clutter.Clone({
+        source: actor,
+        reactive: false,
+    });
+    let [width, height] = actor.get_transformed_size();
+
+    actorClone.set_size(width, height);
+    actorClone.set_position(x, y);
+    actorClone.opacity = 255;
+    actorClone.set_pivot_point(0.5, 0.5);
+
+    Main.uiGroup.add_child(actorClone);
+
+    // Avoid monitor edges to not zoom outside the current monitor
+    let scaledWidth = width * APPICON_ANIMATION_OUT_SCALE;
+    let scaledHeight = height * APPICON_ANIMATION_OUT_SCALE;
+    let scaledX = x - (scaledWidth - width) / 2;
+    let scaledY = y - (scaledHeight - height) / 2;
+    let containedX = Math.clamp(scaledX, monitor.x, monitor.x + monitor.width - scaledWidth);
+    let containedY = Math.clamp(scaledY, monitor.y, monitor.y + monitor.height - scaledHeight);
+
+    actorClone.ease({
+        scale_x: APPICON_ANIMATION_OUT_SCALE,
+        scale_y: APPICON_ANIMATION_OUT_SCALE,
+        translation_x: containedX - scaledX,
+        translation_y: containedY - scaledY,
+        opacity: 0,
+        duration: APPICON_ANIMATION_OUT_TIME,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        onComplete: () => actorClone.destroy(),
+    });
+}
+
+export function closeWorkspace(metaWorkspace, monitorIndex) {
+    // close windows on this monitor
+    const windows = global.display.get_tab_list(0, null).filter(
+        w => w.get_monitor() === monitorIndex && w.get_workspace() === metaWorkspace
+    );
+
+    for (let i = 0; i < windows.length; i++) {
+        if (!windows[i].is_on_all_workspaces())
+            windows[i].delete(global.get_current_time() + i);
+    }
 }
 
 // /////////////////////////////////////////////////////////////////////////////////////////////

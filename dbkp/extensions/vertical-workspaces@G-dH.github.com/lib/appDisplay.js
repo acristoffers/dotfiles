@@ -14,7 +14,6 @@ import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
@@ -586,8 +585,10 @@ const BaseAppViewCommon = {
         this.setGridPageNulling(!opt.APP_GRID_REMEMBER_PAGE);
         // This callback is executed after the overrides are removed
         this.connect('destroy', () => {
-            if (this._overviewHiddenId)
+            if (this._overviewHiddenId) {
                 Main.overview.disconnect(this._overviewHiddenId);
+                this._overviewHiddenId = 0;
+            }
         });
     },
 
@@ -610,10 +611,10 @@ const BaseAppViewCommon = {
                 : this._scrollView.get_hscroll_bar().adjustment;
         }
 
-        this._prevPageArrow.pivot_point = new Graphene.Point({ x: 0.5, y: 0.5 });
+        this._prevPageArrow.set_pivot_point(0.5, 0.5);
         this._prevPageArrow.rotation_angle_z = vertical ? 90 : 0;
 
-        this._nextPageArrow.pivot_point = new Graphene.Point({ x: 0.5, y: 0.5 });
+        this._nextPageArrow.set_pivot_point(0.5, 0.5);
         this._nextPageArrow.rotation_angle_z = vertical ? 90 : 0;
 
         const pageIndicators = this._pageIndicators;
@@ -746,7 +747,7 @@ const BaseAppViewCommon = {
         const customOrder = !((opt.APP_GRID_ORDER && thisIsAppDisplay) || (opt.APP_FOLDER_ORDER && thisIsFolder));
 
         if (results) {
-            newApps.sort((a, b) => results.indexOf(a.app?.id) - results.indexOf(b.app?.id));
+            newApps.sort((a, b) => results.indexOf(a.app.id) > results.indexOf(b.app.id));
         } else if (!customOrder) {
             allowIncompletePages = false;
 
@@ -957,8 +958,9 @@ const BaseAppViewGridLayoutHorizontal = {
         this._pageWidth = box.get_width();
 
         // Center page arrow buttons
-        this._previousPageArrow.translationY = pageIndicatorsHeight / 2;
-        this._nextPageArrow.translationY = pageIndicatorsHeight / 2;
+        const arrowOffset = this._grid._isFolder ? -pageIndicatorsHeight : pageIndicatorsHeight / 2;
+        this._previousPageArrow.translationY = arrowOffset;
+        this._nextPageArrow.translationY = arrowOffset;
         // Reset page indicators vertical position
         this._nextPageIndicator.translationY = 0;
         this._previousPageIndicator.translationY = 0;
@@ -1126,6 +1128,17 @@ const FolderIcon = {
         this.button_mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
     },
 
+    // Add support for dropping folder on workspace preview and workspace thumbnails
+    // shellWorkspaceLaunch() is the official support for extensions
+    shellWorkspaceLaunch(data) {
+        for (let app of this.view._apps)
+            app.open_new_window(data.workspace);
+
+        const actor = data.actor;
+        if (actor)
+            Me.Util.zoomOutActorAtPos(this, actor.x, actor.y);
+    },
+
     open() {
         // Prevent switching page when an item on another page is selected
         GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
@@ -1210,7 +1223,7 @@ const FolderView = {
         for (let i = 0; i < gridSize * gridSize; i++) {
             const style = `width: ${subSize}px; height: ${subSize}px;`;
             let bin = new St.Bin({ style, reactive: true });
-            bin.pivot_point = new Graphene.Point({ x: 0.5, y: 0.5 });
+            bin.set_pivot_point(0.5, 0.5);
             if (i < numItems) {
                 if (!opt.APP_GRID_ACTIVE_PREVIEW) {
                     bin.child = this._orderedItems[i].app.create_icon_texture(subSize);
@@ -1359,14 +1372,17 @@ const FolderGrid = GObject.registerClass({
     _updatePadding() {
         const { scaleFactor } = St.ThemeContext.get_for_stage(global.stage);
         const padding = this._indicatorsPadding.copy();
-        const pageIndicatorSize = opt.ORIENTATION
-            ? this._view._pageIndicators.get_preferred_width(1000)[1] / scaleFactor
-            : this._view._pageIndicators.get_preferred_height(1000)[1] / scaleFactor;
-        Math.round(Math.min(...this._view._pageIndicators.get_size()));// / scaleFactor);// ~28;
+        let pageIndicatorSize = 0;
+        if (opt.ORIENTATION || this._view._pageIndicators._nPages > 1) {
+            pageIndicatorSize = Math.round(opt.ORIENTATION
+                ? this._view._pageIndicators.get_preferred_width(1000)[1] / scaleFactor
+                : this._view._pageIndicators.get_preferred_height(1000)[1] / scaleFactor);
+        }
+
         padding.left = opt.ORIENTATION ? pageIndicatorSize : 0;
         padding.right = 0;
         padding.top = 0;
-        padding.bottom = 0;
+        padding.bottom = pageIndicatorSize;
         this.layoutManager.pagePadding = padding;
     }
 });
@@ -1642,10 +1658,14 @@ const AppFolderDialog = {
             Math.round(this._entryBox.get_preferred_height(-1)[1] / scaleFactor); // ~75
         const minDialogWidth = Math.max(640,
             Math.round(this._entryBox.get_preferred_width(-1)[1] / scaleFactor + 2 * margin));
-        const navigationArrowsSize = // padding + one arrow width is sufficient for both arrows
-            Math.round(view._nextPageArrow.get_preferred_width(-1)[1] / scaleFactor);
-        const pageIndicatorSize =
-            Math.round(Math.min(...view._pageIndicators.get_size()) / scaleFactor);// ~28;
+        const navigationArrowsSize = !opt.APP_GRID_SHOW_PAGE_ARROWS ? 0// padding + one arrow width is sufficient for both arrows
+            : Math.round(view._nextPageArrow.get_preferred_width(-1)[1] / scaleFactor);
+        let pageIndicatorSize = 0;
+        if (opt.ORIENTATION || view._pageIndicators._nPages > 1) {
+            pageIndicatorSize = opt.ORIENTATION
+                ? view._pageIndicators.get_preferred_width(1000)[1] / scaleFactor
+                : view._pageIndicators.get_preferred_height(1000)[1] / scaleFactor;
+        }
         const horizontalNavigation = opt.ORIENTATION ? pageIndicatorSize : navigationArrowsSize; // either add padding or arrows
         const verticalNavigation = opt.ORIENTATION ? navigationArrowsSize : pageIndicatorSize;
 

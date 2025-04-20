@@ -5,7 +5,7 @@
     "buymeacoffee": "georgdh"
   },
   "gettext-domain": "vertical-workspaces",
-  "name": "V-Shell (Vertical Workspaces)",
+  "name": "V-Shell",
   "session-modes": [
     "unlock-dialog",
     "user"
@@ -19,6 +19,6 @@
   ],
   "url": "https://github.com/G-dH/vertical-workspaces",
   "uuid": "vertical-workspaces@G-dH.github.com",
-  "version": 85,
-  "version-name": "48.5"
+  "version": 88,
+  "version-name": "48.6"
 }

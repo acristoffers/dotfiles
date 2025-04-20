@@ -103,8 +103,9 @@ const WorkspaceCommon = {
         // Window previews
         // Replace the default Actor container with St.Widget
         // to allow Tab navigation between window previews
-        // Official GNOME Shell bug report https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5345
-        // Implemented merge request https://gitlab.gnome.org/GNOME/gnome-shell/-/merge_requests/2591
+        // GNOME Shell upstream bug report https://gitlab.gnome.org/GNOME/gnome-shell/-/issues/5345
+        // A part of an implementation of the merge request:
+        // https://gitlab.gnome.org/GNOME/gnome-shell/-/merge_requests/2591
         this._container = new WorkspaceWindowContainer({ layoutManager, reactive: true });
         this.add_child(this._container);
         global.focus_manager.add_group(this._container);
@@ -179,19 +180,21 @@ const WorkspaceLayout = {
         if (opt.OVERVIEW_MODE !== 1)
             WINDOW_PREVIEW_MAXIMUM_SCALE = 0.95;
         if (opt.OVERVIEW_MODE === 1) {
-            this._stateAdjustment.connect('notify::value', () => {
-                // When transitioning to workspace state 1 (WINDOW_PICKER),
-                // replace the constant with the original value.
-                // Ensure that the scale for workspace state 0 is smaller
-                // than the minimum possible scale of any window on the workspace,
-                // so they stay at their real size relative to ws preview
-                const scale = this._stateAdjustment.value ? 0.95 : 0.1;
-                if (scale !== WINDOW_PREVIEW_MAXIMUM_SCALE)
+            this._stateAdjustment.connect('notify::value', adjustment => {
+            // When transitioning to workspace state 1 (WINDOW_PICKER),
+            // replace the constant with the original value.
+            // Ensure that the scale for workspace state 0 is smaller
+            // than the minimum possible scale of any window on the workspace,
+            // so they stay at their real size relative to ws preview
+                const scale = adjustment.value ? 0.95 : 0.1; // The condition below introduces some redundancy to ensure the new scale is applied
+                if (scale !== WINDOW_PREVIEW_MAXIMUM_SCALE || Main.overview._overview.controls._stateAdjustment.value === 1) {
                     WINDOW_PREVIEW_MAXIMUM_SCALE = scale;
-                // Force recalculation of the target layout
-                // to ensure that the new WINDOW_PREVIEW_MAXIMUM_SCALE is applied
-                if (this._stateAdjustment.value < 0.5)
+                    // Force recalculation of the target layout
+                    // to ensure that the new WINDOW_PREVIEW_MAXIMUM_SCALE is applied
+                    // User can change the workspace mode at aby time during the transition to the window picker state
+                    // Note: Re-layout at the end of the transition from the app grid slows down the end of the animation
                     this._needsLayout = true;
+                }
             });
         }
     },
@@ -324,7 +327,7 @@ class UnalignedLayoutStrategy extends Workspace.LayoutStrategy {
         // thumbnails is much more important to preserve than the width of
         // them, so two windows with equal height, but maybe differering
         // widths line up.
-        let ratio = window.boundingBox.height / this._monitor.height;
+        const ratio = window.boundingBox.height / this._monitor.height;
 
         // The purpose of this manipulation here is to prevent windows
         // from getting too small. For something like a calculator window,
@@ -332,7 +335,15 @@ class UnalignedLayoutStrategy extends Workspace.LayoutStrategy {
         // good. We'll use a multiplier of 1.5 for this.
 
         // Map from [0, 1] to [1.5, 1]
-        return Util.lerp(1.5, 1, ratio);
+        // return Util.lerp(1.5, 1, ratio);
+
+        // Add an option to control height compensation for smaller windows:
+        // opt.WINDOW_HEIGHT_COMPENSATION ranges from 0 to 1:
+        //    1 - Maintains the same scale ratio for all windows in a row
+        //    0 - Scales all windows in a row to the same height
+        //    0.5 - Default value
+
+        return 1 / (ratio + (1 - ratio) * opt.WIN_HEIGHT_COMPENSATION);
     }
 
     _computeRowSizes(layout) {

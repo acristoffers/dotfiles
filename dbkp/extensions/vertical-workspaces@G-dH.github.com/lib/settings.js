@@ -69,8 +69,9 @@ export const Options = class Options {
             showWsSwitcherBg: ['boolean', 'show-ws-switcher-bg'],
             showWsPreviewBg: ['boolean', 'show-ws-preview-bg'],
             wsPreviewBgRadius: ['int', 'ws-preview-bg-radius'],
-            showBgInOverview: ['boolean', 'show-bg-in-overview'],
+            showOverviewBackground: ['int', 'show-overview-background'],
             overviewBgBrightness: ['int', 'overview-bg-brightness'],
+            appGridBgBrightness: ['int', 'app-grid-bg-brightness'],
             searchBgBrightness: ['int', 'search-bg-brightness'],
             overviewBgBlurSigma: ['int', 'overview-bg-blur-sigma'],
             appGridBgBlurSigma: ['int', 'app-grid-bg-blur-sigma'],
@@ -113,6 +114,7 @@ export const Options = class Options {
             searchFuzzy: ['boolean', 'search-fuzzy'],
             searchMaxResultsRows: ['int', 'search-max-results-rows'],
             searchAppGridMode: ['int', 'search-app-grid-mode'],
+            searchIncludeSettings: ['boolean', 'search-include-settings'],
             dashShowWindowsBeforeActivation: ['int', 'dash-show-windows-before-activation'],
             dashIconScroll: ['int', 'dash-icon-scroll'],
             dashIsolateWorkspaces: ['boolean', 'dash-isolate-workspaces'],
@@ -142,9 +144,12 @@ export const Options = class Options {
             winPreviewMidBtnAction: ['int', 'win-preview-mid-mouse-btn-action'],
             winPreviewShowCloseButton: ['boolean', 'win-preview-show-close-button'],
             windowIconClickAction: ['int', 'window-icon-click-action'],
+            winPreviewHeightCompensation: ['int', 'win-preview-height-compensation'],
             overlayKeyPrimary: ['int', 'overlay-key-primary'],
             overlayKeySecondary: ['int', 'overlay-key-secondary'],
             overviewEscBehavior: ['int', 'overview-esc-behavior'],
+            overviewSortWindows: ['int', 'overview-sort-windows'],
+            overviewSelectWindow: ['int', 'overview-select-window'],
             clickEmptyClose: ['boolean', 'click-empty-close'],
             newWindowFocusFix: ['boolean', 'new-window-focus-fix'],
             newWindowMonitorFix: ['boolean', 'new-window-monitor-fix'],
@@ -401,14 +406,24 @@ export const Options = class Options {
         this.WIN_PREVIEW_ICON_SIZE = [64, 48, 32, 22, 8][this.get('winPreviewIconSize')];
         this.WIN_TITLES_POSITION = this.get('winTitlePosition');
         this.ALWAYS_SHOW_WIN_TITLES = this.WIN_TITLES_POSITION === 1;
+        this.SORT_OVERVIEW_WINDOWS = this.get('overviewSortWindows');
+        this.SORT_OVERVIEW_WINDOWS_MRU = this.SORT_OVERVIEW_WINDOWS === 1;
+        this.SORT_OVERVIEW_WINDOWS_STABLE = this.SORT_OVERVIEW_WINDOWS === 2;
+        this.WIN_HEIGHT_COMPENSATION = 1 - this.get('winPreviewHeightCompensation') / 100;
+        this.OVERVIEW_SELECT_WINDOW = this.get('overviewSelectWindow');
+        this.OVERVIEW_SELECT_FIRST_WINDOW = this.OVERVIEW_SELECT_WINDOW === 1;
+        this.OVERVIEW_SELECT_CURRENT_WINDOW = this.OVERVIEW_SELECT_WINDOW === 2;
+        this.OVERVIEW_SELECT_PREVIOUS_WINDOW = this.OVERVIEW_SELECT_WINDOW === 3;
 
         this.STARTUP_STATE = this.get('startupState');
-        this.SHOW_BG_IN_OVERVIEW = this.get('showBgInOverview');
+
+        this.SHOW_BG_IN_OVERVIEW = this.get('showOverviewBackground');
+        this.FAKE_BLUR_TRANSITION = this.SHOW_BG_IN_OVERVIEW === 1;
         this.OVERVIEW_BG_BRIGHTNESS = this.get('overviewBgBrightness') / 100;
+        this.APP_GRID_BG_BRIGHTNESS = this.get('appGridBgBrightness') / 100;
         this.SEARCH_BG_BRIGHTNESS = this.get('searchBgBrightness') / 100;
         this.OVERVIEW_BG_BLUR_SIGMA = this.get('overviewBgBlurSigma');
         this.APP_GRID_BG_BLUR_SIGMA = this.get('appGridBgBlurSigma');
-        this.SMOOTH_BLUR_TRANSITIONS = this.get('smoothBlurTransitions');
 
         this.OVERVIEW_MODE = this.get('overviewMode');
         this.OVERVIEW_MODE2 = this.OVERVIEW_MODE === 2;
@@ -424,6 +439,7 @@ export const Options = class Options {
         this.SEARCH_FUZZY = this.get('searchFuzzy');
         this.SEARCH_DELAY = this.SEARCH_VIEW_ANIMATION ? 100 : 0;
         this.SEARCH_APP_GRID_MODE = this.get('searchAppGridMode') && this.get('appDisplayModule');
+        this.SEARCH_INCLUDE_SETTINGS = this.get('searchIncludeSettings');
 
         this.APP_GRID_ALLOW_INCOMPLETE_PAGES = this.get('appGridIncompletePages');
         this.APP_GRID_ICON_SIZE = this.get('appGridIconSize');
