@@ -1,6 +1,5 @@
 format = """
 $os\
-[│](fg:overlay0)\
 $directory\
 [> ]()
 """
@@ -48,6 +47,7 @@ crust = "#11111b"
 format = "[ $symbol ]($style)"
 style = "fg:green"
 disabled = false
+
 [directory]
 style = "fg:blue"
 format = "[ $path ]($style)"
