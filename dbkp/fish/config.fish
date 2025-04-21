@@ -14,7 +14,8 @@ alias v nvim
 alias vim "nvim --noplugin"
 alias up update
 
-abbr doc "pushd ~/Documents/Dropbox/Universidade/Doutorado"
+abbr vb "pushd ~/Documents/Dropbox/Indústria/Vitibot"
+abbr db "pushd ~/Documents/Dropbox"
 abbr docs "pushd ~/Documents/Dropbox/Documentos"
 abbr fcfg "nvim ~/.config/fish/config.fish"
 abbr ncfg "nvim ~/.config/nix/home-manager/packages/common.nix"
