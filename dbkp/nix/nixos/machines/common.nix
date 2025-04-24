@@ -130,6 +130,8 @@ rec {
   services.samba.enable = true;
   services.samba.openFirewall = true;
 
+  services.power-profiles-daemon.enable = true;
+
   systemd.extraConfig = ''
     DefaultTimeoutStopSec=1s
     TimeoutStopSec=1s

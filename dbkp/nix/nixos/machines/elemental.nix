@@ -26,28 +26,29 @@
   services.fstrim.enable = true;
   services.thermald.enable = true;
   services.fwupd.enable = true;
-  services.auto-cpufreq = {
-    enable = true;
-    settings = {
-      battery = {
-        governor = "powersave";
-        turbo = "never";
-        enable_thresholds = true;
-        start_threshold = 20;
-        stop_threshold = 80;
-      };
-      charger = {
-        governor = "performance";
-        turbo = "auto";
-      };
-    };
-  };
+  # If auto-cpufreq is on, then power-profiles-daemon has to be off.
+  # services.power-profiles-daemon.enable = false;
+  # services.auto-cpufreq = {
+  #   enable = true;
+  #   settings = {
+  #     battery = {
+  #       governor = "powersave";
+  #       turbo = "never";
+  #       enable_thresholds = true;
+  #       start_threshold = 20;
+  #       stop_threshold = 80;
+  #     };
+  #     charger = {
+  #       governor = "performance";
+  #       turbo = "auto";
+  #     };
+  #   };
+  # };
 
   # Undo some hardening
   security.lockKernelModules = false;
   security.unprivilegedUsernsClone = true;
   security.allowSimultaneousMultithreading = true; # Allow hyperthreading
-  services.power-profiles-daemon.enable = false;
 
   nix.settings.secret-key-files = [ "/home/alan/.ssh/nix-store" ];
   nix.sshServe.enable = true;

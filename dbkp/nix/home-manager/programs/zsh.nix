@@ -16,7 +16,7 @@
     scfg = "source ~/.config/zsh/.zshrc";
     v="nvim";
   };
-  initExtraFirst = ''
+  initContent = pkgs.lib.mkBefore ''
     umask 077;
 
     export GNUPGHOME="${config.xdg.dataHome}/gnupg";
