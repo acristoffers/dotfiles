@@ -406,7 +406,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -622,7 +622,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 460)
+initial-size=(1904, 1035)
 initial-size-file-chooser=(843, 460)
 maximized=false
 
@@ -1064,9 +1064,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1745484189
+check-timestamp=int64 1745559130
 first-run=false
-flatpak-purge-timestamp=int64 1745455322
+flatpak-purge-timestamp=int64 1745631087
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1738045431
@@ -1103,7 +1103,7 @@ selected-color=(true, 0.7764706015586853, 0.27450981736183167, 0.0, 1.0)
 [org/gtk/gtk4/settings/file-chooser]
 date-format='regular'
 location-mode='path-bar'
-show-hidden=false
+show-hidden=true
 show-size-column=true
 show-type-column=true
 sidebar-width=212
