@@ -1,0 +1,5 @@
+dictor==0.1.12
+# Editable install with no version control (global==1.0.0)
+-e /home/alan/.config/global-python
+hererocks==0.25.1
+pycode-similar==1.4

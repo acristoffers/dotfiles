@@ -19,8 +19,9 @@
             ninja
             openblas
             pkg-config
-            poetry
+            python3
             suitesparse
+            uv
           ];
         in
         {
@@ -38,6 +39,10 @@
           };
           devShell = pkgs.mkShell {
             buildInputs = reqs;
+            shellHook = ''
+              export UV_PYTHON_DOWNLOADS=never
+              export UV_PYTHON=$(which python3)
+            '';
           };
         };
     in

@@ -80,8 +80,6 @@ with pkgs; [
   p7zip
   pandoc
   peaclock
-  poetry
-  poetryPlugins.poetry-plugin-export
   pstree
   rage
   renameutils
@@ -101,6 +99,7 @@ with pkgs; [
   uglify-js
   unzip
   uutils-coreutils-noprefix
+  uv
   watch
   wget
   which

@@ -87,6 +87,8 @@ if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   set -gx XCOMPOSEFILE "$XDG_CONFIG_HOME"/X11/xcompose
   set -gx NIX_PATH nixpkgs=$HOME/.nix-defexpr/channels/nixos
   set -gx HOSTNAME (hostnamectl hostname)
+  set -gx UV_PYTHON_DOWNLOADS never
+  set -gx UV_PYTHON (which python3)
 
   add-to-path-if-exists $HOME/bin
   add-to-path-if-exists $HOME/.bin

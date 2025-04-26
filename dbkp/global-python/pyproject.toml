@@ -1,19 +1,16 @@
-[tool.poetry]
+[project]
 name = "global"
 version = "1.0.0"
 description = "Global PIP Staging."
-authors = ["Álan Crístoffer <acristoffers@startmail.com>"]
-
-[tool.poetry.dependencies]
-python = ">=3.11,<3.13"
-dictor = "^0.1.12"
-hererocks = "^0.25.1"
-pip = "^24.3.1"
-poetry = "^1.8.4"
-poetry-plugin-up = "^0.7.2"
-poetry-plugin-export = "^1.8.0"
-pycode-similar = "^1.4"
+authors = [{ name = "Álan Crístoffer", email = "acristoffers@startmail.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "dictor>=0.1.12,<0.2",
+    "hererocks>=0.25.1,<0.26",
+    "pip>=25,<26",
+    "pycode-similar~=1.4",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

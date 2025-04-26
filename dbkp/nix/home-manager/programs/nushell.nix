@@ -30,7 +30,6 @@
     source ${inputs.nu-scripts}/custom-completions/nix/nix-completions.nu
     source ${inputs.nu-scripts}/custom-completions/npm/npm-completions.nu
     source ${inputs.nu-scripts}/custom-completions/pnpm/pnpm-completions.nu
-    source ${inputs.nu-scripts}/custom-completions/poetry/poetry-completions.nu
     source ${inputs.nu-scripts}/custom-completions/rg/rg-completions.nu
     source ${inputs.nu-scripts}/custom-completions/rustup/rustup-completions.nu
     source ${inputs.nu-scripts}/custom-completions/ssh/ssh-completions.nu
