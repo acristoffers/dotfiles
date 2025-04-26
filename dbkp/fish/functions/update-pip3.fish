@@ -24,8 +24,7 @@ function update-pip3
 
   pushd ~/.config/global-python
   echo Updating with uv...
-  uv sync
-  .venv/bin/pip3 freeze > requirements.txt
+  uv export --format=requirements.txt --no-emit-project > requirements.txt
   rm -rf ~/.local/share/pip
   echo ...updating pip...
   pip3 install -qq --ignore-installed --upgrade pip
