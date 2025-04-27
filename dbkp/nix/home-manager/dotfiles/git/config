@@ -1,27 +1,30 @@
-[filter "lfs"]
-  process = git-lfs filter-process
-  required = true
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
+[core]
+  compression = 9
+  looseCompression = 9
+  pager = delta
 [user]
   name = Álan Crístoffer
   email = acristoffers@startmail.com
-[includeIf "gitdir:~/git/"]
-  path = gitconfig.vitibot
-[colum]
-  ui = auto
-[pull]
-  rebase = true
-[branch]
-  autosetuprebase = always
 [init]
   defaultBranch = main
+[pull]
+  rebase = true
+[push]
+  autoSetupRemote = true
+  followTags = true
+[branch]
+  autoSetupRebase = always
+[rebase]
+  autoStash = true
+[fetch]
+  all = true
+  parallel = 0
+[colum]
+  ui = auto
 [http]
   postBuffer = 157286400
 [credential "https://github.com"]
   username = acristoffers
-[merge "tool.nvim"]
-  cmd = nvim -d -c \"wincmd l\" -c \"norm ]c\" \"$LOCAL\" \"$MERGED\" \"$REMOTE\"
 [merge]
   conflictstyle = zdiff3
   tool = nvimdiff
@@ -42,10 +45,24 @@
 [grep]
   lineNumber = true
   patternType = perl
-[core]
-  pager = delta
 [interactive]
   diffFilter = delta --color-only
 [delta]
   navigate = true  # use n and N to move between diff sections
   dark = true      # or light = true, or omit for auto-detection
+[status]
+  branch = true
+  showStash = true
+  showUntrackedFiles = all
+  short = true
+[url "git@github.com:"]
+  insteadOf = "gh:"
+[url "git@github.com:acristoffers/"]
+  insteadOf = "gha:"
+[filter "lfs"]
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+[includeIf "gitdir:~/git/"]
+  path = gitconfig.vitibot
