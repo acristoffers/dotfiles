@@ -2,6 +2,8 @@
   compression = 9
   looseCompression = 9
   pager = delta
+  trustctime = false
+  untrackedCache = true
 [user]
   name = Álan Crístoffer
   email = acristoffers@startmail.com

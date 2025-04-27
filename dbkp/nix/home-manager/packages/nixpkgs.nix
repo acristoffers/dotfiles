@@ -101,6 +101,7 @@ with pkgs; [
   uutils-coreutils-noprefix
   uv
   watch
+  watchman
   wget
   which
   yamlfmt
