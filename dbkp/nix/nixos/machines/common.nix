@@ -90,12 +90,20 @@ rec {
         22 # SSH
         53 # DNS server
         17500 # Dropbox
+        7250 # Miracast
+        8008
+        8009
+        8443 # Chromecast
       ];
       allowedUDPPorts = [
         5353 # mDNS
         53 # DNS server
         67 # DHCP server
         17500 # Dropbox
+        1900 # SSDP for Chromecast
+      ];
+      allowedUDPPortRanges = [
+        { from = 32768; to = 61000; }
       ];
     };
   };
@@ -187,6 +195,7 @@ rec {
   environment.systemPackages = with pkgs; [
     (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
     evolution-data-server-gtk4
+    gnome-network-displays
     gnome-tweaks
     gocryptfs
     iputils

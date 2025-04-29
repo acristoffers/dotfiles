@@ -5,5 +5,5 @@ function tbz
         --mtime=@0 \
         --owner=0 --group=0 --numeric-owner \
         --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
-        -c (basename $f) | bzip2 -9 >(basename $f).tbz
+        -c $f | bzip2 -9 >(basename $f).tbz
 end

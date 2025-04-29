@@ -189,7 +189,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='sharing'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -406,7 +406,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -622,7 +622,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(1904, 1035)
+initial-size=(843, 460)
 initial-size-file-chooser=(843, 460)
 maximized=false
 
@@ -757,7 +757,7 @@ last-folder-path='/home/alan/Pictures'
 last-folder-path='/home/alan/Downloads/interpreter'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
-last-folder-path='/home/alan/Downloads/OpenVPN/steamdeck'
+last-folder-path='/home/alan/Downloads/sabnzbd/complete'
 
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
@@ -779,6 +779,9 @@ last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
 last-folder-path='/home/alan/Downloads'
+
+[org/gnome/portal/filechooser/org.videolan.VLC]
+last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Code/ros/videos'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -851,6 +854,9 @@ sleep-inactive-ac-type='nothing'
 [org/gnome/settings-daemon/plugins/sharing/gnome-user-share-webdav]
 enabled-connections=@as []
 
+[org/gnome/settings-daemon/plugins/sharing/rygel]
+enabled-connections=['ada996dd-e4dc-4155-b228-af9be04580d6']
+
 [org/gnome/shell]
 app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'kvantummanager.desktop': <{'position': <12>}>, 'cups.desktop': <{'position': <13>}>, 'Utilities': <{'position': <14>}>, 'nvim.desktop': <{'position': <15>}>, 'yelp.desktop': <{'position': <16>}>, 'nixos-manual.desktop': <{'position': <17>}>, 'qt5ct.desktop': <{'position': <18>}>, 'qt6ct.desktop': <{'position': <19>}>, 'org.gnome.Software.desktop': <{'position': <20>}>, 'org.gnome.TextEditor.desktop': <{'position': <21>}>, 'org.gnome.Tour.desktop': <{'position': <22>}>, 'virt-manager.desktop': <{'position': <23>}>, 'xterm.desktop': <{'position': <24>}>, 'org.gnome.Calendar.desktop': <{'position': <25>}>, 'org.gnome.Loupe.desktop': <{'position': <26>}>}, {'org.gnome.Music.desktop': <{'position': <0>}>, 'org.gnome.Epiphany.desktop': <{'position': <1>}>, 'auto-cpufreq-gtk.desktop': <{'position': <2>}>, 'com.bitwarden.desktop.desktop': <{'position': <3>}>, 'com.brave.Browser.desktop': <{'position': <4>}>, 'btop.desktop': <{'position': <5>}>, 'io.dbeaver.DBeaverCommunity.desktop': <{'position': <6>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <7>}>, 'org.kde.digikam.desktop': <{'position': <8>}>, 'com.dropbox.Client.desktop': <{'position': <9>}>, 'org.kde.elisa.desktop': <{'position': <10>}>, 'emacs.desktop': <{'position': <11>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <12>}>, 'com.github.finefindus.eyedropper.desktop': <{'position': <13>}>, 'org.fedoraproject.MediaWriter.desktop': <{'position': <14>}>, 'fish.desktop': <{'position': <15>}>, 'com.github.tchx84.Flatseal.desktop': <{'position': <16>}>, 'com.github.johnfactotum.Foliate.desktop': <{'position': <17>}>, 'ghostty.desktop': <{'position': <18>}>, 'org.gimp.GIMP.desktop': <{'position': <19>}>, 'org.pipewire.Helvum.desktop': <{'position': <20>}>, 'org.inkscape.Inkscape.desktop': <{'position': <21>}>, 'org.keepassxc.KeePassXC.desktop': <{'position': <22>}>, 'kitty.desktop': <{'position': <23>}>, 'me.acristoffers.Lachesis.desktop': <{'position': <24>}>, 'org.libreoffice.LibreOffice.desktop': <{'position': <25>}>, 'org.libreoffice.LibreOffice.base.desktop': <{'position': <26>}>}, {'org.libreoffice.LibreOffice.calc.desktop': <{'position': <0>}>, 'org.libreoffice.LibreOffice.draw.desktop': <{'position': <1>}>, 'org.libreoffice.LibreOffice.impress.desktop': <{'position': <2>}>, 'org.libreoffice.LibreOffice.math.desktop': <{'position': <3>}>, 'org.libreoffice.LibreOffice.writer.desktop': <{'position': <4>}>, 'com.mongodb.Compass.desktop': <{'position': <5>}>, 'org.kde.okular.desktop': <{'position': <6>}>, 'org.gnome.Papers.desktop': <{'position': <7>}>, 'org.gnome.World.PikaBackup.desktop': <{'position': <8>}>, 'com.github.marhkb.Pods.desktop': <{'position': <9>}>, 'net.davidotek.pupgui2.desktop': <{'position': <10>}>, 'org.rncbc.qpwgraph.desktop': <{'position': <11>}>, 'org.sabnzbd.sabnzbd.desktop': <{'position': <12>}>, 'io.github.mhogomchungu.sirikali.desktop': <{'position': <13>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <14>}>, 'com.spotify.Client.desktop': <{'position': <15>}>, 'com.valvesoftware.Steam.desktop': <{'position': <16>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <17>}>, 'com.transmissionbt.Transmission.desktop': <{'position': <18>}>, 'org.videolan.VLC.desktop': <{'position': <19>}>, 'org.wezfurlong.wezterm.desktop': <{'position': <20>}>, 'com.github.xournalpp.xournalpp.desktop': <{'position': <21>}>, 'us.zoom.Zoom.desktop': <{'position': <22>}>, 'org.zotero.Zotero.desktop': <{'position': <23>}>}]
 command-history=['gl', 'r', 'lg']
@@ -900,13 +906,14 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=false
+toggle-state=true
+user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
@@ -1063,7 +1070,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1745741900
+check-timestamp=int64 1745901985
 first-run=false
 flatpak-purge-timestamp=int64 1745749031
 install-timestamp=int64 1738044713
@@ -1102,7 +1109,7 @@ selected-color=(true, 0.7764706015586853, 0.27450981736183167, 0.0, 1.0)
 [org/gtk/gtk4/settings/file-chooser]
 date-format='regular'
 location-mode='path-bar'
-show-hidden=true
+show-hidden=false
 show-size-column=true
 show-type-column=true
 sidebar-width=212

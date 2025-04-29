@@ -15,7 +15,7 @@
   services.desktopManager.cosmic.enable = true;
 
   environment.systemPackages = with pkgs; [
-    auto-cpufreq
+    # auto-cpufreq
   ];
 
   environment.variables = {

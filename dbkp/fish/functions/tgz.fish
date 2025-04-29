@@ -5,5 +5,5 @@ function tgz
         --mtime=@0 \
         --owner=0 --group=0 --numeric-owner \
         --pax-option=exthdr.name=%d/PaxHeaders/%f,delete=atime,delete=ctime \
-        -c (basename $f) | gzip -9 >(basename $f).tgz
+        -c $f | gzip -9 >(basename $f).tgz
 end
