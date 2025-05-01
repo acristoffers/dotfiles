@@ -15,6 +15,7 @@
     XDG_STATE_HOME = "$HOME/.local/state";
   };
   bashrcExtra = ''
+    bind "\C-w":unix-filename-rubout "\C-q":unix-word-rubout
     if [[ $- == *i* ]]; then
       source "$(blesh-share)/ble.sh"
       eval "$(starship init bash)"
