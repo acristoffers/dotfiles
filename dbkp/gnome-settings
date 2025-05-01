@@ -705,6 +705,9 @@ window-size=[1904, 1032]
 [org/gnome/portal/filechooser/app.authpass.AuthPass]
 last-folder-path='/home/alan/Downloads'
 
+[org/gnome/portal/filechooser/app.zen_browser.zen]
+last-folder-path='/home/alan/Downloads'
+
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
 
@@ -909,17 +912,17 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=2
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
-toggle-state=true
-user-enabled=true
+toggle-state=false
 
 [org/gnome/shell/extensions/clipboard-indicator]
 cache-size=50
+display-mode=0
 history-size=200
 private-mode-binding=['<Control>F8']
 toggle-menu=['<Super>semicolon']
@@ -991,6 +994,7 @@ margin-right=0
 margin-top=0
 padding-inner=8
 padding-outer=8
+show-icon=true
 shrink-step=30
 
 [org/gnome/shell/extensions/run-or-raise]
@@ -1073,7 +1077,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1745989817
+check-timestamp=int64 1746086356
 first-run=false
 flatpak-purge-timestamp=int64 1746059710
 install-timestamp=int64 1738044713

@@ -26,6 +26,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         const marginBottom = builder.get_object("margins-bottom");
         const marginLeft = builder.get_object("margins-left");
         const shrinkStep = builder.get_object("shrink-step");
+        const showIcon = builder.get_object("show-icon");
         settings.bind('animate-movement', animationEnabled, 'active', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('animation-duration', animationDuration, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('padding-inner', paddingInner, 'value', Gio.SettingsBindFlags.DEFAULT);
@@ -35,6 +36,7 @@ export default class GnomeRectanglePreferences extends ExtensionPreferences {
         settings.bind('margin-bottom', marginBottom, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('margin-left', marginLeft, 'value', Gio.SettingsBindFlags.DEFAULT);
         settings.bind('shrink-step', shrinkStep, 'value', Gio.SettingsBindFlags.DEFAULT);
+        settings.bind('show-icon', showIcon, 'active', Gio.SettingsBindFlags.DEFAULT);
     }
     shortcutsPage(builder, settings) {
         const restore = builder.get_object("restore-defaults-button");

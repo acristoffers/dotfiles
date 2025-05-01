@@ -152,7 +152,9 @@ bind \cq "commandline -rt ''"
 bind \ek "commandline -r  ''"
 bind \er "commandline -rp ''"
 bind \ej "commandline -rj ''"
-bind \cc _fzf_search_directory
+bind \ec __fzf_path
+bind \eC __fzf_file
+bind \e, insert_last_command
 
 if test -f $XDG_DATA_HOME/secrets.fish
   source $XDG_DATA_HOME/secrets.fish
