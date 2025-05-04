@@ -815,7 +815,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.301046161025901, 5.0383713999999999)
+night-light-last-coordinates=(45.82528370669565, 3.49255)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -925,6 +925,7 @@ user-enabled=true
 cache-size=50
 display-mode=0
 history-size=10000
+preview-size=10
 private-mode-binding=['<Control>F8']
 toggle-menu=['<Super>semicolon']
 

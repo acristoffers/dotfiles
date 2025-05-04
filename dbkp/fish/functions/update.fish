@@ -12,9 +12,9 @@ function update -d "Updates many package managers."
     return
   end
 
-  title "Removing Trash Files"
-  command remove-trash --no-error ~
-  echo
+  # title "Removing Trash Files"
+  # command remove-trash --no-error ~
+  # echo
 
   rm -rf ~/.cache/nix
   if which cancel &>/dev/null
