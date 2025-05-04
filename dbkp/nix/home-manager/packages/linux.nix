@@ -10,7 +10,7 @@ with pkgs; [
   libsForQt5.okular
   lsb-release
   openjdk21
-  # sirikali
+  sirikali
   texlive.combined.scheme-full
   wl-clipboard
   wl-clipboard-x11
