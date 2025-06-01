@@ -20,7 +20,6 @@
     umask 077;
 
     export GNUPGHOME="${config.xdg.dataHome}/gnupg";
-    export VIMINIT="let $MYVIMRC = !has(\"nvim\") ? \"$XDG_CONFIG_HOME/vim/vimrc\" : \"$XDG_CONFIG_HOME/nvim/init.lua\" | so $MYVIMRC";
     export XCOMPOSEFILE="${config.xdg.configHome}/X11/xcompose";
     export XDG_CACHE_HOME="${config.xdg.cacheHome}";
     export XDG_CONFIG_HOME="${config.xdg.configHome}";
