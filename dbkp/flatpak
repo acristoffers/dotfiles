@@ -13,6 +13,7 @@ com.mattjakeman.ExtensionManager
 com.mongodb.Compass
 com.spotify.Client
 com.transmissionbt.Transmission
+com.usebottles.bottles
 com.valvesoftware.Steam
 io.dbeaver.DBeaverCommunity
 me.acristoffers.Lachesis

@@ -124,9 +124,10 @@ rec {
   services.printing = {
     enable = true;
     drivers = with pkgs; [
+      brlaser      
       gutenprint
       gutenprintBin
-      # hplipWithPlugin
+      hplipWithPlugin
     ];
   };
 
@@ -315,7 +316,7 @@ rec {
       extraDefCfg = "process-unmapped-keys yes";
       config = ''
         (defsrc
-          a s d f j k l ;)
+          caps a s d f j k l ;)
 
         (defvar
           tap-time  150
@@ -332,7 +333,7 @@ rec {
           ;       (tap-hold $tap-time $hold-time ; lsft))
 
         (deflayer base
-                  @a @s @d @f @j @k @l @;)
+                  esc @a @s @d @f @j @k @l @;)
       '';
     };
   };
