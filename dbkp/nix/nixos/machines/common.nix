@@ -108,11 +108,11 @@ rec {
     };
   };
 
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
-    desktopManager.gnome.enable = true;
     desktopManager.plasma5.enable = false;
-    displayManager.gdm.enable = true;
     xkb = {
       layout = "us";
       variant = "intl";
@@ -124,7 +124,7 @@ rec {
   services.printing = {
     enable = true;
     drivers = with pkgs; [
-      brlaser      
+      brlaser
       gutenprint
       gutenprintBin
       hplipWithPlugin
