@@ -8,6 +8,7 @@
 (package! evil-matchit)
 (package! org :pin "ca873f7")
 (package! catppuccin-theme)
+(package! matlab-mode)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)

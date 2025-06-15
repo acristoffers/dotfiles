@@ -32,6 +32,8 @@ export function init(me) {
 }
 
 export function cleanGlobals() {
+    _removeMoveWinPreviewTimeout();
+
     Me = null;
     _ = null;
     _installedExtensions = null;
@@ -114,6 +116,8 @@ export class Overrides extends InjectionManager {
         return backup;
     }
 }
+
+// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function openPreferences(metadata) {
     if (!metadata)
@@ -224,13 +228,23 @@ export function moveWindowsToMonitor(metaWindow, allAppWindows = false) {
             // some windows ignore this action if executed immediately after they are created
             GLib.idle_add(GLib.PRIORITY_LOW, () => {
                 win.move_to_monitor(targetMonitor);
-                GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                // Some windows move slower than others so give it some time
+                _removeMoveWinPreviewTimeout();
+                Me.opt._moveWindowPreviewTimeout = GLib.timeout_add(GLib.PRIORITY_LOW, 100, () => {
                     selectWindowPreview(metaWindow.get_compositor_private(), targetMonitor);
+                    Me.opt._moveWindowPreviewTimeout = 0;
+                    return GLib.SOURCE_REMOVE;
                 });
                 return GLib.SOURCE_REMOVE;
             });
         }
     });
+}
+
+function _removeMoveWinPreviewTimeout() {
+    if (Me.opt._moveWindowPreviewTimeout)
+        GLib.source_remove(Me.opt._moveWindowPreviewTimeout);
+    Me.opt._moveWindowPreviewTimeout = 0;
 }
 
 // Handle common actions for WorkspacesView and WindowPreview
@@ -250,52 +264,59 @@ export function handleOverviewTabKeyPress(event) {
 
 // In WINDOW_PICKER mode, enable keyboard navigation
 // by focusing on the active window's preview
-export function activateKeyboardForWorkspaceView(monitorIndex) {
-    // Delay to prevent window selection from being stolen by the pointer
-    const monitorIndexDefined = monitorIndex !== undefined;
+export function activateKeyboardForWorkspaceView(monitorIndex = Me.opt._activeMonitor) {
+    if (!Main.overview._shown || !Me.opt.WORKSPACE_MODE)
+        return;
+
+    // Me.opt._activeMonitor is set to undefined when overview is closed
+    const initialSelection = monitorIndex === undefined;
     const activeWorkspace = global.workspace_manager.get_active_workspace();
     const activeWorkspaceIndex = activeWorkspace.index();
     const selectFirst =
             !Me.opt.OVERVIEW_SELECT_WINDOW ||
-            Me.opt.OVERVIEW_SELECT_FIRST_WINDOW ||
-            monitorIndexDefined;
+            Me.opt.OVERVIEW_SELECT_FIRST_WINDOW;
 
     // Get meta windows for the current workspace in the MRU order
     let wsWindows = global.display.get_tab_list(0, activeWorkspace);
 
-    // If monitor index is defined, filter out other monitors' windows
-    if (monitorIndexDefined)
-        wsWindows = wsWindows.filter(win => win.get_monitor() === monitorIndex);
+    // If monitorIndex is undefined, set it to the monitor of the last used window
+    monitorIndex = monitorIndex ?? wsWindows[0]?.get_monitor();
 
-    if (!wsWindows.length)
-        return;
+    // Keep only windows from the current monitor
+    wsWindows = wsWindows.filter(win => win.get_monitor() === monitorIndex);
+
+    // Define function that sets windowActor for the first window of the particular monitor
+    const setFirstWindowActorForMonitor = monitor => {
+        const windows = getMonitorWindowPreviews(monitor, activeWorkspaceIndex);
+        // The window list is reversed
+        windowActor = windows[windows.length - 1]?._windowActor;
+    };
 
     // Find actor of the window that should be selected
     let windowActor;
-    if (!selectFirst) {
-        if (Me.opt.OVERVIEW_SELECT_CURRENT_WINDOW || (Me.opt.OVERVIEW_SELECT_PREVIOUS_WINDOW && !wsWindows[1]))
+    if (wsWindows.length && !selectFirst) {
+        if (!initialSelection || Me.opt.OVERVIEW_SELECT_CURRENT_WINDOW || (Me.opt.OVERVIEW_SELECT_PREVIOUS_WINDOW && !wsWindows[1]))
             windowActor = wsWindows[0].get_compositor_private();
         else if (Me.opt.OVERVIEW_SELECT_PREVIOUS_WINDOW && wsWindows[1])
             windowActor = wsWindows[1].get_compositor_private();
+    } else if (selectFirst) {
+        setFirstWindowActorForMonitor(monitorIndex);
     }
 
-    const updateWindowActorIfNeeded = () => {
-        if (selectFirst) { // The window list is reversed
-            const windows = getMonitorWindowPreviews(monitorIndex, activeWorkspaceIndex);
-            windowActor = windows[windows.length - 1]._windowActor;
-        }
-    };
+    if (selectWindowPreview(windowActor, monitorIndex)) {
+        // Store the current monitor to opt
+        // so we can prefer this monitor
+        // after the workspace is switched
+        Me.opt._activeMonitor = monitorIndex;
+        return;
+    }
 
-    if (monitorIndexDefined) {
-        updateWindowActorIfNeeded();
-        selectWindowPreview(windowActor, monitorIndex);
-    } else {
-        const nMonitors = global.display.get_n_monitors();
-        for (let monitor = 0; monitor < nMonitors; monitor++) {
-            updateWindowActorIfNeeded();
-            if (selectWindowPreview(windowActor, monitor))
-                return;
-        }
+    // If no window found on the current monitor, try to find window on another one
+    const nMonitors = global.display.get_n_monitors();
+    for (let monitor = 0; monitor < nMonitors; monitor++) {
+        setFirstWindowActorForMonitor(monitor);
+        if (selectWindowPreview(windowActor, monitor))
+            return;
     }
 }
 
@@ -315,6 +336,9 @@ export function getMonitorWindowPreviews(monitor, workspaceIndex) {
 
 // Find and select window preview on the current workspace overview
 export function selectWindowPreview(windowActor, monitor) {
+    if (!windowActor)
+        return false;
+
     const workspaceIndex = global.workspace_manager.get_active_workspace().index();
     const windows = getMonitorWindowPreviews(monitor, workspaceIndex);
     for (const win of windows) {
@@ -329,6 +353,8 @@ export function selectWindowPreview(windowActor, monitor) {
 }
 
 export function switchToNextWorkspace(event) {
+    resetInitialPointerX();
+
     let direction;
     if  (Me.Util.isShiftPressed(event.get_state()))
         direction = Me.opt.ORIENTATION ? Meta.MotionDirection.UP : Meta.MotionDirection.LEFT;
@@ -336,11 +362,64 @@ export function switchToNextWorkspace(event) {
         direction = Me.opt.ORIENTATION ? Meta.MotionDirection.DOWN : Meta.MotionDirection.RIGHT;
     const wsWrapAround = Me.opt.WS_WRAPAROUND;
     Me.opt.WS_WRAPAROUND = true;
+    Me.opt.forceIgnoreLast = true;
     const currentWorkspace = global.workspace_manager.get_active_workspace();
     const nextWorkspace = currentWorkspace.get_neighbor(direction);
     nextWorkspace.activate(global.get_current_time());
     activateKeyboardForWorkspaceView();
     Me.opt.WS_WRAPAROUND = wsWrapAround;
+    Me.opt.forceIgnoreLast = false;
+}
+
+export function resetInitialPointerX() {
+    if (Me.opt.OVERVIEW_SELECT_WINDOW || Me.opt.OVERVIEW_MODE)
+        Me.opt.initialPointerX = global.get_pointer()[0];
+}
+
+export function moveWindowToMonitorAndWorkspace(metaWindow, monitorIndex, wsIndex, insertNewWs, append = false) {
+    resetInitialPointerX();
+    const currentWs = global.workspaceManager.get_active_workspace();
+    let workspace = global.workspaceManager.get_workspace_by_index(wsIndex);
+    if (insertNewWs) {
+        // If we insert a new workspace before the current, the target workspace needs to be updated
+        wsIndex += metaWindow.get_workspace().index() > wsIndex ? 1 : 0;
+        Main.wm.insertWorkspace(wsIndex);
+        // Keep the affected workspaces alive until the window transfer is finished
+        // because they could be automatically removed as empty
+        workspace = global.workspaceManager.get_workspace_by_index(wsIndex);
+        // Make the timeout longer and remove it manually when not needed
+        Main.wm.keepWorkspaceAlive(workspace, 1000);
+        Main.wm.keepWorkspaceAlive(currentWs, 1000);
+    }
+
+    // Wait for the new workspace allocation to prevent errors
+    GLib.idle_add(GLib.PRIORITY_LOW, () => {
+        if (!workspace)
+            return;
+
+        Main.moveWindowToMonitorAndWorkspace(
+            metaWindow,
+            monitorIndex,
+            wsIndex,
+            append // if true and the workspace doesn't exist, create it despite the fixed number of workspaces setting
+        );
+        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            workspace.activate(global.get_current_time());
+            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                // Release the keep-alive lock
+                _removeWorkspaceKeepAliveTimeout(currentWs);
+                _removeWorkspaceKeepAliveTimeout(workspace);
+                activateKeyboardForWorkspaceView();
+            });
+        });
+    });
+}
+
+function _removeWorkspaceKeepAliveTimeout(workspace) {
+    if (workspace._keepAliveId) {
+        GLib.source_remove(workspace._keepAliveId);
+        workspace._keepAliveId = 0;
+    }
 }
 
 export function exposeWindows() {
@@ -608,13 +687,18 @@ export function zoomOutActorAtPos(actor, x, y) {
     });
 }
 
+// Close all windows on the given workspace and monitor
 export function closeWorkspace(metaWorkspace, monitorIndex) {
-    // close windows on this monitor
-    const windows = global.display.get_tab_list(0, null).filter(
-        w => w.get_monitor() === monitorIndex && w.get_workspace() === metaWorkspace
-    );
+    let windows = global.display.get_tab_list(0, metaWorkspace);
+    // Remove windows from other monitors if monitorIndex is defined
+    if (monitorIndex !== undefined) {
+        windows = windows.filter(
+            w => w.get_monitor() === monitorIndex
+        );
+    }
 
     for (let i = 0; i < windows.length; i++) {
+        // Skip windows set as Always on Visible Workspace
         if (!windows[i].is_on_all_workspaces())
             windows[i].delete(global.get_current_time() + i);
     }

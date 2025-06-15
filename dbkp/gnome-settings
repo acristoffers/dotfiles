@@ -96,8 +96,8 @@ window-maximized=false
 window-width=1267
 
 [org/gnome/Extensions]
-window-height=1395
-window-width=843
+window-height=1035
+window-width=1267
 
 [org/gnome/GWeather4]
 temperature-unit='centigrade'
@@ -194,7 +194,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='printers'
+last-panel='keyboard'
 window-state=(1267, 1035, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -572,6 +572,8 @@ width=1000
 [org/gnome/file-roller/file-selector]
 show-hidden=false
 sidebar-size=300
+sort-method='name'
+sort-type='ascending'
 window-size=(-1, -1)
 
 [org/gnome/file-roller/listing]
@@ -638,7 +640,7 @@ search-view='icon-view'
 show-delete-permanently=true
 
 [org/gnome/nautilus/window-state]
-initial-size=(843, 460)
+initial-size=(948, 514)
 initial-size-file-chooser=(843, 460)
 maximized=false
 
@@ -670,6 +672,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/6ecc1efd-b959-4209-8551-a1f7233a2e88]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/88a5bcf5-f96f-4432-9616-fa3931fd7187]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -679,6 +685,10 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/93b62b24-3bb0-4271-b827-9e8b30469e9c]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/b553d586-051a-4d3b-821c-63ca03dfc447]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -719,7 +729,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Bulletins/2025'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -776,7 +786,7 @@ last-folder-path='/home/alan/Pictures'
 last-folder-path='/home/alan/Downloads/interpreter'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
-last-folder-path='/home/alan/Downloads/sabnzbd/complete'
+last-folder-path='/home/alan/Downloads/ovpn_udp'
 
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
@@ -788,7 +798,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Audio/Music'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Pictures/Screenshots'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Pictures'
@@ -828,7 +838,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.819524429478051, 3.49255)
+night-light-last-coordinates=(45.822181372900005, 3.49255)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -1101,12 +1111,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1748762104
+check-timestamp=int64 1749967539
 first-run=false
-flatpak-purge-timestamp=int64 1748603542
+flatpak-purge-timestamp=int64 1749971074
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1738045431
+update-notification-timestamp=int64 1749833952
 
 [org/gnome/system/location]
 enabled=true
@@ -1215,7 +1225,7 @@ vm-window-size=(2560, 1374)
 [org/virt-manager/virt-manager/vms/062a069537684a35bda395c758017276]
 autoconnect=1
 resize-guest=1
-vm-window-size=(2544, 1358)
+vm-window-size=(1904, 998)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1

@@ -158,9 +158,6 @@ export default class VShell extends Extension.Extension {
     }
 
     _disposeModules() {
-        Me.opt.destroy();
-        Me.opt = null;
-
         for (let module of this._getModuleList()) {
             if (!Me.Modules[module].moduleEnabled)
                 Me.Modules[module].cleanGlobals();
@@ -168,6 +165,8 @@ export default class VShell extends Extension.Extension {
 
         Me.Util.cleanGlobals();
         Me.Modules = null;
+        Me.opt.destroy();
+        Me.opt = null;
     }
 
     _activateVShell() {
@@ -565,7 +564,7 @@ export default class VShell extends Extension.Extension {
 
         if (key?.includes('profile-data')) {
             const index = key.replace('profile-data-', '');
-            Main.notify(`${Me.metadata.name}`, `Profile ${index} has been updated`);
+            Main.notify(`${Me.metadata.name}`, _('Profile %d has been updated').format(index));
         }
 
         opt.WORKSPACE_MIN_SPACING = Main.overview._overview._controls._thumbnailsBox.get_theme_node().get_length('spacing');
@@ -773,7 +772,7 @@ export default class VShell extends Extension.Extension {
     _getNeighbor(direction) {
         // workspace matrix is supported
         const activeIndex = this.index();
-        const ignoreLast = opt.WS_IGNORE_LAST && Meta.prefs_get_dynamic_workspaces() && !Main.overview._shown ? 1 : 0;
+        const ignoreLast = Meta.prefs_get_dynamic_workspaces() && ((opt.WS_IGNORE_LAST && !Main.overview._shown) || opt.forceIgnoreLast) ? 1 : 0;
         const wraparound = opt.WS_WRAPAROUND;
         const nWorkspaces = global.workspace_manager.n_workspaces;
         const lastIndex = nWorkspaces - 1 - ignoreLast;

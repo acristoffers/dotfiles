@@ -101,6 +101,7 @@ rec {
         67 # DHCP server
         17500 # Dropbox
         1900 # SSDP for Chromecast
+        1194 # VPN
       ];
       allowedUDPPortRanges = [
         { from = 32768; to = 61000; }

@@ -92,6 +92,7 @@ export const OverviewControlsModule = class {
         // Allow user to close the overview by clicking on an empty space on the primary monitor's overview
         // Secondary monitors are handled in workspacesView
         this._addClickToCloseOverview();
+        this._connectActiveWorkspaceChanged();
 
         // Update custom workAreaBox
         Main.overview._overview.controls.layoutManager._updateWorkAreaBox();
@@ -108,6 +109,7 @@ export const OverviewControlsModule = class {
         this._replaceOnSearchChanged(reset);
         Main.overview._overview._controls._appDisplay.opacity = 255;
         this._addClickToCloseOverview(reset);
+        this._connectActiveWorkspaceChanged(reset);
 
         console.debug('  OverviewControlsModule - Disabled');
     }
@@ -119,6 +121,21 @@ export const OverviewControlsModule = class {
                     GLib.source_remove(t);
             });
             _timeouts = null;
+        }
+    }
+
+    _connectActiveWorkspaceChanged(reset) {
+        if (!reset && !this._wsChangedConnId) {
+            this._wsChangedConnId = global.workspaceManager.connect('active-workspace-changed',
+                () => {
+                    GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                        Me.Util.activateKeyboardForWorkspaceView();
+                    });
+                }
+            );
+        } else if (reset && this._wsChangedConnId) {
+            global.workspaceManager.disconnect(this._wsChangedConnId);
+            this._wsChangedConnId = null;
         }
     }
 
@@ -202,8 +219,7 @@ const ControlsManagerCommon = {
                 this._appDisplay._redisplay();
 
             // store pointer X coordinate for OVERVIEW_MODE 1 - to prevent immediate switch to WORKSPACE_MODE 1 if the mouse pointer is steady
-            if (opt.OVERVIEW_SELECT_WINDOW || opt.OVERVIEW_MODE)
-                opt.showingPointerX = global.get_pointer()[0];
+            Me.Util.resetInitialPointerX();
 
             this._updateSearchStyle();
 
@@ -681,13 +697,10 @@ const ControlsManagerCommon = {
     },
 
     _updateSearchStyle(reset) {
-        if (!reset && (((opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !this.dash.showAppsButton.checked) || opt.SEARCH_RESULTS_BG_STYLE))) {
-            this._searchController._searchResults._content.add_style_class_name('search-section-content-bg-om2');
-            this._searchEntry.add_style_class_name('search-entry-om2');
-        } else {
-            this._searchController._searchResults._content.remove_style_class_name('search-section-content-bg-om2');
-            this._searchEntry.remove_style_class_name('search-entry-om2');
-        }
+        if (!reset && (((opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !this.dash.showAppsButton.checked) || opt.SEARCH_RESULTS_BG_STYLE)))
+            this._searchController._searchResults.add_style_class_name('search-results-bg-dark');
+        else
+            this._searchController._searchResults.remove_style_class_name('search-results-bg-dark');
     },
 
     async runStartupAnimation(callback) {
