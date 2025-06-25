@@ -5,10 +5,12 @@ font-family = JetBrainsMonoNL Nerd Font
 font-size = 12
 font-style = Regular
 font-thicken = true
+gtk-titlebar = false
+keybind = ctrl+enter=unbind
+mouse-hide-while-typing = true
 theme = catppuccin-mocha
 window-decoration = false
 window-theme = dark
-gtk-titlebar = false
 
 keybind = alt+one=unbind
 keybind = alt+two=unbind

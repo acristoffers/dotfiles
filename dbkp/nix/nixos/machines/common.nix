@@ -266,7 +266,6 @@ rec {
   systemd.services.NetworkManager-wait-online.enable = false;
 
   services.openssh.enable = true;
-  programs.ssh.startAgent = true;
   programs.ssh.askPassword = mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
   powerManagement.enable = true;
