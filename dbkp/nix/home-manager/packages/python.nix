@@ -15,6 +15,7 @@ with pkgs; (python313.withPackages (p: with p; [
   pygobject-stubs
   pygobject3
   scipy
+  sympy
   twine
   wheel
 ]))

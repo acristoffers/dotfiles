@@ -70,9 +70,7 @@ with pkgs; [
   nix-output-monitor
   nixVersions.latest
   nixpkgs-fmt
-  nodePackages_latest.sass
-  nodePackages_latest.yarn
-  nodejs_22
+  nodejs
   nushellPlugins.dbus
   nushellPlugins.formats
   nushellPlugins.units
