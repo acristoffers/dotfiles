@@ -71,9 +71,6 @@ with pkgs; [
   nixVersions.latest
   nixpkgs-fmt
   nodejs
-  nushellPlugins.dbus
-  nushellPlugins.formats
-  nushellPlugins.units
   openssl
   p7zip
   pandoc

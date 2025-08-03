@@ -12,7 +12,7 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
   environment.memoryAllocator.provider = "libc";
 
-  services.desktopManager.cosmic.enable = true;
+  services.desktopManager.cosmic.enable = false;
 
   environment.systemPackages = with pkgs; [
     # auto-cpufreq

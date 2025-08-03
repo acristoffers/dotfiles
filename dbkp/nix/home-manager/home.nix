@@ -6,6 +6,10 @@ in
 {
   nix.package = pkgs.nixVersions.latest;
 
+  nix.settings = {
+    extra-substituters = [ "https://ghostty.cachix.org" ];
+    extra-trusted-public-keys = [ "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns=" ];
+  };
   nix.extraOptions = ''
     auto-optimise-store = true
     experimental-features = nix-command flakes
@@ -68,7 +72,6 @@ in
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = true;
-      gtk-key-theme-name = "Emacs";
     };
   };
 }

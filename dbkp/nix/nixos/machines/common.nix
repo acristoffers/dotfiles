@@ -14,7 +14,7 @@ rec {
   documentation.man.generateCaches = true;
   documentation.man.man-db.enable = true;
 
-  environment.shells = with pkgs;  [ bashInteractive ];
+  environment.shells = with pkgs; [ bashInteractive ];
   environment.variables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
@@ -28,7 +28,7 @@ rec {
   fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
   fonts.fontDir.enable = true;
-  fonts.packages = with pkgs;  [
+  fonts.packages = with pkgs; [
     dejavu_fonts
     hunspellDicts.en-us-large
     hunspellDicts.fr-any
@@ -77,7 +77,10 @@ rec {
   networking = {
     networkmanager = {
       enable = true;
-      appendNameservers = [ "9.9.9.9" "1.1.1.1" ];
+      appendNameservers = [
+        "9.9.9.9"
+        "1.1.1.1"
+      ];
       connectionConfig = {
         "connection.mdns" = 2;
       };
@@ -104,7 +107,10 @@ rec {
         1194 # VPN
       ];
       allowedUDPPortRanges = [
-        { from = 32768; to = 61000; }
+        {
+          from = 32768;
+          to = 61000;
+        }
       ];
     };
   };
@@ -142,10 +148,10 @@ rec {
 
   services.power-profiles-daemon.enable = true;
 
-  systemd.extraConfig = ''
-    DefaultTimeoutStopSec=1s
-    TimeoutStopSec=1s
-  '';
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "1s";
+    TimeoutStopSec = "1s";
+  };
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -190,7 +196,14 @@ rec {
   users.users.alan = {
     isNormalUser = true;
     description = "Álan Crístoffer e Sousa";
-    extraGroups = [ "libvirtd" "networkmanager" "render" "video" "wheel" "vboxusers" ];
+    extraGroups = [
+      "libvirtd"
+      "networkmanager"
+      "render"
+      "video"
+      "wheel"
+      "vboxusers"
+    ];
     packages = [ ];
   };
 
@@ -281,7 +294,10 @@ rec {
 
   nix.settings = {
     auto-optimise-store = true;
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     extra-trusted-public-keys = [
       "jovian-nixos.cachix.org-1:mAWLjAxLNlfxAnozUjOqGj4AxQwCl7MXwOfu7msVlAo="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -292,7 +308,10 @@ rec {
       "https://nix-community.cachix.org"
     ];
     allowed-users = [ "alan" ];
-    trusted-users = [ "root" "alan" ];
+    trusted-users = [
+      "root"
+      "alan"
+    ];
   };
   nix.extraOptions = ''
     download-buffer-size = 209715200 # 200 MB
@@ -340,11 +359,13 @@ rec {
 
   security.doas.enable = true;
   security.sudo.enable = false;
-  security.doas.extraRules = [{
-    users = [ "alan" ];
-    keepEnv = true;
-    persist = true;
-  }];
+  security.doas.extraRules = [
+    {
+      users = [ "alan" ];
+      keepEnv = true;
+      persist = true;
+    }
+  ];
 
   # Hardening
   programs.firejail.enable = true;
@@ -354,12 +375,14 @@ rec {
   systemd.coredump.enable = false;
 
   # Prevents core dump files
-  security.pam.loginLimits = [{
-    domain = "*";
-    item = "core";
-    type = "hard";
-    value = "0";
-  }];
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      item = "core";
+      type = "hard";
+      value = "0";
+    }
+  ];
   systemd.coredump.extraConfig = ''
     Storage=none
     ProcessSizeMax=0

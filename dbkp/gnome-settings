@@ -249,7 +249,7 @@ automatic-timezone=false
 current=uint32 0
 mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
 show-all-sources=true
-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('ibus', 'typing-booster')]
+sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple'), ('ibus', 'typing-booster')]
 xkb-options=['shift:both_capslock', 'compose:rwin']
 
 [org/gnome/desktop/interface]
@@ -278,7 +278,7 @@ autorun-x-content-open-folder=@as []
 autorun-x-content-start-app=['x-content/ostree-repository']
 
 [org/gnome/desktop/notifications]
-application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles', 'org-gnome-fileroller', 'gnome-printers-panel', 'com-github-marhkb-pods', 'org-gnome-extensions', 'org-gnome-baobab', 'app-zen-browser-zen', 'org-kde-kdenlive']
+application-children=['org-gnome-software', 'org-gnome-terminal', 'org-freedesktop-problems-applet', 'com-mattjakeman-extensionmanager-desktop', 'org-signal-signal', 'org-gnome-settings', 'org-kde-konsole', 'thunderbird', 'firefox', 'org-gnome-nautilus', 'org-telegram-desktop', 'com-mattjakeman-extensionmanager', 'org-kde-drkonqi', 'org-kde-okular', 'org-gnome-calendar', 'org-mozilla-thunderbird', 'org-gnome-totem', 'org-gnome-tweaks', 'com-discordapp-discord', 'emacs', 'org-gnome-extensions-desktop', 'org-gnome-epiphany', 'org-gnome-console', 'org-mozilla-firefox', 'org-gnome-shell-extensions', 'emacsclient', 'gnome-network-panel', 'org-rncbc-qpwgraph', 'com-valvesoftware-steam', 'us-zoom-zoom', 'org-libreoffice-libreoffice-writer', 'gnome-power-panel', 'org-gnome-boxes', 'com-brave-browser', 'org-videolan-vlc', 'org-gnome-fractal', 'org-gimp-gimp', 'eu-betterbird-betterbird', 'kitty', 'com-usebottles-bottles', 'org-gnome-fileroller', 'gnome-printers-panel', 'com-github-marhkb-pods', 'org-gnome-extensions', 'org-gnome-baobab', 'app-zen-browser-zen', 'org-kde-kdenlive', 'org-kde-digikam']
 
 [org/gnome/desktop/notifications/application/app-zen-browser-zen]
 application-id='app.zen_browser.zen.desktop'
@@ -382,6 +382,9 @@ application-id='org.gnome.Totem.desktop'
 [org/gnome/desktop/notifications/application/org-gnome-tweaks]
 application-id='org.gnome.tweaks.desktop'
 
+[org/gnome/desktop/notifications/application/org-kde-digikam]
+application-id='org.kde.digikam.desktop'
+
 [org/gnome/desktop/notifications/application/org-kde-drkonqi]
 application-id='org.kde.drkonqi.desktop'
 
@@ -425,7 +428,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -844,7 +847,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(48.926656199560128, 2.18703)
+night-light-last-coordinates=(45.822579103636485, 3.49255)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -897,8 +900,8 @@ app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.C
 command-history=['gl', 'r', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com', 'light-style@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']
-enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'smart-auto-move@khimaros.com', 'transparent-top-bar@zhanghai.me', 'vertical-workspaces@G-dH.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'quick-settings-avatar@d-go', 'run-or-raise@edvard.cz', 'clipboard-indicator@tudmotu.com']
-favorite-apps=['org.gnome.Nautilus.desktop', 'app.zen_browser.zen.desktop', 'com.mitchellh.ghostty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.mozilla.Thunderbird.desktop', 'org.gnome.Fractal.desktop']
+enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'smart-auto-move@khimaros.com', 'transparent-top-bar@zhanghai.me', 'vertical-workspaces@G-dH.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'quick-settings-avatar@d-go', 'clipboard-indicator@tudmotu.com', 'run-or-raise@edvard.cz']
+favorite-apps=['org.gnome.Nautilus.desktop', 'app.zen_browser.zen.desktop', 'com.mitchellh.ghostty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.gnome.Fractal.desktop', 'org.mozilla.Thunderbird.desktop']
 last-selected-power-profile='power-saver'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null', 'GtkBuilder.registerClass', "import Adw from 'gi:/adw'", "import Adw from 'gi://Adw';", 'Adw', 'Gtk']
 remember-mount-password=false
@@ -1004,7 +1007,7 @@ padding-outer=8
 imkey-0=['<Alt><Super>j']
 imkey-1=['<Alt><Super>k']
 imkey-2=['<Alt><Super>l']
-imkey-3=@as []
+imkey-3=['<Alt><Super>semicolon']
 imkey-4=@as []
 imkey-5=@as []
 imkey-6=@as []
@@ -1117,9 +1120,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1751304148
+check-timestamp=int64 1754208063
 first-run=false
-flatpak-purge-timestamp=int64 1751209437
+flatpak-purge-timestamp=int64 1754125855
 install-timestamp=int64 1738044713
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1749833952
