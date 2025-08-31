@@ -5,9 +5,10 @@
   "shell-version": [
     "46",
     "47",
-    "48"
+    "48",
+    "49"
   ],
   "url": "https://github.com/zhanghai/gnome-shell-extension-transparent-top-bar",
   "uuid": "transparent-top-bar@zhanghai.me",
-  "version": 24
+  "version": 25
 }

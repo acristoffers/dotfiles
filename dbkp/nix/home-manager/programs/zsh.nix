@@ -70,6 +70,9 @@
     setopt hist_find_no_dups
     setopt glob_star_short
 
+    fpath+=($HOME/.nix-profile/share/zsh/completions)
+    fpath+=(/home/alan/Developer/GitHub/cgen/build/share/zsh/completions)
+
     function expand_dots() {
       if [[ $BUFFER == *".." ]]; then
         BUFFER="''${BUFFER%..}../."

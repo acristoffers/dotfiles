@@ -7,7 +7,7 @@ with pkgs; [
   gnupatch
   gource # version control visualization
   libnotify
-  libsForQt5.okular
+  kdePackages.okular
   lsb-release
   openjdk21
   sirikali

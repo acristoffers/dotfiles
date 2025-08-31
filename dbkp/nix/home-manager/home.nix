@@ -60,6 +60,32 @@ in
     wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
   };
 
+  xdg.desktopEntries."com.mitchellh.ghostty" = {
+    name = "Ghostty";
+    type = "Application";
+    comment = "A terminal emulator";
+    exec = "nixGLIntel ghostty";
+    icon = "com.mitchellh.ghostty";
+    terminal = false;
+    startupNotify = true;
+    categories = [ "System" "TerminalEmulator" ];
+    settings = {
+      Keywords = "terminal;tty;pty;";
+      X-GNOME-UsesNotifications = "true";
+      X-TerminalArgExec = "-e";
+      X-TerminalArgTitle = "--title=";
+      X-TerminalArgAppId = "--class=";
+      X-TerminalArgDir = "--working-directory=";
+      X-TerminalArgHold = "--wait-after-command";
+    };
+    actions = {
+      new-window = {
+        name = "New Window";
+        exec = "nixGLIntel ghostty";
+      };
+    };
+  };
+
   qt.enable = true;
   qt.platformTheme.name = "qtct";
 

@@ -119,7 +119,7 @@ rec {
   services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
-    desktopManager.plasma5.enable = false;
+    desktopManager.plasma6.enable = false;
     xkb = {
       layout = "us";
       variant = "intl";

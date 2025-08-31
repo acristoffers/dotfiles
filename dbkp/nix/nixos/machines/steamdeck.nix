@@ -25,7 +25,7 @@ rec {
   };
 
   services.xserver = {
-    desktopManager.plasma5.enable = mkForce false;
+    desktopManager.plasma6.enable = mkForce false;
     displayManager.gdm.enable = mkForce false;
   };
 
@@ -50,14 +50,14 @@ rec {
 
   environment.systemPackages = with pkgs; [
     jupiter-dock-updater-bin
-    libsForQt5.kconfig
-    libsForQt5.kconfigwidgets
-    libsForQt5.kdeclarative
-    libsForQt5.kirigami-addons
+    kdePackages.kconfig
+    kdePackages.kconfigwidgets
+    kdePackages.kdeclarative
+    kdePackages.kirigami-addons
+    kdePackages.plasma-workspace
+    kdePackages.qtvirtualkeyboard
     libsForQt5.kirigami2
     libsForQt5.plasma-framework
-    libsForQt5.plasma-workspace
-    libsForQt5.qt5.qtvirtualkeyboard
     steam-unwrapped
     steamdeck-firmware
   ];
