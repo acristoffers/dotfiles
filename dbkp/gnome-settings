@@ -194,7 +194,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
+last-panel='network'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -428,7 +428,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -816,7 +816,7 @@ last-folder-path='/home/alan/Pictures'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Downloads/Graduação'
 
 [org/gnome/portal/filechooser/org.videolan.VLC]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Code/ros/videos'
@@ -847,7 +847,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.819883621138324, 3.49255)
+night-light-last-coordinates=(45.833703868956327, 3.49255)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -953,7 +953,7 @@ preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1120,9 +1120,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1756633486
+check-timestamp=int64 1759466154
 first-run=false
-flatpak-purge-timestamp=int64 1756028318
+flatpak-purge-timestamp=int64 1758461337
 install-timestamp=int64 1754739144
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1754758516

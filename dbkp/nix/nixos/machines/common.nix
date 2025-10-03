@@ -74,6 +74,7 @@ rec {
 
   location.provider = "geoclue2";
 
+  # users.extraGroups.networkmanager.members = [ "root" ];
   networking = {
     networkmanager = {
       enable = true;
@@ -84,6 +85,7 @@ rec {
       connectionConfig = {
         "connection.mdns" = 2;
       };
+      plugins = [ pkgs.networkmanager-openvpn ];
     };
     enableIPv6 = false;
     nameservers = networking.networkmanager.appendNameservers;
@@ -116,10 +118,10 @@ rec {
   };
 
   services.desktopManager.gnome.enable = true;
+  services.desktopManager.plasma6.enable = true;
   services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
-    desktopManager.plasma6.enable = false;
     xkb = {
       layout = "us";
       variant = "intl";
