@@ -11,15 +11,15 @@ with pkgs; [
   curl
   delta
   dogdns
-  du-dust
   duf
+  dust
   elmPackages.elm
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
   emacs-all-the-icons-fonts
   emacs-pgtk
-  emacsPackages.cask
+  emacs.pkgs.cask
   epstool
   expect
   fastfetch

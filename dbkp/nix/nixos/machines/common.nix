@@ -39,9 +39,9 @@ rec {
     nerd-fonts.meslo-lg
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     open-sans
-    ubuntu_font_family
+    ubuntu-classic
   ];
 
   hardware.bluetooth.enable = true;
@@ -133,7 +133,7 @@ rec {
   services.printing = {
     enable = true;
     drivers = with pkgs; [
-      brlaser
+      # brlaser
       gutenprint
       gutenprintBin
       hplipWithPlugin

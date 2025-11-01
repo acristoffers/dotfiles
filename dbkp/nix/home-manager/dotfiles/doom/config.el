@@ -155,15 +155,15 @@
        :desc "<"                         :textobj "<" #'evil-inner-angle-lookahead   #'evil-a-angle-lookahead)
       ;; Those are kinda of already implemented in evil...
       ;; By not inserting them they work on elisp too.
-      (:desc "TS Function"               :textobj "f"   (evil-textobj-tree-sitter-get-textobj "function.inner") (evil-textobj-tree-sitter-get-textobj "function.outer")
-       :desc "TS Call"                   :textobj "F"   (evil-textobj-tree-sitter-get-textobj "call.inner") (evil-textobj-tree-sitter-get-textobj "call.outer")
-       :desc "TS Block"                  :textobj "B"   (evil-textobj-tree-sitter-get-textobj "block.inner") (evil-textobj-tree-sitter-get-textobj "block.outer")
-       :desc "TS Argument"               :textobj "a"   (evil-textobj-tree-sitter-get-textobj "parameter.inner") (evil-textobj-tree-sitter-get-textobj "parameter.outer")
-       :desc "TS Statement"              :textobj "S"   (evil-textobj-tree-sitter-get-textobj "statement.outer") (evil-textobj-tree-sitter-get-textobj "statement.outer")
-       :desc "TS Comment"                :textobj "c"   (evil-textobj-tree-sitter-get-textobj "comment.inner") (evil-textobj-tree-sitter-get-textobj "comment.outer")
-       :desc "TS Class"                  :textobj "C"   (evil-textobj-tree-sitter-get-textobj "class.inner") (evil-textobj-tree-sitter-get-textobj "class.outer")
-       :desc "TS Conditional"            :textobj "v"   (evil-textobj-tree-sitter-get-textobj "conditional.inner") (evil-textobj-tree-sitter-get-textobj "conditional.outer")
-       :desc "TS Loop"                   :textobj "l"   (evil-textobj-tree-sitter-get-textobj "loop.inner") (evil-textobj-tree-sitter-get-textobj "loop.outer"))
+      ; (:desc "TS Function"               :textobj "f"   (evil-textobj-tree-sitter-get-textobj "function.inner") (evil-textobj-tree-sitter-get-textobj "function.outer")
+      ;  :desc "TS Call"                   :textobj "F"   (evil-textobj-tree-sitter-get-textobj "call.inner") (evil-textobj-tree-sitter-get-textobj "call.outer")
+      ;  :desc "TS Block"                  :textobj "B"   (evil-textobj-tree-sitter-get-textobj "block.inner") (evil-textobj-tree-sitter-get-textobj "block.outer")
+      ;  :desc "TS Argument"               :textobj "a"   (evil-textobj-tree-sitter-get-textobj "parameter.inner") (evil-textobj-tree-sitter-get-textobj "parameter.outer")
+      ;  :desc "TS Statement"              :textobj "S"   (evil-textobj-tree-sitter-get-textobj "statement.outer") (evil-textobj-tree-sitter-get-textobj "statement.outer")
+      ;  :desc "TS Comment"                :textobj "c"   (evil-textobj-tree-sitter-get-textobj "comment.inner") (evil-textobj-tree-sitter-get-textobj "comment.outer")
+      ;  :desc "TS Class"                  :textobj "C"   (evil-textobj-tree-sitter-get-textobj "class.inner") (evil-textobj-tree-sitter-get-textobj "class.outer")
+      ;  :desc "TS Conditional"            :textobj "v"   (evil-textobj-tree-sitter-get-textobj "conditional.inner") (evil-textobj-tree-sitter-get-textobj "conditional.outer")
+      ;  :desc "TS Loop"                   :textobj "l"   (evil-textobj-tree-sitter-get-textobj "loop.inner") (evil-textobj-tree-sitter-get-textobj "loop.outer"))
       (:desc "Subsentence"               :textobj "."   #'inner-subsentence  #'outer-subsentence
        :desc "Commas"                    :textobj ","   #'inner-commas       #'outer-commas
        :desc "Join paragraph into line." :n       "gj"  #'evil-join-and-move

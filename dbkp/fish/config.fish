@@ -143,6 +143,7 @@ vardedup PATH XDG_DATA_DIRS LD_LIBRARY_PATH fish_complete_path
 
 bind \es fish_prepend_sudo
 bind \cl fish_prepend_clear
+bind \eg lazygit
 bind \el "printf '\n';ls;commandline -f repaint"
 bind \cb backward-bigword
 bind \cf forward-bigword
