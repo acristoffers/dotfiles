@@ -13,7 +13,11 @@ function update-nix
     darwin-rebuild switch --flake $XDG_CONFIG_HOME/nix/home-manager
   else
     if test -z "$_flag_debug"
-      home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager
+      if type -q nom
+        home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager &| nom
+      else
+        home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager
+      end
     else
       home-manager switch --flake $XDG_CONFIG_HOME/nix/home-manager --show-trace
     end
