@@ -2,7 +2,7 @@ function update-pip3
   if not set -q IN_NIX_SHELL
     title Updating Python
     pushd ~/.config/global-python
-    rm flake.lock
+    rm *.lock
     rm -f result
     set -x FULL_NIX_SHELL
     nix build
