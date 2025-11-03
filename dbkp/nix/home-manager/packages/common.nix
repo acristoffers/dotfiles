@@ -24,4 +24,4 @@ dicts
 ++ flakes
 ++ [ perl5 python3 ruby3 ]
 ++ linux
-++ [ (pkgs.hiPrio fish-fzf-fix) ]
+++ [ (pkgs.lib.hiPrio fish-fzf-fix) ]

@@ -2,8 +2,8 @@
 
 let
   flakePackage = flake: pkgName:
-    if flake.packages ? ${pkgs.system} then
-      flake.packages.${pkgs.system}.${pkgName}
+    if flake.packages ? ${pkgs.stdenv.hostPlatform.system} then
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.${pkgName}
     else
       null;
 in
