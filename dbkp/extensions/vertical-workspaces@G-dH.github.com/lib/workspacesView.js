@@ -258,7 +258,7 @@ const WorkspacesViewCommon = {
                 w.visible = true;
                 const directionNext = distance > 0;
 
-                 if (opt.ORIENTATION) {
+                if (opt.ORIENTATION) {
                     const height = w.height * 0.6 * opt.WS_PREVIEW_SCALE;
                     w.translation_y = directionNext ? -height : height;
                 } else {
@@ -281,10 +281,20 @@ const WorkspacesViewCommon = {
             if (opt.SHOW_WS_PREVIEW_BG && opt.OVERVIEW_MODE === 1 && distanceToCurrentWorkspace < 2)
                 w._background._updateBorderRadius(Math.min(1, w._overviewAdjustment.value));
 
-
-            // hide workspace background
-            if (!opt.SHOW_WS_PREVIEW_BG && currentState <= ControlsState.WINDOW_PICKER && w._background.opacity)
+            // For the primary monitor, the visibility of the ws preview bg
+            // is controlled from OverviewControls -> _updateWorkspacesDisplay()
+            // However, when a new workspace is created in the WINDOW_PICKER state,
+            // the initial visibility needs to be set here
+            if (primaryMonitor && (currentState > ControlsState.WINDOW_PICKER || fullTransition))
+                return;
+            const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
+            const staticSwitcherAnimation = staticWorkspace && opt.STATIC_WS_SWITCHER_BG && currentState === ControlsState.WINDOW_PICKER;
+            const dynamicSwitcherAnimation = staticWorkspace && !opt.STATIC_WS_SWITCHER_BG && currentState === ControlsState.WINDOW_PICKER;
+            const showBg = opt.SHOW_WS_PREVIEW_BG || (staticWorkspace && secondaryMonitor);
+            if ((!showBg || staticSwitcherAnimation) && !dynamicSwitcherAnimation)
                 w._background.opacity = 0;
+            else if ((showBg || dynamicSwitcherAnimation) && !staticSwitcherAnimation)
+                w._background.opacity = 255;
         });
     },
 

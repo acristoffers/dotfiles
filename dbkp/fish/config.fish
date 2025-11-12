@@ -141,9 +141,19 @@ set -a fish_complete_path $HOME/.nix-profile/share/fish/completions
 fix-path-wrappers
 vardedup PATH XDG_DATA_DIRS LD_LIBRARY_PATH fish_complete_path
 
+function repaint-all
+  tmux run-shell "tmux list-panes -a -F '##{pane_id}' | xargs -I{} tmux send-keys -t {} Escape 1"
+end
+
+function fish_postexec --on-event fish_postexec
+  if echo "$argv" | egrep -q '(lg|git)'
+    repaint-all
+  end
+end
+
 bind \es fish_prepend_sudo
 bind \cl fish_prepend_clear
-bind \eg lazygit
+bind \eg "lazygit; repaint-all"
 bind \el "printf '\n';ls;commandline -f repaint"
 bind \cb backward-bigword
 bind \cf forward-bigword
@@ -156,6 +166,8 @@ bind \ej "commandline -rj ''"
 bind \ec __fzf_path
 bind \eC __fzf_file
 bind \e, insert_last_command
+bind \e1 "commandline -f repaint"
+bind \e\[I "commandline -f repaint"
 
 if test -f $XDG_DATA_HOME/secrets.fish
   source $XDG_DATA_HOME/secrets.fish

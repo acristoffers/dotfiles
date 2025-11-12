@@ -85,8 +85,8 @@ recent-characters=['🙈', '🤦']
 first-run=false
 
 [org/gnome/Console]
-last-window-maximised=false
-last-window-size=(1693, 1395)
+last-window-maximised=true
+last-window-size=(1693, 1051)
 
 [org/gnome/Contacts]
 did-initial-setup=true
@@ -169,7 +169,7 @@ source-units='degree'
 target-currency='DZD'
 target-units='radian'
 window-maximized=false
-window-size=(360, 504)
+window-size=(360, 616)
 word-size=64
 
 [org/gnome/calendar]
@@ -194,7 +194,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='network'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -858,7 +858,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.827885349513117, 3.49255)
+night-light-last-coordinates=(47.855376404077894, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -959,7 +959,7 @@ blur=false
 active-profile='/home/alan/.config/burn-my-windows/profiles/1693417159839460.conf'
 last-extension-version=30
 last-prefs-version=30
-prefs-open-count=5
+prefs-open-count=7
 preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
@@ -1131,9 +1131,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1762188871
+check-timestamp=int64 1762968364
 first-run=false
-flatpak-purge-timestamp=int64 1762109057
+flatpak-purge-timestamp=int64 1762856472
 install-timestamp=int64 1754739144
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1762188871

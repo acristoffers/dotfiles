@@ -220,7 +220,7 @@ export const OverviewControlsModule = class {
             searchController._searchResults.translation_x = 0;
             searchController._searchResults.translation_y = 0;
             controlsManager._searchEntryBin.visible = true;
-            Main.overview.searchEntry.opacity = 255;
+            controlsManager._searchEntryBin.opacity = 255;
         } else {
             // Reconnect signal to use custom function.
             // The function connected to the signal cannot be overridden in the class prototype because
@@ -298,7 +298,7 @@ const ControlsManagerCommon = {
             // Store pointer X coordinate for OVERVIEW_MODE 1 - to prevent immediate switch to WORKSPACE_MODE 1 if the mouse pointer is steady
             Me.Util.resetInitialPointerX();
 
-            this._updateSearchEntryVisibility(false);
+            this._updateSearchEntryVisibility(false, false);
             this._updateSearchStyle();
 
             // Prevent various glitches after configuration changed, including unlocking screen
@@ -309,8 +309,11 @@ const ControlsManagerCommon = {
             this._enableOverviewTransitionAnimationsIfNeeded();
 
             // Sometimes the app grid is empty after the appDisplay module was updated
-            if (!this._appDisplay._orderedItems.length)
+            // Needs to be fixed in appDisplay module!
+            if (!this._appDisplay._orderedItems.length) {
                 Me.Modules.appDisplayModule.update();
+                Main.notify('V-Shell', 'AppDisplay module hed to be restarted');
+            }
         }
     },
 
@@ -427,19 +430,32 @@ const ControlsManagerCommon = {
 
     _updateOverview() {
         const { initialState, finalState, progress, currentState } = this._stateAdjustment.getStateTransitionParams();
-        let initialParams = this._getOpacityForState(initialState);
-        let finalParams = this._getOpacityForState(finalState);
+        const initialParams = this._getOpacityForState(initialState);
+        const finalParams = this._getOpacityForState(finalState);
+        const fullTransition = Math.abs(finalState - initialState) > 1;
+        const opacity = Math.round(Util.lerp(initialParams.opacity, finalParams.opacity, progress));
+        const staticWorkspace = opt.OVERVIEW_MODE2 && (!opt.WORKSPACE_MODE || !Main.overview._animationInProgress);
 
-        let opacity = Math.round(Util.lerp(initialParams.opacity, finalParams.opacity, progress));
+        this._currentParams = {
+            initialState,
+            finalState,
+            fullTransition,
+            progress,
+            currentState,
+            opacity,
+            staticWorkspace,
+        };
 
         // reset Static Workspace window picker mode
         if (currentState === 0 && opt.OVERVIEW_MODE && opt.WORKSPACE_MODE)
             opt.WORKSPACE_MODE = 0;
 
-        this._updateWorkspacesDisplay(currentState, opacity);
-        this._updateAppDisplay(initialState, finalState, progress, opacity);
-        this._updateOverviewStackOrder(currentState, initialState, finalState);
-        this._updateSearchEntry(currentState, finalState, opacity);
+        this._updateWorkspacesDisplay();
+        this._updateAppDisplay();
+        this._updateSearchEntry();
+        this._updateOverviewStackOrder();
+        if (currentState === ControlsState.WINDOW_PICKER)
+            this._enableOverviewTransitionAnimationsIfNeeded();
     },
 
     _getOpacityForState(state) {
@@ -459,7 +475,12 @@ const ControlsManagerCommon = {
         return { opacity };
     },
 
-    _updateWorkspacesDisplay(currentState, opacity) {
+    _updateWorkspacesDisplay() {
+        const currentState = this._currentParams.currentState;
+        const fullTransition = this._currentParams.fullTransition;
+        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
+        let opacity = this._currentParams.opacity;
+
         this._workspacesDisplay.translation_x = 0;
         this._workspacesDisplay.translation_y = 0;
         this._workspacesDisplay.scale_x = 1;
@@ -467,42 +488,51 @@ const ControlsManagerCommon = {
 
         const fadeOutWs = !opt.WS_ANIMATION;
 
+        // If Static Background ws switcher animation is required in the Static Workspace overview:
+        //   - the ws preview bg is hidden while the static workspace overview is active, but needs to be visible
+        //     when transitioning between this and any other state or between HIDDEN and APP_GRID states
+        // Note that the initial bg visibility is set in WorkspacesView -> _updateWorkspacesState()
+        let bgOpacity = (opt.SHOW_WS_PREVIEW_BG && !(staticWorkspace && opt.STATIC_WS_SWITCHER_BG)) ||
+                        (staticWorkspace && opt.SHOW_WS_PREVIEW_BG && opt.STATIC_WS_SWITCHER_BG &&
+                            (currentState > ControlsState.WINDOW_PICKER || fullTransition))
+            ? 255 : 0;
+
         if (fadeOutWs) {
             this._workspacesDisplay.opacity = Math.max(0, opacity - (255 - opacity));
-        } else {
+        } else if (currentState > ControlsState.WINDOW_PICKER || fullTransition) {
             // Direction of the referenced fade transition is always WINDOW_PICKER to APP_GRID
-            const fadeInBg = !opt.SHOW_WS_PREVIEW_BG && opt.SHOW_WS_TMB_BG && opt.WS_ANIMATION_ALL;
-            const fadeOutBg = opt.SHOW_WS_PREVIEW_BG && !opt.SHOW_WS_TMB_BG && !opt.WS_ANIMATION_ALL;
-            if (fadeInBg)
-                opacity = 255 - opacity;
-            else if (fadeOutBg)
-                opacity = Math.max(0, opacity - (255 - opacity));
+            const fadeInBg = !opt.SHOW_WS_PREVIEW_BG && opt.WS_ANIMATION_ALL;
+            const fadeOutBg = opt.SHOW_WS_PREVIEW_BG && opt.WS_ANIMATION === 1 /* <- Single WS animation*/ && !opt.SHOW_WS_TMB_BG;
 
-            if (fadeInBg || fadeOutBg) {
-                const workspaces = this._workspacesDisplay._workspacesViews[global.display.get_primary_monitor()]?._workspaces;
-                workspaces?.forEach(w => w._background.set_opacity(opacity));
-            }
+            if (fadeInBg)
+                bgOpacity = 255 - opacity;
+            else if (fadeOutBg)
+                bgOpacity = Math.max(0, opacity - (255 - opacity));
         }
 
+        const workspaces = this._workspacesDisplay._workspacesViews[global.display.get_primary_monitor()]?._workspaces;
+        workspaces?.forEach(w => w._background.set_opacity(bgOpacity));
+
         if (opt.USE_THUMBNAILS_IN_APP_GRID && currentState === ControlsState.APP_GRID) {
-            // in app grid hide workspaces so they're not blocking app grid or ws thumbnails
+            // Hide workspaces in the app grid state,
+            // so they're not blocking ws thumbnails or the app grid if ws animation is disabled
             this._workspacesDisplay.scale_x = 0;
         } else {
             this._workspacesDisplay.scale_x = 1;
         }
     },
 
-    _updateAppDisplay(initialState, finalState, progress, opacity) {
-        if (!Main.layoutManager._startingUp) {
-            if (initialState === ControlsState.HIDDEN && finalState === ControlsState.APP_GRID)
-                this._appDisplay.opacity = Math.round(progress * 255);
-            else
-                this._appDisplay.opacity = 255 - opacity;
-        }
+    _updateAppDisplay() {
+        if (!Main.layoutManager._startingUp)
+            this._appDisplay.opacity = 255 - this._currentParams.opacity;
     },
 
-    _updateSearchEntry(currentState, finalState, opacity) {
-        const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
+    _updateSearchEntry() {
+        const staticWorkspace = this._currentParams.staticWorkspace;
+        const currentState = this._currentParams.currentState;
+        const opacity = this._currentParams.opacity;
+        const fullTransition = this._currentParams.fullTransition;
+
         // Avoid workspacesDisplay animate below searchEntry
 
         // Show SearchEntry even when disabled and search not active
@@ -521,28 +551,36 @@ const ControlsManagerCommon = {
             this._searchEntryBin.visible =
                 opt.SHOW_SEARCH_ENTRY || this._searchInProgress ||
                 (opt.SEARCH_APP_GRID_MODE && this.dash.showAppsButton.checked);
-            if (!((staticWorkspace && opt.OVERVIEW_MODE2) || opt.SEARCH_RESULTS_BG_STYLE) || (finalState === ControlsState.HIDDEN && opt.WORKSPACE_MODE && opt.WS_ANIMATION))
-                this._setSearchEntryBelow();
-            else
+            if ((staticWorkspace || currentState === ControlsState.WINDOW_PICKER) &&
+                !fullTransition)
                 this._setSearchEntryAbove();
+            else
+                this._setSearchEntryBelow();
         }
     },
 
     _setSearchEntryAbove() {
-        this.set_child_above_sibling(this._searchEntryBin, this._searchController);
+        if (this._currentParams.staticWorkspace || opt.SEARCH_RESULTS_BG_STYLE) {
+            this.set_child_above_sibling(this._searchController, null);
+            this.set_child_above_sibling(this._searchEntryBin, this._searchController);
+        } else {
+            this.set_child_above_sibling(this._searchEntryBin, this._workspacesDisplay);
+        }
     },
 
     _setSearchEntryBelow() {
         this.set_child_below_sibling(this._searchEntryBin, this._workspacesDisplay);
     },
 
-    _updateOverviewStackOrder(currentState, initialState, finalState) {
+    _updateOverviewStackOrder() {
+        const currentState = this._currentParams.currentState;
+        const fullTransition = this._currentParams.fullTransition;
+
         // getStateTransitionParams() doesn't recognize reverse direction of a swipe gesture
         // which means that initialState is always lower than finalState when swipe gesture is used
-        const staticWorkspace  = opt.OVERVIEW_MODE2 && (!opt.WORKSPACE_MODE || !Main.overview._animationInProgress); // && !(initialState === ControlsState.WINDOW_PICKER && opt.WORKSPACE_MODE);
+        const staticWorkspace  = opt.OVERVIEW_MODE2 && (!opt.WORKSPACE_MODE || !Main.overview._animationInProgress);
         const dashShouldBeAbove = staticWorkspace ||
-            (currentState >= 1 && !(opt.DASH_BOTTOM && opt.WIN_TITLES_POSITION_BELOW) && Math.abs(finalState - initialState) < 2);
-
+            (currentState >= 1 && !(opt.DASH_BOTTOM && opt.WIN_TITLES_POSITION_BELOW) && fullTransition);
         if (!this._dashIsAbove && dashShouldBeAbove)
             this._setDashAboveSiblings();
         else if (this._dashIsAbove && !dashShouldBeAbove)
@@ -612,10 +650,14 @@ const ControlsManagerCommon = {
             opt.APP_GRID_EXCLUDE_FAVORITES = false;
             opt.APP_GRID_EXCLUDE_RUNNING = false;
             this._appDisplay._grid.layoutManager.allowIncompletePages = false;
+
+            Me.run.appGridFilterActive = true;
         }
     },
 
     _deactivateSearchAppGridMode() {
+        Me.run.appGridFilterActive = false;
+
         if (this._origAppGridContent) {
             const icons = this._appDisplay._orderedItems;
             icons.forEach(icon => {
@@ -676,7 +718,7 @@ const ControlsManagerCommon = {
         // reuse overview transition, just replace APP_GRID with the search view
         this._shiftOverviewStateIfNeeded(searchActive, finalState);
         this._animateSearchResultsIfNeeded(searchActive);
-        if (opt.SHOW_BG_IN_OVERVIEW && this._bgManagerWindowPicker)
+        if (opt.SHOW_BG_IN_OVERVIEW && this._bgManagerWindowPicker && searchActive)
             this._updateBackground(this._bgManagerWindowPicker, this._stateAdjustment, !searchActive && opt.FAKE_BLUR_TRANSITION);
     },
 
@@ -684,8 +726,8 @@ const ControlsManagerCommon = {
         const currentState = this._searchInProgress;
         this._searchInProgress = this._searchController.searchActive;
         // Update bg brightness after leaving search mode
-        if (!this._searchInProgress && currentState !== this._searchInProgress)
-            this._updateBackgroundsConfiguration();
+        if (this._bgManagerWindowPicker && !this._searchInProgress && currentState !== this._searchInProgress)
+            this._updateBackground(this._bgManagerWindowPicker, this._stateAdjustment, !this._searchController.searchActive && opt.FAKE_BLUR_TRANSITION);
         this._updateSearchEntry();
     },
 
@@ -713,13 +755,14 @@ const ControlsManagerCommon = {
             onStopped: () => {
                 if (this._updateSearchInProgress) {
                     this._updateSearchInProgress();
+                    this._updateSearchStyle();
                     this._workspacesDisplay.setPrimaryWorkspaceVisible(true);
                 }
             },
         });
     },
 
-    _updateSearchEntryVisibility(searchActive) {
+    _updateSearchEntryVisibility(searchActive, animate = true) {
         const entryBin = this._searchEntryBin;
 
         entryBin.remove_all_transitions();
@@ -728,7 +771,7 @@ const ControlsManagerCommon = {
         ) {
             entryBin.visible = true;
             entryBin.opacity = 255;
-        } else if (!(searchActive && entryBin.visible)) {
+        } else if (animate) {
             entryBin.visible = true;
             entryBin.opacity = searchActive ? 0 : 255;
             // show search entryBin only if the user starts typing, and hide it when leaving the search mode
@@ -738,9 +781,12 @@ const ControlsManagerCommon = {
                 mode: Clutter.AnimationMode.EASE_OUT_QUAD,
                 onStopped: () => {
                     entryBin.visible = searchActive;
-                    entryBin.opacity = 255;
+                    entryBin.opacity = searchActive ? 255 : 0;
                 },
             });
+        } else {
+            entryBin.visible = searchActive;
+            entryBin.opacity = searchActive ? 255 : 0;
         }
     },
 
@@ -856,8 +902,7 @@ const ControlsManagerCommon = {
     _updateSearchStyle(reset) {
         if (!reset && (
             (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !this.dash.showAppsButton.checked) ||
-            (opt.SEARCH_RESULTS_BG_STYLE && this._searchController.searchActive && !this.dash.showAppsButton.checked)/* ||
-            (!opt.SEARCH_RESULTS_BG_STYLE && !this._searchInProgress)*/
+            (opt.SEARCH_RESULTS_BG_STYLE && this._searchController.searchActive)
         )) {
             this._searchController._searchResults.add_style_class_name('search-results-bg-dark');
             this._searchEntry.add_style_class_name('search-entry-om2');
@@ -1159,11 +1204,22 @@ const ControlsManagerCommon = {
         this._ignoreShowAppsButtonToggle = false;
     },
 
+    // Even if the overview wallpaper is disabled, we may still need it in certain situations:
+    // - Workspace preview background is disabled - we need a transition between the desktop and the overview
+    // - Workspace preview background is enabled, the static workspace overview is active,
+    //   and the workspace switcher animation is set to "Static Background":
+    //     - We need the wallpaper to keep the background static when switching workspaces
+    //       in the static workspace overview
+    _shouldCreateBgManagers() {
+        return opt.SHOW_BG_IN_OVERVIEW || !opt.SHOW_WS_PREVIEW_BG || (opt.OVERVIEW_MODE2 && opt.SHOW_WS_PREVIEW_BG && opt.STATIC_WS_SWITCHER_BG);
+    },
+
     _updateBackgroundsConfiguration() {
         // Ensure that overview backgrounds are ready when needed
-        if (!this._bgManagers && (opt.SHOW_BG_IN_OVERVIEW || !opt.SHOW_WS_PREVIEW_BG))
+        const bgManagerNeeded = this._shouldCreateBgManagers();
+        if (!this._bgManagers && bgManagerNeeded)
             this._setBackground();
-        else if (this._bgManagers && !(opt.SHOW_BG_IN_OVERVIEW || !opt.SHOW_WS_PREVIEW_BG))
+        else if (this._bgManagers && !bgManagerNeeded)
             this._setBackground(true);
 
         // Keep the background actors
@@ -1182,7 +1238,7 @@ const ControlsManagerCommon = {
 
     _setBackground(reset = false) {
         this._destroyBackgroundGroup();
-        if (reset || deactivationInProgress || (!opt.SHOW_BG_IN_OVERVIEW && opt.SHOW_WS_PREVIEW_BG))
+        if (reset || deactivationInProgress || !this._shouldCreateBgManagers())
             return;
 
         // Shell.ShaderEffect used to have a bug causing memory leaks
@@ -1279,7 +1335,7 @@ const ControlsManagerCommon = {
         let bgManagers;
         // If opt.APP_GRID_BG_BLUR_SIGMA === opt.OVERVIEW_BG_BLUR_SIGMA
         // we don't need another background actor
-        if (isPrimary && opt.FAKE_BLUR_TRANSITION && (opt.APP_GRID_BG_BLUR_SIGMA !== opt.OVERVIEW_BG_BLUR_SIGMA)) {
+        if (isPrimary && opt.FAKE_BLUR_TRANSITION && (opt.APP_GRID_BG_BLUR_SIGMA !== opt.OVERVIEW_BG_BLUR_SIGMA || opt.OVERVIEW_MODE2)) {
             const bgManagerAppGrid = createBgManager();
             bgManagerAppGrid._name = 'App-Grid';
             bgManagerAppGrid._primary = true;
@@ -1298,7 +1354,7 @@ const ControlsManagerCommon = {
         this._updateBackground(bgManagerWindowPicker, this._stateAdjustment);
         if (isPrimary) { // Needed when switching search from the app grid
             this._bgManagerWindowPicker = bgManagerWindowPicker;
-            bgManagerWindowPicker.connect('dedtroy', () => {
+            bgManagerWindowPicker.connect('destroy', () => {
                 delete this._bgManagerWindowPicker;
             });
         }
@@ -1323,11 +1379,23 @@ const ControlsManagerCommon = {
     },
 
     _updateBackground(bgManager, stateAdjustment, resetWindowPicker) {
-        const searchActive = this._searchController.searchActive;
         const staticWorkspace = opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE;
-        const { currentState } = stateAdjustment.getStateTransitionParams();
+        const searchActive = this._searchInProgress;
+        const { currentState, initialState, finalState } = stateAdjustment.getStateTransitionParams();
+        const fullTransition = Math.abs(finalState - initialState) > 1;
+
+        // In case when we only need the background for the Static Workspace overview
+        // (SHOW_WS_PREVIEW_BG && STATIC_WS_SWITCHER_BG),
+        // it needs to be hidden immediately when we leave the state
+        if (!opt.SHOW_BG_IN_OVERVIEW && opt.SHOW_WS_PREVIEW_BG && (opt.WORKSPACE_MODE || currentState > 1 || fullTransition)) {
+            this._vshellBackgroundGroup.visible = false;
+            return;
+        } else {
+            this._vshellBackgroundGroup.visible = true;
+        }
+
         const stateValue =
-            (opt.FAKE_BLUR_TRANSITION && opt.OVERVIEW_BG_BLUR_SIGMA !== opt.APP_GRID_BG_BLUR_SIGMA) ||
+            opt.FAKE_BLUR_TRANSITION ||
             (opt.SHOW_WS_PREVIEW_BG && currentState < ControlsState.WINDOW_PICKER)
                 ? Math.ceil(currentState)
                 : currentState;
@@ -1337,31 +1405,37 @@ const ControlsManagerCommon = {
                 this._fadeWallpaper(bgManager, stateValue, staticWorkspace);
         } else {
             const targetBg = currentState > 1 && bgManager._bgManagerAppGrid ? bgManager._bgManagerAppGrid : bgManager;
-            this._setBgBrightness(targetBg, stateValue, staticWorkspace, searchActive);
-            if (resetWindowPicker)
-                this._setBgBrightness(bgManager, 1, staticWorkspace, searchActive);
+            this._setBgBrightness(targetBg, currentState, staticWorkspace, searchActive, fullTransition);
 
             if (opt.OVERVIEW_BG_BLUR_SIGMA || opt.APP_GRID_BG_BLUR_SIGMA)
-                this._setBlurEffect(targetBg, stateValue, staticWorkspace, searchActive);
-            if (resetWindowPicker)
-                this._setBlurEffect(bgManager, 1, staticWorkspace, searchActive);
+                this._setBlurEffect(targetBg, stateValue, staticWorkspace, searchActive, fullTransition);
             let progress = opt.SHOW_WS_PREVIEW_BG && currentState <= 1 ? 1 : currentState;
-            if (!bgManager._bgManagerAppGrid && progress > 1 && staticWorkspace)
-                progress -= 1;
             if (opt.FAKE_BLUR_TRANSITION) {
                 bgManager.backgroundActor.opacity = Math.min(progress, 1) * 255;
                 bgManager._bgManagerAppGrid?.backgroundActor.set_opacity(Math.max(progress - 1, 0) * 255);
             }
+
+            // Reset the overview layer effects when transition between the static workspace and app grid states
+            if (opt.FAKE_BLUR_TRANSITION && opt.SHOW_BG_IN_OVERVIEW && opt.SHOW_WS_PREVIEW_BG && staticWorkspace && stateValue > ControlsState.WINDOW_PICKER && !fullTransition) {
+                this._setBgBrightness(bgManager, currentState, staticWorkspace, searchActive, fullTransition);
+                this._setBlurEffect(bgManager, stateValue, staticWorkspace, searchActive, fullTransition);
+            } else if (resetWindowPicker || (opt.FAKE_BLUR_TRANSITION && opt.SHOW_BG_IN_OVERVIEW && !opt.SHOW_WS_PREVIEW_BG && staticWorkspace && stateValue > ControlsState.WINDOW_PICKER && !fullTransition)) {
+                this._setBgBrightness(bgManager, 1, staticWorkspace, searchActive, fullTransition);
+                this._setBlurEffect(bgManager, 1, staticWorkspace, searchActive, fullTransition);
+            }
         }
     },
 
-    _setBgBrightness(bgManager, stateValue, staticWorkspace, searchActive) {
+    _setBgBrightness(bgManager, stateValue, staticWorkspace, searchActive, fullTransition) {
         if (!opt.SHOW_BG_IN_OVERVIEW) {
             bgManager.backgroundActor.content.brightness = 1;
             return;
         }
-
-        let overviewBrightness = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 1 : opt.OVERVIEW_BG_BRIGHTNESS;
+        let overviewBrightness =
+            staticWorkspace && ((!opt.FAKE_BLUR_TRANSITION && !opt.SHOW_WS_PREVIEW_BG) ||
+            (stateValue <= ControlsState.WINDOW_PICKER) && (!fullTransition || !opt.SHOW_WS_PREVIEW_BG))
+                ? 1
+                : opt.OVERVIEW_BG_BRIGHTNESS;
 
         // If search is triggered during the overview show animation,
         // apply the search brightness instead of the window picker brightness.
@@ -1371,17 +1445,18 @@ const ControlsManagerCommon = {
         //     to the wrong background layer, which will affect the reversed transition.
         // Fixed:
         //     Reset the layer brightness in _updateBackground() when called from _onSearchChanged() with the resetWindowPicker argument
-        if (!staticWorkspace && searchActive && stateValue <= ControlsState.WINDOW_PICKER)
+        if (bgManager._primary && !staticWorkspace && searchActive && stateValue <= ControlsState.WINDOW_PICKER)
             overviewBrightness = opt.SEARCH_BG_BRIGHTNESS;
 
         let secBrightness = searchActive && !opt.SEARCH_RESULTS_BG_STYLE ? opt.SEARCH_BG_BRIGHTNESS : opt.APP_GRID_BG_BRIGHTNESS;
-        if ((staticWorkspace && !this._appDisplay.visible && !searchActive) || (searchActive && opt.SEARCH_RESULTS_BG_STYLE && !this.dash.showAppsButton.checked))
+        if ((staticWorkspace && !this._appDisplay.visible && !searchActive) ||
+            (searchActive && opt.SEARCH_RESULTS_BG_STYLE && !this.dash.showAppsButton.checked))
             secBrightness = overviewBrightness;
 
         // const vignette = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace ? 0 : 0.2;
         let brightness = 1; // , vignetteSharpness = 0;
 
-        if ((opt.SHOW_WS_PREVIEW_BG && stateValue < 1) || (opt.SHOW_WS_PREVIEW_BG && staticWorkspace))
+        if (stateValue > 0 && stateValue <= 1 && opt.SHOW_WS_PREVIEW_BG/* && !staticWorkspace*/)
             brightness = overviewBrightness;
             // vignetteSharpness = vignette;
         else if (stateValue === 1 || (stateValue > 1 && !bgManager._primary))
@@ -1404,13 +1479,15 @@ const ControlsManagerCommon = {
         return blurEffect.sigma === undefined ? 'radius' : 'sigma';
     },
 
-    _setBlurEffect(bgManager, stateValue, staticWorkspace, searchActive) {
+    _setBlurEffect(bgManager, stateValue, staticWorkspace, searchActive, fullTransition) {
         const blurEffect = this._getBlurEffect(bgManager);
         const radiusProperty = this._getRadiusProperty(blurEffect);
 
-        let overviewBlurRadius = !opt.SHOW_WS_PREVIEW_BG && staticWorkspace
-            ? 0
-            : opt.OVERVIEW_BG_BLUR_SIGMA;
+        let overviewBlurRadius =
+            staticWorkspace && ((!opt.FAKE_BLUR_TRANSITION && !opt.SHOW_WS_PREVIEW_BG) ||
+            (stateValue <= ControlsState.WINDOW_PICKER) && (!fullTransition || !opt.SHOW_WS_PREVIEW_BG))
+                ? 0
+                : opt.OVERVIEW_BG_BLUR_SIGMA;
 
         // If search is triggered during the overview show animation,
         // apply the search/appGrid blur instead of the window picker blur.
@@ -1419,8 +1496,9 @@ const ControlsManagerCommon = {
         //     When using fast transitions between different layers, the blur will be applied
         //     to the wrong background layer, which will affect the reversed transition.
         // Fixed:
-        //     Reset the layer blur in _updateBackground() when called from _onSearchChanged() with the resetWindowPicker argument
-        if (!staticWorkspace && searchActive && stateValue <= ControlsState.WINDOW_PICKER)
+        //     Reset the layer blur in _updateBackground()
+        //     when called from _onSearchChanged() with the resetWindowPicker argument
+        if (bgManager._primary && !staticWorkspace && searchActive && stateValue <= ControlsState.WINDOW_PICKER)
             overviewBlurRadius = opt.APP_GRID_BG_BLUR_SIGMA;
 
         const appGridBlurRadius =
@@ -1796,11 +1874,11 @@ const ControlsManagerLayoutVertical = {
         // let wsTmbHeight = 0;
 
         if (opt.SHOW_WS_TMB) {
-            const searchActive = controlsManager._searchInProgress &&
-                                !(opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked);
+            /* const searchActive = controlsManager._searchInProgress &&
+                                !(opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked);*/
             const getState = state =>
                 state <= ControlsState.WINDOW_PICKER ||
-                searchActive || // Show the thumbnails before workspacesDisplay is hidden to avoid glitches
+                // searchActive || // Show the thumbnails before workspacesDisplay is hidden to avoid glitches
                 (opt.WS_ANIMATION_ALL && transitionParams.currentState < 1.99 /* ControlsState.APP_GRID*/)
                     ? ControlsState.WINDOW_PICKER
                     : ControlsState.APP_GRID;
@@ -2064,6 +2142,8 @@ const ControlsManagerLayoutHorizontal = {
 
         const transitionParams = this._stateAdjustment.getStateTransitionParams();
         const spacing = opt.SPACING;
+        const controlsManager = Main.overview._overview.controls;
+        const searchActive = controlsManager._searchController.searchActive;
 
         const opaqueSearchResults =
                 (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && transitionParams.currentState <= ControlsState.WINDOW_PICKER) ||
@@ -2071,11 +2151,7 @@ const ControlsManagerLayoutHorizontal = {
 
         const searchEntryPositionTop =
                 opt.SEARCH_ENTRY_POSITION_TOP &&
-                opt.SHOW_SEARCH_ENTRY &&
-                opt.WS_TMB_TOP &&
-                !opaqueSearchResults;
-
-        const controlsManager = Main.overview._overview.controls;
+                opt.WS_TMB_TOP;
 
         // Panel
         const panelX = 0;
@@ -2150,13 +2226,15 @@ const ControlsManagerLayoutHorizontal = {
         // Workspace Thumbnails
         // let wsTmbWidth = 0;
         let wsTmbHeight = 0;
+        let wsTmbHeightForSearchEntry = 0;
 
         if (opt.SHOW_WS_TMB) {
-            const searchActive = controlsManager._searchInProgress &&
-                                !(opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked);
+            const searchInProgress =
+                controlsManager._searchInProgress &&
+                !(opt.SEARCH_APP_GRID_MODE && Main.overview.dash.showAppsButton.checked);
             const getState = state =>
                 state <= ControlsState.WINDOW_PICKER ||
-                searchActive || // Show the thumbnails before workspacesDisplay is hidden to avoid glitches
+                searchInProgress || // Show the thumbnails before workspacesDisplay is hidden to avoid glitches
                 (opt.WS_ANIMATION_ALL && transitionParams.currentState < 1.99 /* ControlsState.APP_GRID*/)
                     ? ControlsState.WINDOW_PICKER
                     : ControlsState.APP_GRID;
@@ -2173,6 +2251,16 @@ const ControlsManagerLayoutHorizontal = {
             }
             // wsTmbWidth = Math.round(wsTmbBox.get_width());
             wsTmbHeight = Math.round(wsTmbBox.get_height());
+
+            if (!searchActive && !opt.SHOW_SEARCH_ENTRY && opt.SEARCH_APP_GRID_MODE &&
+                transitionParams.currentState > ControlsState.WINDOW_PICKER &&
+                opt.WS_ANIMATION_ALL && !opt.MAX_THUMBNAIL_SCALE_STABLE
+            ) {
+                const wsTmbBoxForSearch = this._getThumbnailsBoxForState(ControlsState.APP_GRID, ...params);
+                wsTmbHeightForSearchEntry = wsTmbBoxForSearch.get_height();
+            } else {
+                wsTmbHeightForSearchEntry = wsTmbHeight;
+            }
 
             // Animate ws thumbnails if needed
             if (Me.run.enableOverviewTransitionAnimations) {
@@ -2257,8 +2345,12 @@ const ControlsManagerLayoutHorizontal = {
                                        (opt.WS_TMB_BOTTOM ? wsTmbHeightAppGrid + spacing : 0);
 
         // searchEntry
+        let topBoxOffsetForSearch = topBoxOffset;
+        if (wsTmbHeight !== wsTmbHeightForSearchEntry)
+            topBoxOffsetForSearch -= wsTmbHeight - wsTmbHeightForSearchEntry;
+
         let searchEntryY = startY +
-            (searchEntryPositionTop ? 0 : topBoxOffset);
+            (searchEntryPositionTop ? spacing : topBoxOffsetForSearch);
 
         const searchX = startX +
             (opt.CENTER_SEARCH_VIEW || this._xAlignCenter
@@ -2274,7 +2366,6 @@ const ControlsManagerLayoutHorizontal = {
         childBox.set_size(searchWidth, searchEntryHeight);
 
         // Animate searchEntry in/out if needed
-        const searchActive = controlsManager._searchController.searchActive;
         if (Me.run.enableOverviewTransitionAnimations && !searchActive) {
             this._adjustChildBoxPositionForState(
                 box, childBox,
@@ -2287,7 +2378,7 @@ const ControlsManagerLayoutHorizontal = {
         this._searchEntry.allocate(childBox);
 
         // searchResults
-        const searchResultsOffset = (opt.SEARCH_ENTRY_POSITION_TOP && opt.SHOW_SEARCH_ENTRY) && opt.WS_TMB_TOP ? wsTmbHeight + 2 * spacing : 0;
+        const searchResultsOffset = opt.SEARCH_ENTRY_POSITION_TOP && opt.WS_TMB_TOP ? wsTmbHeight + 2 * spacing : 0;
         const searchY = opaqueSearchResults
             ? searchEntryY
             : searchEntryY + searchEntryHeight + spacing + searchResultsOffset;
