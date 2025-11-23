@@ -431,7 +431,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -501,7 +501,7 @@ is-maximized=true
 window-size=(2560, 1411)
 
 [org/gnome/evince]
-document-directory=@ms 'file:///home/alan/Documents/Dropbox/Universidade/Doutorado/Documentos/Soutenance'
+document-directory=@ms 'file:///home/alan/Downloads'
 
 [org/gnome/evince/default]
 continuous=true
@@ -511,10 +511,10 @@ enable-spellchecking=true
 fullscreen=false
 inverted-colors=false
 show-sidebar=false
-sidebar-page='links'
+sidebar-page='thumbnails'
 sidebar-size=226
 sizing-mode='automatic'
-window-ratio=(1.4161403037226177, 1.6569860670633931)
+window-ratio=(2.8440588903298636, 1.6569860670633931)
 zoom=1.0
 
 [org/gnome/evolution-data-server]
@@ -717,6 +717,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/cbcab8a1-a518-4efa-9bf0-20747bc5fb8d]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/d9f53e8f-83d4-4084-abc9-f156073552be]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -746,7 +750,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Developer/GitHub/tree-sitter-matlab'
+last-folder-path="/home/alan/Documents/Dropbox/Documentos/Appartement/26 Rue de l'Equerre/Assurances"
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -803,7 +807,7 @@ last-folder-path='/home/alan/Pictures'
 last-folder-path='/home/alan/Downloads/interpreter'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
-last-folder-path='/home/alan/Downloads/ovpn_udp'
+last-folder-path='/home/alan/Downloads/rvpn'
 
 [org/gnome/portal/filechooser/org.gnome.seahorse.Application]
 last-folder-path='/home/alan/Documents/Dropbox/Documents/Security'
@@ -858,7 +862,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.855376404077894, 2.2670599999999999)
+night-light-last-coordinates=(47.857573702451518, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -963,8 +967,9 @@ prefs-open-count=7
 preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
+cli-toggle=true
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1131,12 +1136,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1762968364
+check-timestamp=int64 1763887036
 first-run=false
-flatpak-purge-timestamp=int64 1762856472
+flatpak-purge-timestamp=int64 1763894112
 install-timestamp=int64 1754739144
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1762188871
+update-notification-timestamp=int64 1763201161
 
 [org/gnome/system/location]
 enabled=true

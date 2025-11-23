@@ -142,7 +142,12 @@ fix-path-wrappers
 vardedup PATH XDG_DATA_DIRS LD_LIBRARY_PATH fish_complete_path
 
 function repaint-all
-  tmux run-shell "tmux list-panes -a -F '##{pane_id}' | xargs -I{} tmux send-keys -t {} Escape 1"
+    tmux run-shell '
+        tmux list-panes -a -F "##{pane_id} ##{pane_current_command}" |
+        while read -r pane cmd; do
+            [ "$cmd" = "fish" ] && tmux send-keys -t "$pane" Escape 1
+        done || true
+    '
 end
 
 function fish_postexec --on-event fish_postexec
