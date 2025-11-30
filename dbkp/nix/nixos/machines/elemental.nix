@@ -53,4 +53,19 @@
   nix.settings.secret-key-files = [ "/home/alan/.ssh/nix-store" ];
   nix.sshServe.enable = true;
   nix.sshServe.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEfkBMu/0qcgSq3Er6pCR/BiVg+mv9p6Wi/N129f202 alan@Alan-NixOS-SteamDeck" ];
+
+  fileSystems = {
+    "/mnt/backup" =
+      {
+        device = "/dev/disk/by-uuid/9dad1b34-2f0a-4cb5-b617-2ce83ae5b674";
+        fsType = "btrfs";
+        options = [ "x-systemd.automount" "defaults" "user" "nofail" "compress=zstd" "autodefrag" ];
+      };
+    # "/mnt/backup/thunderbird" =
+    #   {
+    #     device = "/dev/disk/by-uuid/9dad1b34-2f0a-4cb5-b617-2ce83ae5b674";
+    #     fsType = "btrfs";
+    #     options = [ "x-systemd.automount" "subvol=thunderbird" "defaults" "user" "nofail" "compress=zstd" "autodefrag" ];
+    #   };
+  };
 }

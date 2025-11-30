@@ -21,11 +21,11 @@ last-search-text='acristoffers@startmail.com'
 
 [apps/seahorse/listing]
 item-filter='any'
-keyrings-selected=['secret-service:///org/freedesktop/secrets/collection/login']
+keyrings-selected=['gnupg://']
 
 [apps/seahorse/windows/key-manager]
-height=647
-width=1268
+height=1348
+width=1693
 
 [ca/desrt/dconf-editor]
 saved-pathbar-path='/org/gnome/shell/extensions/rectangle/'
@@ -85,8 +85,8 @@ recent-characters=['🙈', '🤦']
 first-run=false
 
 [org/gnome/Console]
-last-window-maximised=true
-last-window-size=(1693, 1051)
+last-window-maximised=false
+last-window-size=(1693, 1395)
 
 [org/gnome/Contacts]
 did-initial-setup=true
@@ -194,7 +194,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='network'
+last-panel='display'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -504,7 +504,7 @@ window-size=(2560, 1411)
 document-directory=@ms 'file:///home/alan/Downloads'
 
 [org/gnome/evince/default]
-continuous=true
+continuous=false
 dual-page=false
 dual-page-odd-left=true
 enable-spellchecking=true
@@ -514,7 +514,7 @@ show-sidebar=false
 sidebar-page='thumbnails'
 sidebar-size=226
 sizing-mode='automatic'
-window-ratio=(2.8440588903298636, 1.6569860670633931)
+window-ratio=(2.6499999999999999, 2.5833333333333335)
 zoom=1.0
 
 [org/gnome/evolution-data-server]
@@ -750,7 +750,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path="/home/alan/Documents/Dropbox/Documentos/Appartement/26 Rue de l'Equerre/Assurances"
+last-folder-path='/home/alan/Downloads/RedHat'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -862,7 +862,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.857573702451518, 2.2670599999999999)
+night-light-last-coordinates=(47.863455886109548, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -967,9 +967,9 @@ prefs-open-count=7
 preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
-cli-toggle=true
+cli-toggle=false
 countdown-timer=0
-indicator-position-max=3
+indicator-position-max=1
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1136,12 +1136,12 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1763887036
+check-timestamp=int64 1764495274
 first-run=false
-flatpak-purge-timestamp=int64 1763894112
-install-timestamp=int64 1754739144
+flatpak-purge-timestamp=int64 1764410704
+install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1763201161
+update-notification-timestamp=int64 1764491620
 
 [org/gnome/system/location]
 enabled=true
@@ -1205,8 +1205,8 @@ window-position=(26, 23)
 window-size=(948, 465)
 
 [org/virt-manager/virt-manager]
-manager-window-height=477
-manager-window-width=948
+manager-window-height=423
+manager-window-width=843
 xmleditor-enabled=true
 
 [org/virt-manager/virt-manager/confirm]
@@ -1236,7 +1236,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-39-1.5.iso']
+isos=['/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -1275,6 +1275,10 @@ vm-window-size=(1904, 995)
 [org/virt-manager/virt-manager/vms/470f273d70d0479d9b812a21eef6f292]
 autoconnect=1
 vm-window-size=(1024, 837)
+
+[org/virt-manager/virt-manager/vms/4b8dce0ed88949a7b60ac8ebcfbe008e]
+autoconnect=1
+vm-window-size=(1268, 1358)
 
 [org/virt-manager/virt-manager/vms/4c21b47e2a41454dae1120bcb49c5a6b]
 autoconnect=1
@@ -1346,6 +1350,20 @@ vm-window-size=(1904, 998)
 autoconnect=1
 scaling=1
 vm-window-size=(1485, 967)
+
+[org/virt-manager/virt-manager/vms/bd328326d2ee4b44860e798123953786]
+autoconnect=1
+resize-guest=1
+vm-window-size=(1268, 1358)
+
+[org/virt-manager/virt-manager/vms/c6326ba23aae40e8a0fe046fab3fc854]
+autoconnect=1
+vm-window-size=(1268, 1358)
+
+[org/virt-manager/virt-manager/vms/c7c582869c7949ce852a71e96433849c]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2385, 1270)
 
 [org/virt-manager/virt-manager/vms/c839b5c783cc492eab838e2c4334662e]
 autoconnect=1
