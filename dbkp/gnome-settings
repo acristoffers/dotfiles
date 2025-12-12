@@ -85,8 +85,9 @@ recent-characters=['🙈', '🤦']
 first-run=false
 
 [org/gnome/Console]
+audible-bell=false
 last-window-maximised=false
-last-window-size=(1693, 1395)
+last-window-size=(843, 460)
 
 [org/gnome/Contacts]
 did-initial-setup=true
@@ -112,15 +113,16 @@ window-maximize=true
 window-width=1904
 
 [org/gnome/Music]
-window-maximized=false
+window-maximized=true
 window-size=[2544, 1392]
 
 [org/gnome/Snapshot]
 capture-mode='video'
 is-maximized=false
+last-camera-id='Anker PowerConf C200 (V4L2)'
 show-composition-guidelines=true
-window-height=640
-window-width=800
+window-height=1307
+window-width=2385
 
 [org/gnome/TextEditor]
 custom-font='JetBrainsMonoNL Nerd Font Medium 11'
@@ -194,7 +196,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
+last-panel='sound'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -431,7 +433,7 @@ application-id='thunderbird.desktop'
 application-id='us.zoom.Zoom.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=true
+numlock-state=false
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -514,7 +516,7 @@ show-sidebar=false
 sidebar-page='thumbnails'
 sidebar-size=226
 sizing-mode='automatic'
-window-ratio=(2.6499999999999999, 2.5833333333333335)
+window-ratio=(1.4157597742845629, 1.6559829059829061)
 zoom=1.0
 
 [org/gnome/evolution-data-server]
@@ -629,12 +631,12 @@ enable-password-authentication=true
 enable-smartcard-authentication=false
 
 [org/gnome/maps]
-last-viewed-location=[-20.182909775218619, -44.808431745283116]
-map-type='MapsStreetSource'
+last-viewed-location=[47.857000000000021, 2.2670599999999865]
+map-type='MapsVectorSource'
 transportation-type='pedestrian'
 window-maximized=false
-window-size=[1785, 967]
-zoom-level=17
+window-size=[1904, 1035]
+zoom-level=18
 
 [org/gnome/mutter]
 center-new-windows=true
@@ -750,7 +752,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Downloads/RedHat'
+last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Naturalization'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -804,7 +806,7 @@ last-folder-path='/home/alan/Downloads/projects'
 last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.gnome.Papers]
-last-folder-path='/home/alan/Downloads/interpreter'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.gnome.Settings]
 last-folder-path='/home/alan/Downloads/rvpn'
@@ -822,7 +824,7 @@ last-folder-path='/home/alan/Videos'
 last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 
 [org/gnome/portal/filechooser/org.mozilla.Thunderbird]
-last-folder-path='/home/alan/Pictures/Screenshots'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
 last-folder-path='/home/alan/Pictures'
@@ -831,7 +833,7 @@ last-folder-path='/home/alan/Pictures'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.telegram.desktop]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Downloads/Documents'
 
 [org/gnome/portal/filechooser/org.videolan.VLC]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Code/ros/videos'
@@ -862,7 +864,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.863455886109548, 2.2670599999999999)
+night-light-last-coordinates=(47.853028814836378, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -1136,9 +1138,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1764495274
+check-timestamp=int64 1765558098
 first-run=false
-flatpak-purge-timestamp=int64 1764410704
+flatpak-purge-timestamp=int64 1765307070
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1184,7 +1186,7 @@ sort-directories-first=true
 sort-order='ascending'
 type-format='category'
 view-type='grid'
-window-size=(1268, 694)
+window-size=(843, 460)
 
 [org/gtk/settings/color-chooser]
 custom-colors=[(0.15686274509803921, 0.16470588235294117, 0.21176470588235294, 1.0)]
@@ -1236,7 +1238,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso', '/home/alan/Downloads/Fedora-KDE-Live-x86_64-39-1.5.iso']
+isos=['/home/alan/Downloads/Fedora-Silverblue-ostree-x86_64-43-1.6.iso', '/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -1250,7 +1252,7 @@ vm-window-size=(2560, 1374)
 [org/virt-manager/virt-manager/vms/062a069537684a35bda395c758017276]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1693, 1358)
+vm-window-size=(2544, 1358)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1
@@ -1300,6 +1302,10 @@ autoconnect=1
 resize-guest=1
 vm-window-size=(2544, 1355)
 
+[org/virt-manager/virt-manager/vms/6bd95ad163be4b77967d73c23e552d6e]
+autoconnect=1
+vm-window-size=(1280, 869)
+
 [org/virt-manager/virt-manager/vms/6e51bb824a4c450a8cf4c9af0c2d6574]
 autoconnect=1
 resize-guest=1
@@ -1316,10 +1322,23 @@ autoconnect=1
 resize-guest=1
 vm-window-size=(2544, 1358)
 
+[org/virt-manager/virt-manager/vms/8c5862c731414b6c9cf6738581188ae2]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1358)
+
+[org/virt-manager/virt-manager/vms/97e982526b2f4efab750735e2a8e4806]
+autoconnect=1
+vm-window-size=(1280, 869)
+
 [org/virt-manager/virt-manager/vms/9b6465b296c541b0bf7de351b19b6512]
 autoconnect=1
 resize-guest=1
 vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/9f51107f5f6143319ee9257767b3176b]
+autoconnect=1
+vm-window-size=(1280, 869)
 
 [org/virt-manager/virt-manager/vms/a9013bfcc82948beae2b5c28af5ca00b]
 autoconnect=1

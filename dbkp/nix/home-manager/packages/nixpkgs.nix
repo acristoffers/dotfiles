@@ -95,6 +95,7 @@ with pkgs; [
   unzip
   uutils-coreutils-noprefix
   uv
+  vagrant
   watch
   watchman
   wget

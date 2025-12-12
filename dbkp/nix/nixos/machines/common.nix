@@ -93,20 +93,20 @@ rec {
       enable = mkForce true;
       allowedTCPPorts = [
         22 # SSH
-        53 # DNS server
-        17500 # Dropbox
-        7250 # Miracast
-        8008
-        8009
-        8443 # Chromecast
+        # 53 # DNS server
+        # 17500 # Dropbox
+        # 7250 # Miracast
+        # 8008
+        # 8009
+        # 8443 # Chromecast
       ];
       allowedUDPPorts = [
         5353 # mDNS
-        53 # DNS server
-        67 # DHCP server
-        17500 # Dropbox
-        1900 # SSDP for Chromecast
-        1194 # VPN
+        # 53 # DNS server
+        # 67 # DHCP server
+        # 17500 # Dropbox
+        # 1900 # SSDP for Chromecast
+        # 1194 # VPN
       ];
       allowedUDPPortRanges = [
         {
