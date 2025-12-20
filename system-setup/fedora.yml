@@ -1,0 +1,179 @@
+---
+- name: Fedora Setup
+  hosts: localhost
+  gather_facts: true
+
+  tasks:
+    ################################################################################
+    ##                                                                            ##
+    ##                             Ensure Repositories                            ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Enable RPM Fusion free repository
+      become: true
+      ansible.builtin.dnf:
+        name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
+        state: present
+        disable_gpg_check: true
+
+    - name: Enable RPM Fusion nonfree repository
+      become: true
+      ansible.builtin.dnf:
+        name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
+        state: present
+        disable_gpg_check: true
+
+    - name: Enable COPR scottames/ghostty repository
+      become: true
+      community.general.copr:
+        name: scottames/ghostty
+        state: enabled
+
+    - name: Add the flathub flatpak repository remote
+      become: true
+      community.general.flatpak_remote:
+        name: flathub
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        state: present
+
+    ################################################################################
+    ##                                                                            ##
+    ##                              Install Packages                              ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Install core packages
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - avahi
+          - firewalld
+          - ghostty
+          - neovim
+          - nix
+          - podman
+          - tuned
+        state: latest
+
+    ################################################################################
+    ##                                                                            ##
+    ##                   Ensure Services Are Enabled And Running                  ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Enable and start services
+      become: true
+      ansible.builtin.service:
+        name: "{{ item }}"
+        enabled: true
+        state: started
+      loop:
+        - avahi-daemon
+        - firewalld
+        - nix-daemon
+        - tuned
+
+    - name: Ensure SELinux is enabled and enforcing
+      become: true
+      ansible.posix.selinux:
+        policy: targeted
+        state: enforcing
+
+    ################################################################################
+    ##                                                                            ##
+    ##                             Configure Firewall                             ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Set default zone to 'public'
+      ansible.builtin.command: firewall-cmd --set-default-zone=public
+      register: default_zone_set
+      changed_when:
+        - '"ZONE_ALREADY_SET" not in default_zone_set.stderr'
+
+    - name: Gather firewalld facts
+      ansible.posix.firewalld_info:
+        zones:
+          - public
+      register: fi_result
+
+    - name: Remove all existing ports from public zone
+      ansible.posix.firewalld:
+        zone: public
+        port: "{{ item[0] }}/{{ item[1] }}"
+        state: disabled
+        permanent: true
+        immediate: true
+      loop: "{{ fi_result.firewalld_info.zones.public.ports | default([]) }}"
+
+    - name: Remove all existing services from public zone
+      ansible.posix.firewalld:
+        zone: public
+        service: "{{ item }}"
+        state: disabled
+        permanent: true
+        immediate: true
+      loop: "{{ fi_result.firewalld_info.zones.public.services | default([]) }}"
+
+    - name: Ensure required services are enabled in public zone
+      ansible.posix.firewalld:
+        zone: public
+        service: "{{ item }}"
+        state: enabled
+        permanent: true
+        immediate: true
+      loop:
+        - ssh
+        - mdns
+        - dhcpv6-client
+
+    ################################################################################
+    ##                                                                            ##
+    ##                               Configure tuned                              ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Configure tuned
+      become: true
+      ansible.builtin.command: tuned-adm auto_profile
+      register: tuned_configured
+
+    ################################################################################
+    ##                                                                            ##
+    ##                                Configure Nix                               ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Configure nix
+      ansible.builtin.command: "{{ item }}"
+      loop:
+        - nix-channel --add https://github.com/rycee/home-manager/archive/master.tar.gz home-manager
+        - nix-channel --add https://nixos.org/channels/nixos-unstable nixos
+        - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+        - nix-channel --update
+
+    ################################################################################
+    ##                                                                            ##
+    ##                              Restore Dotfiles                              ##
+    ##                                                                            ##
+    ################################################################################
+
+    - name: Clone my dotfiles
+      ansible.builtin.git:
+        repo: https://github.com/acristoffers/dotfiles
+        dest: ~/Developer/GitHub/dotfiles
+
+    - name: Run dbkp restore from dotfiles directory
+      ansible.builtin.command: nix run github:acristoffers/dbkp -- restore
+      args:
+        chdir: ~/Developer/GitHub/dotfiles
+      register: dbkp_restore
+      changed_when: dbkp_restore.rc == 0
+      failed_when: dbkp_restore.rc != 0
+
+    - name: Run home-manager installation
+      ansible.builtin.command: nix run home-manager/master -- init --switch ~/.config/nix/home-manager
+      register: hm
+      changed_when: hm.rc == 0
+      failed_when: hm.rc != 0
