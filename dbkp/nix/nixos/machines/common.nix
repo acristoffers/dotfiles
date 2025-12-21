@@ -20,10 +20,6 @@ rec {
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
   };
-  environment.etc."profile.local".text = ''
-    alias sudo=doas
-    # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${pkgs.gcc.cc.lib}/lib
-  '';
 
   fonts.enableDefaultPackages = true;
   fonts.enableGhostscriptFonts = true;
@@ -361,14 +357,9 @@ rec {
     };
   };
 
-  security.doas.enable = true;
-  security.sudo.enable = false;
-  security.doas.extraRules = [
-    {
-      users = [ "alan" ];
-      keepEnv = true;
-      persist = true;
-    }
+  security.sudo.enable = true;
+  security.sudo.extraRules = [
+    { users = [ "alan" ]; commands = [ "ALL" ]; }
   ];
 
   # Hardening

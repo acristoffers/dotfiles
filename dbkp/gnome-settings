@@ -196,7 +196,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='keyboard'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -864,7 +864,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.858628873176677, 2.2670599999999999)
+night-light-last-coordinates=(47.861011562763331, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -1138,9 +1138,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1766246600
+check-timestamp=int64 1766311579
 first-run=false
-flatpak-purge-timestamp=int64 1766248624
+flatpak-purge-timestamp=int64 1766318716
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1252,7 +1252,7 @@ vm-window-size=(2560, 1374)
 [org/virt-manager/virt-manager/vms/062a069537684a35bda395c758017276]
 autoconnect=1
 resize-guest=1
-vm-window-size=(2544, 1358)
+vm-window-size=(1693, 1358)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1
