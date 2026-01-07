@@ -133,8 +133,8 @@ export const DashModule = class {
 
         this._overrides.addOverride('DashItemContainer', Dash.DashItemContainer.prototype, DashItemContainerCommon);
         this._overrides.addOverride('DashCommon', Dash.Dash.prototype, DashCommon);
-        this._overrides.addOverride('AppIcon', AppDisplay.AppIcon.prototype, AppIconCommon);
         this._overrides.addOverride('DashIcon', Dash.DashIcon.prototype, DashIconCommon);
+        this._overrides.addOverride('AppIcon', AppDisplay.AppIcon.prototype, AppIconCommon);
         this._overrides.addOverride('AppMenu', AppMenu.AppMenu.prototype, AppMenuCommon);
 
         if (opt.DASH_VERTICAL) {
@@ -836,11 +836,7 @@ const DashCommon = {
 };
 
 const AppIconCommon = {
-    after__init() {
-        if (this._updateRunningDotStyle)
-            this._updateRunningDotStyle();
-    },
-
+    // Override for appDisplay icons so their indicators follow the dash dot style.
     _updateRunningDotStyle() {
         if (opt.RUNNING_DOT_STYLE)
             this._dot.add_style_class_name('app-grid-running-dot-custom');
@@ -856,6 +852,7 @@ const AppIconCommon = {
         const isShiftPressed = Me.Util.isShiftPressed(state);
         const isCtrlPressed = Me.Util.isCtrlPressed(state);
         const appIsRunning = this.app.state === Shell.AppState.RUNNING;
+        const appFocused = this.app.get_windows().length && this.app.get_windows()[0] === global.display.get_tab_list(0, null)[0];
         const appRecentWorkspace = this._getAppRecentWorkspace(this.app);
         const targetWindowOnCurrentWs = this._isTargetWindowOnCurrentWs(appRecentWorkspace);
 
@@ -885,8 +882,11 @@ const AppIconCommon = {
                 this.app.activate();
                 return;
             } else if (staticWorkspace) {
-                // spread windows
-                Me.Util.exposeWindows();
+                if (appFocused)
+                    // spread windows
+                    Me.Util.exposeWindowsWithOverviewTransition();
+                else
+                    this.app.activate();
                 return;
             } else {
                 this.app.activate();
@@ -1080,6 +1080,9 @@ const DashIconCommon = {
             this._scrollConId = this.connect('scroll-event', DashExtensions.onScrollEvent.bind(this));
             this._leaveConId = this.connect('leave-event', DashExtensions.onLeaveEvent.bind(this));
         }
+
+        if (this._updateRunningDotStyle)
+            this._updateRunningDotStyle();
     },
 
     popupMenu() {

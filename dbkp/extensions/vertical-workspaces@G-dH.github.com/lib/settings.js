@@ -88,6 +88,7 @@ export const Options = class Options {
             wsSwitcherMode: ['int', 'ws-switcher-mode'],
             searchIconSize: ['int', 'search-icon-size'],
             searchViewScale: ['int', 'search-width-scale'],
+            appGridOrientation: ['int', 'app-grid-orientation'],
             appGridIconSize: ['int', 'app-grid-icon-size'],
             appGridColumns: ['int', 'app-grid-columns'],
             appGridRows: ['int', 'app-grid-rows'],
@@ -110,6 +111,8 @@ export const Options = class Options {
             appFolderRemoveButton: ['int', 'app-folder-remove-button'],
             appFolderCloseButton: ['boolean', 'app-folder-close-button'],
             appGridShowPageArrows: ['boolean', 'app-grid-show-page-arrows'],
+            appGridShowPageIndicators: ['boolean', 'app-grid-show-page-indicators'],
+            appGridShowPackageType: ['int', 'app-grid-show-package-type'],
             searchFuzzy: ['boolean', 'search-fuzzy'],
             searchMaxResultsRows: ['int', 'search-max-results-rows'],
             searchAppGridMode: ['int', 'search-app-grid-mode'],
@@ -467,6 +470,9 @@ export const Options = class Options {
         this.SEARCH_INCLUDE_SETTINGS = this.get('searchIncludeSettings');
         this.RESULTS_BLUR_RADIUS = 32;
 
+        const option = this.get('appGridOrientation');
+        // Translate the option to Clutter.Orientation - 0 horizontal, 1 vertical
+        this.APP_GRID_ORIENTATION = !option ? this.ORIENTATION : option - 1;
         this.APP_GRID_ALLOW_INCOMPLETE_PAGES = this.get('appGridIncompletePages');
         this.APP_GRID_ICON_SIZE = this.get('appGridIconSize');
         this.APP_GRID_COLUMNS = this.get('appGridColumns');
@@ -516,7 +522,9 @@ export const Options = class Options {
         // Reserve space for the search entry, if needed, to prevent it from being overlapped by the grid icons
         this.spaceReservedForSearchEntry = 0;
         this.APP_GRID_SHOW_PAGE_ARROWS = this.get('appGridShowPageArrows');
+        this.APP_GRID_SHOW_PAGE_INDICATORS = this.get('appGridShowPageIndicators');
         this.APP_GRID_REMEMBER_PAGE = this.get('appGridRememberPage');
+        this.APP_GRID_SHOW_PACKAGE_BADGE = this.get('appGridShowPackageType');
 
         // Default icon sizes updates in the IconGrid._findBestModeForSize()
         this.APP_GRID_ICON_SIZE_DEFAULT = this.APP_GRID_ACTIVE_PREVIEW && !this.APP_GRID_USAGE ? 192 : 96;

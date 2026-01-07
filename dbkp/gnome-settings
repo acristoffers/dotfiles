@@ -113,16 +113,16 @@ window-maximize=true
 window-width=1904
 
 [org/gnome/Music]
-window-maximized=true
-window-size=[2544, 1392]
+window-maximized=false
+window-size=[2544, 1395]
 
 [org/gnome/Snapshot]
 capture-mode='video'
 is-maximized=false
 last-camera-id='Anker PowerConf C200 (V4L2)'
 show-composition-guidelines=true
-window-height=1307
-window-width=2385
+window-height=1395
+window-width=2544
 
 [org/gnome/TextEditor]
 custom-font='JetBrainsMonoNL Nerd Font Medium 11'
@@ -197,7 +197,7 @@ size=(843, 459)
 
 [org/gnome/control-center]
 last-panel='keyboard'
-window-state=(843, 1395, false)
+window-state=(1267, 1035, false)
 
 [org/gnome/desktop/a11y/applications]
 screen-keyboard-enabled=false
@@ -752,7 +752,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Naturalization'
+last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Bulletins/2025'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -864,7 +864,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.861011562763331, 2.2670599999999999)
+night-light-last-coordinates=(48.924987055510179, 2.18703)
 
 [org/gnome/settings-daemon/plugins/media-keys]
 control-center=['<Super>comma']
@@ -1138,9 +1138,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1766311579
+check-timestamp=int64 1767806421
 first-run=false
-flatpak-purge-timestamp=int64 1766318716
+flatpak-purge-timestamp=int64 1767542353
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620

@@ -5,9 +5,11 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     # nixpkgs.url = "github:NixOS/nixpkgs";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
-    home-manager.url = "github:nix-community/home-manager/master";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    # home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = "github:acristoffers/nvim-flake";
@@ -45,31 +47,36 @@
     nu-scripts.flake = false;
   };
 
-  outputs = inputs: inputs.flake-utils.lib.eachDefaultSystem (system:
-    let
-      pkgs = import inputs.nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      homeConfigForUser = username: inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-        ];
-        extraSpecialArgs = {
-          inherit inputs;
-          inherit username;
+  outputs =
+    inputs:
+    inputs.flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
         };
-      };
-    in
-    {
-      formatter = pkgs.nixpkgs-fmt;
-      packages = {
-        homeConfigurations = {
-          alan = homeConfigForUser "alan";
-          lidei = homeConfigForUser "lidei";
+        homeConfigForUser =
+          username:
+          inputs.home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [
+              ./home.nix
+            ];
+            extraSpecialArgs = {
+              inherit inputs;
+              inherit username;
+            };
+          };
+      in
+      {
+        formatter = pkgs.nixpkgs-fmt;
+        packages = {
+          homeConfigurations = {
+            alan = homeConfigForUser "alan";
+            lidei = homeConfigForUser "lidei";
+          };
         };
-      };
-    }
-  );
+      }
+    );
 }

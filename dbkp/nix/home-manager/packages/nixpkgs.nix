@@ -4,13 +4,13 @@ with pkgs; [
   (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
   appstream
-  bibtool
+  # bibtool
   blesh
   cacert
   cowsay
   curl
   delta
-  dogdns
+  doggo
   duf
   dust
   elmPackages.elm

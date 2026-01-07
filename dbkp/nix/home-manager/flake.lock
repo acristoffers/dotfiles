@@ -219,11 +219,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1766288636,
-        "narHash": "sha256-V/zQyyh7z+N5PHNXABpmlQk4eVG5Cgz520E/RI5slb4=",
+        "lastModified": 1767798180,
+        "narHash": "sha256-rCwl7URLoGr/YDkJifsbLYPDreFwyshhVKPjdNufOUw=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "028691766d6999049a8d178c33a58db609058ffd",
+        "rev": "ba1952c8c289d46be89c9a888c3c9aae97cf725b",
         "type": "github"
       },
       "original": {
@@ -426,16 +426,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1766282146,
-        "narHash": "sha256-0V/nKU93KdYGi+5LB/MVo355obBJw/2z9b2xS3bPJxY=",
+        "lastModified": 1767780135,
+        "narHash": "sha256-5SbmsLMgxzPd9YMbFR4IHfOXv6bjWs+dfl6IbSq3r7s=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "61fcc9de76b88e55578eb5d79fc80f2b236df707",
+        "rev": "c08430923ed417abc653884328a39e98496cfd0f",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "master",
+        "ref": "release-25.11",
         "repo": "home-manager",
         "type": "github"
       }
@@ -555,16 +555,16 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1766125104,
-        "narHash": "sha256-l/YGrEpLromL4viUo5GmFH3K5M1j0Mb9O+LiaeCPWEM=",
+        "lastModified": 1767634882,
+        "narHash": "sha256-2GffSfQxe3sedHzK+sTKlYo/NTIAGzbFCIsNMUPAAnk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "7d853e518814cca2a657b72eeba67ae20ebf7059",
+        "rev": "3c9db02515ef1d9b6b709fc60ba9a540957f661c",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
+        "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -572,11 +572,11 @@
     "nu-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1766007177,
-        "narHash": "sha256-KsS3Brtt9tXKpogXdGQJK6QfJq3tbGnyU/ydVaYggE4=",
+        "lastModified": 1766949840,
+        "narHash": "sha256-Cq814VegRIWRR0UfRz3xV3pHm4C1701I5BoPRsEi+ZQ=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "4af008a317185b4e247bdb13002dbc074e98b60c",
+        "rev": "1cb6d6c460949b989b7fb1a6d02456a560521366",
         "type": "github"
       },
       "original": {
@@ -606,11 +606,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1766133927,
-        "narHash": "sha256-i/mW7twqJuE0xRK8N3Ey/0jmhqnoJAdLZKNRw4RxMSY=",
+        "lastModified": 1767544429,
+        "narHash": "sha256-u53SGZmk2z/Iedv3TvYkZaHaZAHU+geR9++fMAZOKOE=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "808711b8cdba8fb9b2f2b485e0020584a7f8c31d",
+        "rev": "6a4d7dc3505f9674f13a7769b7f210cba8d76577",
         "type": "github"
       },
       "original": {

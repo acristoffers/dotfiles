@@ -13,6 +13,7 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -278,6 +279,75 @@ const ControlsManagerCommon = {
             if (!this._appDisplay._orderedItems.length) {
                 Me.Modules.appDisplayModule.update();
                 Main.notify('V-Shell', 'AppDisplay module hed to be restarted');
+            }
+        }
+    },
+
+    _shiftState(direction) {
+        let { currentState, initialState, finalState, transitioning, progress } = this._stateAdjustment.getStateTransitionParams();
+
+        // Prevent initiating a new transition
+        // to the same final state as the one already running
+        currentState = transitioning ? finalState : currentState;
+
+        if (direction === Meta.MotionDirection.DOWN)
+            finalState = Math.max(finalState - 1, ControlsState.HIDDEN);
+        else if (direction === Meta.MotionDirection.UP)
+            finalState = Math.min(finalState + 1, ControlsState.APP_GRID);
+
+        if (finalState === currentState)
+            return;
+
+        if (currentState === ControlsState.HIDDEN &&
+            finalState === ControlsState.WINDOW_PICKER) {
+            Main.overview.show();
+        } else if (finalState === ControlsState.HIDDEN) {
+            Main.overview.hide();
+        } else {
+            // If this._overviewAnimationDelay is longer
+            // and the user shifts te state before the delay expires,
+            // the transition is detected but can't be overridden
+            // or removed using remove_transition().
+            // Therefore, we need to wait until the original transition begins
+            // and replace it then, to avoid glitches.
+
+            // Define the transition function so we can use it with or without timeout
+            const easeState = () => {
+                this._stateAdjustment.remove_transition('value');
+                this._stateAdjustment.ease(finalState, {
+                    duration: SIDE_CONTROLS_ANIMATION_TIME,
+                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                    onStopped: () => {
+                        if (this._animationInProgress)
+                            Main.overview._showDone();
+                        this.dash.showAppsButton.checked =
+                            finalState === ControlsState.APP_GRID;
+                    },
+                });
+            };
+
+            // The delay property used by the ease method respects the global slowdown factor
+            const slowDownFactor = St.Settings.get().slow_down_factor;
+            if (_timeouts.shiftStateEase) {
+                GLib.source_remove(_timeouts.shiftStateEase);
+                _timeouts.shiftStateEase = 0;
+            }
+
+            const delay = initialState === 0 && !progress
+                ? (this._overviewAnimationDelay ?? 0) * slowDownFactor
+                : 0;
+
+            if (!delay) {
+                easeState();
+            } else {
+                _timeouts.shiftStateEase = GLib.timeout_add(
+                    GLib.PRIORITY_DEFAULT, delay,
+                    () => {
+                        easeState();
+                        _timeouts.shiftStateEase = 0;
+                        return GLib.SOURCE_REMOVE;
+                    }
+                );
             }
         }
     },
@@ -548,7 +618,7 @@ const ControlsManagerCommon = {
         // which means that initialState is always lower than finalState when swipe gesture is used
         const staticWorkspace  = opt.OVERVIEW_MODE2 && (!opt.WORKSPACE_MODE || !Main.overview._animationInProgress);
         const dashShouldBeAbove = staticWorkspace ||
-            (currentState >= 1 && !(opt.DASH_BOTTOM && opt.WIN_TITLES_POSITION_BELOW) && fullTransition);
+            (currentState >= 1 && !(opt.DASH_BOTTOM && opt.WIN_TITLES_POSITION_BELOW) && !fullTransition);
         if (!this._dashIsAbove && dashShouldBeAbove)
             this._setDashAboveSiblings();
         else if (this._dashIsAbove && !dashShouldBeAbove)
@@ -868,7 +938,7 @@ const ControlsManagerCommon = {
     },
 
     _updateSearchStyle(reset) {
-        if (!reset && (
+        if (!reset && !(this.dash.showAppsButton.checked && opt.SEARCH_APP_GRID_MODE) && (
             (opt.OVERVIEW_MODE2 && !opt.WORKSPACE_MODE && !this.dash.showAppsButton.checked) ||
             (opt.SEARCH_RESULTS_BG_STYLE && this._searchController.searchActive)
         )) {
@@ -997,14 +1067,20 @@ const ControlsManagerCommon = {
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
 
-        // building window thumbnails takes some time and with many windows on the workspace
-        // the time can be close to or longer than ANIMATION_TIME
-        // in which case the the animation is greatly delayed, stuttering, or even skipped
-        // for user it is more acceptable to watch delayed smooth animation,
-        // even if it takes little more time, than jumping frames
+        // Building window thumbnails takes some time, and with many windows on the workspace
+        // this time can be close to or longer than ANIMATION_TIME,
+        // in which case the animation is greatly delayed, stutters, or is even skipped.
+        // I believe that for most users, it is more acceptable to watch a delayed but smooth animation,
+        // even if it takes a little more time, than to see jumping frames with the same delay.
         let delay = 0;
-        if (opt.DELAY_OVERVIEW_ANIMATION)
+        if (opt.DELAY_OVERVIEW_ANIMATION) {
             delay = global.display.get_tab_list(0, null).length * opt.DELAY_PER_WINDOW;
+            // The delay property used by the ease method respects the global slowdown factor
+            const slowDownFactor = St.Settings.get().slow_down_factor;
+            delay = Math.round(delay / slowDownFactor);
+        }
+        // Store the delay for _shiftState()
+        this._overviewAnimationDelay = delay;
 
         this._stateAdjustment.ease(state, {
             delay,
@@ -1119,7 +1195,10 @@ const ControlsManagerLayoutCommon = {
                 const centeredBoxX = Math.round((width - wsBoxWidth) / 2);
 
                 this._xAlignCenter = false;
-                if (centeredBoxX < centeredBoxOffset) {
+                // Try to center the workspace preview if possible,
+                // but prevent it from glitching during the transition between WINDOW_PICKER and APP_GRID,
+                // which is caused by using the current thumbnail size instead of the target-state size.
+                if (centeredBoxX < centeredBoxOffset || !opt.MAX_THUMBNAIL_SCALE_STABLE) {
                     xOffset = Math.round(leftBoxOffset + (width - leftBoxOffset - wsBoxWidth - rightBoxOffset) / 2);
                 } else {
                     xOffset = centeredBoxX;
@@ -1903,7 +1982,7 @@ const ControlsManagerLayoutHorizontal = {
         // appDisplay
         // Keep space for the search entry above app grid if app grid search mode is enabled
         if (!opt.SHOW_SEARCH_ENTRY && opt.SEARCH_APP_GRID_MODE)
-            topBoxOffsetAppGrid += searchEntryHeight;
+            topBoxOffsetAppGrid += searchEntryHeight + spacing;
         params = [
             box,
             leftBoxOffset === spacing ? 0 : leftBoxOffset,

@@ -2044,6 +2044,21 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('App Grid Orientation'),
+                _('The orientation in which app grid pages are organized'),
+                itemFactory.newDropDown(),
+                'appGridOrientation',
+                [
+                    [_('Follow Workspaces'), 0],
+                    [_('Horizontal'), 1],
+                    [_('Vertical'), 2],
+                ],
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('App Grid Content'),
                 _('The default Shell removes favorite apps, this option allows to duplicate them in the grid or remove also running applications. Option "Favorites and Running First" only works with the Alphabet and Usage sorting'),
                 itemFactory.newDropDown(),
@@ -2087,11 +2102,37 @@ export default class VShell extends ExtensionPreferences {
 
         optionList.push(
             itemFactory.getRowWidget(
+                _('Show Page Indicators'),
+                _('You can hide the page indicator dots. The indicators are hidden automatically when there is only one page in the app grid'),
+                itemFactory.newSwitch(),
+                'appGridShowPageIndicators',
+                null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
                 _('Remember Page'),
                 _('Disables the default behavior in which app grid and folders always open on the first page'),
                 itemFactory.newSwitch(),
                 'appGridRememberPage',
                 null,
+                'appDisplayModule'
+            )
+        );
+
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Show App Source Indicator'),
+                _('Adds a small badge to app icons indicating the source package type for apps installed from Flatpak, Snap and AppImage'),
+                itemFactory.newDropDown(),
+                'appGridShowPackageType',
+                [
+                    [_("Hide"), 0],
+                    [_("Show on Selection"), 1],
+                    [_("Show Always"), 2],
+                ],
                 'appDisplayModule'
             )
         );

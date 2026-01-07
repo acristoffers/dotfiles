@@ -13,6 +13,7 @@ com.spotify.Client
 com.transmissionbt.Transmission
 com.valvesoftware.Steam
 hu.irl.cameractrls
+net.code_industry.MasterPDFEditor
 org.fedoraproject.MediaWriter
 org.gimp.GIMP
 org.gnome.Fractal
