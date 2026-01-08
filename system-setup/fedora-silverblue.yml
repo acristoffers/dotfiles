@@ -1,5 +1,5 @@
 ---
-- name: Fedora Workstation Setup
+- name: Fedora Silverblue Setup
   hosts: localhost
   gather_facts: true
 
@@ -10,25 +10,20 @@
     ##                                                                            ##
     ################################################################################
 
-    - name: Enable RPM Fusion free repository
+    - name: Enable RPM Fusion repository
       become: true
-      ansible.builtin.dnf:
-        name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
+      community.general.rpm_ostree_pkg:
+        name:
+          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
+          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
         state: present
-        disable_gpg_check: true
 
-    - name: Enable RPM Fusion nonfree repository
+    - name: Install Ghostty COPR repo (scottames)
+      ansible.builtin.get_url:
+        url: https://copr.fedorainfracloud.org/coprs/scottames/ghostty/repo/fedora-{{ ansible_facts.distribution_major_version }}/scottames-ghostty-fedora-{{ ansible_facts.distribution_major_version }}.repo
+        dest: /etc/yum.repos.d/scottames-ghostty.repo
+        mode: '0644'
       become: true
-      ansible.builtin.dnf:
-        name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_major_version }}.noarch.rpm
-        state: present
-        disable_gpg_check: true
-
-    - name: Enable COPR scottames/ghostty repository
-      become: true
-      community.general.copr:
-        name: scottames/ghostty
-        state: enabled
 
     - name: Add the flathub flatpak repository remote
       become: true
@@ -45,16 +40,16 @@
 
     - name: Install core packages
       become: true
-      ansible.builtin.dnf:
+      community.general.rpm_ostree_pkg:
         name:
-          - avahi
-          - firewalld
+          - distrobox
           - ghostty
+          - glibc-langpack-en
+          - glibc-langpack-fr
+          - glibc-langpack-pt
           - neovim
-          - nix
-          - podman
-          - tuned
-        state: latest
+        state: present
+        apply_live: true
 
     ################################################################################
     ##                                                                            ##
@@ -71,7 +66,6 @@
       loop:
         - avahi-daemon
         - firewalld
-        - nix-daemon
         - tuned
 
     - name: Ensure SELinux is enabled and enforcing
@@ -141,18 +135,54 @@
 
     ################################################################################
     ##                                                                            ##
-    ##                              Configure locales                             ##
+    ##                                 Install Nix                                ##
     ##                                                                            ##
     ################################################################################
 
-    - name: Ensure locale is generated
-      community.general.locale_gen:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - en_US.UTF-8
-        - fr_FR.UTF-8
-        - pt_BR.UTF-8
+    - name: Ensure ~/.config/nix-toolbox exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/nix-toolbox"
+        state: directory
+        mode: "0755"
+
+    - name: Create home-manager.skipped marker
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.config/nix-toolbox/home-manager.skipped"
+        state: touch
+        mode: "0644"
+
+    - name: List existing toolbox containers
+      ansible.builtin.command: toolbox list --containers
+      register: toolbox_list
+      changed_when: false
+
+    - name: Create distrobox container (ghcr.io/thrix/nix-toolbox:42)
+      ansible.builtin.command: distrobox create --yes --image ghcr.io/thrix/nix-toolbox:42 --name nix-toolbox
+      when: "'nix-toolbox' not in toolbox_list.stdout"
+
+    - name: Ensure ~/.local/bin exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Ensure ~/.local/share/bin exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/bin"
+        state: directory
+        mode: "0755"
+
+    - name: Install distrobox-reexport helper script
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/.local/share/bin/distrobox-reexport"
+        mode: "0755"
+        content: |
+          #!/usr/bin/env bash
+          distrobox enter nix-toolbox -- bash -lc 'find ~/.local/bin/       -type f -exec distrobox-export -d -b {} \;'
+          distrobox enter nix-toolbox -- bash -lc 'find ~/.nix-profile/bin/ -type f -exec distrobox-export --bin {} --export-path ~/.local/bin \;'
+          distrobox enter nix-toolbox -- bash -lc 'find ~/.nix-profile/bin/ -type l -exec distrobox-export --bin {} --export-path ~/.local/bin \;'
+      notify: Run distrobox re-export
+      changed_when: true
 
     ################################################################################
     ##                                                                            ##
@@ -167,6 +197,8 @@
         - nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
         - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
         - nix-channel --update
+      notify: Run distrobox re-export
+      changed_when: true
 
     ################################################################################
     ##                                                                            ##
@@ -178,6 +210,9 @@
       ansible.builtin.git:
         repo: https://github.com/acristoffers/dotfiles
         dest: ~/Developer/GitHub/dotfiles
+
+    - name: Install dbkp's dependencies
+      ansible.builtin.command: distrobox enter nix-toolbox -- bash -lc 'sudo dnf --refresh -y install dconf'
 
     - name: Run dbkp restore from dotfiles directory
       ansible.builtin.command: nix run github:acristoffers/dbkp -- restore
@@ -192,3 +227,8 @@
       register: hm
       changed_when: hm.rc == 0
       failed_when: hm.rc != 0
+      notify: Run distrobox re-export
+
+  handlers:
+    - name: Run distrobox re-export
+      ansible.builtin.command: "{{ ansible_env.HOME }}/.local/share/bin/distrobox-reexport"
