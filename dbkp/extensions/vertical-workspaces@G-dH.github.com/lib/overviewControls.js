@@ -284,11 +284,15 @@ const ControlsManagerCommon = {
     },
 
     _shiftState(direction) {
-        let { currentState, initialState, finalState, transitioning, progress } = this._stateAdjustment.getStateTransitionParams();
+        let { currentState, finalState, transitioning } = this._stateAdjustment.getStateTransitionParams();
 
         // Prevent initiating a new transition
         // to the same final state as the one already running
         currentState = transitioning ? finalState : currentState;
+        // Shift could have been called before the initial overview animation started.
+        // In this case, shift the finalState to avoid redundant call of Main.overview.show();
+        finalState = Main.overview._visible && !transitioning && currentState === ControlsState.HIDDEN
+            ? 1 : finalState;
 
         if (direction === Meta.MotionDirection.DOWN)
             finalState = Math.max(finalState - 1, ControlsState.HIDDEN);
@@ -303,52 +307,21 @@ const ControlsManagerCommon = {
             Main.overview.show();
         } else if (finalState === ControlsState.HIDDEN) {
             Main.overview.hide();
-        } else {
-            // If this._overviewAnimationDelay is longer
-            // and the user shifts te state before the delay expires,
-            // the transition is detected but can't be overridden
-            // or removed using remove_transition().
-            // Therefore, we need to wait until the original transition begins
-            // and replace it then, to avoid glitches.
-
-            // Define the transition function so we can use it with or without timeout
-            const easeState = () => {
-                this._stateAdjustment.remove_transition('value');
-                this._stateAdjustment.ease(finalState, {
-                    duration: SIDE_CONTROLS_ANIMATION_TIME,
-                    mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    onStopped: () => {
-                        if (this._animationInProgress)
-                            Main.overview._showDone();
-                        this.dash.showAppsButton.checked =
+        // Prevent state shifting before starting the initial overview transition.
+        } else if (Me.run.overviewShiftAllowed) {
+            this._stateAdjustment.remove_transition('value');
+            this._stateAdjustment.ease(finalState, {
+                duration: SIDE_CONTROLS_ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => {
+                    if (this._animationInProgress)
+                        Main.overview._showDone();
+                    this.dash.showAppsButton.checked =
                             finalState === ControlsState.APP_GRID;
-                    },
-                });
-            };
-
-            // The delay property used by the ease method respects the global slowdown factor
-            const slowDownFactor = St.Settings.get().slow_down_factor;
-            if (_timeouts.shiftStateEase) {
-                GLib.source_remove(_timeouts.shiftStateEase);
-                _timeouts.shiftStateEase = 0;
-            }
-
-            const delay = initialState === 0 && !progress
-                ? (this._overviewAnimationDelay ?? 0) * slowDownFactor
-                : 0;
-
-            if (!delay) {
-                easeState();
-            } else {
-                _timeouts.shiftStateEase = GLib.timeout_add(
-                    GLib.PRIORITY_DEFAULT, delay,
-                    () => {
-                        easeState();
-                        _timeouts.shiftStateEase = 0;
-                        return GLib.SOURCE_REMOVE;
-                    }
-                );
-            }
+                },
+            });
+        } else {
+            Me.run.shiftedOverviewState = finalState;
         }
     },
 
@@ -400,10 +373,14 @@ const ControlsManagerCommon = {
 
     _updateThumbnailsBox(animate) {
         const { currentState } = this._stateAdjustment.getStateTransitionParams();
-        const { shouldShow } = this._thumbnailsBox;
         const { searchActive } = this._searchController;
-        const thumbnailsBoxVisible = shouldShow;
-        this._thumbnailsBox.visible = thumbnailsBoxVisible;
+        const { shouldShow } = this._thumbnailsBox;
+        const show = shouldShow &&
+            !(opt.MAX_THUMBNAIL_SCALE === opt.TMB_ZERO_SCALE && currentState <= 1) &&
+            !(opt.MAX_THUMBNAIL_SCALE_APPGRID === opt.TMB_ZERO_SCALE && currentState === 2) &&
+            !(opt.MAX_THUMBNAIL_SCALE === opt.TMB_ZERO_SCALE && opt.MAX_THUMBNAIL_SCALE_APPGRID === opt.TMB_ZERO_SCALE) &&
+            !(opt.MAX_THUMBNAIL_SCALE === opt.TMB_ZERO_SCALE && currentState > 1 && opt.WS_ANIMATION_ALL);
+        this._thumbnailsBox.visible = show;
 
         if ((opt.WS_ANIMATION_ALL && currentState > ControlsState.WINDOW_PICKER && currentState < 1.99 /* ControlsState.APP_GRID*/) || !opt.USE_THUMBNAILS_IN_APP_GRID) {
             if (!opt.SHOW_WS_TMB_BG) {
@@ -484,6 +461,9 @@ const ControlsManagerCommon = {
         // reset Static Workspace window picker mode
         if (currentState === 0 && opt.OVERVIEW_MODE && opt.WORKSPACE_MODE)
             opt.WORKSPACE_MODE = 0;
+
+        if (!Me.run.overviewShiftAllowed && currentState > 0)
+            Me.run.overviewShiftAllowed = true;
 
         this._updateWorkspacesDisplay();
         this._updateAppDisplay();
@@ -1067,29 +1047,21 @@ const ControlsManagerCommon = {
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
 
-        // Building window thumbnails takes some time, and with many windows on the workspace
-        // this time can be close to or longer than ANIMATION_TIME,
-        // in which case the animation is greatly delayed, stutters, or is even skipped.
-        // I believe that for most users, it is more acceptable to watch a delayed but smooth animation,
-        // even if it takes a little more time, than to see jumping frames with the same delay.
-        let delay = 0;
-        if (opt.DELAY_OVERVIEW_ANIMATION) {
-            delay = global.display.get_tab_list(0, null).length * opt.DELAY_PER_WINDOW;
-            // The delay property used by the ease method respects the global slowdown factor
-            const slowDownFactor = St.Settings.get().slow_down_factor;
-            delay = Math.round(delay / slowDownFactor);
-        }
-        // Store the delay for _shiftState()
-        this._overviewAnimationDelay = delay;
-
-        this._stateAdjustment.ease(state, {
-            delay,
-            duration: 250, // Overview.ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-            onStopped: () => {
-                if (callback)
-                    callback();
-            },
+        // Wait until the overview is ready before we start the overview animation
+        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            Me.run.overviewShiftAllowed = true;
+            // If user has activated state shift before we started the initial animation,
+            // change the target state now
+            state = Me.run.shiftedOverviewState ?? state;
+            Me.run.shiftedOverviewState = null;
+            this._stateAdjustment.ease(state, {
+                duration: 250, // Overview.ANIMATION_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onStopped: () => {
+                    if (callback)
+                        callback();
+                },
+            });
         });
 
         this.dash.showAppsButton.checked =
@@ -1518,7 +1490,7 @@ const ControlsManagerLayoutVertical = {
                               (opt.WS_TMB_LEFT ? wsTmbWidth + spacing : 0);
         const rightBoxOffset = (opt.DASH_RIGHT ? dashWidth : spacing) +
                                (opt.WS_TMB_RIGHT ? wsTmbWidth + spacing : 0);
-        let topBoxOffset = opt.DASH_TOP ? dashHeight : halfSpacing;
+        let topBoxOffset = opt.DASH_TOP ? dashHeight - spacing : halfSpacing;
         const bottomBoxOffset = opt.DASH_BOTTOM ? dashHeight : spacing;
         const centeredBoxOffset = Math.max(leftBoxOffset, rightBoxOffset);
 
@@ -1607,7 +1579,7 @@ const ControlsManagerLayoutVertical = {
         // appDisplay
         // Keep space for the search entry above the the app grid if app grid search mode is enabled
         if (!opt.SHOW_SEARCH_ENTRY && opt.SEARCH_APP_GRID_MODE)
-            topBoxOffset += searchEntryHeight;
+            topBoxOffset += searchEntryHeight  + spacing;
         params = [
             box,
             leftBoxOffsetAppGrid,
@@ -1903,7 +1875,7 @@ const ControlsManagerLayoutHorizontal = {
 
         // searchEntry
         let topBoxOffsetForSearch = topBoxOffset;
-        if (wsTmbHeight !== wsTmbHeightForSearchEntry)
+        if (opt.WS_TMB_TOP && wsTmbHeight !== wsTmbHeightForSearchEntry)
             topBoxOffsetForSearch -= wsTmbHeight - wsTmbHeightForSearchEntry;
 
         let searchEntryY = startY +

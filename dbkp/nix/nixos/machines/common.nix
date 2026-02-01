@@ -115,7 +115,10 @@ rec {
 
   services.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = false;
-  services.displayManager.gdm.enable = true;
+  services.displayManager.gdm = {
+    enable = true;
+    wayland = true;
+  };
   services.xserver = {
     enable = true;
     xkb = {
@@ -191,7 +194,7 @@ rec {
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.groups.alan = {};
+  users.groups.alan = { };
   users.users.alan = {
     isNormalUser = true;
     description = "Álan Crístoffer e Sousa";
@@ -225,7 +228,21 @@ rec {
     uutils-coreutils-noprefix
     wget
     xorg.xhost
+
+    hyprlock
+    hyprpaper
+    waybar
+    wofi
   ];
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
 
   programs.dconf.enable = true;
   programs.gnupg.agent = {
@@ -359,7 +376,10 @@ rec {
 
   security.sudo.enable = true;
   security.sudo.extraRules = [
-    { users = [ "alan" ]; commands = [ "ALL" ]; }
+    {
+      users = [ "alan" ];
+      commands = [ "ALL" ];
+    }
   ];
 
   # Hardening
