@@ -5,10 +5,10 @@ description = "Global PIP Staging."
 authors = [{ name = "Álan Crístoffer", email = "acristoffers@startmail.com" }]
 requires-python = ">=3.11"
 dependencies = [
-    "dictor>=0.1.12,<0.2",
-    "hererocks>=0.25.1,<0.26",
-    "pip>=25,<26",
-    "pycode-similar~=1.4",
+    "dictor>=0.1.12",
+    "hererocks>=0.25.1",
+    "pip>=25",
+    "pycode-similar>=1.4",
 ]
 
 [build-system]
