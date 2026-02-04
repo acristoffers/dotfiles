@@ -17,14 +17,16 @@ dependencies = [
     { name = "hererocks" },
     { name = "pip" },
     { name = "pycode-similar" },
+    { name = "uv-bump" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "dictor", specifier = ">=0.1.12" },
     { name = "hererocks", specifier = ">=0.25.1" },
-    { name = "pip", specifier = ">=25" },
+    { name = "pip", specifier = ">=26.0" },
     { name = "pycode-similar", specifier = ">=1.4" },
+    { name = "uv-bump", specifier = ">=0.4.2" },
 ]
 
 [[package]]
@@ -52,4 +54,13 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/5f/aa/406aedb4e1f9deadeee077585a5e17d3d33b4371b35832f08c31d2e6ae2a/pycode_similar-1.4.tar.gz", hash = "sha256:41c25bc9804a80c750fcbed1be6b8acc25cf88939933779d2d0f9ef47a2a99db", size = 15593, upload-time = "2020-08-08T06:37:13.444Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e5/1b/7c41caaa9f45decb755adce1efed6826b93ef91770a0def9c61c09c245be/pycode_similar-1.4-py2.py3-none-any.whl", hash = "sha256:d3f8cb2dc7233147af6b70a0aea009b541e1dc13e608b6e2bfba6b3c5f1e677a", size = 9982, upload-time = "2020-08-08T06:37:10.862Z" },
+]
+
+[[package]]
+name = "uv-bump"
+version = "0.4.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/35/e195dcdecd7053b51d3ffb6ecbdb4f4e79c9dac76a48166c8fb5e27cf71b/uv_bump-0.4.2.tar.gz", hash = "sha256:46775d4e9e1c6f40842d51a3e3899c60c3bb301ec2308005043851def3677297", size = 6290, upload-time = "2026-01-29T18:37:13.384Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c8/f6/b4c1f584aba7096366d5fa0243a2b39e0bbede77d0eba08b24317cf87c7e/uv_bump-0.4.2-py3-none-any.whl", hash = "sha256:5255ba5a5b8e5830b2ebdf1b9f4a58b798bbff8a8cd9c19d5bd1f21a4d135445", size = 7599, upload-time = "2026-01-29T18:37:11.836Z" },
 ]

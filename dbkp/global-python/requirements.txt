@@ -15,3 +15,7 @@ pycode-similar==1.4 \
     --hash=sha256:41c25bc9804a80c750fcbed1be6b8acc25cf88939933779d2d0f9ef47a2a99db \
     --hash=sha256:d3f8cb2dc7233147af6b70a0aea009b541e1dc13e608b6e2bfba6b3c5f1e677a
     # via global
+uv-bump==0.4.2 \
+    --hash=sha256:46775d4e9e1c6f40842d51a3e3899c60c3bb301ec2308005043851def3677297 \
+    --hash=sha256:5255ba5a5b8e5830b2ebdf1b9f4a58b798bbff8a8cd9c19d5bd1f21a4d135445
+    # via global

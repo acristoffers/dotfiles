@@ -24,6 +24,9 @@ function update-pip3
 
   pushd ~/.config/global-python
   echo Updating with uv...
+  uv sync
+  uv tool run uv-bump
+  uv sync
   uv export --format=requirements.txt --no-emit-project > requirements.txt
   rm -rf ~/.local/share/pip
   echo ...updating pip...
