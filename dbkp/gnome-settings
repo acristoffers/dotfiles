@@ -52,6 +52,9 @@ hotkey=['<Super>period']
 dark-theme=true
 use-system=true
 
+[org/blueman/general]
+window-properties=[529, 350, 0, 0]
+
 [org/fedorahosted/background-logo-extension]
 logo-position='bottom-right'
 
@@ -253,7 +256,7 @@ automatic-timezone=false
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac')]
+mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple')]
 per-window=true
 show-all-sources=true
 sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple'), ('ibus', 'typing-booster')]
@@ -881,7 +884,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.85840169825255, 2.2670599999999999)
+night-light-last-coordinates=(47.860207439035854, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -989,9 +992,9 @@ prefs-open-count=7
 preview-effect=''
 
 [org/gnome/shell/extensions/caffeine]
-cli-toggle=false
+cli-toggle=true
 countdown-timer=0
-indicator-position-max=1
+indicator-position-max=3
 inhibit-apps=['org.videolan.VLC.desktop']
 prefs-default-height=1048
 prefs-default-width=843
@@ -1287,9 +1290,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1769934915
+check-timestamp=int64 1770225155
 first-run=false
-flatpak-purge-timestamp=int64 1769854136
+flatpak-purge-timestamp=int64 1770232233
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1429,7 +1432,7 @@ vm-window-size=(1024, 837)
 
 [org/virt-manager/virt-manager/vms/4b8dce0ed88949a7b60ac8ebcfbe008e]
 autoconnect=1
-vm-window-size=(1268, 1358)
+vm-window-size=(1693, 1358)
 
 [org/virt-manager/virt-manager/vms/4c21b47e2a41454dae1120bcb49c5a6b]
 autoconnect=1
@@ -1526,7 +1529,7 @@ vm-window-size=(1268, 1358)
 
 [org/virt-manager/virt-manager/vms/c6326ba23aae40e8a0fe046fab3fc854]
 autoconnect=1
-vm-window-size=(1268, 1358)
+vm-window-size=(1693, 1358)
 
 [org/virt-manager/virt-manager/vms/c7c582869c7949ce852a71e96433849c]
 autoconnect=1

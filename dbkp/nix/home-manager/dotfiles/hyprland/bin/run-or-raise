@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+class=""
+app=""
+launch=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --class)
+      class="$2"
+      shift 2
+      ;;
+    --app)
+      app="$2"
+      shift 2
+      ;;
+    --launch)
+      launch="$2"
+      shift 2
+      ;;
+    *)
+      launch="$1"
+      shift 1
+      ;;
+  esac
+done
+
+if [[ -z "$launch" ]]; then
+  echo "usage: run-or-raise --launch <cmd|app.desktop> [--class <class>] [--app <app-id>]" >&2
+  exit 2
+fi
+
+regex=""
+if [[ -n "$class" ]]; then
+  regex="^${class}$"
+elif [[ -n "$app" ]]; then
+  regex="^${app}$"
+fi
+
+if [[ -n "$regex" ]]; then
+  addr=$(hyprctl -j clients | jq -r --arg re "$regex" '
+    map(select((.class|test($re)) or (.initialClass|test($re))))
+    | .[0].address // empty
+  ')
+  if [[ -n "$addr" ]]; then
+    hyprctl dispatch focuswindow "address:$addr" >/dev/null
+    exit 0
+  fi
+fi
+
+if [[ "$launch" == *.desktop ]]; then
+  if command -v dex >/dev/null 2>&1; then
+    desktop_path=""
+    if [[ "$launch" == /* ]] && [[ -f "$launch" ]]; then
+      desktop_path="$launch"
+    elif command -v ls-dex >/dev/null 2>&1; then
+      desktop_path="$(ls-dex | rg -m1 -F "/$launch$" || true)"
+    fi
+
+    if [[ -n "$desktop_path" ]]; then
+      dex "$desktop_path" >/dev/null 2>&1 &
+    else
+      dex "$launch" >/dev/null 2>&1 &
+    fi
+  else
+    gtk-launch "${launch%.desktop}" >/dev/null 2>&1 &
+  fi
+else
+  hyprctl dispatch exec "$launch" >/dev/null 2>&1 &
+fi

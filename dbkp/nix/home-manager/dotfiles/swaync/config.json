@@ -1,0 +1,29 @@
+{
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "top",
+  "control-center-width": 420,
+  "control-center-height": 620,
+  "control-center-margin-top": 8,
+  "control-center-margin-right": 8,
+  "control-center-margin-bottom": 8,
+  "control-center-margin-left": 8,
+  "timeout": 6,
+  "notification-window-width": 360,
+  "widgets": [
+    "title",
+    "dnd",
+    "notifications",
+    "mpris",
+    "volume",
+    "backlight",
+    "inhibitors",
+    "buttons"
+  ],
+  "buttons": [
+    "lock",
+    "logout",
+    "reboot",
+    "shutdown"
+  ]
+}

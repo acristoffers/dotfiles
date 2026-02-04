@@ -100,4 +100,33 @@ in
       gtk-application-prefer-dark-theme = true;
     };
   };
+
+  systemd.user = {
+    services."dropbox-client" = {
+      Unit = {
+        Description = "Dropbox client";
+        After = [ "local-fs.target" "network.target" "graphical-session.target" ];
+        Requires = [ "graphical-session.target" ];
+      };
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.flatpak}/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/dropbox com.dropbox.Client start";
+      };
+    };
+
+    timers."dropbox-client" = {
+      Unit = {
+        Description = "Run dropbox-client every 10 minutes (graphical session only)";
+      };
+      Timer = {
+        OnBootSec = "5min";
+        OnUnitActiveSec = "10min";
+        Unit = "dropbox-client.service";
+        Persistent = true;
+      };
+      Install = {
+        WantedBy = [ "timers.target" ];
+      };
+    };
+  };
 }
