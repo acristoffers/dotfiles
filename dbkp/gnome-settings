@@ -203,7 +203,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='display'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -772,7 +772,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Documents/Dropbox/Indústria/Vitibot/Bulletins/2025'
+last-folder-path='/home/alan/Developer/GitHub/PersonalPage/webapp/public'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -824,6 +824,9 @@ last-folder-path='/home/alan/Downloads/projects'
 
 [org/gnome/portal/filechooser/org.gnome.Fractal]
 last-folder-path='/home/alan/Pictures'
+
+[org/gnome/portal/filechooser/org.gnome.Nautilus]
+last-folder-path='/home/alan/Developer/GitHub/PersonalPage/webapp/public'
 
 [org/gnome/portal/filechooser/org.gnome.Papers]
 last-folder-path='/home/alan/Downloads'
@@ -884,7 +887,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.860207439035854, 2.2670599999999999)
+night-light-last-coordinates=(47.861813715280206, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -994,10 +997,12 @@ preview-effect=''
 [org/gnome/shell/extensions/caffeine]
 cli-toggle=true
 countdown-timer=0
-indicator-position-max=3
+enable-mpris=true
+indicator-position-max=2
 inhibit-apps=['org.videolan.VLC.desktop']
-prefs-default-height=1048
+prefs-default-height=1395
 prefs-default-width=843
+restore-state=true
 show-indicator='only-active'
 toggle-shortcut=['<Shift><Super>c']
 toggle-state=true
@@ -1290,9 +1295,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1770225155
+check-timestamp=int64 1770556374
 first-run=false
-flatpak-purge-timestamp=int64 1770232233
+flatpak-purge-timestamp=int64 1770460290
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1477,7 +1482,7 @@ vm-window-size=(2544, 1358)
 [org/virt-manager/virt-manager/vms/8c5862c731414b6c9cf6738581188ae2]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1693, 1358)
+vm-window-size=(1268, 1358)
 
 [org/virt-manager/virt-manager/vms/97e982526b2f4efab750735e2a8e4806]
 autoconnect=1

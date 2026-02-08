@@ -119,8 +119,8 @@ in
         Description = "Run dropbox-client every 10 minutes (graphical session only)";
       };
       Timer = {
-        OnBootSec = "5min";
-        OnUnitActiveSec = "10min";
+        OnStartupSec = "30sec";
+        OnCalendar = "*:00/10";
         Unit = "dropbox-client.service";
         Persistent = true;
       };
