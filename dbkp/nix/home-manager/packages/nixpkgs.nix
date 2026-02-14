@@ -4,7 +4,6 @@ with pkgs; [
   (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   any-nix-shell
   appstream
-  # bibtool
   blesh
   cacert
   cowsay
@@ -48,6 +47,7 @@ with pkgs; [
   gnutar
   go
   gspell
+  gum
   hjson # accepts broken json
   hledger
   htop
@@ -63,6 +63,7 @@ with pkgs; [
   mdcat
   mediainfo
   moreutils
+  mplayer
   nerd-fonts.inconsolata
   nerd-fonts.jetbrains-mono
   nerd-fonts.meslo-lg

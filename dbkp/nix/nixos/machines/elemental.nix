@@ -14,9 +14,16 @@
 
   services.desktopManager.cosmic.enable = false;
 
-  environment.systemPackages = with pkgs; [
-    # auto-cpufreq
-  ];
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "alan";
+  };
+
+  security.pam.services.gdm.enableGnomeKeyring = true;
+
+  # environment.systemPackages = with pkgs; [
+  # auto-cpufreq
+  # ];
 
   environment.variables = {
     VDPAU_DRIVER = "va_gl";

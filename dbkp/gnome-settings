@@ -203,7 +203,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='display'
+last-panel='system'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -772,7 +772,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Developer/GitHub/PersonalPage/webapp/public'
+last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Naturalization/Documents'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -887,7 +887,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.861813715280206, 2.2670599999999999)
+night-light-last-coordinates=(47.853360049954176, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1105,7 +1105,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=true
+aaa-loading-profile=false
 always-activate-selected-window=false
 animation-speed-factor=100
 app-display-module=true
@@ -1295,7 +1295,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1770556374
+check-timestamp=int64 1771003879
 first-run=false
 flatpak-purge-timestamp=int64 1770460290
 install-timestamp=int64 1764403504
