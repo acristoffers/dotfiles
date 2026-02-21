@@ -7,6 +7,7 @@ let
   perl5 = import ./perl.nix pkgs;
   python3 = import ./python.nix pkgs;
   ruby3 = import ./ruby.nix pkgs;
+  hyprland = import ./hyprland.nix pkgs;
   flakes = import ./flakes.nix { inherit pkgs inputs; };
 
   fish-fzf-fix = pkgs.stdenv.mkDerivation {
@@ -20,8 +21,9 @@ let
   };
 in
 dicts
-++ nixpkgs
-++ flakes
-++ [ perl5 python3 ruby3 ]
-++ linux
 ++ [ (pkgs.lib.hiPrio fish-fzf-fix) ]
+++ [ perl5 python3 ruby3 ]
+++ flakes
+++ hyprland
+++ linux
+++ nixpkgs

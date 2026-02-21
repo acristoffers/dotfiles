@@ -42,12 +42,15 @@ in
     "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
     "${config.xdg.configHome}/tridactyl".source = ./dotfiles/tridactyl;
     "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;
+    "${config.xdg.configHome}/hypr" = { source = ./dotfiles/hyprland; recursive = true; };
+    "${config.xdg.configHome}/xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
   };
 
   programs = {
     bash = import ./programs/bash.nix { inherit config; inherit pkgs; };
     bat = import ./programs/bat.nix { inherit config; inherit pkgs; };
     btop = import ./programs/btop.nix { inherit config; inherit pkgs; };
+    dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; };
     dircolors = import ./programs/dircolors.nix { inherit config; inherit pkgs; };
     eza = import ./programs/exa.nix { inherit config; inherit pkgs; };
     fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
@@ -55,9 +58,9 @@ in
     lazygit = import ./programs/lazygit.nix { inherit config; inherit pkgs; };
     nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; inherit inputs; };
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
+    wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
     zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
-    wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
   };
 
   xdg.desktopEntries."com.mitchellh.ghostty" = {
@@ -126,6 +129,15 @@ in
       };
       Install = {
         WantedBy = [ "timers.target" ];
+      };
+    };
+
+    targets."hyprland-session" = {
+      Unit = {
+        Description = "Hyprland Session Target";
+        Requires = "graphical-session.target";
+        After = "graphical-session.target";
+        Wants = [ "dms.service" ];
       };
     };
   };

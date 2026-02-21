@@ -127,6 +127,11 @@ rec {
     };
   };
 
+  services.gnome.gnome-keyring.enable = true;
+  services.dbus.enable = true;
+  services.dbus.packages = [ pkgs.seahorse ];
+  security.pam.services.greetd = { enableGnomeKeyring = true; };
+
   console.keyMap = "us-acentos";
 
   services.printing = {
@@ -205,7 +210,6 @@ rec {
       "render"
       "video"
       "wheel"
-      "vboxusers"
     ];
     packages = [ ];
   };
@@ -241,7 +245,16 @@ rec {
   };
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+    config = {
+      common = {
+        default = [ "hyprland" "gtk" "gnome" ];
+      };
+    };
   };
 
   programs.dconf.enable = true;

@@ -1,0 +1,405 @@
+#!/usr/bin/env python3
+
+import json
+import math
+import os
+import subprocess
+import sys
+from typing import Dict, List, Optional, Tuple
+
+
+def die(msg: str, code: int = 2) -> None:
+    print(msg, file=sys.stderr)
+    sys.exit(code)
+
+
+def run_json(args: List[str]):
+    try:
+        out = subprocess.check_output(["hyprctl", "-j", *args], text=True)
+        return json.loads(out)
+    except FileNotFoundError:
+        die("rectangle: hyprctl not found in PATH")
+    except subprocess.CalledProcessError as exc:
+        die(f"rectangle: hyprctl failed: {' '.join(args)}")
+    except json.JSONDecodeError:
+        die("rectangle: failed to parse hyprctl JSON output")
+
+
+def run_dispatch(args: List[str]) -> None:
+    try:
+        subprocess.run(["hyprctl", "dispatch", *args], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        die(f"rectangle: hyprctl dispatch failed: {' '.join(args)}")
+
+
+def round_int(x: float) -> int:
+    return int(math.floor(x + 0.5))
+
+
+def env_int(name: str, default: int) -> int:
+    val = os.environ.get(name)
+    if val is None or val == "":
+        return default
+    try:
+        return int(val)
+    except ValueError:
+        die(f"rectangle: invalid {name}={val}")
+
+
+def get_state_path() -> str:
+    runtime = os.environ.get("XDG_RUNTIME_DIR") or "/tmp"
+    return os.path.join(runtime, "hypr-rectangle-state.json")
+
+
+def load_state() -> Dict[str, List[int]]:
+    path = get_state_path()
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if isinstance(data, dict):
+            return {k: list(map(int, v)) for k, v in data.items() if isinstance(v, list)}
+    except FileNotFoundError:
+        pass
+    except Exception:
+        pass
+    return {}
+
+
+def save_state(state: Dict[str, List[int]]) -> None:
+    path = get_state_path()
+    tmp = f"{path}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(state, f)
+    os.replace(tmp, path)
+
+
+def geometry_for_grid(
+    screen: Tuple[int, int, int, int],
+    index: int,
+    row_span: int,
+    col_span: int,
+    rows: int,
+    cols: int,
+    pad_inner: int,
+    pad_outer: int,
+) -> Tuple[int, int, int, int]:
+    sx, sy, sw, sh = screen
+    if index >= rows * cols or index < 0:
+        return sx, sy, sw, sh
+
+    avail_w = sw - (cols - 1) * pad_inner - 2 * pad_outer
+    avail_h = sh - (rows - 1) * pad_inner - 2 * pad_outer
+    single_w = avail_w / cols
+    single_h = avail_h / rows
+    win_w = col_span * single_w + (col_span - 1) * pad_inner
+    win_h = row_span * single_h + (row_span - 1) * pad_inner
+
+    win_j = index % cols
+    win_i = (index - win_j) // cols
+    win_x = sx + pad_outer + win_j * (single_w + pad_inner)
+    win_y = sy + pad_outer + win_i * (single_h + pad_inner)
+
+    return round_int(win_x), round_int(win_y), round_int(win_w), round_int(win_h)
+
+
+def center(screen: Tuple[int, int, int, int], geo: Tuple[int, int, int, int]) -> Tuple[int, int, int, int]:
+    sx, sy, sw, sh = screen
+    x, y, w, h = geo
+    cx = sx + round_int((sw - w) / 2)
+    cy = sy + round_int((sh - h) / 2)
+    return cx, cy, w, h
+
+
+def pick_monitor(
+    monitors: List[dict],
+    current: dict,
+    direction: str,
+) -> Optional[dict]:
+    cx = current.get("x", 0)
+    cy = current.get("y", 0)
+    cw = current.get("width", 0)
+    ch = current.get("height", 0)
+
+    candidates = []
+    for m in monitors:
+        if m.get("id") == current.get("id"):
+            continue
+        mx = m.get("x", 0)
+        my = m.get("y", 0)
+        mw = m.get("width", 0)
+        mh = m.get("height", 0)
+
+        if direction == "up":
+            if my + mh <= cy:
+                dist = cy - (my + mh)
+                overlap = max(0, min(cx + cw, mx + mw) - max(cx, mx))
+                candidates.append((dist, -overlap, m))
+        elif direction == "down":
+            if my >= cy + ch:
+                dist = my - (cy + ch)
+                overlap = max(0, min(cx + cw, mx + mw) - max(cx, mx))
+                candidates.append((dist, -overlap, m))
+        elif direction == "left":
+            if mx + mw <= cx:
+                dist = cx - (mx + mw)
+                overlap = max(0, min(cy + ch, my + mh) - max(cy, my))
+                candidates.append((dist, -overlap, m))
+        elif direction == "right":
+            if mx >= cx + cw:
+                dist = mx - (cx + cw)
+                overlap = max(0, min(cy + ch, my + mh) - max(cy, my))
+                candidates.append((dist, -overlap, m))
+
+    if not candidates:
+        return None
+    candidates.sort(key=lambda item: (item[0], item[1]))
+    return candidates[0][2]
+
+
+def ensure_floating(active: dict) -> None:
+    if not active.get("floating", False):
+        run_dispatch(["togglefloating"])
+
+    fullscreen = active.get("fullscreen")
+    fullscreen_state = active.get("fullscreenState")
+    if fullscreen or (isinstance(fullscreen_state, int) and fullscreen_state != 0):
+        run_dispatch(["fullscreen", "0"])
+
+
+def apply_geometry(x: int, y: int, w: int, h: int) -> None:
+    if w < 1 or h < 1:
+        return
+    batch = f"dispatch movewindowpixel exact {x} {y},activewindow; dispatch resizewindowpixel exact {w} {h},activewindow"
+    try:
+        subprocess.run(["hyprctl", "--batch", batch], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        die("rectangle: failed to move/resize window")
+
+
+def main() -> None:
+    if len(sys.argv) != 2:
+        die("usage: rectangle <tile-name>")
+
+    tile = sys.argv[1]
+
+    tiles: Dict[str, Tuple[int, int, int, int, int]] = {
+        "tile-quarter-top-left": (0, 1, 1, 2, 2),
+        "tile-quarter-top-right": (1, 1, 1, 2, 2),
+        "tile-quarter-bottom-left": (2, 1, 1, 2, 2),
+        "tile-quarter-bottom-right": (3, 1, 1, 2, 2),
+        "tile-quarter-centered": (-2, 1, 1, 2, 2),
+        "tile-fourth-first": (0, 1, 1, 1, 4),
+        "tile-fourth-second": (1, 1, 1, 1, 4),
+        "tile-fourth-third": (2, 1, 1, 1, 4),
+        "tile-fourth-fourth": (3, 1, 1, 1, 4),
+        "tile-third-first": (0, 1, 1, 1, 3),
+        "tile-third-second": (1, 1, 1, 1, 3),
+        "tile-third-third": (2, 1, 1, 1, 3),
+        "tile-sixth-top-left": (0, 1, 1, 2, 3),
+        "tile-sixth-top-center": (1, 1, 1, 2, 3),
+        "tile-sixth-top-right": (2, 1, 1, 2, 3),
+        "tile-sixth-bottom-left": (3, 1, 1, 2, 3),
+        "tile-sixth-bottom-center": (4, 1, 1, 2, 3),
+        "tile-sixth-bottom-right": (5, 1, 1, 2, 3),
+        "tile-ninth-top-left": (0, 1, 1, 3, 3),
+        "tile-ninth-top-center": (1, 1, 1, 3, 3),
+        "tile-ninth-top-right": (2, 1, 1, 3, 3),
+        "tile-ninth-middle-left": (3, 1, 1, 3, 3),
+        "tile-ninth-middle-center": (4, 1, 1, 3, 3),
+        "tile-ninth-middle-right": (5, 1, 1, 3, 3),
+        "tile-ninth-bottom-left": (6, 1, 1, 3, 3),
+        "tile-ninth-bottom-center": (7, 1, 1, 3, 3),
+        "tile-ninth-bottom-right": (8, 1, 1, 3, 3),
+        "tile-half-center-vertical": (-2, 1, 1, 1, 2),
+        "tile-half-center-horizontal": (-2, 1, 1, 2, 1),
+        "tile-half-left": (0, 1, 1, 1, 2),
+        "tile-half-right": (1, 1, 1, 1, 2),
+        "tile-half-top": (0, 1, 1, 2, 1),
+        "tile-half-bottom": (1, 1, 1, 2, 1),
+        "tile-two-thirds-left": (0, 1, 2, 1, 3),
+        "tile-two-thirds-center": (-2, 1, 2, 1, 3),
+        "tile-two-thirds-right": (1, 1, 2, 1, 3),
+        "tile-three-fourths-left": (0, 1, 3, 1, 4),
+        "tile-three-fourths-right": (1, 1, 3, 1, 4),
+        "tile-center": (-1, 1, 1, 1, 1),
+        "tile-maximize": (0, 1, 1, 1, 1),
+        "tile-maximize-almost": (33, 30, 30, 32, 32),
+        "tile-maximize-height": (-4, 0, 0, 0, 0),
+        "tile-maximize-width": (-3, 0, 0, 0, 0),
+        "tile-stretch-top": (-6, 0, 0, 0, 0),
+        "tile-stretch-bottom": (-6, 1, 0, 0, 0),
+        "tile-stretch-left": (-6, 2, 0, 0, 0),
+        "tile-stretch-right": (-6, 3, 0, 0, 0),
+        "tile-stretch-step-bottom-left": (-7, -1, 1, 1, 1),
+        "tile-stretch-step-bottom": (-7, 0, 1, 1, 1),
+        "tile-stretch-step-bottom-right": (-7, 1, 1, 1, 1),
+        "tile-stretch-step-left": (-7, -1, 0, 1, 1),
+        "tile-stretch-step-right": (-7, 1, 0, 1, 1),
+        "tile-stretch-step-top-left": (-7, -1, -1, 1, 1),
+        "tile-stretch-step-top": (-7, 0, -1, 1, 1),
+        "tile-stretch-step-top-right": (-7, 1, -1, 1, 1),
+        "tile-move-bottom-left": (-5, -1, 1, 1, 1),
+        "tile-move-bottom": (-5, 0, 1, 1, 1),
+        "tile-move-bottom-right": (-5, 1, 1, 1, 1),
+        "tile-move-left": (-5, -1, 0, 1, 1),
+        "tile-move-right": (-5, 1, 0, 1, 1),
+        "tile-move-top-left": (-5, -1, -1, 1, 1),
+        "tile-move-top": (-5, 0, -1, 1, 1),
+        "tile-move-top-right": (-5, 1, -1, 1, 1),
+        "tile-move-to-monitor-top": (-8, 0, 0, 0, 0),
+        "tile-move-to-monitor-bottom": (-8, 1, 0, 0, 0),
+        "tile-move-to-monitor-left": (-8, 2, 0, 0, 0),
+        "tile-move-to-monitor-right": (-8, 3, 0, 0, 0),
+        "tile-shrink": (-9, 0, 0, 0, 0),
+        "tile-expand": (-10, 0, 0, 0, 0),
+    }
+
+    if tile not in tiles:
+        die(f"rectangle: unknown tile '{tile}'")
+
+    index, rs, cs, r, c = tiles[tile]
+
+    active = run_json(["activewindow"])
+    if not active or active.get("address") is None:
+        die("rectangle: no active window")
+
+    addr = active.get("address")
+    monitor_id = active.get("monitor")
+    at = active.get("at") or [0, 0]
+    size = active.get("size") or [0, 0]
+    win_x, win_y = int(at[0]), int(at[1])
+    win_w, win_h = int(size[0]), int(size[1])
+
+    monitors = run_json(["monitors"])
+    monitor = None
+    for m in monitors:
+        if m.get("id") == monitor_id:
+            monitor = m
+            break
+    if monitor is None:
+        die("rectangle: failed to resolve monitor")
+
+    # Hyprland reserved order: [left, top, right, bottom]
+    reserved = monitor.get("reserved") or [0, 0, 0, 0]
+    if len(reserved) != 4:
+        reserved = [0, 0, 0, 0]
+
+    pad_inner = env_int("RECT_PADDING_INNER", 8)
+    pad_outer = env_int("RECT_PADDING_OUTER", 8)
+    margin_top = env_int("RECT_MARGIN_TOP", 0)
+    margin_right = env_int("RECT_MARGIN_RIGHT", 0)
+    margin_bottom = env_int("RECT_MARGIN_BOTTOM", 0)
+    margin_left = env_int("RECT_MARGIN_LEFT", 0)
+    shrink_step = env_int("RECT_SHRINK_STEP", 30)
+
+    screen_x = int(monitor.get("x", 0)) + reserved[0] + margin_left
+    screen_y = int(monitor.get("y", 0)) + reserved[1] + margin_top
+    screen_w = int(monitor.get("width", 0)) - reserved[0] - reserved[2] - margin_left - margin_right
+    screen_h = int(monitor.get("height", 0)) - reserved[1] - reserved[3] - margin_top - margin_bottom
+    screen = (screen_x, screen_y, screen_w, screen_h)
+
+    state = load_state()
+
+    geo = (win_x, win_y, win_w, win_h)
+
+    if index >= 0:
+        geo = geometry_for_grid(screen, index, rs, cs, r, c, pad_inner, pad_outer)
+        state[addr] = [index, rs, cs, r, c]
+        save_state(state)
+    elif index == -1:
+        geo = center(screen, geo)
+    elif index == -2:
+        geo = geometry_for_grid(screen, 1, rs, cs, r, c, pad_inner, pad_outer)
+        geo = center(screen, geo)
+    elif index == -3:
+        full = geometry_for_grid(screen, 0, 1, 1, 1, 1, pad_inner, pad_outer)
+        geo = (full[0], geo[1], full[2], geo[3])
+    elif index == -4:
+        full = geometry_for_grid(screen, 0, 1, 1, 1, 1, pad_inner, pad_outer)
+        geo = (geo[0], full[1], geo[2], full[3])
+    elif index == -5:
+        args = state.get(addr)
+        if args:
+            idx, prs, pcs, pr, pc = args
+            j = idx % pc
+            i = (idx - j) // pc
+            j = max(0, min(pc - pcs, j + rs))
+            i = max(0, min(pr - prs, i + cs))
+            idx = i * pc + j
+            geo = geometry_for_grid(screen, idx, prs, pcs, pr, pc, pad_inner, pad_outer)
+            state[addr] = [idx, prs, pcs, pr, pc]
+            save_state(state)
+    elif index == -6:
+        sx, sy, sw, sh = screen
+        x, y, w, h = geo
+        if rs == 0:
+            h = h + (y - (sy + pad_outer))
+            y = sy + pad_outer
+        elif rs == 1:
+            h = (sy + sh) - pad_outer - y
+        elif rs == 2:
+            w = w + (x - (sx + pad_outer))
+            x = sx + pad_outer
+        elif rs == 3:
+            w = (sx + sw) - pad_outer - x
+        geo = (x, y, w, h)
+    elif index == -7:
+        args = state.get(addr)
+        if args:
+            idx, prs, pcs, pr, pc = args
+            j = idx % pc
+            i = (idx - j) // pc
+            newj = max(0, min(pc - pcs, j + rs))
+            newi = max(0, min(pr - prs, i + cs))
+            pcs += 1 if j != newj else 0
+            prs += 1 if i != newi else 0
+            newj = j if j < newj else newj
+            newi = i if i < newi else newi
+            idx = newi * pc + newj
+            geo = geometry_for_grid(screen, idx, prs, pcs, pr, pc, pad_inner, pad_outer)
+            state[addr] = [idx, prs, pcs, pr, pc]
+            save_state(state)
+    elif index == -8:
+        direction_map = {0: "up", 1: "down", 2: "left", 3: "right"}
+        direction = direction_map.get(rs)
+        if direction:
+            target = pick_monitor(monitors, monitor, direction)
+            if target is not None:
+                target_ws = target.get("activeWorkspace", {}).get("id")
+                if target_ws is not None:
+                    run_dispatch(["movetoworkspacesilent", str(target_ws)])
+                    if addr in state:
+                        idx, prs, pcs, pr, pc = state[addr]
+                        active = run_json(["activewindow"])
+                        if active and active.get("address") == addr:
+                            monitor_id = active.get("monitor")
+                            for m in monitors:
+                                if m.get("id") == monitor_id:
+                                    monitor = m
+                                    break
+                            # Hyprland reserved order: [left, top, right, bottom]
+                            reserved = monitor.get("reserved") or [0, 0, 0, 0]
+                            if len(reserved) != 4:
+                                reserved = [0, 0, 0, 0]
+                            screen_x = int(monitor.get("x", 0)) + reserved[0] + margin_left
+                            screen_y = int(monitor.get("y", 0)) + reserved[1] + margin_top
+                            screen_w = int(monitor.get("width", 0)) - reserved[0] - reserved[2] - margin_left - margin_right
+                            screen_h = int(monitor.get("height", 0)) - reserved[1] - reserved[3] - margin_top - margin_bottom
+                            screen = (screen_x, screen_y, screen_w, screen_h)
+                            geo = geometry_for_grid(screen, idx, prs, pcs, pr, pc, pad_inner, pad_outer)
+                            ensure_floating(active)
+                            apply_geometry(*geo)
+                return
+    elif index == -9:
+        x, y, w, h = geo
+        geo = (round_int(x + shrink_step / 2.0), round_int(y + shrink_step / 2.0), w - shrink_step, h - shrink_step)
+    elif index == -10:
+        x, y, w, h = geo
+        geo = (round_int(x - shrink_step / 2.0), round_int(y - shrink_step / 2.0), w + shrink_step, h + shrink_step)
+
+    ensure_floating(active)
+    apply_geometry(*geo)
+
+
+if __name__ == "__main__":
+    main()

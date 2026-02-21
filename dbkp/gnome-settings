@@ -21,10 +21,10 @@ last-search-text='acristoffers@startmail.com'
 
 [apps/seahorse/listing]
 item-filter='any'
-keyrings-selected=['gnupg://']
+keyrings-selected=['secret-service:///org/freedesktop/secrets/collection/login']
 
 [apps/seahorse/windows/key-manager]
-height=1348
+height=1341
 width=1693
 
 [ca/desrt/dconf-editor]
@@ -90,7 +90,7 @@ window-size=(1024, 768)
 
 [org/gnome/Console]
 audible-bell=false
-last-window-maximised=false
+last-window-maximised=true
 last-window-size=(843, 460)
 
 [org/gnome/Contacts]
@@ -150,9 +150,9 @@ subtitle-encoding='UTF-8'
 
 [org/gnome/Weather]
 locations=[<(uint32 2, <('Reims', 'LFOW', false, [(0.869464861519606, 0.055850536063818547)], [(0.869464861519606, 0.055850536063818547)])>)>]
-window-height=515
+window-height=506
 window-maximized=false
-window-width=992
+window-width=843
 
 [org/gnome/baobab/ui]
 is-maximized=false
@@ -203,7 +203,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='system'
+last-panel='bluetooth'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -257,7 +257,7 @@ automatic-timezone=false
 [org/gnome/desktop/input-sources]
 current=uint32 0
 mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple')]
-per-window=true
+per-window=false
 show-all-sources=true
 sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple'), ('ibus', 'typing-booster')]
 xkb-options=['shift:both_capslock', 'compose:rwin']
@@ -681,7 +681,7 @@ show-delete-permanently=true
 [org/gnome/nautilus/window-state]
 initial-size=(843, 460)
 initial-size-file-chooser=(1268, 694)
-maximized=false
+maximized=true
 
 [org/gnome/nm-applet/eap/070faec1-688f-4824-9919-c919111fdd30]
 ignore-ca-cert=false
@@ -772,7 +772,7 @@ window-size=[1904, 1032]
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/app.zen_browser.zen]
-last-folder-path='/home/alan/Documents/Dropbox/Documentos/Governo/Naturalization/Documents'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/com.brave.Browser]
 last-folder-path='/home/alan/Downloads'
@@ -887,7 +887,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.853360049954176, 2.2670599999999999)
+night-light-last-coordinates=(47.85089316009929, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1009,9 +1009,12 @@ toggle-state=true
 user-enabled=true
 
 [org/gnome/shell/extensions/clipboard-indicator]
-cache-size=50
+cache-images=false
+cache-size=100
+disable-down-arrow=true
 display-mode=0
 history-size=10000
+move-item-first=false
 preview-size=10
 private-mode-binding=['<Control>F8']
 toggle-menu=['<Super>semicolon']
@@ -1295,9 +1298,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1771003879
+check-timestamp=int64 1771523106
 first-run=false
-flatpak-purge-timestamp=int64 1770460290
+flatpak-purge-timestamp=int64 1771442176
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1360,8 +1363,8 @@ sort-column='name'
 sort-directories-first=false
 sort-order='ascending'
 type-format='category'
-window-position=(26, 23)
-window-size=(948, 465)
+window-position=(0, 0)
+window-size=(843, 410)
 
 [org/virt-manager/virt-manager]
 manager-window-height=423
@@ -1482,7 +1485,7 @@ vm-window-size=(2544, 1358)
 [org/virt-manager/virt-manager/vms/8c5862c731414b6c9cf6738581188ae2]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1268, 1358)
+vm-window-size=(1693, 1358)
 
 [org/virt-manager/virt-manager/vms/97e982526b2f4efab750735e2a8e4806]
 autoconnect=1

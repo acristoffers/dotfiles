@@ -45,10 +45,27 @@
 
     nu-scripts.url = "github:nushell/nu_scripts";
     nu-scripts.flake = false;
+
+    dms.url = "github:AvengeMedia/DankMaterialShell/stable";
+    dms.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
+    hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
+
+    dms-plugins.url = "github:AvengeMedia/dms-plugins";
+    dms-plugins.flake = false;
+
+    dms-emoji-launcher.url = "github:devnullvoid/dms-emoji-launcher";
+    dms-emoji-launcher.flake = false;
+
+    dms-world-clock.url = "github:rochacbruno/WorldClock";
+    dms-world-clock.flake = false;
+
+    dms-grimblast.url = "github:TaylanTatli/dms-plugins";
+    dms-grimblast.flake = false;
   };
 
-  outputs =
-    inputs:
+  outputs = inputs:
     inputs.flake-utils.lib.eachDefaultSystem (
       system:
       let
@@ -61,6 +78,7 @@
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
+              inputs.dms.homeModules.dank-material-shell
               ./home.nix
             ];
             extraSpecialArgs = {

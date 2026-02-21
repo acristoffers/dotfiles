@@ -6,6 +6,8 @@ class=""
 app=""
 launch=""
 
+export PATH=$PATH:$HOME/bin
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --class)
@@ -45,7 +47,7 @@ if [[ -n "$regex" ]]; then
     | .[0].address // empty
   ')
   if [[ -n "$addr" ]]; then
-    hyprctl dispatch focuswindow "address:$addr" >/dev/null
+    hyprctl --batch "dispatch focuswindow address:$addr; dispatch alterzorder top" >/dev/null
     exit 0
   fi
 fi
@@ -56,7 +58,7 @@ if [[ "$launch" == *.desktop ]]; then
     if [[ "$launch" == /* ]] && [[ -f "$launch" ]]; then
       desktop_path="$launch"
     elif command -v ls-dex >/dev/null 2>&1; then
-      desktop_path="$(ls-dex | rg -m1 -F "/$launch$" || true)"
+      desktop_path="$(ls-dex | rg -m1 "/$launch$" || true)"
     fi
 
     if [[ -n "$desktop_path" ]]; then
