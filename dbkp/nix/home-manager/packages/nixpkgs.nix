@@ -33,7 +33,6 @@ with pkgs; [
   flatpak-builder
   gawk
   gh
-  ghostscript
   git
   git-graph
   git-lfs
