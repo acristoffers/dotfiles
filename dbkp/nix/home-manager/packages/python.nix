@@ -8,12 +8,14 @@ with pkgs; (python313.withPackages (p: with p; [
   git-filter-repo
   ipython
   isort
+  matplotlib
   neovim
   numpy
   pip
   pipx
   pygobject-stubs
   pygobject3
+  pyyaml
   scipy
   sympy
   twine

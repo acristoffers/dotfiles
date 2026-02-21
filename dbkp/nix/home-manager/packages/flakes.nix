@@ -18,4 +18,5 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage remove-trash "default")
   (flakePackage tmux-tui "default")
   (flakePackage void "default")
+  (flakePackage wbproto-formatter "default")
 ])

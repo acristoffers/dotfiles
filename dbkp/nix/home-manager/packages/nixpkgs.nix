@@ -16,8 +16,8 @@ with pkgs; [
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
+  emacs
   emacs-all-the-icons-fonts
-  emacs-pgtk
   emacs.pkgs.cask
   epstool
   expect
@@ -37,6 +37,7 @@ with pkgs; [
   git
   git-graph
   git-lfs
+  git-spice
   glab
   gnome-extensions-cli
   gnome-sound-recorder

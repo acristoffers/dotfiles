@@ -1,0 +1,11 @@
+[user]
+  name = Álan e Sousa
+  email = alan.esousa@vitibot.fr
+[url "git@git.vitibot.fr:cc/software/hl/autonomy/"]
+  insteadOf = "an:"
+[url "git@git.vitibot.fr:cc/software/hl/common/"]
+  insteadOf = "common:"
+[url "git@git.vitibot.fr:info/ros/"]
+  insteadOf = "ros:"
+[url "git@git.vitibot.fr:info/common/"]
+  insteadOf = "icommon:"

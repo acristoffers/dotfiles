@@ -3,8 +3,9 @@
   enable = true;
   config = {
     theme = "catppuccin";
+    map-syntax = "*.mixin:YAML";
   };
-  # extraPackages = with pkgs.bat-extras; [ /* batdiff */ batman batgrep batwatch batpipe prettybat ];
+  extraPackages = with pkgs.bat-extras; [ batman batwatch ];
   themes = {
     dracula = {
       src = pkgs.fetchFromGitHub {

@@ -14,10 +14,7 @@
     XDG_STATE_HOME = "$HOME/.local/state";
   };
   bashrcExtra = ''
-    if [[ $- == *i* ]]; then
-      bind "\C-w":unix-filename-rubout "\C-q":unix-word-rubout
-      source "$(blesh-share)/ble.sh"
-      eval "$(starship init bash)"
-    fi
+    stty -ixon
+    eval "$(starship init bash)"
   '';
 }

@@ -1086,7 +1086,8 @@
         "nvim": "nvim",
         "remove-trash": "remove-trash",
         "tmux-tui": "tmux-tui",
-        "void": "void"
+        "void": "void",
+        "wbproto-formatter": "wbproto-formatter"
       }
     },
     "snacks-git": {
@@ -1298,6 +1299,29 @@
         ],
         "nixpkgs": [
           "nvim",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1727006011,
+        "narHash": "sha256-E558f/0Okkt/Er/n2PWYvpPbIrwCN8e9VycHNzBR/eI=",
+        "owner": "acristoffers",
+        "repo": "wbproto-beautifier",
+        "rev": "6b92dd7eac725238292eb8b8059b519d1eb0bb95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acristoffers",
+        "repo": "wbproto-beautifier",
+        "type": "github"
+      }
+    },
+    "wbproto-formatter": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
           "nixpkgs"
         ]
       },

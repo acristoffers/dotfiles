@@ -4,12 +4,9 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    # nixpkgs.url = "github:NixOS/nixpkgs";
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home-manager.url = "github:nix-community/home-manager/release-25.11";
-    # home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = "github:acristoffers/nvim-flake";
@@ -46,6 +43,10 @@
     nu-scripts.url = "github:nushell/nu_scripts";
     nu-scripts.flake = false;
 
+    wbproto-formatter.url = "github:acristoffers/wbproto-beautifier";
+    wbproto-formatter.inputs.nixpkgs.follows = "nixpkgs";
+    wbproto-formatter.inputs.flake-utils.follows = "flake-utils";
+
     dms.url = "github:AvengeMedia/DankMaterialShell/stable";
     dms.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -69,18 +70,14 @@
     inputs.flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        homeConfigForUser =
-          username:
+        pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
+        homeConfigForUser = username: extra-modules:
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
               inputs.dms.homeModules.dank-material-shell
               ./home.nix
-            ];
+            ] ++ extra-modules;
             extraSpecialArgs = {
               inherit inputs;
               inherit username;
@@ -91,8 +88,8 @@
         formatter = pkgs.nixpkgs-fmt;
         packages = {
           homeConfigurations = {
-            alan = homeConfigForUser "alan";
-            lidei = homeConfigForUser "lidei";
+            "alan" = homeConfigForUser "alan" [ ];
+            "alan@eSousa-LPTP" = homeConfigForUser "alan" [ ./workstation.nix ];
           };
         };
       }

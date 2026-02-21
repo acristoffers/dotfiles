@@ -34,9 +34,9 @@ in
     "${config.xdg.configHome}/doom".source = ./dotfiles/doom;
     "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
     "${config.xdg.configHome}/ghostty".source = ./dotfiles/ghostty;
-    "${config.xdg.configHome}/git/config".source = ./dotfiles/git/config;
-    "${config.xdg.configHome}/git/gitconfig.vitibot".source = ./dotfiles/git/gitconfig.vitibot;
-    "${config.xdg.configHome}/git/ignore".source = ./dotfiles/git/ignore;
+    "${config.xdg.configHome}/git/config".source = ./dotfiles/git/home/config;
+    "${config.xdg.configHome}/git/gitconfig.workstation".source = ./dotfiles/git/home/extra-config;
+    "${config.xdg.configHome}/git/ignore".source = ./dotfiles/git/home/ignore;
     "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
     "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
     "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
@@ -56,7 +56,7 @@ in
     fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
     kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; };
     lazygit = import ./programs/lazygit.nix { inherit config; inherit pkgs; };
-    nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; inherit inputs; };
+    nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; };
     tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
     wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
     zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
@@ -101,6 +101,7 @@ in
     };
     gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = true;
+      gtk-key-theme-name = "Emacs";
     };
   };
 
