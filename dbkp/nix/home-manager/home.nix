@@ -44,6 +44,15 @@ in
     "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;
     "${config.xdg.configHome}/hypr" = { source = ./dotfiles/hyprland; recursive = true; };
     "${config.xdg.configHome}/xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
+    "${config.xdg.configHome}/hypr/conf/host.conf" = {
+      text = ''
+        bind = $mod, D, exec, run-or-raise --launch com.discordapp.Discord.desktop --class discord
+        bind = $mod, N, exec, run-or-raise --launch org.signal.Signal.desktop --class org.signal.Signal
+        bind = $mod, R, exec, run-or-raise --launch org.gnome.Fractal.desktop --class org.gnome.Fractal
+        bind = $mod, T, exec, run-or-raise --launch org.telegram.desktop.desktop --class org.telegram.desktop
+        bind = $mod, U, exec, run-or-raise --launch org.keepassxc.KeePassXC.desktop --class org.keepassxc.KeePassXC
+      '';
+    };
   };
 
   programs = {

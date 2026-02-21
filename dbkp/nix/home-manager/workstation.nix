@@ -6,6 +6,12 @@
     "${config.xdg.configHome}/git/attributes".source = pkgs.lib.mkForce ./dotfiles/git/workstation/attributes;
     "${config.xdg.configHome}/git/gitconfig.workstation".source = pkgs.lib.mkForce ./dotfiles/git/workstation/config;
     "${config.xdg.configHome}/tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl;
+    "${config.xdg.configHome}/hypr/conf/host.conf" = {
+      text = ''
+        bind = $mod, R, exec, run-or-raise --launch foxglove-studio.desktop --class Foxglove
+        bind = $mod, T, exec, run-or-raise --launch webots-fhs.desktop --class webots-fhs.desktop
+      '';
+    };
   };
 
   programs = {

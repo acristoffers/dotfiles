@@ -163,11 +163,11 @@
     "dms-emoji-launcher": {
       "flake": false,
       "locked": {
-        "lastModified": 1771464963,
-        "narHash": "sha256-o6Sa7pSL6/crYY48Pxp3wH7qOCule8ZSVSqrvjmresU=",
+        "lastModified": 1771465180,
+        "narHash": "sha256-jM1ywoyEefi3LJg/Fxbo8/8YBnnrNajF3WSIqvc5mTY=",
         "owner": "devnullvoid",
         "repo": "dms-emoji-launcher",
-        "rev": "9b0e368471a6bb83900a4210359cab570c99c147",
+        "rev": "2fcd667b76271ba6064946fc81feb551cce5ba33",
         "type": "github"
       },
       "original": {
@@ -374,11 +374,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1771660935,
-        "narHash": "sha256-4R2b3tclNI84b4xUM2Mvt+1zZ5TX2U1WRVskHWotW9U=",
+        "lastModified": 1771687524,
+        "narHash": "sha256-QoeksaoYpMev0nNYGsCinVg0Svo2FqJE1HnFbR8UbVw=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "02ca33d119eb46bb6eb07632caed98e989e21334",
+        "rev": "4581392625c09524ba330bba0b9fd37f4494d2de",
         "type": "github"
       },
       "original": {
