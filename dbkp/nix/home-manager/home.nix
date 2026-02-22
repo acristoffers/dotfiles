@@ -123,7 +123,7 @@ in
       };
       Service = {
         Type = "oneshot";
-        ExecStart = "${pkgs.flatpak}/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/dropbox com.dropbox.Client start";
+        ExecStart = "/run/current-system/sw/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/dropbox com.dropbox.Client start";
       };
     };
 
@@ -142,12 +142,56 @@ in
       };
     };
 
+    ################################################################################
+    ##                                                                            ##
+    ##                    Hyprland Systemd Activation Machinery                   ##
+    ##                                                                            ##
+    ################################################################################
+
+    # hyprland config starts pre-hyprland-session.target
+    # pre-hyprland-session.target triggers hyprland-wayland-socket.path
+    # hyprland-wayland-socket.path triggers hyprland-ready.service when the socket appears
+    # hyprland-ready.service starts hyprland-session.target
+    # hyprland-session.target triggers dms.service
+
+    targets."pre-hyprland-session" = {
+      Unit = {
+        Description = "Hyprland session starting (pre-ready)";
+      };
+    };
+
     targets."hyprland-session" = {
       Unit = {
         Description = "Hyprland Session Target";
-        Requires = "graphical-session.target";
-        After = "graphical-session.target";
+        Requires = "pre-hyprland-session.target";
+        After = "pre-hyprland-session.target";
         Wants = [ "dms.service" ];
+      };
+    };
+
+    paths."hyprland-wayland-socket" = {
+      Unit = {
+        Description = "Watch for Wayland socket during Hyprland startup";
+        Requires = [ "pre-hyprland-session.target" ];
+        After = [ "pre-hyprland-session.target" ];
+      };
+      Path = {
+        PathExistsGlob = "%t/wayland-*";
+        Unit = "hyprland-ready.service";
+      };
+      Install = {
+        WantedBy = [ "pre-hyprland-session.target" ];
+      };
+    };
+
+    services."hyprland-ready" = {
+      Unit = {
+        Description = "Mark Hyprland session ready once Wayland socket exists";
+      };
+      Service = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = "systemctl --user start hyprland-session.target";
       };
     };
   };
