@@ -58,6 +58,7 @@ with pkgs; [
   ispell
   jq
   killall
+  lazydocker
   ledger
   less
   man-pages

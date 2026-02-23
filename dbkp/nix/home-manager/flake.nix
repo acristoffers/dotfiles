@@ -76,7 +76,7 @@
             inherit pkgs;
             modules = [
               inputs.dms.homeModules.dank-material-shell
-              ./home.nix
+              ./common.nix
             ] ++ extra-modules;
             extraSpecialArgs = {
               inherit inputs;
@@ -88,8 +88,8 @@
         formatter = pkgs.nixpkgs-fmt;
         packages = {
           homeConfigurations = {
-            "alan" = homeConfigForUser "alan" [ ];
-            "alan@eSousa-LPTP" = homeConfigForUser "alan" [ ./workstation.nix ];
+            "alan" = homeConfigForUser "alan" [ ./home.nix ];
+            "alan@LPTP-eSousa" = homeConfigForUser "alan" [ ./workstation.nix ];
           };
         };
       }

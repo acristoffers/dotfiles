@@ -1,10 +1,10 @@
-{ inputs, config, pkgs }:
+{ inputs, config, pkgs, systemd }:
 
 {
   enable = true;
 
   systemd = {
-    enable = true; # Systemd service for auto-start
+    enable = systemd; # Systemd service for auto-start
     restartIfChanged = true; # Auto-restart dms.service when dank-material-shell changes
   };
 
@@ -296,7 +296,7 @@
     soundVolumeChanged = true;
     soundPluggedIn = true;
     acMonitorTimeout = 0;
-    acLockTimeout = 0;
+    acLockTimeout = 300;
     acSuspendTimeout = 0;
     acSuspendBehavior = 0;
     acProfileName = "";
@@ -379,7 +379,7 @@
     lockScreenShowTime = true;
     lockScreenShowDate = true;
     lockScreenShowProfileImage = true;
-    lockScreenShowPasswordField = true;
+    lockScreenShowPasswordField = false;
     lockScreenShowMediaPlayer = true;
     lockScreenPowerOffMonitorsOnLock = false;
     lockAtStartup = false;
@@ -414,7 +414,7 @@
     osdCapsLockEnabled = true;
     osdPowerProfileEnabled = true;
     osdAudioOutputEnabled = true;
-    powerActionConfirm = true;
+    powerActionConfirm = false;
     powerActionHoldDuration = 0.5;
     powerMenuActions = [
       "reboot"
@@ -600,7 +600,7 @@
   session = {
     isLightMode = false;
     doNotDisturb = false;
-    wallpaperPath = "/home/alan/Pictures/Wallpapers/software-you-can-love-2022.png";
+    wallpaperPath = "/home/alan/.config/background";
     perMonitorWallpaper = false;
     monitorWallpapers = { };
     perModeWallpaper = false;

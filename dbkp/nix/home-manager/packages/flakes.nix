@@ -11,8 +11,6 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage bib-converter "default")
   (flakePackage cgen "default")
   (flakePackage dbkp "default")
-  (flakePackage ghostty "default")
-  (flakePackage hyprland-guiutils "default")
   (flakePackage nixgl "nixGLIntel")
   (flakePackage nvim "default")
   (flakePackage remove-trash "default")

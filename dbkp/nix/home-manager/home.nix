@@ -1,198 +1,28 @@
-{ config, inputs, pkgs, username, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
-  homeDirectory = "/home/${username}";
+  flakePackage = flake: pkgName:
+    if flake.packages ? ${pkgs.stdenv.hostPlatform.system} then
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.${pkgName}
+    else
+      null;
 in
 {
-  nix.package = pkgs.nixVersions.latest;
-
-  nix.settings = {
-    extra-substituters = [ "https://ghostty.cachix.org" ];
-    extra-trusted-public-keys = [ "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns=" ];
-  };
-  nix.extraOptions = ''
-    auto-optimise-store = true
-    experimental-features = nix-command flakes
+  xdg.configFile."hypr/conf/host.conf".text = ''
+    bind = $mod, D, exec, run-or-raise --launch com.discordapp.Discord.desktop --class discord
+    bind = $mod, N, exec, run-or-raise --launch org.signal.Signal.desktop --class org.signal.Signal
+    bind = $mod, R, exec, run-or-raise --launch org.gnome.Fractal.desktop --class org.gnome.Fractal
+    bind = $mod, T, exec, run-or-raise --launch org.telegram.desktop.desktop --class org.telegram.desktop
+    bind = $mod, U, exec, run-or-raise --launch org.keepassxc.KeePassXC.desktop --class org.keepassxc.KeePassXC
   '';
-
-  programs.home-manager.enable = true;
-  news.display = "silent";
-  news.json = pkgs.lib.mkForce { };
-  news.entries = pkgs.lib.mkForce [ ];
-
-  home.stateVersion = "22.11";
-  home.username = username;
-  home.homeDirectory = homeDirectory;
-  home.packages = import ./packages/common.nix {
-    inherit inputs;
-    inherit pkgs;
-  };
-  fonts.fontconfig.enable = true;
-
-  home.file = {
-    "${config.xdg.configHome}/btop/themes/catppuccin.theme".source = ./dotfiles/btop/themes/catppuccin.theme;
-    "${config.xdg.configHome}/doom".source = ./dotfiles/doom;
-    "${config.xdg.configHome}/gemrc".source = ./dotfiles/gemrc;
-    "${config.xdg.configHome}/ghostty".source = ./dotfiles/ghostty;
-    "${config.xdg.configHome}/git/config".source = ./dotfiles/git/home/config;
-    "${config.xdg.configHome}/git/gitconfig.workstation".source = ./dotfiles/git/home/extra-config;
-    "${config.xdg.configHome}/git/ignore".source = ./dotfiles/git/home/ignore;
-    "${config.xdg.configHome}/latexindent".source = ./dotfiles/latexindent;
-    "${config.xdg.configHome}/npm".source = ./dotfiles/npm;
-    "${config.xdg.configHome}/tmux".source = ./dotfiles/tmux;
-    "${config.xdg.configHome}/tridactyl".source = ./dotfiles/tridactyl;
-    "${homeDirectory}/.XCompose".source = ./dotfiles/XCompose;
-    "${config.xdg.configHome}/hypr" = { source = ./dotfiles/hyprland; recursive = true; };
-    "${config.xdg.configHome}/xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
-    "${config.xdg.configHome}/hypr/conf/host.conf" = {
-      text = ''
-        bind = $mod, D, exec, run-or-raise --launch com.discordapp.Discord.desktop --class discord
-        bind = $mod, N, exec, run-or-raise --launch org.signal.Signal.desktop --class org.signal.Signal
-        bind = $mod, R, exec, run-or-raise --launch org.gnome.Fractal.desktop --class org.gnome.Fractal
-        bind = $mod, T, exec, run-or-raise --launch org.telegram.desktop.desktop --class org.telegram.desktop
-        bind = $mod, U, exec, run-or-raise --launch org.keepassxc.KeePassXC.desktop --class org.keepassxc.KeePassXC
-      '';
-    };
-  };
 
   programs = {
     bash = import ./programs/bash.nix { inherit config; inherit pkgs; };
-    bat = import ./programs/bat.nix { inherit config; inherit pkgs; };
-    btop = import ./programs/btop.nix { inherit config; inherit pkgs; };
-    dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; };
-    dircolors = import ./programs/dircolors.nix { inherit config; inherit pkgs; };
-    eza = import ./programs/exa.nix { inherit config; inherit pkgs; };
-    fzf = import ./programs/fzf.nix { inherit config; inherit pkgs; };
-    kitty = import ./programs/kitty.nix { inherit config; inherit pkgs; };
-    lazygit = import ./programs/lazygit.nix { inherit config; inherit pkgs; };
-    nushell = import ./programs/nushell.nix { inherit config; inherit pkgs; };
-    tealdeer = import ./programs/tealdeer.nix { inherit config; inherit pkgs; };
-    wezterm = import ./programs/wezterm.nix { inherit config; inherit pkgs; };
-    zoxide = import ./programs/zoxide.nix { inherit config; inherit pkgs; };
-    zsh = import ./programs/zsh.nix { inherit config; inherit pkgs; };
+    dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; systemd = true; };
   };
 
-  xdg.desktopEntries."com.mitchellh.ghostty" = {
-    name = "Ghostty";
-    type = "Application";
-    comment = "A terminal emulator";
-    exec = "nixGLIntel ghostty";
-    icon = "com.mitchellh.ghostty";
-    terminal = false;
-    startupNotify = true;
-    categories = [ "System" "TerminalEmulator" ];
-    settings = {
-      Keywords = "terminal;tty;pty;";
-      X-GNOME-UsesNotifications = "true";
-      X-TerminalArgExec = "-e";
-      X-TerminalArgTitle = "--title=";
-      X-TerminalArgAppId = "--class=";
-      X-TerminalArgDir = "--working-directory=";
-      X-TerminalArgHold = "--wait-after-command";
-    };
-    actions = {
-      new-window = {
-        name = "New Window";
-        exec = "nixGLIntel ghostty";
-      };
-    };
-  };
-
-  qt.enable = true;
-  qt.platformTheme.name = "qtct";
-
-  gtk = {
-    enable = true;
-    theme.name = "Adwaita";
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-      gtk-key-theme-name = "Emacs";
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = true;
-      gtk-key-theme-name = "Emacs";
-    };
-  };
-
-  systemd.user = {
-    services."dropbox-client" = {
-      Unit = {
-        Description = "Dropbox client";
-        After = [ "local-fs.target" "network.target" "graphical-session.target" ];
-        Requires = [ "graphical-session.target" ];
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = "/run/current-system/sw/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/dropbox com.dropbox.Client start";
-      };
-    };
-
-    timers."dropbox-client" = {
-      Unit = {
-        Description = "Run dropbox-client every 10 minutes (graphical session only)";
-      };
-      Timer = {
-        OnStartupSec = "30sec";
-        OnCalendar = "*:00/10";
-        Unit = "dropbox-client.service";
-        Persistent = true;
-      };
-      Install = {
-        WantedBy = [ "timers.target" ];
-      };
-    };
-
-    ################################################################################
-    ##                                                                            ##
-    ##                    Hyprland Systemd Activation Machinery                   ##
-    ##                                                                            ##
-    ################################################################################
-
-    # hyprland config starts pre-hyprland-session.target
-    # pre-hyprland-session.target triggers hyprland-wayland-socket.path
-    # hyprland-wayland-socket.path triggers hyprland-ready.service when the socket appears
-    # hyprland-ready.service starts hyprland-session.target
-    # hyprland-session.target triggers dms.service
-
-    targets."pre-hyprland-session" = {
-      Unit = {
-        Description = "Hyprland session starting (pre-ready)";
-      };
-    };
-
-    targets."hyprland-session" = {
-      Unit = {
-        Description = "Hyprland Session Target";
-        Requires = "pre-hyprland-session.target";
-        After = "pre-hyprland-session.target";
-        Wants = [ "dms.service" ];
-      };
-    };
-
-    paths."hyprland-wayland-socket" = {
-      Unit = {
-        Description = "Watch for Wayland socket during Hyprland startup";
-        Requires = [ "pre-hyprland-session.target" ];
-        After = [ "pre-hyprland-session.target" ];
-      };
-      Path = {
-        PathExistsGlob = "%t/wayland-*";
-        Unit = "hyprland-ready.service";
-      };
-      Install = {
-        WantedBy = [ "pre-hyprland-session.target" ];
-      };
-    };
-
-    services."hyprland-ready" = {
-      Unit = {
-        Description = "Mark Hyprland session ready once Wayland socket exists";
-      };
-      Service = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = "systemctl --user start hyprland-session.target";
-      };
-    };
-  };
+  home.packages = with inputs; [
+    (flakePackage ghostty "default")
+    (flakePackage hyprland-guiutils "default")
+  ];
 }

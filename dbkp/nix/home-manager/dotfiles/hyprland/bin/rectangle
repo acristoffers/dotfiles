@@ -279,6 +279,8 @@ def main() -> None:
     if monitor is None:
         die("rectangle: failed to resolve monitor")
 
+    scale = float(monitor.get("scale")) or 0
+
     # Hyprland reserved order: [left, top, right, bottom]
     reserved = monitor.get("reserved") or [0, 0, 0, 0]
     if len(reserved) != 4:
@@ -294,8 +296,8 @@ def main() -> None:
 
     screen_x = int(monitor.get("x", 0)) + reserved[0] + margin_left
     screen_y = int(monitor.get("y", 0)) + reserved[1] + margin_top
-    screen_w = int(monitor.get("width", 0)) - reserved[0] - reserved[2] - margin_left - margin_right
-    screen_h = int(monitor.get("height", 0)) - reserved[1] - reserved[3] - margin_top - margin_bottom
+    screen_w = int(int(monitor.get("width", 0))/scale) - reserved[0] - reserved[2] - margin_left - margin_right
+    screen_h = int(int(monitor.get("height", 0))/scale) - reserved[1] - reserved[3] - margin_top - margin_bottom
     screen = (screen_x, screen_y, screen_w, screen_h)
 
     state = load_state()
