@@ -8,7 +8,7 @@ EncryptionSalt = ["", ""]
 [[Files]]
   Name = "global-python"
   Path = "~/.config/global-python"
-  Exclude = ["result"]
+  Exclude = ["result", ".venv"]
 
 [[Files]]
   Name = "fish"
