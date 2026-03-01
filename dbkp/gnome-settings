@@ -42,7 +42,7 @@ window-width=880
 
 [desktop/ibus/general]
 preload-engines=@as []
-version='1.5.27'
+version='1.5.33'
 
 [desktop/ibus/panel/emoji]
 favorites=['º', '🤦\u200d♂️', '😃', '🤦🏼\u200d♀️', '🦄', '🦇', '🫚', '🍸', 'ៈ']
@@ -887,7 +887,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(47.850961412696279, 2.2670599999999999)
+night-light-last-coordinates=(47.859534458622221, 2.2670599999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1108,7 +1108,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=false
+aaa-loading-profile=true
 always-activate-selected-window=false
 animation-speed-factor=100
 app-display-module=true

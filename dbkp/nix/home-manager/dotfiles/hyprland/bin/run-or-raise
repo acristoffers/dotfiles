@@ -53,7 +53,9 @@ if [[ -n "$regex" ]]; then
 fi
 
 if [[ "$launch" == *.desktop ]]; then
-  if command -v dex >/dev/null 2>&1; then
+  if command -v uwsm >/dev/null 2>&1; then
+    uwsm app -- "$launch"
+  elif command -v dex >/dev/null 2>&1; then
     desktop_path=""
     if [[ "$launch" == /* ]] && [[ -f "$launch" ]]; then
       desktop_path="$launch"
