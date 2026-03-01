@@ -125,11 +125,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1772353764,
+        "lastModified": 1772363340,
         "narHash": "sha256-YFe7zPbdfx7+QIU/32ZtT0WKOolt+IKc0RgpavEui08=",
         "owner": "acristoffers",
         "repo": "dbkp",
-        "rev": "c1e9040d5435481a5c4de4a01431dcb64288285c",
+        "rev": "fab19313170cf482a562b3b61785c1fc975531ee",
         "type": "github"
       },
       "original": {
@@ -374,11 +374,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1772342074,
-        "narHash": "sha256-EMHTNX4EX7PzRLIvSd3C53SuLNmAb/edaeBzEVPA1Ns=",
+        "lastModified": 1772356562,
+        "narHash": "sha256-rxuKFXYveYNsi8Ow95XEahg/pmMbDU3EJN/c+WNU6fw=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "25f12080cb567a1a78980effbfe8692dbdcbba44",
+        "rev": "33c855e0478809c1c944f55cc2b86172e445b891",
         "type": "github"
       },
       "original": {
@@ -955,11 +955,11 @@
     "nu-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1772285521,
-        "narHash": "sha256-4SowPytzUdH8fAwnwI5KoT++VyvyGqOahDc3Tdw4m6E=",
+        "lastModified": 1772359275,
+        "narHash": "sha256-SCixlF+oNb3HuzWsnRNwJygvxlGM2pE6LdhWePvAauw=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "a524b016d1314b5083ff8e7fe365cfd0884bdda9",
+        "rev": "25d3c5b200202243f03e6e25bda707f073ba22ab",
         "type": "github"
       },
       "original": {
