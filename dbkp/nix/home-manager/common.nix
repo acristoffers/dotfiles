@@ -86,4 +86,18 @@ rec {
     gtk.enable = true;
     hyprcursor.enable = true;
   };
+
+  systemd.user.services.uwsm-gnome-keyring = {
+    Unit = {
+      Description = "Import GNOME Keyring env into UWSM";
+      After = [ "graphical-session-pre.target" ];
+    };
+
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${home.homeDirectory}/.config/hypr/bin/export-environment";
+    };
+
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 }

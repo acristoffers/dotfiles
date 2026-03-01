@@ -19,6 +19,7 @@ rec {
     EDITOR = "nvim";
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
+    XDG_RUNTIME_DIR = "/run/user/$UID";
   };
 
   fonts.enableDefaultPackages = true;
@@ -215,7 +216,7 @@ rec {
   };
 
   environment.systemPackages = with pkgs; [
-    (pkgs.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
+    (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
     evolution-data-server-gtk4
     gnome-network-displays
     gnome-tweaks
