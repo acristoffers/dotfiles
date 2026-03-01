@@ -20,6 +20,10 @@ rec {
     VISUAL = "nvim";
     GNUPGHOME = "$XDG_DATA_HOME/gnupg";
     XDG_RUNTIME_DIR = "/run/user/$UID";
+    SSH_AUTH_SOCK = "$XDG_RUNTIME_DIR/gcr/ssh";
+    SSH_ASKPASS = lib.mkForce "${pkgs.gcr_4}/libexec/gcr4-ssh-askpass";
+    GNOME_KEYRING_CONTROL = "$XDG_RUNTIME_DIR/keyring";
+    SIGNAL_PASSWORD_STORE = "gnome-libsecret";
   };
 
   fonts.enableDefaultPackages = true;
@@ -131,7 +135,12 @@ rec {
   services.gnome.gnome-keyring.enable = true;
   services.dbus.enable = true;
   services.dbus.packages = [ pkgs.seahorse ];
-  security.pam.services.greetd = { enableGnomeKeyring = true; };
+  security.pam.services = {
+    gdm.enableGnomeKeyring = true;
+    gdm-password.enableGnomeKeyring = true;
+    login.enableGnomeKeyring = true;
+    hyprlock.enableGnomeKeyring = true;
+  };
 
   console.keyMap = "us-acentos";
 
@@ -234,10 +243,10 @@ rec {
     wget
     xorg.xhost
 
-    hyprlock
-    hyprpaper
-    waybar
-    wofi
+    gcr_4
+    libsecret
+    pinentry-all
+    seahorse
   ];
 
   programs.hyprland = {
