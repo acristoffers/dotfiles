@@ -11,17 +11,20 @@
 
     cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     cosmic.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland/v0.53.3";
   };
 
-  outputs = { nixpkgs, flake-utils, jovian, cosmic, ... }:
+  outputs = { nixpkgs, flake-utils, jovian, cosmic, hyprland, ... }:
     let
       nixosSystem = system: modules: nixpkgs.lib.nixosSystem {
         inherit system;
         modules = modules ++ [
           {
             nix.settings = {
-              substituters = [ "https://cosmic.cachix.org/" ];
-              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+              substituters = [ "https://cosmic.cachix.org/" "https://hyprland.cachix.org" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+              trusted-substituters = [ "https://cosmic.cachix.org/" "https://hyprland.cachix.org" ];
             };
           }
           cosmic.nixosModules.default
@@ -34,7 +37,7 @@
               vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
             };
           };
-          overlays = (import ./nixpkgs-overlays.nix);
+          overlays = (import ./nixpkgs-overlays.nix) ++ [ hyprland.overlays.default ];
         };
       };
 

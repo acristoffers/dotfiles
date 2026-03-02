@@ -340,19 +340,20 @@ rec {
       "flakes"
     ];
     extra-trusted-public-keys = [
+      "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE="
+      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "jovian-nixos.cachix.org-1:mAWLjAxLNlfxAnozUjOqGj4AxQwCl7MXwOfu7msVlAo="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
     extra-trusted-substituters = [
       "https://cache.nixos.org"
+      "https://cosmic.cachix.org/"
+      "https://hyprland.cachix.org"
       "https://jovian-nixos.cachix.or"
       "https://nix-community.cachix.org"
     ];
     allowed-users = [ "alan" ];
-    trusted-users = [
-      "root"
-      "alan"
-    ];
+    trusted-users = [ "alan" ];
   };
   nix.extraOptions = ''
     download-buffer-size = 209715200 # 200 MB
