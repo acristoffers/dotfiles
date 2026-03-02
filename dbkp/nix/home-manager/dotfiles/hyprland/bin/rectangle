@@ -169,7 +169,7 @@ def ensure_floating(active: dict) -> None:
 def apply_geometry(x: int, y: int, w: int, h: int) -> None:
     if w < 1 or h < 1:
         return
-    batch = f"dispatch movewindowpixel exact {x} {y},activewindow; dispatch resizewindowpixel exact {w} {h},activewindow"
+    batch = f"dispatch resizeactive exact {w} {h}; dispatch moveactive exact {x} {y}"
     try:
         subprocess.run(["hyprctl", "--batch", batch], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
