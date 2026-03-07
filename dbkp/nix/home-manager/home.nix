@@ -23,6 +23,5 @@ in
 
   home.packages = with inputs; [
     (flakePackage ghostty "default")
-    (flakePackage hyprland-guiutils "default")
   ];
 }
