@@ -1361,13 +1361,13 @@ show-type-column=true
 sidebar-width=161
 sort-column='name'
 sort-directories-first=false
-sort-order='descending'
+sort-order='ascending'
 type-format='category'
 window-position=(0, 0)
 window-size=(843, 410)
 
 [org/virt-manager/virt-manager]
-manager-window-height=423
+manager-window-height=457
 manager-window-width=843
 xmleditor-enabled=true
 
@@ -1537,7 +1537,7 @@ vm-window-size=(1268, 1358)
 
 [org/virt-manager/virt-manager/vms/c6326ba23aae40e8a0fe046fab3fc854]
 autoconnect=1
-vm-window-size=(1693, 1358)
+vm-window-size=(1693, 1388)
 
 [org/virt-manager/virt-manager/vms/c7c582869c7949ce852a71e96433849c]
 autoconnect=1

@@ -2,6 +2,7 @@ pkgs:
 
 with pkgs; [
   (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
+  ansible
   any-nix-shell
   appstream
   aria2
