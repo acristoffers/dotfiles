@@ -157,7 +157,7 @@ end
 
 bind \es fish_prepend_sudo
 bind \cl fish_prepend_clear
-bind \eg "lazygit; repaint-all"
+bind \eg "commandline -r lazygit; commandline -f execute; repaint-all; commandline -f repaint"
 bind \el "printf '\n';ls;commandline -f repaint"
 bind \cb backward-bigword
 bind \cf forward-bigword

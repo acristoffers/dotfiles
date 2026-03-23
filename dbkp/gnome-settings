@@ -125,7 +125,7 @@ is-maximized=false
 
 [org/gnome/Snapshot]
 capture-mode='video'
-is-maximized=false
+is-maximized=true
 last-camera-id='Anker PowerConf C200 (V4L2)'
 show-composition-guidelines=true
 window-height=1395
