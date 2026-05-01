@@ -50,6 +50,7 @@ hotkey=['<Super>period']
 
 [me/acristoffers/void]
 dark-theme=true
+icon-size=48
 use-system=true
 
 [org/blueman/general]
@@ -115,6 +116,9 @@ run-in-background=true
 window-height=1032
 window-maximize=true
 window-width=1904
+
+[org/gnome/Loupe]
+show-properties=true
 
 [org/gnome/Music]
 window-maximized=false
@@ -267,8 +271,8 @@ clock-show-weekday=true
 color-scheme='prefer-dark'
 cursor-blink=true
 cursor-blink-time=1000
-cursor-size=16
-cursor-theme='Vimix-cursors'
+cursor-size=24
+cursor-theme='default'
 enable-animations=true
 enable-hot-corners=true
 font-antialiasing='rgba'
@@ -514,7 +518,7 @@ ask-for-default=false
 
 [org/gnome/epiphany/state]
 is-maximized=true
-window-size=(2560, 1411)
+window-size=(1904, 1032)
 
 [org/gnome/evince]
 document-directory=@ms 'file:///home/alan/Downloads'
@@ -654,7 +658,7 @@ enable-smartcard-authentication=false
 last-viewed-location=[47.857000000000021, 2.2670599999999865]
 map-type='MapsVectorSource'
 transportation-type='pedestrian'
-window-maximized=false
+window-maximized=true
 window-size=[1904, 1035]
 zoom-level=18
 
@@ -1298,9 +1302,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1771523106
+check-timestamp=int64 1775309841
 first-run=false
-flatpak-purge-timestamp=int64 1771442176
+flatpak-purge-timestamp=int64 1775316981
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
@@ -1398,7 +1402,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/Fedora-Silverblue-ostree-x86_64-43-1.6.iso', '/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso', '/home/alan/Downloads/latest-nixos-gnome-x86_64-linux.iso']
+isos=['/home/alan/Downloads/archlinux-2026.05.01-x86_64.iso', '/home/alan/Downloads/Fedora-Silverblue-ostree-x86_64-43-1.6.iso', '/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -1412,7 +1416,7 @@ vm-window-size=(2560, 1374)
 [org/virt-manager/virt-manager/vms/062a069537684a35bda395c758017276]
 autoconnect=1
 resize-guest=1
-vm-window-size=(1693, 1358)
+vm-window-size=(2544, 1388)
 
 [org/virt-manager/virt-manager/vms/0ce99b3c09f84036b9a0536761aaa868]
 autoconnect=1
@@ -1566,6 +1570,10 @@ vm-window-size=(2544, 1355)
 autoconnect=1
 scaling=1
 vm-window-size=(2544, 1355)
+
+[org/virt-manager/virt-manager/vms/f9360f60a7374b07b836f6b0d9777ccb]
+autoconnect=1
+resize-guest=1
 
 [org/virt-manager/virt-manager/vms/fe9f3e2d7dbc48d4acfedf8becdf072f]
 autoconnect=1

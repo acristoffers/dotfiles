@@ -16,6 +16,7 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage nvim "default")
   (flakePackage remove-trash "default")
   (flakePackage tmux-tui "default")
-  (flakePackage void "default")
+  (flakePackage void "void-cli")
+  (flakePackage void "void-gui")
   (flakePackage wbproto-formatter "default")
 ])

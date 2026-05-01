@@ -9,11 +9,15 @@ com.github.johnfactotum.Foliate
 com.github.marhkb.Pods
 com.github.tchx84.Flatseal
 com.mattjakeman.ExtensionManager
+com.obsproject.Studio
 com.spotify.Client
 com.transmissionbt.Transmission
 com.valvesoftware.Steam
 hu.irl.cameractrls
+me.acristoffers.Lachesis
+me.acristoffers.void
 net.code_industry.MasterPDFEditor
+org.electronjs.Electron2.BaseApp
 org.fedoraproject.MediaWriter
 org.gimp.GIMP
 org.gnome.Fractal
