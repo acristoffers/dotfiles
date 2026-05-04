@@ -18,7 +18,6 @@
     remove-trash.inputs.flake-utils.follows = "flake-utils";
 
     void.url = "github:acristoffers/void-rs";
-    void.inputs.nixpkgs.follows = "nixpkgs";
     void.inputs.flake-utils.follows = "flake-utils";
 
     cgen.url = "github:acristoffers/cgen";

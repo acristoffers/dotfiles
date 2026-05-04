@@ -8,6 +8,8 @@ with pkgs; [
   aria2
   blesh
   cacert
+  claude-code
+  claude-code-acp
   cowsay
   curl
   delta
