@@ -42,6 +42,7 @@ with pkgs; [
   git-lfs
   git-spice
   glab
+  gnome-extension-manager
   gnome-extensions-cli
   gnome-sound-recorder
   gnugrep

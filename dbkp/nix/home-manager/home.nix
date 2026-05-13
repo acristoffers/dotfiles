@@ -24,4 +24,13 @@ in
   home.packages = with inputs; [
     (flakePackage ghostty "default")
   ];
+
+  home.pointerCursor = {
+    package = pkgs.vimix-cursors;
+    name = "Vimix-cursors";
+    size = 16;
+    x11.enable = true;
+    gtk.enable = true;
+    hyprcursor.enable = true;
+  };
 }

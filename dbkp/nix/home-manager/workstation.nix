@@ -4,22 +4,22 @@ let
   home = "/home/${username}";
   # Mock the activation so I can take only the configuration from DankMaterialShell.
   # This avoids installing applications that would screw the Fedora environment.
-  mock = inputs.home-manager.lib.homeManagerConfiguration {
-    inherit pkgs;
-    modules = [
-      inputs.dms.homeModules.dank-material-shell
-      (
-        { ... }: {
-          home.username = config.home.username;
-          home.homeDirectory = config.home.homeDirectory;
-          home.stateVersion = config.home.stateVersion;
-          programs = {
-            dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; systemd = false; };
-          };
-        }
-      )
-    ];
-  };
+  # mock = inputs.home-manager.lib.homeManagerConfiguration {
+  #   inherit pkgs;
+  #   modules = [
+  #     inputs.dms.homeModules.dank-material-shell
+  #     (
+  #       { ... }: {
+  #         home.username = config.home.username;
+  #         home.homeDirectory = config.home.homeDirectory;
+  #         home.stateVersion = config.home.stateVersion;
+  #         programs = {
+  #           dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; systemd = false; };
+  #         };
+  #       }
+  #     )
+  #   ];
+  # };
 in
 {
   home.file = {
@@ -57,7 +57,7 @@ in
 
   # Remove target= because nix will append ".config/" to it automatically if it exists, turning
   # ~/.config/path into ~/.config/.config/path
-  xdg.stateFile = pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.stateFile;
+  # xdg.stateFile = pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.stateFile;
 
   xdg.configFile = {
     "git/allowed_ssh_signers".source = pkgs.lib.mkForce ./dotfiles/git/workstation/allowed_ssh_signers;
@@ -75,7 +75,7 @@ in
       workspace = 4, persistent:true, monitor:DP-3
       workspace = 5, persistent:true, monitor:eDP-1
     '';
-  } // pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.configFile;
+  }; # // pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.configFile;
 
   programs = {
     lazygit = pkgs.lib.mkForce (import ./programs/workstation/lazygit.nix { inherit config; inherit pkgs; });

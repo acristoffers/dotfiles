@@ -63,20 +63,29 @@
 
     dms-grimblast.url = "github:TaylanTatli/dms-plugins";
     dms-grimblast.flake = false;
+
+    zen-browser.url = "github:youwen5/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs:
+  outputs =
+    inputs:
     inputs.flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import inputs.nixpkgs { inherit system; config.allowUnfree = true; };
-        homeConfigForUser = username: extra-modules:
+        pkgs = import inputs.nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        homeConfigForUser =
+          username: extra-modules:
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
               inputs.dms.homeModules.dank-material-shell
               ./common.nix
-            ] ++ extra-modules;
+            ]
+            ++ extra-modules;
             extraSpecialArgs = {
               inherit inputs;
               inherit username;

@@ -19,4 +19,5 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage void "void-cli")
   (flakePackage void "void-gui")
   (flakePackage wbproto-formatter "default")
+  (flakePackage zen-browser "default")
 ])
