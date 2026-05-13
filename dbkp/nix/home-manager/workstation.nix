@@ -63,7 +63,7 @@ in
     "git/allowed_ssh_signers".source = pkgs.lib.mkForce ./dotfiles/git/workstation/allowed_ssh_signers;
     "git/attributes".source = pkgs.lib.mkForce ./dotfiles/git/workstation/attributes;
     "git/gitconfig.workstation".source = pkgs.lib.mkForce ./dotfiles/git/workstation/config;
-    "tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl;
+    "tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl-workstation;
     "hypr/conf/host.conf".text = ''
       bind = $mod, S, exec, run-or-raise --launch com.slack.Slack.desktop --class com.slack.Slack
       bind = $mod, R, exec, run-or-raise --launch foxglove-studio.wayland.desktop --class Foxglove
