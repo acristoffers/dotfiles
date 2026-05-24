@@ -76,7 +76,7 @@ EncryptionSalt = ["", ""]
   Backup = "dconf dump /"
   Restore = "dconf load -f /"
 
-[[Commands]]
-  Name = "flatpak"
-  Backup = "flatpak list --columns=ref --app | tail -n +1 | rg '/.*' -r ''"
-  Restore = "xargs flatpak install -y --noninteractive --or-update"
+# [[Commands]]
+#   Name = "flatpak"
+#   Backup = "flatpak list --columns=ref --app | tail -n +1 | rg '/.*' -r ''"
+#   Restore = "xargs flatpak install -y --noninteractive --or-update"
