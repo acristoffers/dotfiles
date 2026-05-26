@@ -24,6 +24,7 @@ with pkgs; [
   emacs-all-the-icons-fonts
   emacs.pkgs.cask
   epstool
+  espanso-wayland
   expect
   fastfetch
   fd
