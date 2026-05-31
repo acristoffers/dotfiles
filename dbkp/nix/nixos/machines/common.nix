@@ -94,6 +94,7 @@ rec {
       enable = mkForce true;
       allowedTCPPorts = [
         22 # SSH
+        445 139 # Samba
         # 53 # DNS server
         # 17500 # Dropbox
         # 7250 # Miracast
@@ -103,6 +104,7 @@ rec {
       ];
       allowedUDPPorts = [
         5353 # mDNS
+        137 138 # Samba
         # 53 # DNS server
         # 67 # DHCP server
         # 17500 # Dropbox
@@ -159,8 +161,41 @@ rec {
     localsearch.enable = true;
   };
 
-  services.samba.enable = true;
-  services.samba.openFirewall = true;
+  services.samba = {
+    enable = true;
+    package = pkgs.samba4Full;
+    openFirewall = true;
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "NixOS";
+        "security" = "user";
+        "server smb encrypt" = "required";
+      };
+
+      "public_share" = {
+        "path" = "/srv/samba/public";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "yes"; # Allow anonymous access
+        "create mask" = "0644";
+        "directory mask" = "0755";
+      };
+
+      "private_share" = {
+        "path" = "/srv/samba/private";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "valid users" = "alan"; # Restrict access
+        "force user" = "alan";
+      };
+    };
+  };
+  services.samba-wsdd = {
+    enable = true;
+    openFirewall = true;
+  };
 
   services.power-profiles-daemon.enable = true;
 
@@ -218,6 +253,7 @@ rec {
       "libvirtd"
       "networkmanager"
       "render"
+      "samba"
       "video"
       "wheel"
     ];
@@ -263,7 +299,11 @@ rec {
     ];
     config = {
       common = {
-        default = [ "hyprland" "gtk" "gnome" ];
+        default = [
+          "hyprland"
+          "gtk"
+          "gnome"
+        ];
       };
     };
   };

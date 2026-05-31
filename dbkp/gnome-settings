@@ -1574,6 +1574,7 @@ vm-window-size=(2544, 1355)
 [org/virt-manager/virt-manager/vms/f9360f60a7374b07b836f6b0d9777ccb]
 autoconnect=1
 resize-guest=1
+vm-window-size=(2544, 1388)
 
 [org/virt-manager/virt-manager/vms/fe9f3e2d7dbc48d4acfedf8becdf072f]
 autoconnect=1
