@@ -4,7 +4,7 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     # nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
@@ -12,10 +12,10 @@
     cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     cosmic.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland/v0.53.3";
+    # hyprland.url = "github:hyprwm/Hyprland/v0.53.3";
   };
 
-  outputs = { nixpkgs, flake-utils, jovian, cosmic, hyprland, ... }:
+  outputs = { nixpkgs, flake-utils, jovian, cosmic, ... }:
     let
       nixosSystem = system: modules: nixpkgs.lib.nixosSystem {
         inherit system;
@@ -37,7 +37,7 @@
               vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
             };
           };
-          overlays = (import ./nixpkgs-overlays.nix) ++ [ hyprland.overlays.default ];
+          # overlays = (import ./nixpkgs-overlays.nix) ++ [ hyprland.overlays.default ];
         };
       };
 

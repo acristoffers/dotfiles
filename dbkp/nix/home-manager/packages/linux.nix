@@ -11,7 +11,7 @@ with pkgs; [
   lsb-release
   openjdk21
   sirikali
-  texlive.combined.scheme-full
+  # texlive.combined.scheme-full
   wl-clipboard
   wl-clipboard-x11
   xdg-ninja

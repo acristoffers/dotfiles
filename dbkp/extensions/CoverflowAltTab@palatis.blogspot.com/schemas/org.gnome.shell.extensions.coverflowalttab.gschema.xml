@@ -123,6 +123,11 @@
         <summary>Per monitor window switch</summary>
         <description>Switch between windows on current monitor (monitor with the mouse cursor)</description>
     </key>
+    <key type="b" name="skip-minimized-windows">
+        <default>false</default>
+        <summary>Skip minimized windows</summary>
+        <description>When enabled, minimized windows are excluded from the window switcher.</description>
+    </key>
     <key type="b" name="icon-has-shadow">
         <default>false</default>
         <summary>Icon has shadow switch</summary>
@@ -139,11 +144,40 @@
         <summary>The maximum ratio of the preview dimensions with the monitor dimensions</summary>
         <description>Define the ratio of the preview to monitor sizes.</description>
     </key>
-    <key type="d" name="preview-scaling-factor">
+    <key type="d" name="coverflow-preview-scaling-factor">
         <range min="0" max="1"/>
         <default>0.8</default>
         <summary>In Coverflow Switcher, scales the previews as they spread out to the sides in </summary>
         <description>Define the scale factor successively applied each step away from the current preview.</description>
+    </key>
+    <key type="d" name="timeline-preview-distance">
+        <range min="0" max="4096"/>
+        <default>96</default>
+        <summary>In Timeline switcher, spacing distance between previews in pixels</summary>
+        <description>Hypotenuse distance in pixels used to compute timeline preview spacing.</description>
+    </key>
+    <key type="d" name="timeline-preview-angle">
+        <range min="0" max="90"/>
+        <default>29.357753542791272</default>
+        <summary>In Timeline switcher, spacing angle between previews</summary>
+        <description>Angle in degrees used with timeline preview distance to compute horizontal and vertical spacing.</description>
+    </key>
+    <key type="d" name="timeline-preview-tilt-angle">
+        <range min="0" max="90"/>
+        <default>15</default>
+        <summary>In Timeline switcher, Y-axis tilt of previews</summary>
+        <description>Rotation angle in degrees applied to timeline previews around the Y axis.</description>
+    </key>
+    <key type="d" name="timeline-preview-scaling-factor">
+        <range min="0" max="1"/>
+        <default>0.8</default>
+        <summary>In Timeline switcher, scales previews by distance from the selected preview</summary>
+        <description>Scale factor successively applied to timeline previews each step away from the selected preview.</description>
+    </key>
+    <key type="b" name="timeline-preview-scale-with-distance">
+        <default>true</default>
+        <summary>In Timeline switcher, scale previews by distance</summary>
+        <description>Scale timeline previews by timeline preview scaling factor raised to the distance from the selected preview.</description>
     </key>
     <key type="d" name="coverflow-window-angle">
         <range min="0" max="360"/>
@@ -257,6 +291,16 @@
         <summary>Switch Windows Keyboard Shortcut</summary>
         <description>Switch Windows Keyboard Shortcut Keybinding</description>
     </key>
+    <key name="coverflow-switch-windows-on-all-workspaces" type="as">
+        <default><![CDATA[[""]]]></default>
+        <summary>Switch Windows that are visible on All Workspaces Keyboard Shortcut</summary>
+        <description>Window switcher shortcut that lists windows that are visible on every workspace</description>
+    </key>
+    <key name="coverflow-switch-windows-on-all-workspaces-backward" type="as">
+        <default><![CDATA[[""]]]></default>
+        <summary>Switch Windows that are visible on All Workspaces Backward Keyboard Shortcut</summary>
+        <description>Backward window switcher shortcut for windows that are visible on every workspace</description>
+    </key>
     <key name="coverflow-switch-applications" type="as">
         <default><![CDATA[[""]]]></default>
         <summary>Switch Applications Keyboard Shortcut</summary>
@@ -266,6 +310,16 @@
         <default><![CDATA[[""]]]></default>
         <summary>Switch Applications Keyboard Shortcut</summary>
         <description>Switch Applications Keyboard Shortcut Keybinding</description>
+    </key>
+    <key name="coverflow-switch-applications-on-all-workspaces" type="as">
+        <default><![CDATA[[""]]]></default>
+        <summary>Switch Applications that are visible on All Workspaces Keyboard Shortcut</summary>
+        <description>Application switcher shortcut using applications that are visible on every workspace</description>
+    </key>
+    <key name="coverflow-switch-applications-on-all-workspaces-backward" type="as">
+        <default><![CDATA[[""]]]></default>
+        <summary>Switch Applications that are visible on All Workspaces Backward Keyboard Shortcut</summary>
+        <description>Backward application switcher shortcut for applications that are visible on every workspace</description>
     </key>
     <key name="prefs-default-width" type="d">
         <default>700</default>
@@ -287,6 +341,10 @@
         </choices>
         <default>"Fade Only"</default>
         <summary>Whether to fade, scale, or both fade and scale icons in and out</summary>
+    </key>
+    <key name="start-with-next" type="b">
+        <default>true</default>
+        <summary>Whether to start with the next window</summary>
     </key>
   </schema>
 </schemalist>

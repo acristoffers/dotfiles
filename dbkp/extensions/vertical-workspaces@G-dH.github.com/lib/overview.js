@@ -3,7 +3,7 @@
  * overview.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -11,6 +11,7 @@
 'use strict';
 
 import Clutter from 'gi://Clutter';
+import GLib from 'gi://GLib';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as Overview from 'resource:///org/gnome/shell/ui/overview.js';
@@ -18,6 +19,13 @@ import * as OverviewControls from 'resource:///org/gnome/shell/ui/overviewContro
 
 let Me;
 let opt;
+
+export const OverviewMode = {
+    DEFAULT: 0,
+    STATIC_WORKSPACE: 1,
+    STATIC_DESKTOP: 2,
+};
+
 
 export const OverviewModule = class {
     constructor(me) {
@@ -52,6 +60,14 @@ export const OverviewModule = class {
     }
 
     _activateModule() {
+        // Reset overview runtime variables when V-Shell is forced
+        // to update its modules while waiting for animateToOverview()
+        if (Me.run.timeouts.overviewIdle) {
+            Main.overview._showDone();
+            GLib.source_remove(Me.run.timeouts.overviewIdle);
+            Me.run.timeouts.overviewIdle = 0;
+        }
+
         if (!this._overrides)
             this._overrides = new Me.Util.Overrides();
 
@@ -78,7 +94,7 @@ const OverviewCommon = {
 
         if (this.isDummy)
             return;
-        if (this._shown)
+        if (this._shown && this._visible)
             return;
         this._shown = true;
 
@@ -94,10 +110,6 @@ const OverviewCommon = {
             return;
 
         if (!this._shown)
-            return;
-
-        const { finalState } = Main.overview._overview.controls._stateAdjustment.getStateTransitionParams();
-        if (finalState === OverviewControls.ControlsState.HIDDEN)
             return;
 
         if (!event)
@@ -118,6 +130,19 @@ const OverviewCommon = {
         this._syncGrab();
     },
 
+    setOverviewMode(overviewMode) {
+        opt.OVERVIEW_MODE = overviewMode;
+        opt.OVERVIEW_MODE2 = overviewMode === OverviewMode.STATIC_DESKTOP;
+        opt.WORKSPACE_MODE = overviewMode > OverviewMode.DEFAULT ? 0 : 1;
+    },
+
+    resetOverviewMode() {
+        // reset Overview Mode do default
+        opt.OVERVIEW_MODE = opt.get('overviewMode');
+        opt.OVERVIEW_MODE2 = opt.OVERVIEW_MODE === 2;
+        opt.WORKSPACE_MODE = opt.OVERVIEW_MODE > 0 ? 0 : 1;
+    },
+
     toggle(customOverviewMode) {
         if (this.isDummy)
             return;
@@ -126,13 +151,6 @@ const OverviewCommon = {
             this.hide();
         else
             this.show(OverviewControls.ControlsState.WINDOW_PICKER, customOverviewMode);
-    },
-
-    resetOverviewMode() {
-        // reset Overview Mode do default
-        opt.OVERVIEW_MODE = opt.get('overviewMode');
-        opt.OVERVIEW_MODE2 = opt.OVERVIEW_MODE === 2;
-        opt.WORKSPACE_MODE = opt.OVERVIEW_MODE > 0 ? 0 : 1;
     },
 
     _showDone() {
@@ -162,6 +180,10 @@ const OverviewCommon = {
         this.resetOverviewMode();
         Me.run.activeMonitor = undefined;
         Me.run.overviewShiftAllowed = false;
+
+        // The hiddenCallback is set by AppIcon.activate() in the dash module
+        Me.run.hiddenCallback?.();
+        Me.run.hiddenCallback = null;
 
         if (!opt.FIX_NEW_WINDOW_FOCUS)
             return;

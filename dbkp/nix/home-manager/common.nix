@@ -17,7 +17,7 @@ rec {
   news.json = pkgs.lib.mkForce { };
   news.entries = pkgs.lib.mkForce [ ];
 
-  home.stateVersion = "22.11";
+  home.stateVersion = "26.05";
   home.username = username;
   home.homeDirectory = "/home/${username}";
   home.packages = import ./packages/common.nix {
@@ -43,8 +43,8 @@ rec {
     "npm".source = ./dotfiles/npm;
     "tmux".source = ./dotfiles/tmux;
     "tridactyl".source = ./dotfiles/tridactyl;
-    "hypr" = { source = ./dotfiles/hyprland; recursive = true; };
-    "xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
+    # "hypr" = { source = ./dotfiles/hyprland; recursive = true; };
+    # "xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
   };
 
   programs = {
@@ -87,17 +87,17 @@ rec {
   #   hyprcursor.enable = true;
   # };
 
-  systemd.user.services.uwsm-gnome-keyring = {
-    Unit = {
-      Description = "Import GNOME Keyring env into UWSM";
-      After = [ "graphical-session-pre.target" ];
-    };
-
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${home.homeDirectory}/.config/hypr/bin/export-environment";
-    };
-
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
+  # systemd.user.services.uwsm-gnome-keyring = {
+  #   Unit = {
+  #     Description = "Import GNOME Keyring env into UWSM";
+  #     After = [ "graphical-session-pre.target" ];
+  #   };
+  #
+  #   Service = {
+  #     Type = "oneshot";
+  #     ExecStart = "${home.homeDirectory}/.config/hypr/bin/export-environment";
+  #   };
+  #
+  #   Install.WantedBy = [ "graphical-session.target" ];
+  # };
 }

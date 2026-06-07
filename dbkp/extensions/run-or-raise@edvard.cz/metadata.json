@@ -9,9 +9,11 @@
     "46",
     "47",
     "48",
-    "49"
+    "49",
+    "50"
   ],
   "url": "https://github.com/CZ-NIC/run-or-raise",
   "uuid": "run-or-raise@edvard.cz",
-  "version": 41
+  "version": 43,
+  "version-name": "45"
 }

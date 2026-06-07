@@ -40,6 +40,10 @@ function matchWmClass(win) {
     return win.get_wm_class() === this && !win.is_skip_taskbar();
 }
 
+function matchOnAllWorkspaces(win) {
+    return win.on_all_workspaces && !win.is_skip_taskbar();
+}
+
 function matchWorkspace(win) {
     return win.get_workspace() === this && !win.is_skip_taskbar();
 }
@@ -166,8 +170,6 @@ export const Manager = class Manager {
             }
         }
 
-        windowActors = null;
-
         let currentOnly = this.platform.getSettings().current_workspace_only;
         let focused = display.focus_window ? display.focus_window : windows[0];
 
@@ -175,6 +177,16 @@ export const Manager = class Manager {
             case 'switch-group':
                 // Switch between windows of same application from all workspaces
                 windows = windows.filter(matchWmClass, focused.get_wm_class());
+                windows.sort(sortWindowsByUserTime);
+                break;
+
+            case 'coverflow-switch-applications-on-all-workspaces':
+            case 'coverflow-switch-applications-on-all-workspaces-backward':
+                isApplicationSwitcher = true;
+                //eslint-disable-next-line no-fallthrough
+            case 'coverflow-switch-windows-on-all-workspaces':
+            case 'coverflow-switch-windows-on-all-workspaces-backward':
+                windows = windows.filter(matchOnAllWorkspaces);
                 windows.sort(sortWindowsByUserTime);
                 break;
 
@@ -194,8 +206,6 @@ export const Manager = class Manager {
                     wins1.sort(sortWindowsByUserTime);
                     wins2.sort(sortWindowsByUserTime);
                     windows = wins1.concat(wins2);
-                    wins1 = [];
-                    wins2 = [];
                 } else {
                     let filter = currentOnly === 'current' ? matchWorkspace :
                           matchSkipTaskbar;
@@ -213,6 +223,10 @@ export const Manager = class Manager {
               win.get_monitor() === Main.layoutManager.currentMonitor.index );
         }
 
+        if (this.platform.getSettings().skip_minimized_windows) {
+            windows = windows.filter(win => !win.minimized);
+        }
+
         if (windows.length) {
             const currentIndex = 0;
             let switcher_class = this.platform.getSettings().switcher_class;
@@ -228,6 +242,10 @@ export const Manager = class Manager {
             actionName = actionPrefix + "windows";
         } else if (type === "applications") {
             actionName = actionPrefix + "applications";
+        } else if (type === "windows-on-all-workspaces") {
+            actionName = actionPrefix + "windows-on-all-workspaces";
+        } else if (type === "applications-on-all-workspaces") {
+            actionName = actionPrefix + "applications-on-all-workspaces";
         }
         this.logger.log(`DBus Launch Action Name: ${actionName}`);
         if (actionName !== null) this._startWindowSwitcherInternal(this.display, null, actionName, 0, true);

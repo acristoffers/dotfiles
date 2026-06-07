@@ -21,18 +21,23 @@
  */
 
 import {Switcher} from  './switcher.js';
-import {Preview, Placement, findUpperLeftFromCenter} from './preview.js'
+import {Preview, Placement} from './preview.js'
 
 let TRANSITION_TYPE;
 let IN_BOUNDS_TRANSITION_TYPE;
-const TILT_ANGLE = 45;
 const ALPHA = 1.0;
+const DEGREES_TO_RADIANS = Math.PI / 180;
+let PREVIEW_OFFSET_X;
+let PREVIEW_OFFSET_Y;
 
 export class TimelineSwitcher extends Switcher {
     constructor(...args) {
         super(...args);
         TRANSITION_TYPE = 'userChoice';
-        IN_BOUNDS_TRANSITION_TYPE = 'easeInOutQuint';
+        IN_BOUNDS_TRANSITION_TYPE = 'easeOutQuad';
+        const angleRadians = this._settings.timeline_preview_angle * DEGREES_TO_RADIANS;
+        PREVIEW_OFFSET_X = this._settings.timeline_preview_distance * Math.cos(angleRadians);
+        PREVIEW_OFFSET_Y = this._settings.timeline_preview_distance * Math.sin(angleRadians);
     }
 
     _createPreviews() {
@@ -40,60 +45,62 @@ export class TimelineSwitcher extends Switcher {
         let currentWorkspace = this._manager.workspace_manager.get_active_workspace();
 
         this._previewsCenterPosition = {
-            x: this.actor.width / 2,
-            y: this.actor.height / 2 + this._settings.offset
+            x: this.actor.width / 2 /*- this._settings.preview_to_monitor_ratio * this.actor.width / 2*/,
+            y: this.actor.height / 2 /*- this._settings.preview_to_monitor_ratio * this.actor.height / 2 */ + this._settings.offset
         };
 
         for (let windowActor of global.get_window_actors()) {
             let metaWin = windowActor.get_meta_window();
-            let compositor = metaWin.get_compositor_private();
-            if (compositor) {
-                let texture = compositor.get_texture();
-                let width, height;
-                if (texture.get_size) {
-                    [width, height] = texture.get_size()
-                } else {
-                    let _preferred_size_ok;
-                    [_preferred_size_ok, width, height] = texture.get_preferred_size();
-                }
-                let previewScale = this._settings.preview_to_monitor_ratio;
-                let scale = 1.0;
-                let previewWidth = this.actor.width * previewScale;
-                let previewHeight = this.actor.height * previewScale;
-                if (width > previewWidth || height > previewHeight)
-                    scale = Math.min(previewWidth / width, previewHeight / height);
 
-                let preview = new Preview(metaWin, this, {
-                    opacity: ALPHA * (!metaWin.minimized && metaWin.get_workspace() === currentWorkspace || metaWin.is_on_all_workspaces()) ? 255: 0,
-                    source: texture.get_size ? texture : compositor,
-                    reactive: true,
-                    name: metaWin.title,
-                    x: (metaWin.minimized ? -(compositor.x + compositor.width / 2) :
-                        compositor.x) - monitor.x,
-                    y: (metaWin.minimized ? -(compositor.y + compositor.height / 2) :
-                        compositor.y) - monitor.y,
-                    rotation_angle_y: 0,
-                    width: width,
-                    height: height,
-                });
-
-                preview.scale = scale;
-
-                preview.target_x = findUpperLeftFromCenter(preview.width * preview.scale,
-                    this._previewsCenterPosition.x);
-                preview.target_y = findUpperLeftFromCenter(preview.height,
-                    this._previewsCenterPosition.y);
-
-                preview.set_pivot_point_placement(Placement.LEFT);
-
-                if (this._windows.includes(metaWin)) {
-                    this._previews[this._windows.indexOf(metaWin)] = preview;
-                }
-                this._allPreviews.push(preview);
-                this.previewActor.add_child(preview);
-
-                preview.make_bottom_layer(this.previewActor);
+            let texture = windowActor.get_texture();
+            let width, height;
+            if (texture.get_size) {
+                [width, height] = texture.get_size()
+            } else {
+                let _preferred_size_ok;
+                [_preferred_size_ok, width, height] = texture.get_preferred_size();
             }
+            let previewScale = this._settings.preview_to_monitor_ratio;
+            let scale = 1.0;
+            let previewWidth = this.actor.width * previewScale;
+            let previewHeight = this.actor.height * previewScale;
+            if (width > previewWidth || height > previewHeight)
+                scale = Math.min(previewWidth / width, previewHeight / height);
+
+            let preview = new Preview(metaWin, this, {
+                opacity: ALPHA * (!metaWin.minimized && metaWin.get_workspace() === currentWorkspace || metaWin.is_on_all_workspaces()) ? 255: 0,
+                source: texture.get_size ? texture : windowActor,
+                reactive: true,
+                name: metaWin.title,
+                x: metaWin.minimized ? 0:
+                    windowActor.x - monitor.x,
+                y: metaWin.minimized ? 0:
+                    windowActor.y - monitor.y,
+                rotation_angle_y: 0,
+                width: width,
+                height: height,
+                scale_x: metaWin.minimized ? 0 : 1,
+                scale_y: metaWin.minimized ? 0 : 1,
+                scale_z: metaWin.minimized ? 0 : 1,
+            });
+
+            preview.scale = scale;
+
+            preview.target_x = //findUpperLeftFromCenter(preview.width * preview.scale,
+                this._previewsCenterPosition.x//);
+            preview.target_y = //findUpperLeftFromCenter(preview.height,
+                this._previewsCenterPosition.y//);
+
+            preview.set_pivot_point_placement(Placement.TOP_LEFT);
+
+            if (this._windows.includes(metaWin)) {
+                this._previews[this._windows.indexOf(metaWin)] = preview;
+            }
+            this._allPreviews.push(preview);
+            this.previewActor.add_child(preview);
+
+            preview.make_bottom_layer(this.previewActor);
+
         }
     }
 
@@ -124,7 +131,7 @@ export class TimelineSwitcher extends Switcher {
                 scale_z: preview.scale,
                 time: animation_time / 2,
                 transition: TRANSITION_TYPE,
-                rotation_angle_y: TILT_ANGLE,
+                rotation_angle_y: this._settings.timeline_preview_tilt_angle,
             });
             this._manager.platform.tween(preview, {
                 opacity: ALPHA * 255,
@@ -144,19 +151,21 @@ export class TimelineSwitcher extends Switcher {
         // preview windows
         for (let [i, preview] of this._previews.entries()) {
             animation_time = this._getRandomTime();
-            let distance = (this._currentIndex > i) ? this._previews.length - this._currentIndex + i : i - this._currentIndex;
+            const distance = (this._currentIndex > i) ? this._previews.length - this._currentIndex + i : i - this._currentIndex;
+            const offset = this._settings.timeline_preview_scale_with_distance? Math.sqrt(distance) : distance;
+
             if (distance === this._previews.length - 1 && direction > 0) {
                 preview.__looping = true;
                 animation_time = this._settings.animation_time;
                 preview.make_top_layer(this.previewActor);
                 this._raiseIcons();
-                let scale = preview.scale * Math.pow(this._settings.preview_scaling_factor, -1);
+                let scale = this._getScaleAtDistance(preview, -1);
                 this._manager.platform.tween(preview, {
-                    x: preview.target_x + 150,
-                    y: preview.target_y,
+                    x: preview.target_x + PREVIEW_OFFSET_X,
+                    y: preview.target_y + PREVIEW_OFFSET_Y,
                     time: animation_time / 2,
                     transition: TRANSITION_TYPE,
-                    rotation_angle_y: TILT_ANGLE,
+                    rotation_angle_y: this._settings.timeline_preview_tilt_angle,
                     onCompleteParams: [preview, distance, animation_time],
                     onComplete: this._onFadeForwardComplete,
                     onCompleteScope: this,
@@ -172,14 +181,16 @@ export class TimelineSwitcher extends Switcher {
             } else if (distance === 0 && direction < 0) {
                 preview.__looping = true;
                 animation_time = this._settings.animation_time;
-                let scale = preview.scale * Math.pow(this._settings.preview_scaling_factor, this._previews.length);
+                let scale = this._getScaleAtDistance(preview, this._previews.length);
+                const left_offset = this._settings.timeline_preview_scale_with_distance ? Math.sqrt(this._previews.length) : this._previews.length;
+
                 preview.make_bottom_layer(this.previewActor);
                 this._manager.platform.tween(preview, {
                     time: animation_time / 2,
-                    x: preview.target_x - Math.sqrt(this._previews.length) * 150,
-                    y: preview.target_y,
+                    x: preview.target_x - left_offset * PREVIEW_OFFSET_X,
+                    y: preview.target_y - left_offset * PREVIEW_OFFSET_Y,
                     transition: TRANSITION_TYPE,
-                    rotation_angle_y: TILT_ANGLE,
+                    rotation_angle_y: this._settings.timeline_preview_tilt_angle,
                     onCompleteParams: [preview, distance, animation_time],
                     onComplete: this._onFadeBackwardsComplete,
                     onCompleteScope: this,
@@ -192,15 +203,15 @@ export class TimelineSwitcher extends Switcher {
                     opacity: 0,
                 });
             } else {
-                let scale = preview.scale * Math.pow(this._settings.preview_scaling_factor, distance);//Math.max(preview.scale * ((20 - 2 * distance) / 20), 0);
+                let scale = this._getScaleAtDistance(preview, distance);//Math.max(preview.scale * ((20 - 2 * distance) / 20), 0);
                 let tweenparams = {
-                    x: preview.target_x - Math.sqrt(distance) * 150,
-                    y: preview.target_y,
+                    x: preview.target_x - offset * PREVIEW_OFFSET_X,
+                    y: preview.target_y - offset * PREVIEW_OFFSET_Y,
                     scale_x: scale,
                     scale_y: scale,
                     scale_z: scale,
                     time: this.gestureInProgress ? 0 : animation_time,
-                    rotation_angle_y: TILT_ANGLE,
+                    rotation_angle_y: this._settings.timeline_preview_tilt_angle,
                     transition: TRANSITION_TYPE,
                     onComplete: () => { preview.set_reactive(true); },
 
@@ -223,9 +234,9 @@ export class TimelineSwitcher extends Switcher {
         preview.__looping = false;
         preview.make_top_layer(this.previewActor);
         this._raiseIcons();
-        preview.x = preview.target_x + 150;
-        preview.y =  preview.target_y;
-        let scale_start = preview.scale * Math.pow(this._settings.preview_scaling_factor, -1);
+        preview.x = preview.target_x + PREVIEW_OFFSET_X;
+        preview.y =  preview.target_y + PREVIEW_OFFSET_Y;
+        let scale_start = this._getScaleAtDistance(preview, -1);
         preview.scale_x = scale_start;
         preview.scale_y = scale_start;
         preview.scale_z = scale_start;
@@ -252,23 +263,25 @@ export class TimelineSwitcher extends Switcher {
     _onFadeForwardComplete(preview, distance, animation_time) {
         preview.__looping = false;
         preview.make_bottom_layer(this.previewActor);
+        const start_offset = this._settings.timeline_preview_scale_with_distance ? Math.sqrt(distance + 1) : distance + 1;
+        const end_offset = this._settings.timeline_preview_scale_with_distance ? Math.sqrt(distance) : distance;
 
-        preview.x = preview.target_x - Math.sqrt(distance + 1) * 150;
-        preview.y = preview.target_y;
-        let scale_start = preview.scale * Math.pow(this._settings.preview_scaling_factor, distance + 1);
+        preview.x = preview.target_x - start_offset * PREVIEW_OFFSET_X;
+        preview.y = preview.target_y - start_offset * PREVIEW_OFFSET_Y;
+        let scale_start = this._getScaleAtDistance(preview, distance + 1);
         preview.scale_x = scale_start;
         preview.scale_y = scale_start;
         preview.scale_z = scale_start;
         this._manager.platform.tween(preview, {
-            x: preview.target_x - Math.sqrt(distance) * 150,
-            y: preview.target_y,
+            x: preview.target_x - end_offset * PREVIEW_OFFSET_X,
+            y: preview.target_y - end_offset * PREVIEW_OFFSET_Y,
             time: animation_time / 2,
             transition: TRANSITION_TYPE,
             onCompleteParams: [preview],
             onComplete: this._onFinishMove,
             onCompleteScope: this,
         });
-        let scale_end = preview.scale * Math.pow(this._settings.preview_scaling_factor, distance);
+        let scale_end = this._getScaleAtDistance(preview, distance);
         this._manager.platform.tween(preview, {
             opacity: ALPHA * 255,
             scale_x: scale_end,
@@ -280,7 +293,6 @@ export class TimelineSwitcher extends Switcher {
     }
 
     _onFinishMove(preview) {
-        this._updatePreviews(true)
 
         if (preview.__finalTween) {
             for (let tween of preview.__finalTween) {
@@ -288,5 +300,12 @@ export class TimelineSwitcher extends Switcher {
             }
             preview.__finalTween = null;
         }
+    }
+
+    _getScaleAtDistance(preview, distance) {
+        if (!this._settings.timeline_preview_scale_with_distance) {
+            return preview.scale;
+        }
+        return preview.scale * Math.pow(this._settings.timeline_preview_scaling_factor, distance);
     }
 };

@@ -3,7 +3,7 @@
  * workspacesSwitcherPopup.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -156,7 +156,7 @@ const WorkspaceSwitcherPopupMod = {
 
         this._timeoutId = 0;
 
-        if (!this.constructor) // Since GNOME 49 the child will be added to uiGroup in the constructor
+        if (Me.shellVersion < 49) // Since GNOME 49 the child will be added to uiGroup in the constructor
             Main.uiGroup.add_child(this);
 
         this.hide();

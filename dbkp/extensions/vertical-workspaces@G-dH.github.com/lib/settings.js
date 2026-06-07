@@ -117,6 +117,7 @@ export const Options = class Options {
             searchMaxResultsRows: ['int', 'search-max-results-rows'],
             searchAppGridMode: ['int', 'search-app-grid-mode'],
             searchIncludeSettings: ['boolean', 'search-include-settings'],
+            activateSettingsWindow: ['int', 'activate-settings-window'],
             dashShowWindowsBeforeActivation: ['int', 'dash-show-windows-before-activation'],
             dashIconScroll: ['int', 'dash-icon-scroll'],
             dashIsolateWorkspaces: ['boolean', 'dash-isolate-workspaces'],
@@ -153,11 +154,13 @@ export const Options = class Options {
             overviewSortWindows: ['int', 'overview-sort-windows'],
             overviewSelectWindow: ['int', 'overview-select-window'],
             clickEmptyClose: ['boolean', 'click-empty-close'],
-            newWindowFocusFix: ['boolean', 'new-window-focus-fix'],
-            newWindowMonitorFix: ['boolean', 'new-window-monitor-fix'],
-            appGridPerformance: ['boolean', 'app-grid-performance'],
             highlightingStyle: ['int', 'highlighting-style'],
+
             delayStartup: ['boolean', 'delay-startup'],
+            appGridPerformance: ['boolean', 'app-grid-performance'],
+            smoothOverviewAnimation: ['boolean', 'smooth-overview-animation'],
+            newWindowMonitorFix: ['boolean', 'new-window-monitor-fix'],
+            newWindowFocusFix: ['boolean', 'new-window-focus-fix'],
 
             workspaceSwitcherPopupModule: ['boolean', 'workspace-switcher-popup-module'],
             workspaceAnimationModule: ['boolean', 'workspace-animation-module'],
@@ -480,6 +483,7 @@ export const Options = class Options {
         this.SEARCH_DELAY = this.SEARCH_VIEW_ANIMATION ? 100 : 0;
         this.SEARCH_APP_GRID_MODE = this.get('searchAppGridMode') && this.get('appDisplayModule') && this.get('searchModule');
         this.SEARCH_INCLUDE_SETTINGS = this.get('searchIncludeSettings');
+        this.ACTIVATE_SETTINGS_WINDOW = this.get('activateSettingsWindow');
         this.RESULTS_BLUR_RADIUS = 32;
 
         const option = this.get('appGridOrientation');
@@ -514,7 +518,6 @@ export const Options = class Options {
         this.APP_GRID_DASH_FIRST = this.APP_GRID_INCLUDE_DASH === 1;
 
         this.APP_GRID_NAMES_MODE = this.get('appGridNamesMode');
-        // Estimated space for 3 line title and default font
 
         this.APP_GRID_FOLDER_ICON_SIZE = this.get('appGridFolderIconSize');
         this.APP_GRID_FOLDER_ICON_GRID = this.get('appGridFolderIconGrid');
@@ -614,8 +617,7 @@ export const Options = class Options {
         this.HIGHLIGHT_NONE = this.HIGHLIGHTING_STYLE === 2;
 
         this.DELAY_STARTUP = this.get('delayStartup');
-        this.DELAY_OVERVIEW_ANIMATION = true;
-        this.DELAY_PER_WINDOW = 4;
+        this.SMOOTH_OVERVIEW_ANIMATION = this.get('smoothOverviewAnimation');
 
         this.SEARCH_ENTRY_POSITION_TOP = this.SHOW_SEARCH_ENTRY;
         this.USE_THUMBNAILS_IN_APP_GRID = true;

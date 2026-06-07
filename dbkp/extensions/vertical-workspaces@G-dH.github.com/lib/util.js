@@ -3,7 +3,7 @@
  * util.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -32,9 +32,6 @@ export function init(me) {
 }
 
 export function cleanGlobals() {
-    _removeMoveWinPreviewTimeout();
-    _removeWinSpreadTimeout();
-
     Me = null;
     _ = null;
     _installedExtensions = null;
@@ -124,50 +121,62 @@ export function openPreferences(metadata) {
     if (!metadata)
         metadata = Me.metadata;
 
+    const extensionsClass = ['org.gnome.Shell.Extensions'];
     const name = metadata.name;
-    const wmClass = metadata.wmClass ?? 'org.gnome.Shell.Extensions';
+    const wmClass = metadata.wmClass ?? extensionsClass;
     const moveToWorkspace = metadata.moveToWorkspace ?? true;
 
-    const windows = global.display.get_tab_list(Meta.TabList.NORMAL_ALL, null);
-    let metaWin, isMe = null;
+    // Delay to prevent errors when called while closing overview
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+        const windows = global.display.get_tab_list(Meta.TabList.NORMAL_ALL, null);
+        let metaWin, isMe = null;
 
-    for (let win of windows) {
-        if (name && win.get_title() === name && win.get_wm_class() === wmClass) {
-            // This is our existing extension Settings window
-            metaWin = win;
-            isMe = true;
-            break;
-        }  else if (!name && win.wm_class?.includes(wmClass)) {
+        for (let win of windows) {
+            const wmClassMatch = wmClass.includes(win.wm_class);
+            if (name && win.get_title() === name && wmClassMatch) {
+            // This is (most likely) our existing extension Settings window
+                metaWin = win;
+                isMe = true;
+                break;
+            }  else if (!name && wmClassMatch) {
             // This is a window that the caller wants to activate
-            metaWin = win;
-            isMe = true;
-        } else if (win.wm_class?.includes(wmClass)) {
+                metaWin = win;
+                isMe = true;
+            } else if (wmClassMatch) {
             // This is a Settings window of another extension
-            metaWin = win;
-            isMe = false;
-        }
-    }
-
-    if (metaWin && !isMe) {
-        // Other Settings window blocks opening of our own Settings, so close it
-        metaWin.delete(global.get_current_time());
-    } else if (metaWin && isMe) {
-        // If our window already exists, move it to the current workspace if needed
-        if (moveToWorkspace)
-            metaWin.change_workspace(global.workspace_manager.get_active_workspace());
-        metaWin.activate(global.get_current_time());
-    }
-
-    if (!metaWin || (metaWin && !isMe)) {
-        // Add a delay so the other window has time to close
-        GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            try {
-                Main.extensionManager.openExtensionPrefs(metadata.uuid, '', {});
-            } catch (e) {
-                console.error(e);
+                metaWin = win;
+                isMe = false;
             }
-        });
-    }
+        }
+
+        if (metaWin && !isMe) {
+        // Other Settings window blocks opening of our own Settings, so close it
+            metaWin.delete(global.get_current_time());
+        } else if (metaWin && isMe) {
+        // If our window already exists, move it to the current workspace if needed
+            if (moveToWorkspace)
+                metaWin.change_workspace(global.workspace_manager.get_active_workspace());
+            if (Main.overview._shown)
+                metaWin.activate(global.get_current_time());
+            else
+                Main.activateWindow(metaWin);
+        }
+
+        if (wmClass[0] === extensionsClass[0] && (!metaWin || (metaWin && !isMe))) {
+            // Add a small delay so the other window has time to close
+            GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+                try {
+                    Main.extensionManager.openExtensionPrefs(metadata.uuid, '', {});
+                } catch (e) {
+                    console.error(e);
+                }
+            });
+        }
+    });
+}
+
+export function getGnomeSettingsWmClass() {
+    return ['gnome-control-center', 'org.gnome.Settings'];
 }
 
 export function activateSearchProvider(prefix = '') {
@@ -252,31 +261,20 @@ export function moveWindowsToMonitor(metaWindow, allAppWindows = false, directio
     windows.forEach(win => {
         if (win.get_monitor() !== targetMonitor) {
             // some windows ignore this action if executed immediately after they are created
-            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                 win.move_to_monitor(targetMonitor);
                 // Some windows move slower than others so give it some time
-                _removeMoveWinPreviewTimeout();
-                Me.run.moveWindowPreviewTimeout = GLib.timeout_add(GLib.PRIORITY_LOW, 100, () => {
+                if (Me.run.timeouts.moveWindowPreview)
+                    GLib.source_remove(Me.run.timeouts.moveWindowPreview);
+                Me.run.timeouts.moveWindowPreview = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 100, () => {
                     selectWindowPreview(metaWindow.get_compositor_private(), targetMonitor);
-                    Me.run.moveWindowPreviewTimeout = 0;
+                    Me.run.timeouts.moveWindowPreview = 0;
                     return GLib.SOURCE_REMOVE;
                 });
                 return GLib.SOURCE_REMOVE;
             });
         }
     });
-}
-
-function _removeMoveWinPreviewTimeout() {
-    if (Me.run.moveWindowPreviewTimeout)
-        GLib.source_remove(Me.run.moveWindowPreviewTimeout);
-    Me.run.moveWindowPreviewTimeout = 0;
-}
-
-function _removeWinSpreadTimeout() {
-    if (Me.run.winSpreadTimeout)
-        GLib.source_remove(Me.run.winSpreadTimeout);
-    Me.run.winSpreadTimeout = 0;
 }
 
 // Handle common actions for WorkspacesView and WindowPreview
@@ -460,7 +458,7 @@ export function moveWindowToMonitorAndWorkspace(metaWindow, monitorIndex, wsInde
     }
 
     // Wait for the new workspace allocation to prevent errors
-    GLib.idle_add(GLib.PRIORITY_LOW, () => {
+    GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
         if (!workspace)
             return;
 
@@ -470,9 +468,9 @@ export function moveWindowToMonitorAndWorkspace(metaWindow, monitorIndex, wsInde
             wsIndex,
             append // if true and the workspace doesn't exist, create it despite the fixed number of workspaces setting
         );
-        GLib.idle_add(GLib.PRIORITY_LOW, () => {
+        GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             Main.wm.actionMoveWorkspace(workspace);
-            GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                 // Release the keep-alive lock
                 _removeWorkspaceKeepAliveTimeout(currentWs);
                 _removeWorkspaceKeepAliveTimeout(workspace);
@@ -498,10 +496,10 @@ export function exposeWindows() {
     );
     if (Me.run.initialPointerX === global.get_pointer()[0] && Me.opt.OVERVIEW_SELECT_WINDOW) {
         const slowDownFactor = St.Settings.get().slow_down_factor;
-        Me.run.winSpreadTimeout = GLib.timeout_add(GLib.PRIORITY_LOW, 250 * slowDownFactor,
+        Me.run.timeouts.winSpread = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 250 * slowDownFactor,
             () => {
                 Me.Util.activateKeyboardForWorkspaceView();
-                Me.run.winSpreadTimeout = 0;
+                Me.run.timeouts.winSpread = 0;
                 return GLib.SOURCE_REMOVE;
             });
     }
@@ -521,7 +519,7 @@ export function exposeWindowsWithOverviewTransition() {
     controlsManager._updateSearchStyle?.bind(controlsManager)();
     stateAdjustment.ease(1, {
         duration: 200,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         onStopped: () => {
             controlsManager._enableOverviewTransitionAnimationsIfNeeded?.bind(controlsManager)();
             activateKeyboardForWorkspaceView();
@@ -770,7 +768,7 @@ export function zoomOutActorAtPos(actor, x, y) {
         translation_y: containedY - scaledY,
         opacity: 0,
         duration: APPICON_ANIMATION_OUT_TIME,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         onComplete: () => actorClone.destroy(),
     });
 }
@@ -824,7 +822,7 @@ export const RestartMessage = GObject.registerClass({
         this._removeTimeout();
         this.open();
         this._timeoutId = GLib.timeout_add(
-            GLib.PRIORITY_LOW,
+            GLib.PRIORITY_DEFAULT_IDLE,
             timeout,
             () => {
                 this._timeoutId = 0;

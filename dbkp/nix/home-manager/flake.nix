@@ -4,9 +4,9 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nvim.url = "github:acristoffers/nvim-flake";
@@ -46,23 +46,23 @@
     wbproto-formatter.inputs.nixpkgs.follows = "nixpkgs";
     wbproto-formatter.inputs.flake-utils.follows = "flake-utils";
 
-    dms.url = "github:AvengeMedia/DankMaterialShell/stable";
-    dms.inputs.nixpkgs.follows = "nixpkgs";
-
-    hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
-    hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
-
-    dms-plugins.url = "github:AvengeMedia/dms-plugins";
-    dms-plugins.flake = false;
-
-    dms-emoji-launcher.url = "github:devnullvoid/dms-emoji-launcher";
-    dms-emoji-launcher.flake = false;
-
-    dms-world-clock.url = "github:rochacbruno/WorldClock";
-    dms-world-clock.flake = false;
-
-    dms-grimblast.url = "github:TaylanTatli/dms-plugins";
-    dms-grimblast.flake = false;
+    # dms.url = "github:AvengeMedia/DankMaterialShell/stable";
+    # dms.inputs.nixpkgs.follows = "nixpkgs";
+    #
+    # hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
+    # hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
+    #
+    # dms-plugins.url = "github:AvengeMedia/dms-plugins";
+    # dms-plugins.flake = false;
+    #
+    # dms-emoji-launcher.url = "github:devnullvoid/dms-emoji-launcher";
+    # dms-emoji-launcher.flake = false;
+    #
+    # dms-world-clock.url = "github:rochacbruno/WorldClock";
+    # dms-world-clock.flake = false;
+    #
+    # dms-grimblast.url = "github:TaylanTatli/dms-plugins";
+    # dms-grimblast.flake = false;
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
@@ -82,7 +82,7 @@
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
-              inputs.dms.homeModules.dank-material-shell
+              # inputs.dms.homeModules.dank-material-shell
               ./common.nix
             ]
             ++ extra-modules;

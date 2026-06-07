@@ -3,7 +3,7 @@
  * dash.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022-2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
 */
 
@@ -30,7 +30,6 @@ let opt;
 let _;
 
 let _moduleEnabled;
-let _timeouts;
 
 // added values to achieve a better ability to scale down according to available space
 export const BaseIconSizes = [16, 24, 32, 40, 44, 48, 56, 64, 72, 80, 96, 112, 128];
@@ -83,6 +82,20 @@ export const DashModule = class {
             console.debug('  DashModule - Keeping untouched');
     }
 
+    _removeTimeouts() {
+        const timeouts = Me.run.timeouts;
+        const timeoutIds = [
+            'wsSwitcherAnimation',
+        ];
+
+        timeoutIds.forEach(id => {
+            const source = timeouts[id];
+            if (source)
+                GLib.source_remove(source);
+            timeouts[id] = 0;
+        });
+    }
+
     updateStyle(dash) {
         if (opt.DASH_BG_LIGHT) {
             dash._background.add_style_class_name('dash-background-light');
@@ -117,7 +130,6 @@ export const DashModule = class {
 
     _activateModule() {
         _moduleEnabled = true;
-        _timeouts = {};
         const dash = Main.overview._overview._controls.layoutManager._dash;
 
         if (!this._originalWorkId)
@@ -213,16 +225,6 @@ export const DashModule = class {
         dash._background.remove_style_class_name('dash-background-light');
         dash._background.remove_style_class_name('dash-background-dark');
         dash._background.set_style('');
-    }
-
-    _removeTimeouts() {
-        if (_timeouts) {
-            Object.values(_timeouts).forEach(t => {
-                if (t)
-                    GLib.source_remove(t);
-            });
-            _timeouts = null;
-        }
     }
 
     _setOrientation(orientation, dash) {
@@ -894,7 +896,7 @@ const AppIconCommon = {
             if ((opt.DASH_ISOLATE_WS || opt.DASH_CLICK_PREFER_WORKSPACE) && !isShiftPressed) {
                 this.app.activate();
                 // hide the overview after the window is re-created
-                GLib.idle_add(GLib.PRIORITY_LOW, () => Main.overview.hide());
+                GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => Main.overview.hide());
                 return;
             }
             return;
@@ -903,11 +905,17 @@ const AppIconCommon = {
         }
 
         // Activate GNOME Settings window and move it to the current workspace if needed
-        if (this.app.id.match(/gnome-.+-panel.desktop/))
-            Me.Util.openPreferences({ wmClass: 'org.gnome.Settings' });
+        // The hiddenCallback will be executed from overview.hideDone()
+        if (opt.ACTIVATE_SETTINGS_WINDOW && this.app.id.match(/gnome-.+-panel.desktop/)) {
+            Me.run.hiddenCallback = () => {
+                const moveToWorkspace = opt.ACTIVATE_SETTINGS_WINDOW === 2;
+                Me.Util.openPreferences({ wmClass: Me.Util.getGnomeSettingsWmClass(), moveToWorkspace });
+            };
+        } else {
+            Me.run.hiddenCallback = null;
+        }
 
-        // Delay transition to the desktop so the previous actions have time to complete
-        GLib.idle_add(GLib.PRIORITY_LOW, () => Main.overview.hide(event));
+        Main.overview.hide();
     },
 
     _shouldOpenNewWindow(appIsRunning, isMiddleButton, isShiftPressed, isCtrlPressed, targetWindowOnCurrentWs) {
@@ -1086,7 +1094,7 @@ const DashIconCommon = {
 
         this._dot.translation_x = 0;
         // _updateDotStyle() has been added in GS 46.2 to apply translation_y value from the CSS on style change
-        if (Me.shellVersion < 46.2 && !opt.DASH_VERTICAL)
+        if (Me.shellVersion >= 46.0 && Me.shellVersion < 46.2 && !opt.DASH_VERTICAL)
             this._dot.translation_y = 8;
 
         // GS 46.0 (Ubuntu) only
@@ -1254,14 +1262,14 @@ const DashExtensions = {
                     if (windowPreview.metaWindow === metaWin) {
                         if (metaWin && metaWin.get_workspace() !== global.workspace_manager.get_active_workspace()) {
                             Main.wm.actionMoveWorkspace(metaWin.get_workspace());
-                            if (_timeouts.wsSwitcherAnimation)
-                                GLib.source_remove(_timeouts.wsSwitcherAnimation);
+                            if (Me.run.timeouts.wsSwitcherAnimation)
+                                GLib.source_remove(Me.run.timeouts.wsSwitcherAnimation);
                             // setting window preview above siblings before workspace switcher animation has no effect
                             // we need to set the window above after the ws preview become visible on the screen
                             // the default switcher animation time is 250, 200 ms delay should be enough
-                            _timeouts.wsSwitcherAnimation = GLib.timeout_add(0, 200 * St.Settings.get().slow_down_factor, () => {
+                            Me.run.timeouts.wsSwitcherAnimation = GLib.timeout_add(0, 200 * St.Settings.get().slow_down_factor, () => {
                                 windowPreview.get_parent().set_child_above_sibling(windowPreview, null);
-                                _timeouts.wsSwitcherAnimation = 0;
+                                Me.run.timeouts.wsSwitcherAnimation = 0;
                                 return GLib.SOURCE_REMOVE;
                             });
                         } else {

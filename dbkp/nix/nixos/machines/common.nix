@@ -11,7 +11,7 @@ rec {
   boot.initrd.systemd.enable = true;
   boot.kernelParams = [ "quiet" ];
 
-  documentation.man.generateCaches = true;
+  documentation.man.cache.enable = true;
   documentation.man.man-db.enable = true;
 
   environment.shells = with pkgs; [ bashInteractive ];
@@ -94,7 +94,8 @@ rec {
       enable = mkForce true;
       allowedTCPPorts = [
         22 # SSH
-        445 139 # Samba
+        445
+        139 # Samba
         # 53 # DNS server
         # 17500 # Dropbox
         # 7250 # Miracast
@@ -104,7 +105,8 @@ rec {
       ];
       allowedUDPPorts = [
         5353 # mDNS
-        137 138 # Samba
+        137
+        138 # Samba
         # 53 # DNS server
         # 67 # DHCP server
         # 17500 # Dropbox
@@ -122,10 +124,7 @@ rec {
 
   services.desktopManager.gnome.enable = true;
   services.desktopManager.plasma6.enable = false;
-  services.displayManager.gdm = {
-    enable = true;
-    wayland = true;
-  };
+  services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
     xkb = {
@@ -141,7 +140,7 @@ rec {
     gdm.enableGnomeKeyring = true;
     gdm-password.enableGnomeKeyring = true;
     login.enableGnomeKeyring = true;
-    hyprlock.enableGnomeKeyring = true;
+    # hyprlock.enableGnomeKeyring = true;
   };
 
   console.keyMap = "us-acentos";
@@ -263,50 +262,50 @@ rec {
   environment.systemPackages = with pkgs; [
     (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
     evolution-data-server-gtk4
+    gcr_4
     gnome-network-displays
     gnome-tweaks
     gocryptfs
     iputils
+    kdePackages.breeze-icons
+    kdePackages.qtstyleplugin-kvantum
     kitty
-    libsForQt5.breeze-icons
     libsForQt5.qtstyleplugin-kvantum
+    libsecret
     parted
+    pinentry-all
     plocate
     podman-compose
     pulseaudioFull
     qt6Packages.qtstyleplugin-kvantum
+    seahorse
     uutils-coreutils-noprefix
     wget
-    xorg.xhost
-
-    gcr_4
-    libsecret
-    pinentry-all
-    seahorse
+    xhost
   ];
 
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    withUWSM = true;
-  };
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-    ];
-    config = {
-      common = {
-        default = [
-          "hyprland"
-          "gtk"
-          "gnome"
-        ];
-      };
-    };
-  };
+  # programs.hyprland = {
+  #   enable = true;
+  #   xwayland.enable = true;
+  #   withUWSM = true;
+  # };
+  # xdg.portal = {
+  #   enable = true;
+  #   extraPortals = with pkgs; [
+  #     xdg-desktop-portal-gnome
+  #     xdg-desktop-portal-gtk
+  #     xdg-desktop-portal-hyprland
+  #   ];
+  #   config = {
+  #     common = {
+  #       default = [
+  #         "hyprland"
+  #         "gtk"
+  #         "gnome"
+  #       ];
+  #     };
+  #   };
+  # };
 
   programs.dconf.enable = true;
   programs.gnupg.agent = {
@@ -338,7 +337,9 @@ rec {
   };
   services.resolved = {
     enable = true;
-    extraConfig = "MulticastDNS=yes";
+    settings.Resolve = {
+      MulticastDNS = "yes";
+    };
   };
 
   virtualisation = {
@@ -450,10 +451,6 @@ rec {
   # Hardening
   programs.firejail.enable = true;
   security.chromiumSuidSandbox.enable = true;
-  # services.clamav.daemon.enable = true;
-  # services.clamav.updater.enable = true;
-  systemd.coredump.enable = false;
-
   # Prevents core dump files
   security.pam.loginLimits = [
     {
@@ -463,8 +460,4 @@ rec {
       value = "0";
     }
   ];
-  systemd.coredump.extraConfig = ''
-    Storage=none
-    ProcessSizeMax=0
-  '';
 }

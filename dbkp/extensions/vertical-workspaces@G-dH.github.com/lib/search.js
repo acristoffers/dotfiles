@@ -3,7 +3,7 @@
  * search.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -173,7 +173,6 @@ const AppSearchProvider = {
             _terms[0] = _terms[0].slice(2);
         }
 
-
         // Include System Actions
         let sysActionList = Array.from(this._systemActions._actions.keys());
 
@@ -339,17 +338,19 @@ const SearchResult = {
         this.provider.activateResult(this.metaInfo.id, this._resultsView.terms);
 
         // Activate GNOME Settings window and move to the current workspace if needed
-        if (this.provider?.id === 'org.gnome.Settings.desktop')
-            Me.Util.openPreferences({ wmClass: 'org.gnome.Settings' });
+        if (opt.ACTIVATE_SETTINGS_WINDOW && this.provider?.id === 'org.gnome.Settings.desktop') {
+            const moveToWorkspace = opt.ACTIVATE_SETTINGS_WINDOW === 2;
+            Me.Util.openPreferences({ wmClass: Me.Util.getGnomeSettingsWmClass(), moveToWorkspace });
+        }
 
         if (this.metaInfo.clipboardText) {
             St.Clipboard.get_default().set_text(
                 St.ClipboardType.CLIPBOARD, this.metaInfo.clipboardText);
         }
+
         // Don't close the overview if Shift key is pressed - Shift moves windows to the workspace
         if (!Me.Util.isShiftPressed())
-            // Delay transition to the desktop so the previous actions have time to complete
-            GLib.idle_add(GLib.PRIORITY_LOW, () => Main.overview.toggle());
+            Main.overview.hide();
     },
 };
 
@@ -382,6 +383,7 @@ const SearchResultsView = {
         this._isSubSearch = isSubSearch;
         this._updateSearchProgress();
 
+        // This is native GS timeout
         if (!this._searchTimeoutId)
             this._searchTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, opt.SEARCH_DELAY, this._onSearchTimeout.bind(this));
 

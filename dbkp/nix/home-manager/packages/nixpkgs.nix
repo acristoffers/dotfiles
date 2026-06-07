@@ -1,18 +1,24 @@
 pkgs:
 
 with pkgs; [
+  # texlab
   (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   ansible
   any-nix-shell
   appstream
   aria2
   blesh
+  brave
   cacert
   claude-code
   claude-code-acp
   cowsay
+  crosspipe
   curl
+  dconf-editor
   delta
+  digikam
+  discord
   doggo
   duf
   dust
@@ -36,7 +42,9 @@ with pkgs; [
   fishPlugins.fzf-fish
   fishPlugins.puffer
   flatpak-builder
+  fractal
   gawk
+  gdu
   gh
   git
   git-graph
@@ -62,6 +70,8 @@ with pkgs; [
   inkscape
   ispell
   jq
+  kdePackages.elisa
+  keepassxc
   killall
   lazydocker
   ledger
@@ -82,6 +92,7 @@ with pkgs; [
   openssl
   p7zip
   pandoc
+  papers
   peaclock
   pstree
   rage
@@ -89,12 +100,15 @@ with pkgs; [
   ripgrep
   rsync
   rustup
+  sabnzbd
   shellcheck
   shfmt
+  spotify
   starship
+  steam
   taplo
+  telegram-desktop
   termdown
-  texlab
   tmux
   tokei # counts code lines
   tree
@@ -104,6 +118,7 @@ with pkgs; [
   uutils-coreutils-noprefix
   uv
   vagrant
+  vlc
   watch
   watchman
   wget
@@ -112,4 +127,5 @@ with pkgs; [
   yq # for a tmux plugin
   zip
   zlib
+  zotero
 ]

@@ -13,8 +13,8 @@ function update-nixos
   end
 
   if test -z "$_flag_debug"
-    sudo nixos-rebuild $action --upgrade-all --flake ~/.config/nix/nixos#
+    sudo nixos-rebuild $action --flake ~/.config/nix/nixos#
   else
-    sudo nixos-rebuild $action --upgrade-all --flake ~/.config/nix/nixos# --show-trace
+    sudo nixos-rebuild $action --flake ~/.config/nix/nixos# --show-trace
   end
 end

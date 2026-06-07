@@ -3,7 +3,7 @@
  * overviewBackground.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -72,7 +72,8 @@ export const OverviewBackgroundModule = class {
 
         // update overview background wallpaper if enabled, but don't set it too early on the session startup
         // because it can crash wayland
-        if (!Main.layoutManager._startingUp || Meta.is_restart()) {
+        // Meta.is_restart() is related to X11 session and is no longer supported since GNOME 50
+        if (!Main.layoutManager._startingUp || (Meta.is_restart && Meta.is_restart())) {
             this._backgroundController.setBackground();
         } else {
             // The "showing" signal is emitted during the session startup

@@ -64,17 +64,17 @@ in
     "git/attributes".source = pkgs.lib.mkForce ./dotfiles/git/workstation/attributes;
     "git/gitconfig.workstation".source = pkgs.lib.mkForce ./dotfiles/git/workstation/config;
     "tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl-workstation;
-    "hypr/conf/host.conf".text = ''
-      bind = $mod, S, exec, run-or-raise --launch com.slack.Slack.desktop --class com.slack.Slack
-      bind = $mod, R, exec, run-or-raise --launch foxglove-studio.wayland.desktop --class Foxglove
-      bind = $mod, T, exec, run-or-raise --launch webots-fhs.desktop --class Webots
-
-      workspace = 1, persistent:true, monitor:HDMI-A-1
-      workspace = 2, persistent:true, monitor:HDMI-A-1
-      workspace = 3, persistent:true, monitor:HDMI-A-1
-      workspace = 4, persistent:true, monitor:DP-3
-      workspace = 5, persistent:true, monitor:eDP-1
-    '';
+    # "hypr/conf/host.conf".text = ''
+    #   bind = $mod, S, exec, run-or-raise --launch com.slack.Slack.desktop --class com.slack.Slack
+    #   bind = $mod, R, exec, run-or-raise --launch foxglove-studio.wayland.desktop --class Foxglove
+    #   bind = $mod, T, exec, run-or-raise --launch webots-fhs.desktop --class Webots
+    #
+    #   workspace = 1, persistent:true, monitor:HDMI-A-1
+    #   workspace = 2, persistent:true, monitor:HDMI-A-1
+    #   workspace = 3, persistent:true, monitor:HDMI-A-1
+    #   workspace = 4, persistent:true, monitor:DP-3
+    #   workspace = 5, persistent:true, monitor:eDP-1
+    # '';
   }; # // pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.configFile;
 
   programs = {

@@ -1,6 +1,6 @@
 pkgs:
 
-with pkgs; (python313.withPackages (p: with p; [
+with pkgs; (python314.withPackages (p: with p; [
   argcomplete
   autopep8
   black
@@ -12,7 +12,6 @@ with pkgs; (python313.withPackages (p: with p; [
   neovim
   numpy
   pip
-  pipx
   pygobject-stubs
   pygobject3
   pyyaml

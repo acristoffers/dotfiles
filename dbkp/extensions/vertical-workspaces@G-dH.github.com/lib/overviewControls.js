@@ -3,7 +3,7 @@
  * overviewControls.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -30,8 +30,6 @@ const FitMode = WorkspacesView.FitMode;
 const STARTUP_ANIMATION_TIME = 500;
 const SIDE_CONTROLS_ANIMATION_TIME = 250; // OverviewControls.SIDE_CONTROLS_ANIMATION_TIME = Overview.ANIMATION_TIME = 250
 const DASH_MAX_SIZE_RATIO = 0.35;
-
-let _timeouts;
 
 export const OverviewControlsModule = class {
     constructor(me) {
@@ -71,8 +69,6 @@ export const OverviewControlsModule = class {
 
         if (!this._overrides)
             this._overrides = new  Me.Util.Overrides();
-
-        _timeouts = {};
 
         this._replaceOnSearchChanged();
 
@@ -122,13 +118,22 @@ export const OverviewControlsModule = class {
     }
 
     _removeTimeouts() {
-        if (_timeouts) {
-            Object.values(_timeouts).forEach(t => {
-                if (t)
-                    GLib.source_remove(t);
-            });
-            _timeouts = null;
-        }
+        const timeouts = Me.run.timeouts;
+        const timeoutIds = [
+            'startupAnim2',
+            'finishStartup',
+            'cancelAppGridSearch',
+            'overviewIdle',
+            'overviewIdleLimiter',
+            'winPreviewOverlayDelay',
+        ];
+
+        timeoutIds.forEach(id => {
+            const source = timeouts[id];
+            if (source)
+                GLib.source_remove(source);
+            timeouts[id] = 0;
+        });
     }
 
     _removeAllTransitions() {
@@ -152,9 +157,9 @@ export const OverviewControlsModule = class {
                     const delay = 230; // Workspace animation time
                     const slowDownFactor = St.Settings.get().slow_down_factor;
                     this._removeWinPreviewOverlayDelay();
-                    this._winPreviewOverlayDelayId = GLib.timeout_add(GLib.PRIORITY_LOW, delay * slowDownFactor, () => {
+                    Me.run.timeouts.winPreviewOverlayDelay = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, delay * slowDownFactor, () => {
                         Me.Util.activateKeyboardForWorkspaceView();
-                        this._winPreviewOverlayDelayId = 0;
+                        Me.run.timeouts.winPreviewOverlayDelay = 0;
                         return GLib.SOURCE_REMOVE;
                     });
                 }
@@ -166,9 +171,9 @@ export const OverviewControlsModule = class {
     }
 
     _removeWinPreviewOverlayDelay() {
-        if (this._winPreviewOverlayDelayId) {
-            GLib.source_remove(this._winPreviewOverlayDelayId);
-            this._winPreviewOverlayDelayId = 0;
+        if (Me.run.timeouts.winPreviewOverlayDelay) {
+            GLib.source_remove(Me.run.timeouts.winPreviewOverlayDelay);
+            Me.run.timeouts.winPreviewOverlayDelay = 0;
         }
     }
 
@@ -550,12 +555,13 @@ const ControlsManagerCommon = {
         const currentState = this._currentParams.currentState;
         const opacity = this._currentParams.opacity;
         const fullTransition = this._currentParams.fullTransition;
+        const finalState = this._currentParams.finalState;
 
         // Avoid workspacesDisplay animate below searchEntry
 
         // Show SearchEntry even when disabled and search not active
         // to indicate App Grid search mode
-        if (currentState > ControlsState.WINDOW_PICKER) {
+        if (currentState > ControlsState.WINDOW_PICKER || (finalState === ControlsState.APP_GRID)) {
             this._searchEntry.remove_style_class_name('search-entry-om2');
             if (opt.SEARCH_APP_GRID_MODE && !opt.SHOW_SEARCH_ENTRY) {
                 this._searchEntryBin.visible = true;
@@ -619,7 +625,7 @@ const ControlsManagerCommon = {
         this.set_child_below_sibling(this._appDisplay, null);
         this.set_child_above_sibling(this._workspacesDisplay, this._appDisplay);
         if (!Me.Util.dashNotDefault())
-            this.set_child_above_sibling(this.dash, null);
+            this.set_child_above_sibling(this.layoutManager._dash, null);
         if (Main.layoutManager.panelBox.get_parent() === Main.overview._overview.controls)
             Main.overview._overview.controls.set_child_above_sibling(Main.layoutManager.panelBox, null);
         this._dashIsAbove = true;
@@ -630,7 +636,7 @@ const ControlsManagerCommon = {
         if (windowsExposed)
             this.set_child_below_sibling(this._thumbnailsBox, this._workspacesDisplay);
         else if (!windowsExposed)
-            this.set_child_below_sibling(this._thumbnailsBox, this.dash);
+            this.set_child_below_sibling(this._thumbnailsBox, this.layoutManager._dash);
     },
 
     // fix for upstream bug - appGrid.visible after transition from APP_GRID to HIDDEN
@@ -703,12 +709,12 @@ const ControlsManagerCommon = {
             // If the overview is hiding at this moment,
             // an app might be activated
             // Wait until the launch animation finishes
-            _timeouts.cancelAppGridSearch = GLib.timeout_add(
+            Me.run.timeouts.cancelAppGridSearch = GLib.timeout_add(
                 GLib.PRIORITY_DEFAULT,
                 250 * St.Settings.get().slow_down_factor,
                 () => {
                     this._deactivateSearchAppGridMode();
-                    _timeouts.cancelAppGridSearch = 0;
+                    Me.run.timeouts.cancelAppGridSearch = 0;
                     return GLib.SOURCE_REMOVE;
                 }
             );
@@ -949,7 +955,7 @@ const ControlsManagerCommon = {
         // We can't run the animation before the first allocation happens
         await this.layout_manager.ensureAllocation();
 
-        this._overviewBackgroundController.runStartupAnimation();
+        this._overviewBackgroundController?.runStartupAnimation();
         Me.Modules.panelModule.update();
 
         // Skip transition to the Window Picker if user wants to stay on Desktop
@@ -990,27 +996,27 @@ const ControlsManagerCommon = {
 
         if (!callback) { // GS 47+
             return new Promise(resolve => {
-                _timeouts.startupAnim2 = GLib.timeout_add(
+                Me.run.timeouts.startupAnim2 = GLib.timeout_add(
                     GLib.PRIORITY_DEFAULT,
                     // delay + animation time
                     STARTUP_ANIMATION_TIME * 2 * St.Settings.get().slow_down_factor,
                     () => {
                         onStopped();
                         resolve();
-                        _timeouts.startupAnim2 = 0;
+                        Me.run.timeouts.startupAnim2 = 0;
                         return GLib.SOURCE_REMOVE;
                     }
                 );
             });
         }
 
-        _timeouts.startupAnim2 = GLib.timeout_add(
+        Me.run.timeouts.startupAnim2 = GLib.timeout_add(
             GLib.PRIORITY_DEFAULT,
             // delay + animation time
             STARTUP_ANIMATION_TIME * 2 * St.Settings.get().slow_down_factor,
             () => {
                 onStopped();
-                _timeouts.startupAnim2 = 0;
+                Me.run.timeouts.startupAnim2 = 0;
                 return GLib.SOURCE_REMOVE;
             }
         );
@@ -1024,8 +1030,8 @@ const ControlsManagerCommon = {
     },
 
     _finishStartupSequence() {
-        _timeouts.finishStartup = GLib.idle_add(
-            GLib.PRIORITY_LOW, () => {
+        Me.run.timeouts.finishStartup = GLib.idle_add(
+            GLib.PRIORITY_DEFAULT_IDLE, () => {
                 this._appDisplay.opacity = 255;
                 if (opt.STARTUP_STATE === 1) {
                     Main.overview.hide();
@@ -1036,7 +1042,7 @@ const ControlsManagerCommon = {
                     Main.overview.show();
                 }
 
-                _timeouts.finishStartup = 0;
+                Me.run.timeouts.finishStartup = 0;
                 return GLib.SOURCE_REMOVE;
             }
         );
@@ -1047,27 +1053,68 @@ const ControlsManagerCommon = {
 
         this._stateAdjustment.value = ControlsState.HIDDEN;
 
-        // Wait until the overview is ready before we start the overview animation
-        GLib.idle_add(GLib.PRIORITY_LOW, () => {
-            Me.run.overviewShiftAllowed = true;
-            // If user has activated state shift before we started the initial animation,
-            // change the target state now
-            state = Me.run.shiftedOverviewState ?? state;
-            Me.run.shiftedOverviewState = null;
-            this._stateAdjustment.ease(state, {
-                duration: 250, // Overview.ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onStopped: () => {
-                    if (callback)
-                        callback();
-                },
-            });
-        });
+        if (opt.SMOOTH_OVERVIEW_ANIMATION)
+            // Wait until the overview is ready before starting the animation
+            this._idleOverviewAnimation(state, callback);
+        else
+            this._startOverviewAnimation(state, callback);
 
         this.dash.showAppsButton.checked =
             state === ControlsState.APP_GRID;
 
         this._ignoreShowAppsButtonToggle = false;
+    },
+
+    _startOverviewAnimation(state, callback) {
+        Me.run.overviewShiftAllowed = true;
+        // If user has activated state shift before we started the initial animation,
+        // change the target state now
+        state = Me.run.shiftedOverviewState ?? state;
+        Me.run.shiftedOverviewState = null;
+        this._stateAdjustment.ease(state, {
+            duration: 250, // Overview.ANIMATION_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
+            onStopped: () => {
+                if (callback)
+                    callback();
+            },
+        });
+    },
+
+    _idleOverviewAnimation(state, callback) {
+        if (Me.run.timeouts.overviewIdle)
+            GLib.source_remove(Me.run.timeouts.overviewIdle);
+
+        // Wait until the main loop processed all default priority tasks - overview is ready for animation
+        Me.run.timeouts.overviewIdle = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            if (Me.run.timeouts.overviewIdleLimiter) {
+                GLib.source_remove(Me.run.timeouts.overviewIdleLimiter);
+                Me.run.timeouts.overviewIdleLimiter = 0;
+            }
+            this._startOverviewAnimation(state, callback);
+            Me.run.timeouts.overviewIdle = 0;
+            return GLib.SOURCE_REMOVE;
+        });
+
+        if (Me.run.timeouts.overviewIdleLimiter)
+            GLib.source_remove(Me.run.timeouts.overviewIdleLimiter);
+
+        // In certain situations, waiting for idle tasks to be processed
+        // may take too long, so set up the timeout limiter
+        const timeout = opt.timeout ?? 100;
+        Me.run.timeouts.overviewIdleLimiter = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT,
+            timeout,
+            () => {
+                if (Me.run.timeouts.overviewIdle) {
+                    GLib.source_remove(Me.run.timeouts.overviewIdle);
+                    Me.run.timeouts.overviewIdle = 0;
+                    this._startOverviewAnimation(state, callback);
+                }
+                Me.run.timeouts.overviewIdleLimiter = 0;
+                return GLib.SOURCE_REMOVE;
+            }
+        );
     },
 };
 
@@ -1579,7 +1626,7 @@ const ControlsManagerLayoutVertical = {
         // appDisplay
         // Keep space for the search entry above the the app grid if app grid search mode is enabled
         if (!opt.SHOW_SEARCH_ENTRY && opt.SEARCH_APP_GRID_MODE)
-            topBoxOffset += searchEntryHeight  + spacing;
+            topBoxOffset += searchEntryHeight + spacing;
         params = [
             box,
             leftBoxOffsetAppGrid,

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 45 (2026-04-23)
+- enh: Apply minimize-when-unfocused to raise modes
+- fix: remove `affectsInputRegion` parameter from `addChrome()`, unsupported in GNOME Shell 50+
+- fix: use Main.activateWindow() to properly dismiss Alt+Tab overlay
+
+## 42 (2026-03-11)
+- Add parameter for the `switch-back-when-focused` mode that will cause the extension to switch back to a window regardless of what monitor it is on: `switch-back-when-focused(all_monitors)`
+
 ## 34 (2024-01-04)
 - fix: layered regex shortcut
 - center-mouse-to-focused-window: Don't move pointer if it's already in the window area

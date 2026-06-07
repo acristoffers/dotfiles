@@ -54,7 +54,7 @@ export const Preview = GObject.registerClass({
             1.0,
         )
     }
-}, class Preview extends Clutter.Clone {
+}, class PreviewClass extends Clutter.Clone {
     constructor(window, switcher, ...args) {
         super(...args);
         this.metaWin = window;
@@ -64,12 +64,8 @@ export const Preview = GObject.registerClass({
         this._application_icon_box = null;
         this._flash = null;
         this._entered = false;
-        this._effectNames = ['glitch', 'desaturate', 'tint']
         this._effectCounts = {};
         this._destroying = false;
-        for (let effect_name of this._effectNames) {
-            this._effectCounts[effect_name] = 0;
-        }
     }
 
     /**
@@ -124,6 +120,9 @@ export const Preview = GObject.registerClass({
         let add_transition_name = effect_name + "-add";
         let remove_transition_name = effect_name + "-remove";
         let property_transition_name = `@effects.${effect_name}.${parameter_name}`;
+        if (!(name in this._effectCounts)) {
+            this._effectCounts[name] = 0;
+        }
         if (this.get_transition(remove_transition_name) !== null) {
             this.remove_transition(remove_transition_name);
             let transition = Clutter.PropertyTransition.new(property_transition_name);
@@ -267,6 +266,7 @@ export const Preview = GObject.registerClass({
                 this.bind_property('scale_z', this._highlight, 'scale_z',
                     GObject.BindingFlags.SYNC_CREATE);
                 this.switcher.previewActor.add_child(this._highlight);
+                this.switcher.previewActor.set_child_above_sibling(this._highlight, this);
             }
             if (this._flash === null) {
                 this._flash = new St.Bin({
@@ -293,9 +293,8 @@ export const Preview = GObject.registerClass({
                 this.bind_property('scale_z', this._flash, 'scale_z',
                     GObject.BindingFlags.SYNC_CREATE);
                 this.switcher.previewActor.add_child(this._flash);
+                this.switcher.previewActor.set_child_above_sibling(this._flash, this._highlight);
                 if (this._application_icon_box !== null) {
-                    this.switcher.previewActor.set_child_above_sibling(this._application_icon_box,
-                        this._highlight);
                     this.switcher.previewActor.set_child_above_sibling(this._application_icon_box,
                         this._flash);
                 }
@@ -318,7 +317,6 @@ export const Preview = GObject.registerClass({
         const target_size = this.switcher._settings.overlay_icon_size;
         let shortest_side_length = Math.min(this.width, this.height)
         let scale =  target_size / Math.min(shortest_side_length, icon_size) / this.scale;
-
         if (this._icon === null) {
             let app = this.switcher._tracker.get_window_app(this.metaWin);
             this._icon = app ? app.create_icon_texture(icon_size) : null;
@@ -467,9 +465,8 @@ export const Preview = GObject.registerClass({
      * @return {Graphene.Point}
      */
     get_pivot_point_placement(placement) {
-        let xFraction = 0,
-            yFraction = 0;
-
+        let xFraction;
+        let yFraction;
         // Set xFraction
         switch (placement) {
             case Placement.TOP_LEFT:

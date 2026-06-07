@@ -117,8 +117,14 @@ class AbstractPlatform {
             easing_function: 'ease-out-cubic',
             current_workspace_only: '1',
             switch_per_monitor: false,
+            skip_minimized_windows: false,
             preview_to_monitor_ratio: 0.5,
-            preview_scaling_factor: 0.75,
+            coverflow_preview_scaling_factor: 0.75,
+            timeline_preview_distance: 96,
+            timeline_preview_angle: 29.357753542791272,
+            timeline_preview_tilt_angle: 15,
+            timeline_preview_scaling_factor: 0.75,
+            timeline_preview_scale_with_distance: true,
             bind_to_switch_applications: true,
             bind_to_switch_windows: true,
             perspective_correction_method: "Move Camera",
@@ -138,7 +144,9 @@ class AbstractPlatform {
             overlay_icon_size: 128,
             highlihght_color:(1., 1., 1.),
             coverflow_switch_windows: [""],
+            coverflow_switch_windows_on_all_workspaces: [""],
             coverflow_switch_applications: [""],
+            coverflow_switch_applications_on_all_workspaces: [""],
             prefs_default_width: 700,
             prefs_default_height: 600,
             verbose_logging: false,
@@ -146,6 +154,7 @@ class AbstractPlatform {
             icon_add_remove_effects: "Fade Only",
             coverflow_window_angle: 90,
             coverflow_window_offset_width: 50,
+            start_with_next: true,
         };
     }
 
@@ -194,7 +203,6 @@ export class PlatformGnomeShell extends AbstractPlatform {
             Main.uiGroup.add_child(parent);
             this._backgroundColor = actor.get_theme_node().get_background_color();
             Main.uiGroup.remove_child(parent);
-            parent = null;
             let color = new GLib.Variant("(ddd)", [this._backgroundColor.red/255, this._backgroundColor.green/255, this._backgroundColor.blue/255]);
             this._extensionSettings.set_value("switcher-background-color", color);
         }
@@ -232,9 +240,15 @@ export class PlatformGnomeShell extends AbstractPlatform {
             "easing-function",
             "current-workspace-only",
             "switch-per-monitor",
+            "skip-minimized-windows",
             "switcher-style",
             "preview-to-monitor-ratio",
-            "preview-scaling-factor",
+            "coverflow-preview-scaling-factor",
+            "timeline-preview-distance",
+            "timeline-preview-angle",
+            "timeline-preview-tilt-angle",
+            "timeline-preview-scaling-factor",
+            "timeline-preview-scale-with-distance",
             "bind-to-switch-applications",
             "bind-to-switch-windows",
             "perspective-correction-method",
@@ -254,13 +268,16 @@ export class PlatformGnomeShell extends AbstractPlatform {
             "highlight-color",
             "highlight-use-theme-color",
             "coverflow-switch-applications",
+            "coverflow-switch-applications-on-all-workspaces",
             "coverflow-switch-windows",
+            "coverflow-switch-windows-on-all-workspaces",
             "prefs-default-width",
             "prefs-default-height",
             "verbose-logging",
             "icon-add-remove-effects",
             "coverflow-window-angle",
             "coverflow-window-offset-width",
+            "start-with-next",
         ];
 
         let dkeys = [
@@ -386,8 +403,14 @@ export class PlatformGnomeShell extends AbstractPlatform {
                     ? TimelineSwitcher : CoverflowSwitcher,
                 current_workspace_only: settings.get_string("current-workspace-only"),
                 switch_per_monitor: settings.get_boolean("switch-per-monitor"),
+                skip_minimized_windows: settings.get_boolean("skip-minimized-windows"),
                 preview_to_monitor_ratio: clamp(settings.get_double("preview-to-monitor-ratio"), 0, 1),
-                preview_scaling_factor: clamp(settings.get_double("preview-scaling-factor"), 0, 1),
+                coverflow_preview_scaling_factor: clamp(settings.get_double("coverflow-preview-scaling-factor"), 0, 1),
+                timeline_preview_distance: clamp(settings.get_double("timeline-preview-distance"), 0, 4096),
+                timeline_preview_angle: clamp(settings.get_double("timeline-preview-angle"), 0, 90),
+                timeline_preview_tilt_angle: clamp(settings.get_double("timeline-preview-tilt-angle"), 0, 90),
+                timeline_preview_scaling_factor: clamp(settings.get_double("timeline-preview-scaling-factor"), 0, 1),
+                timeline_preview_scale_with_distance: settings.get_boolean("timeline-preview-scale-with-distance"),
                 bind_to_switch_applications: settings.get_boolean("bind-to-switch-applications"),
                 bind_to_switch_windows: settings.get_boolean("bind-to-switch-windows"),
                 perspective_correction_method: settings.get_string("perspective-correction-method"),
@@ -407,7 +430,9 @@ export class PlatformGnomeShell extends AbstractPlatform {
                 use_tint: settings.get_boolean("use-tint"),
                 invert_swipes: settings.get_boolean("invert-swipes"),
                 coverflow_switch_windows: settings.get_strv("coverflow-switch-windows")[0],
+                coverflow_switch_windows_on_all_workspaces: settings.get_strv("coverflow-switch-windows-on-all-workspaces")[0],
                 coverflow_switch_applications: settings.get_strv("coverflow-switch-applications")[0],
+                coverflow_switch_applications_on_all_workspaces: settings.get_strv("coverflow-switch-applications-on-all-workspaces")[0],
                 prefs_default_width: settings.get_double("prefs-default-width"),
                 prefs_default_height: settings.get_double("prefs-default-height"),
                 verbose_logging: settings.get_boolean("verbose-logging"),
@@ -415,6 +440,7 @@ export class PlatformGnomeShell extends AbstractPlatform {
                 icon_add_remove_effects: settings.get_string("icon-add-remove-effects"),
                 coverflow_window_angle: settings.get_double("coverflow-window-angle"),
                 coverflow_window_offset_width: settings.get_double("coverflow-window-offset-width"),
+                start_with_next: settings.get_boolean("start-with-next"),
             };
         } catch (e) {
             this._logger.log(e);

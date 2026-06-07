@@ -3,7 +3,7 @@
  * appDisplay.js
  *
  * @author     GdH <G-dH@github.com>
- * @copyright  2022 - 2025
+ * @copyright  2022 - 2026
  * @license    GPL-3.0
  *
  */
@@ -32,7 +32,6 @@ let opt;
 let _;
 
 let _appDisplay;
-let _timeouts;
 
 const APP_ICON_TITLE_EXPAND_TIME = 200;
 const APP_ICON_TITLE_COLLAPSE_TIME = 100;
@@ -114,8 +113,6 @@ export const AppDisplayModule = class {
         if (!this._overrides)
             this._overrides = new Me.Util.Overrides();
 
-        _timeouts = {};
-
         this._applyOverrides();
         this._updateAppDisplay();
 
@@ -123,9 +120,12 @@ export const AppDisplayModule = class {
     }
 
     _disableModule() {
+        if (!this._overrides) // Module already disabled
+            return;
+
         const reset = true;
         Me.Modules.iconGridModule.update(reset);
-        _appDisplay.setGridPageNulling(reset);
+        _appDisplay.setGridPageNulling?.(reset);
 
         if (this._overrides)
             this._overrides.removeAll();
@@ -145,13 +145,18 @@ export const AppDisplayModule = class {
     }
 
     _removeTimeouts() {
-        if (_timeouts) {
-            Object.values(_timeouts).forEach(t => {
-                if (t)
-                    GLib.source_remove(t);
-            });
-            _timeouts = null;
-        }
+        const timeouts = Me.run.timeouts;
+        const timeoutIds = [
+            'updateAppGrid',
+            'delayRepopulation',
+        ];
+
+        timeoutIds.forEach(id => {
+            const source = timeouts[id];
+            if (source)
+                GLib.source_remove(source);
+            timeouts[id] = 0;
+        });
     }
 
     _applyOverrides() {
@@ -192,7 +197,7 @@ export const AppDisplayModule = class {
             _appDisplay._grid.layoutManager.fixedIconSize = -1;
             _appDisplay._grid.layoutManager.allow_incomplete_pages = true;
             _appDisplay._grid._currentMode = -1;
-            _appDisplay._grid.setGridModes();
+            _appDisplay._grid.setGridModes?.();
             _appDisplay._grid.set_style('');
             _appDisplay._prevPageArrow.set_scale(1, 1);
             _appDisplay._nextPageArrow.set_scale(1, 1);
@@ -213,10 +218,11 @@ export const AppDisplayModule = class {
             // x11 shell restart skips startup animation
             if (!Main.layoutManager._startingUp) {
                 this._repopulateAppDisplay();
-            } else if (Main.layoutManager._startingUp && Meta.is_restart()) {
-                _timeouts.three = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+            // Meta.is_restart() is related to X11 session and is no longer supported since GNOME 50
+            } else if (Meta.is_restart && Main.layoutManager._startingUp && Meta.is_restart()) {
+                Me.run.timeouts.delayRepopulation = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
                     this._repopulateAppDisplay();
-                    _timeouts.three = 0;
+                    Me.run.timeouts.delayRepopulation = 0;
                     return GLib.SOURCE_REMOVE;
                 });
             }
@@ -298,14 +304,14 @@ export const AppDisplayModule = class {
         this._exposeAppFolders();
 
         // Let the main loop process our changes before we continue
-        _timeouts.updateAppGrid = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+        Me.run.timeouts.updateAppGrid = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
             this._restoreAppGrid();
             Me._resetInProgress = false;
 
             if (callback)
                 callback();
 
-            _timeouts.updateAppGrid = 0;
+            Me.run.timeouts.updateAppGrid = 0;
             return GLib.SOURCE_REMOVE;
         });
     }
@@ -1402,7 +1408,7 @@ const FolderGrid = GObject.registerClass({
         this.set_style(`column-spacing: ${spacing}px; row-spacing: ${spacing}px;`);
         this.layoutManager.fixedIconSize = opt.APP_GRID_FOLDER_ICON_SIZE;
 
-        this.setGridModes([
+        this.setGridModes?.([
             {
                 columns: 20,
                 rows: 20,
@@ -1517,46 +1523,9 @@ const AppFolderDialog = {
                 }),
             });
 
-            this._removeButton.connect('clicked', () => {
-                if (opt.APP_FOLDER_REMOVE_BUTTON === 1 ||
-                (opt.APP_FOLDER_REMOVE_BUTTON === 2 && Date.now() - this._removeButton._lastClick < Clutter.Settings.get_default().double_click_time)) {
-                // Close dialog to avoid crashes
-                    this._isOpen = false;
-                    this._grabHelper.ungrab({ actor: this });
-                    this.emit('open-state-changed', false);
-                    this.hide();
-                    this._popdownCallbacks.forEach(func => func());
-                    this._popdownCallbacks = [];
-                    _appDisplay.ease({
-                        opacity: 255,
-                        duration: FOLDER_DIALOG_ANIMATION_TIME,
-                        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                    });
-
-                    // Reset all keys to delete the relocatable schema
-                    this._view._deletingFolder = true; // Upstream property
-                    let keys = this._folder.settings_schema.list_keys();
-                    for (const key of keys)
-                        this._folder.reset(key);
-
-                    let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
-                    let folders = settings.get_strv('folder-children');
-                    folders.splice(folders.indexOf(this._view._id), 1);
-
-                    // remove all abandoned folders (usually my own garbage and unwanted default folders...)
-                    /* const appFolders = _appDisplay._folderIcons.map(icon => icon._id);
-                    folders.forEach(folder => {
-                        if (!appFolders.includes(folder)) {
-                            folders.splice(folders.indexOf(folder._id), 1);
-                        }
-                    });*/
-                    settings.set_strv('folder-children', folders);
-
-                    this._view._deletingFolder = false;
-                    return;
-                }
-                this._removeButton._lastClick = Date.now();
-            });
+            this._removeButton.connect('clicked',
+                () => this._onRemoveFolder()
+            );
 
             this._entryBox.add_child(this._removeButton);
             this._entryBox.set_child_at_index(this._removeButton, 0);
@@ -1578,12 +1547,52 @@ const AppFolderDialog = {
                 }),
             });
 
-            this._closeButton.connect('clicked', () => {
-                this.popdown();
-            });
+            this._closeButton.connect('clicked',
+                () => this.popdown()
+            );
 
             this._entryBox.add_child(this._closeButton);
         }
+    },
+
+    _onRemoveFolder() {
+        const clickInterval = Date.now() - this._removeButton._lastClick;
+        const doubleClick = clickInterval < Clutter.Settings.get_default().double_click_time;
+        const shouldRemoveFolder =
+            opt.APP_FOLDER_REMOVE_BUTTON === 1 ||
+            (opt.APP_FOLDER_REMOVE_BUTTON === 2 && doubleClick);
+
+        if (shouldRemoveFolder) {
+            // popdown(callback)
+            this.popdown(() => GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => this._removeFolder()));
+            this._removeButton._lastClick = 0;
+        }
+
+        this._removeButton._lastClick = Date.now();
+    },
+
+    _removeFolder() {
+        // Reset all keys to delete the relocatable schema
+        this._view._deletingFolder = true; // Upstream property
+        let keys = this._folder.settings_schema.list_keys();
+        for (const key of keys)
+            this._folder.reset(key);
+
+        let settings = new Gio.Settings({ schema_id: 'org.gnome.desktop.app-folders' });
+        let folders = settings.get_strv('folder-children');
+        folders.splice(folders.indexOf(this._view._id), 1);
+
+        //  remove all abandoned folders (usually my own garbage and unwanted default folders...)
+        /*  const appFolders = _appDisplay._folderIcons.map(icon => icon._id);
+            folders.forEach(folder => {
+                if (!appFolders.includes(folder)) {
+                    folders.splice(folders.indexOf(folder._id), 1);
+                }
+            });*/
+
+        settings.set_strv('folder-children', folders);
+
+        this._view._deletingFolder = false;
     },
 
     popup() {
@@ -1947,21 +1956,21 @@ const AppFolderDialog = {
             scale_y: 1,
             opacity: 255,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         appDisplay.ease({
             delay,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         if ((opt.SHOW_SEARCH_ENTRY || opt.SEARCH_APP_GRID_MODE) && !(opt.SEARCH_ENTRY_POSITION_TOP && opt.WS_TMB_TOP)) {
             Main.overview._overview.controls._searchEntryBin.ease({
                 opacity: 0,
                 duration: FOLDER_DIALOG_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
 
@@ -2003,7 +2012,7 @@ const AppFolderDialog = {
             scale_y: this._source.height / this.child.height,
             opacity: 0,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
             onComplete: () => {
                 this.child.set({
                     translation_x: 0,
@@ -2023,14 +2032,14 @@ const AppFolderDialog = {
         appDisplay.ease({
             opacity: 255,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_IN_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         });
 
         if ((opt.SHOW_SEARCH_ENTRY || opt.SEARCH_APP_GRID_MODE) && !(opt.SEARCH_ENTRY_POSITION_TOP && opt.WS_TMB_TOP)) {
             Main.overview._overview.controls._searchEntryBin.ease({
                 opacity: 255,
                 duration: FOLDER_DIALOG_ANIMATION_TIME,
-                mode: Clutter.AnimationMode.EASE_IN_QUAD,
+                mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
 
@@ -2045,7 +2054,7 @@ const AppFolderDialog = {
         _appDisplay.ease({
             opacity,
             duration: FOLDER_DIALOG_ANIMATION_TIME,
-            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            mode: Clutter.AnimationMode.EASE_OUT_SINE || Clutter.AnimationMode.EASE_OUT_QUAD,
         });
     },
 

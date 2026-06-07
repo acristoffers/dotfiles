@@ -92,7 +92,7 @@ export class CoverflowSwitcher extends BaseSwitcher {
             });
 
             preview.scale = scale;
-            preview.set_pivot_point_placement(Placement.CENTER);
+            preview.set_pivot_point_placement(Placement.TOP_LEFT);
             preview.center_position = {
                 x: findUpperLeftFromCenter(width,
                     this._previewsCenterPosition.x),
@@ -201,7 +201,7 @@ export class CoverflowSwitcher extends BaseSwitcher {
                 pivot_point = new Graphene.Point({ x: 0.5 + 0.5 * progress, y: 0.5});
             }
         }
-        let scale = Math.pow(this._settings.preview_scaling_factor, Math.abs(index - pivot_index));
+        let scale = Math.pow(this._settings.coverflow_preview_scaling_factor, Math.abs(index - pivot_index));
         scale = scale * preview.scale;
         let tweenParams = {
             x: findUpperLeftFromCenter(preview.width, this._previewsCenterPosition.x),
@@ -271,7 +271,7 @@ export class CoverflowSwitcher extends BaseSwitcher {
             this._manager.platform.tween(preview, {
                 opacity: ALPHA * 255,
                 time: this._settings.animation_time,
-                transition: 'easeInOutQuint',
+                transition: 'easeOutQuad',
                 onComplete: () => {
                     preview.set_reactive(true);
                 }
