@@ -103,6 +103,7 @@ with pkgs; [
   sabnzbd
   shellcheck
   shfmt
+  signal-desktop
   spotify
   starship
   steam
