@@ -630,11 +630,11 @@
     "nu-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1780521784,
-        "narHash": "sha256-pk29HELNbBfQZDoXeLotUUZlRbQx7k168Rcw1JUOnvU=",
+        "lastModified": 1781358068,
+        "narHash": "sha256-0D7LnwLOvrn00I8HW0PmBnCf95jMTo1TMEoEsR0g7Hs=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "ca79ff62bd3fe0d31cd50762dcb1c8a46883044e",
+        "rev": "afb08cd49b1454cf8de6293dcfa7eca644ac6462",
         "type": "github"
       },
       "original": {

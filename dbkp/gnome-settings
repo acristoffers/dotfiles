@@ -798,7 +798,7 @@ night-mode=false
 annot-color='yellow'
 continuous=true
 dual-page=false
-dual-page-odd-left=false
+dual-page-odd-left=true
 enable-spellchecking=true
 eraser-mode-objects='true'
 highlight-color='yellow'
@@ -806,8 +806,11 @@ highlight-stroke=2.0
 pen-color='blue'
 pen-stroke=1.0
 show-sidebar=true
+sidebar-page='thumbnails'
 sizing-mode='automatic'
 text-color='blue'
+window-height=1395
+window-width=1693
 
 [org/gnome/photos]
 window-maximized=false
@@ -939,7 +942,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(48.930846471815158, 2.18703)
+night-light-last-coordinates=(48.922080939790732, 2.18703)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1160,7 +1163,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=false
+aaa-loading-profile=true
 activate-settings-window=2
 always-activate-selected-window=false
 animation-speed-factor=100
@@ -1352,9 +1355,9 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1781349101
+check-timestamp=int64 1781419996
 first-run=false
-flatpak-purge-timestamp=int64 1775316981
+flatpak-purge-timestamp=int64 1781401932
 install-timestamp=int64 1764403504
 online-updates-timestamp=int64 1678549560
 update-notification-timestamp=int64 1764491620
