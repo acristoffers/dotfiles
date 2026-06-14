@@ -3,12 +3,13 @@ name = "global"
 version = "1.0.0"
 description = "Global PIP Staging."
 authors = [{ name = "Álan Crístoffer", email = "acristoffers@startmail.com" }]
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 dependencies = [
     "dictor>=0.1.12",
     "hererocks>=0.25.1",
     "pip>=26.1.2",
     "pycode-similar>=1.4",
+    "shexli>=0.2.1",
     "uv-bump>=0.5.0",
 ]
 

@@ -36,7 +36,7 @@ window-is-maximized=false
 window-width=1693
 
 [com/mattjakeman/ExtensionManager]
-height=1395
+height=1080
 width=843
 
 [com/usebottles/bottles]
@@ -916,6 +916,9 @@ last-folder-path='/home/alan/Downloads/Documents'
 [org/gnome/portal/filechooser/org.videolan.VLC]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Code/ros/videos'
 
+[org/gnome/portal/filechooser/zen]
+last-folder-path='/home/alan/Developer/GitHub/gnome-rectangle/result'
+
 [org/gnome/rhythmbox]
 maximized=false
 position=(26, 23)
@@ -942,7 +945,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(48.922080939790732, 2.18703)
+night-light-last-coordinates=(45.85406692465515, 3.54758)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -994,6 +997,7 @@ enabled-connections=@as []
 enabled-connections=['ada996dd-e4dc-4155-b228-af9be04580d6']
 
 [org/gnome/shell]
+always-show-log-out=true
 app-picker-layout=[{'org.gnome.Geary.desktop': <{'position': <0>}>, 'org.gnome.Contacts.desktop': <{'position': <1>}>, 'org.gnome.Weather.desktop': <{'position': <2>}>, 'org.gnome.clocks.desktop': <{'position': <3>}>, 'org.gnome.Maps.desktop': <{'position': <4>}>, 'org.gnome.Snapshot.desktop': <{'position': <5>}>, 'org.gnome.Totem.desktop': <{'position': <6>}>, 'org.gnome.Extensions.desktop': <{'position': <7>}>, 'org.gnome.Calculator.desktop': <{'position': <8>}>, 'simple-scan.desktop': <{'position': <9>}>, 'htop.desktop': <{'position': <10>}>, 'org.gnome.Settings.desktop': <{'position': <11>}>, 'kvantummanager.desktop': <{'position': <12>}>, 'cups.desktop': <{'position': <13>}>, 'Utilities': <{'position': <14>}>, 'nvim.desktop': <{'position': <15>}>, 'yelp.desktop': <{'position': <16>}>, 'nixos-manual.desktop': <{'position': <17>}>, 'qt5ct.desktop': <{'position': <18>}>, 'qt6ct.desktop': <{'position': <19>}>, 'org.gnome.Software.desktop': <{'position': <20>}>, 'org.gnome.TextEditor.desktop': <{'position': <21>}>, 'org.gnome.Tour.desktop': <{'position': <22>}>, 'virt-manager.desktop': <{'position': <23>}>, 'xterm.desktop': <{'position': <24>}>, 'org.gnome.Calendar.desktop': <{'position': <25>}>, 'org.gnome.Loupe.desktop': <{'position': <26>}>}, {'org.gnome.Music.desktop': <{'position': <0>}>, 'org.gnome.Epiphany.desktop': <{'position': <1>}>, 'auto-cpufreq-gtk.desktop': <{'position': <2>}>, 'com.bitwarden.desktop.desktop': <{'position': <3>}>, 'com.brave.Browser.desktop': <{'position': <4>}>, 'btop.desktop': <{'position': <5>}>, 'io.dbeaver.DBeaverCommunity.desktop': <{'position': <6>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <7>}>, 'org.kde.digikam.desktop': <{'position': <8>}>, 'com.dropbox.Client.desktop': <{'position': <9>}>, 'org.kde.elisa.desktop': <{'position': <10>}>, 'emacs.desktop': <{'position': <11>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <12>}>, 'com.github.finefindus.eyedropper.desktop': <{'position': <13>}>, 'org.fedoraproject.MediaWriter.desktop': <{'position': <14>}>, 'fish.desktop': <{'position': <15>}>, 'com.github.tchx84.Flatseal.desktop': <{'position': <16>}>, 'com.github.johnfactotum.Foliate.desktop': <{'position': <17>}>, 'ghostty.desktop': <{'position': <18>}>, 'org.gimp.GIMP.desktop': <{'position': <19>}>, 'org.pipewire.Helvum.desktop': <{'position': <20>}>, 'org.inkscape.Inkscape.desktop': <{'position': <21>}>, 'org.keepassxc.KeePassXC.desktop': <{'position': <22>}>, 'kitty.desktop': <{'position': <23>}>, 'me.acristoffers.Lachesis.desktop': <{'position': <24>}>, 'org.libreoffice.LibreOffice.desktop': <{'position': <25>}>, 'org.libreoffice.LibreOffice.base.desktop': <{'position': <26>}>}, {'org.libreoffice.LibreOffice.calc.desktop': <{'position': <0>}>, 'org.libreoffice.LibreOffice.draw.desktop': <{'position': <1>}>, 'org.libreoffice.LibreOffice.impress.desktop': <{'position': <2>}>, 'org.libreoffice.LibreOffice.math.desktop': <{'position': <3>}>, 'org.libreoffice.LibreOffice.writer.desktop': <{'position': <4>}>, 'com.mongodb.Compass.desktop': <{'position': <5>}>, 'org.kde.okular.desktop': <{'position': <6>}>, 'org.gnome.Papers.desktop': <{'position': <7>}>, 'org.gnome.World.PikaBackup.desktop': <{'position': <8>}>, 'com.github.marhkb.Pods.desktop': <{'position': <9>}>, 'net.davidotek.pupgui2.desktop': <{'position': <10>}>, 'org.rncbc.qpwgraph.desktop': <{'position': <11>}>, 'org.sabnzbd.sabnzbd.desktop': <{'position': <12>}>, 'io.github.mhogomchungu.sirikali.desktop': <{'position': <13>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <14>}>, 'com.spotify.Client.desktop': <{'position': <15>}>, 'com.valvesoftware.Steam.desktop': <{'position': <16>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <17>}>, 'com.transmissionbt.Transmission.desktop': <{'position': <18>}>, 'org.videolan.VLC.desktop': <{'position': <19>}>, 'org.wezfurlong.wezterm.desktop': <{'position': <20>}>, 'com.github.xournalpp.xournalpp.desktop': <{'position': <21>}>, 'us.zoom.Zoom.desktop': <{'position': <22>}>, 'org.zotero.Zotero.desktop': <{'position': <23>}>}]
 command-history=['gl', 'r', 'lgh', 'lg']
 disable-user-extensions=false
@@ -1018,7 +1022,7 @@ legacy-tray-enabled=true
 tray-pos='right'
 
 [org/gnome/shell/extensions/auto-move-windows]
-application-list=['org.telegram.desktop.desktop:3', 'org.signal.Signal.desktop:3', 'org.mozilla.Thunderbird.desktop:4', 'com.discordapp.Discord.desktop:3', 'org.gnome.Fractal.desktop:3', 'org.mozilla.firefox.desktop:1', 'app.zen_browser.zen.desktop:1']
+application-list=['org.telegram.desktop.desktop:3', 'org.gnome.Fractal.desktop:3', 'zen.desktop:1', 'net.thunderbird.Thunderbird.desktop:4', 'discord.desktop:3', 'signal.desktop:3']
 
 [org/gnome/shell/extensions/blur-my-shell/appfolder]
 blur=false
@@ -1455,7 +1459,7 @@ graphics-type='system'
 media-default='/home/alan/Downloads'
 
 [org/virt-manager/virt-manager/urls]
-isos=['/home/alan/Downloads/archlinux-2026.05.01-x86_64.iso', '/home/alan/Downloads/Fedora-Silverblue-ostree-x86_64-43-1.6.iso', '/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso', '/home/alan/Downloads/neon-user-20240228-1346.iso']
+isos=['/home/alan/Downloads/Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso', '/home/alan/Downloads/archlinux-2026.05.01-x86_64.iso', '/home/alan/Downloads/Fedora-Silverblue-ostree-x86_64-43-1.6.iso', '/home/alan/Downloads/rhel-10.0-x86_64-boot.iso', '/home/alan/Downloads/Fedora-Workstation-Live-42_Beta-1.4.x86_64.iso', '/home/alan/Downloads/Win10_22H2_EnglishInternational_x64v1.iso', '/home/alan/Downloads/Win11_24H2_English_x64.iso', '/home/alan/Downloads/Fedora-Workstation-Live-x86_64-41_Beta-1.2.iso', '/home/alan/Downloads/ubuntu-22.04.4-desktop-amd64.iso', '/home/alan/Downloads/debian-11.9.0-amd64-netinst.iso']
 
 [org/virt-manager/virt-manager/vmlist-fields]
 disk-usage=false
@@ -1591,6 +1595,11 @@ vm-window-size=(1485, 967)
 autoconnect=1
 resize-guest=1
 vm-window-size=(1268, 1358)
+
+[org/virt-manager/virt-manager/vms/c44703d53416424f93ddd1c6d5b57f4e]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1358)
 
 [org/virt-manager/virt-manager/vms/c6326ba23aae40e8a0fe046fab3fc854]
 autoconnect=1

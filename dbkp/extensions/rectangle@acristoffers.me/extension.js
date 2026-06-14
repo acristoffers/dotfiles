@@ -47,7 +47,7 @@ export default class GnomeRectangle extends Extension {
         this.animationState = new AnimationState();
         this.keyManager = new ShortcutsManager();
         this.gsettings = this.getSettings();
-        this.gsettings.connect('changed', this.settingsChanged.bind(this));
+        this.gsettings.connectObject('changed', this.settingsChanged.bind(this));
         this.registerShortcuts();
         if (this.gsettings?.get_boolean('show-icon') ?? true) {
             this.menu = new PanelMenu.Button(0, "Rectangle", false);
@@ -60,8 +60,9 @@ export default class GnomeRectangle extends Extension {
         this.keyManager?.removeAll();
         this.keyManager?.destroy();
         this.keyManager = undefined;
+        this.gsettings?.disconnectObject(this.gsettings);
         this.gsettings = undefined;
-        if (this.animationState?.id !== undefined) {
+        if (this.animationState?.id != null) {
             GLib.Source.remove(this.animationState.id);
         }
         this.animationState = undefined;
@@ -151,9 +152,10 @@ export default class GnomeRectangle extends Extension {
      * -7: Increases window span (rs and cs)
      * -8: Move window to another monitor
      */
-    manage(index, rs, cs, r, c) {
+    manage(index, rs, cs, r, c, _t) {
         const app = this.focusedWindow();
         const win = app.get_frame_rect();
+        const now = Date.now();
         let geometry = {
             width: win.width,
             height: win.height,
@@ -188,7 +190,7 @@ export default class GnomeRectangle extends Extension {
             i = Math.min(pr - prs, Math.max(0, i + cs));
             idx = i * pc + j;
             geometry = this.geometryForGrid(win, idx, prs, pcs, pr, pc);
-            app.rectangleArgs = [idx, prs, pcs, pr, pc];
+            app.rectangleArgs = [idx, prs, pcs, pr, pc, now];
         }
         else if (index === -6) {
             const screen = this.screenSize();
@@ -224,7 +226,7 @@ export default class GnomeRectangle extends Extension {
             newi = i < newi ? i : newi;
             idx = newi * pc + newj;
             geometry = this.geometryForGrid(win, idx, prs, pcs, pr, pc);
-            app.rectangleArgs = [idx, prs, pcs, pr, pc];
+            app.rectangleArgs = [idx, prs, pcs, pr, pc, now];
         }
         else if (index === -8) {
             const currentMonitor = app.get_monitor();
@@ -255,8 +257,35 @@ export default class GnomeRectangle extends Extension {
                 y: geometry.y - step / 2.0,
             };
         }
+        else if (index === -11) {
+            const gs = rs == 0 ? [
+                [0, 1, 1, 1, 2],
+                [0, 1, 2, 1, 3],
+                [0, 1, 3, 1, 4],
+                [0, 1, 1, 1, 4],
+                [0, 1, 1, 1, 3],
+            ] : [
+                [1, 1, 1, 1, 2],
+                [1, 1, 2, 1, 3],
+                [1, 1, 3, 1, 4],
+                [3, 1, 1, 1, 4],
+                [2, 1, 1, 1, 3],
+            ];
+            const rectangleArgs = app.rectangleArgs ?? [...gs[0], 0];
+            let i = 0;
+            if (Math.abs(now - rectangleArgs[5]) < 1000) {
+                i = gs.findIndex(g => g[0] == rectangleArgs[0]
+                    && g[1] == rectangleArgs[1]
+                    && g[2] == rectangleArgs[2]
+                    && g[3] == rectangleArgs[3]
+                    && g[4] == rectangleArgs[4]);
+                i = (i + 1) % 5;
+            }
+            geometry = this.geometryForGrid(win, ...gs[i]);
+            app.rectangleArgs = [...gs[i], now];
+        }
         if (index >= 0) {
-            app.rectangleArgs = [index, rs, cs, r, c];
+            app.rectangleArgs = [index, rs, cs, r, c, now];
         }
         if (app.fullscreen)
             app.unmake_fullscreen();
@@ -299,7 +328,7 @@ export default class GnomeRectangle extends Extension {
         }
         const [shortcut] = this.gsettings?.get_strv(key) ?? [''];
         if (shortcut != null && shortcut.length != 0) {
-            action = this.keyManager?.add(shortcut, () => this.manage(i, rs, cs, r, c));
+            action = this.keyManager?.add(shortcut, () => this.manage(i, rs, cs, r, c, Date.now()));
             if (action != null && action > 0) {
                 this.shortcuts.set(key, action);
             }
@@ -366,8 +395,8 @@ export default class GnomeRectangle extends Extension {
         'tile-ninth-bottom-right': [8, 1, 1, 3, 3],
         'tile-half-center-vertical': [-2, 1, 1, 1, 2],
         'tile-half-center-horizontal': [-2, 1, 1, 2, 1],
-        'tile-half-left': [0, 1, 1, 1, 2],
-        'tile-half-right': [1, 1, 1, 1, 2],
+        'tile-half-left': [-11, 0, 0, 0, 0],
+        'tile-half-right': [-11, 1, 0, 0, 0],
         'tile-half-top': [0, 1, 1, 2, 1],
         'tile-half-bottom': [1, 1, 1, 2, 1],
         'tile-two-thirds-left': [0, 1, 2, 1, 3],
@@ -614,7 +643,7 @@ export default class GnomeRectangle extends Extension {
         });
         let settingsButton = new PopupMenu.PopupMenuItem("Settings");
         settingsButton.insert_child_at_index(settingsIcon, 0);
-        settingsButton.connect('activate', () => { this.openPreferences(); });
+        settingsButton.connectObject('activate', () => { this.openPreferences(); });
         menu?.addMenuItem(settingsButton);
     }
     #menuIcon(name) {
@@ -629,7 +658,7 @@ export default class GnomeRectangle extends Extension {
             child: this.#menuIcon(tile),
             styleClass: 'group-button',
         });
-        button.connect("clicked", () => this.manage(i, rs, cs, r, c));
+        button.connectObject("clicked", () => this.manage(i, rs, cs, r, c, Date.now()));
         return button;
     }
 }
