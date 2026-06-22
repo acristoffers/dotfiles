@@ -1,7 +1,6 @@
 pkgs:
 
 with pkgs; [
-  # texlab
   (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
   ansible
   any-nix-shell
@@ -10,8 +9,8 @@ with pkgs; [
   blesh
   brave
   cacert
+  claude-agent-acp
   claude-code
-  claude-code-acp
   cowsay
   crosspipe
   curl
@@ -84,6 +83,7 @@ with pkgs; [
   nerd-fonts.inconsolata
   nerd-fonts.jetbrains-mono
   nerd-fonts.meslo-lg
+  nfpm
   nix-index
   nix-output-monitor
   nixVersions.latest
