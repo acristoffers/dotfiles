@@ -332,6 +332,9 @@ application-id='com.usebottles.bottles.desktop'
 [org/gnome/desktop/notifications/application/com-valvesoftware-steam]
 application-id='com.valvesoftware.Steam.desktop'
 
+[org/gnome/desktop/notifications/application/discord]
+application-id='discord.desktop'
+
 [org/gnome/desktop/notifications/application/emacs]
 application-id='emacs.desktop'
 
@@ -945,7 +948,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.85406692465515, 3.54758)
+night-light-last-coordinates=(45.853104643230481, 3.54758)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1167,7 +1170,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=true
+aaa-loading-profile=false
 activate-settings-window=2
 always-activate-selected-window=false
 animation-speed-factor=100
@@ -1359,7 +1362,7 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1781419996
+check-timestamp=int64 1782144893
 first-run=false
 flatpak-purge-timestamp=int64 1781401932
 install-timestamp=int64 1764403504

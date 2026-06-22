@@ -156,8 +156,8 @@ rec {
   };
 
   services.gnome = {
-    tinysparql.enable = true;
-    localsearch.enable = true;
+    tinysparql.enable = false;
+    localsearch.enable = false;
   };
 
   services.samba = {
