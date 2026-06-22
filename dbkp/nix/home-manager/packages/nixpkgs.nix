@@ -118,7 +118,6 @@ with pkgs; [
   unzip
   uutils-coreutils-noprefix
   uv
-  vagrant
   vlc
   watch
   watchman
