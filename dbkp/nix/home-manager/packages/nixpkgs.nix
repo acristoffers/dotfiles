@@ -75,6 +75,7 @@ with pkgs; [
   lazydocker
   ledger
   less
+  maestral-gui
   man-pages
   mdcat
   mediainfo
