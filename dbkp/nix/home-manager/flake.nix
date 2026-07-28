@@ -46,6 +46,9 @@
     wbproto-formatter.inputs.nixpkgs.follows = "nixpkgs";
     wbproto-formatter.inputs.flake-utils.follows = "flake-utils";
 
+    herdr.url = "github:ogulcancelik/herdr";
+    herdr.inputs.nixpkgs.follows = "nixpkgs";
+
     # dms.url = "github:AvengeMedia/DankMaterialShell/stable";
     # dms.inputs.nixpkgs.follows = "nixpkgs";
     #
