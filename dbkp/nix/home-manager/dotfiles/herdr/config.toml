@@ -1,0 +1,24 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+
+[terminal]
+default_shell = "/home/alan/.nix-profile/bin/fish"
+
+[keys]
+prefix = "ctrl+/"
+previous_workspace = "prefix+("
+next_workspace = "prefix+)"
+previous_agent = "prefix+["
+next_agent = "prefix+]"
+
+[ui]
+sidebar_start_collapsed = true
+
+show_agent_labels_on_pane_borders = true
+[session]
+resume_agents_on_restore = false
+
+[ui.toast]
+delivery = "herdr"

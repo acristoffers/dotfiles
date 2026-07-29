@@ -43,6 +43,7 @@ rec {
     "npm".source = ./dotfiles/npm;
     "tmux".source = ./dotfiles/tmux;
     "tridactyl".source = ./dotfiles/tridactyl;
+    "herdr/config.toml".source = ./dotfiles/herdr/config.toml;
     # "hypr" = { source = ./dotfiles/hyprland; recursive = true; };
     # "xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
   };
