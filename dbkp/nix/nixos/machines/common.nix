@@ -331,10 +331,10 @@ rec {
     interval = "hourly";
     package = pkgs.plocate;
   };
-  services.mysql = {
-    enable = true;
-    package = pkgs.mariadb;
-  };
+  # services.mysql = {
+  #   enable = true;
+  #   package = pkgs.mariadb;
+  # };
   services.resolved = {
     enable = true;
     settings.Resolve = {

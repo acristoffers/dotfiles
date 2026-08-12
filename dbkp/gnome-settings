@@ -721,6 +721,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/0ddfa594-214f-4149-b0b7-b2c53ac2dda7]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/160325ff-50ad-351e-8ce9-8099a9fd5feb]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -746,6 +750,10 @@ ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
 [org/gnome/nm-applet/eap/88a5bcf5-f96f-4432-9616-fa3931fd7187]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
+[org/gnome/nm-applet/eap/890e07d0-c85d-4d58-926f-526889012109]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
@@ -884,7 +892,7 @@ last-folder-path='/home/alan/Downloads/projects'
 last-folder-path='/home/alan/Pictures'
 
 [org/gnome/portal/filechooser/org.gnome.Nautilus]
-last-folder-path='/home/alan/Developer/GitHub/PersonalPage/webapp/public'
+last-folder-path='/run/media/alan/BIOS'
 
 [org/gnome/portal/filechooser/org.gnome.Papers]
 last-folder-path='/home/alan/Downloads'
@@ -951,7 +959,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.712680707207653, 4.9776199999999999)
+night-light-last-coordinates=(45.703511774955302, 4.9776199999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -1173,7 +1181,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=true
+aaa-loading-profile=false
 activate-settings-window=2
 always-activate-selected-window=false
 animation-speed-factor=100

@@ -14,10 +14,10 @@
 
   services.desktopManager.cosmic.enable = false;
 
-  services.displayManager.autoLogin = {
-    enable = true;
-    user = "alan";
-  };
+  # services.displayManager.autoLogin = {
+  #   enable = true;
+  #   user = "alan";
+  # };
 
   security.pam.services.gdm.enableGnomeKeyring = true;
 
