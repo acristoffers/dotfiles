@@ -10,6 +10,8 @@
 
 'use strict';
 
+import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 import GLib from 'gi://GLib';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
@@ -94,28 +96,11 @@ export default class VShell extends Extension.Extension {
         this._init();
         this._initModules();
 
-        // prevent conflicts during startup
-        let skipStartup = Me.gSettings.get_boolean('delay-startup') ||
-                Me.Util.getEnabledExtensions('ubuntu-dock').length ||
-                Me.Util.getEnabledExtensions('dash-to-dock').length ||
-                Me.Util.getEnabledExtensions('dash2dock').length ||
-                Me.Util.getEnabledExtensions('dash-to-panel').length ||
-                // Temporary workaround – GNOME 50 enables extensions after the startup animation begins
-                Me.shellVersion >= 50;
-        if (skipStartup && Main.layoutManager._startingUp) {
-            this._startupConId = Main.layoutManager.connect('startup-complete', () => {
-                this._delayedStartup = true;
-                this._activateVShell();
-                // Since VShell has been activated with a delay, move it in extensionOrder
-                let extensionOrder = Main.extensionManager._extensionOrder;
-                const idx = extensionOrder.indexOf(this.metadata.uuid);
-                extensionOrder.push(extensionOrder.splice(idx, 1)[0]);
-                Main.layoutManager.disconnect(this._startupConId);
-                this._startupConId = 0;
-            });
-        } else {
+        if (Main.layoutManager._startingUp && !this._startupConId)
+            this._activateVShellOnStartup();
+        else
             this._activateVShell();
-        }
+
 
         console.debug(`${Me.metadata.name}: enabled`);
     }
@@ -125,14 +110,16 @@ export default class VShell extends Extension.Extension {
     disable() {
         if (this._startupConId)
             Main.layoutManager.disconnect(this._startupConId);
+        this._startupConId = null;
         this.removeVShell();
         this._disposeModules();
-
-        console.debug(`${Me.metadata.name}: disabled`);
 
         Me.updateMessageDialog.destroy();
         Me.updateMessageDialog = null;
         Me.run = null;
+
+        console.debug(`${Me.metadata.name}: disabled`);
+
         this._cleanGlobals();
     }
 
@@ -179,19 +166,58 @@ export default class VShell extends Extension.Extension {
         Me.opt = null;
     }
 
+    _activateVShellOnStartup() {
+        // Since GNOME 50 we cannot rely on patching the controls.runStartupAnimation()
+        // The workaround here is hiding the default startup animation and activate V-Shell when it's finished
+
+        // Minimize default animation duration
+        St.Settings.get().slow_down_factor = 0;
+        // Hide screen content until V-Shell is ready
+        const Color = Clutter.Color ?? Cogl.Color;
+        this._screenCover = new Clutter.Actor({
+            background_color: new Color({ red: 0, green: 0, blue: 0, alpha: 255 }),
+            width: global.screen_width,
+            height: global.screen_height,
+        });
+        Main.layoutManager.addChrome(this._screenCover);
+
+        this._startupConId = Main.layoutManager.connect('startup-complete', () => {
+            // Move the screen cover above all other actors
+            Main.layoutManager.uiGroup.set_child_above_sibling(this._screenCover, null);
+            Me.run.timeouts.startupAnimation = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                this._screenCover.destroy();
+                this._screenCover = null;
+                Me.run.timeouts.startupAnimation1 = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                    Me.run.delayedStartup = false;
+                    Main.overview._overview.controls.realizeAppDisplayAndFinishStartup();
+                    Me.run.timeouts.startupAnimation1 = null;
+                    return GLib.SOURCE_REMOVE;
+                });
+                Me.run.delayedStartup = true;
+                this._activateVShell();
+                // Since VShell has been activated with a delay, move it in extensionOrder
+                let extensionOrder = Main.extensionManager._extensionOrder;
+                const idx = extensionOrder.indexOf(this.metadata.uuid);
+                extensionOrder.push(extensionOrder.splice(idx, 1)[0]);
+                Main.layoutManager.disconnect(this._startupConId);
+                this._startupConId = null;
+                Me.run.timeouts.startupAnimation = null;
+                return GLib.SOURCE_REMOVE;
+            });
+        });
+    }
+
     _activateVShell() {
         this._enabled = true;
 
-        if (!this._delayedStartup && !Main.sessionMode.isLocked) {
+        if (!Me.run.delayedStartup)
+            this._removeTimeouts();
+
+        if (!Me.run.delayedStartup && !Main.sessionMode.isLocked)
             Me.updateMessageDialog.showMessage();
-            this._delayedStartup = false;
-        }
 
         if (!this._originalGetNeighbor)
             this._originalGetNeighbor = Meta.Workspace.prototype.get_neighbor;
-
-        this._removeTimeouts();
-        Me.run.timeouts = {};
 
         if (!Main.layoutManager._startingUp)
             this._ensureOverviewIsHidden();
@@ -224,6 +250,9 @@ export default class VShell extends Extension.Extension {
         // Rebasing V-Shell when overview is open causes problems
         // also if Dash to Dock is enabled, disabling V-Shell can result in a broken overview
         this._ensureOverviewIsHidden();
+
+        this._screenCover?.destroy();
+        this._screenCover = null;
 
         this._enabled = false;
 
@@ -258,7 +287,7 @@ export default class VShell extends Extension.Extension {
             Main.overview.dash.showAppsButton.checked = false;
         }
     }
-
+    
     _resetShellProperties() {
         const controlsManager = Main.overview._overview.controls;
         // layoutManager._dash retains reference to the default dash even when DtD is enabled
@@ -268,16 +297,17 @@ export default class VShell extends Extension.Extension {
         controlsManager._workspacesDisplay.scale_x = 1;
         controlsManager.set_child_above_sibling(controlsManager._workspacesDisplay, null);
         delete controlsManager._dashIsAbove;
-
+        
         // following properties may be reduced if extensions are rebased while the overview is open
         controlsManager._thumbnailsBox.remove_all_transitions();
         controlsManager._thumbnailsBox.scale_x = 1;
         controlsManager._thumbnailsBox.scale_y = 1;
         controlsManager._thumbnailsBox.opacity = 255;
         controlsManager._thumbnailsBox.translation_y = 0;
-
+        
         controlsManager._searchEntryBin.visible = true;
         controlsManager._searchController._searchResults.opacity = 255;
+        controlsManager._workspacesDisplay.opacity = 255;
         Main.layoutManager.panelBox.translation_y = 0;
     }
 
@@ -294,11 +324,7 @@ export default class VShell extends Extension.Extension {
     }
 
     _setInitialWsIndex() {
-        if (Main.layoutManager._startingUp) {
-            GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
-                Main.overview._overview.controls._workspaceAdjustment.set_value(global.workspace_manager.get_active_workspace_index());
-            });
-        }
+        Main.overview._overview.controls._workspaceAdjustment.set_value(global.workspace_manager.get_active_workspace_index());
     }
 
     _updateSettingsConnection() {
@@ -364,7 +390,7 @@ export default class VShell extends Extension.Extension {
                     const dashReplacement = uuid.includes('dash-to-dock') || uuid.includes('ubuntu-dock') || uuid.includes('dash-to-panel');
                     if (dashReplacement && reset)
                         this._watchDashToDock = true;
-                    if (!Main.layoutManager._startingUp && reset && dashReplacement)
+                    if (!Me.run.delayedStartup && reset && dashReplacement)
                         this._adaptToSystemChange(2000);
                 }
             );
@@ -485,7 +511,7 @@ export default class VShell extends Extension.Extension {
     }
 
     _adaptToSystemChange(timeout = 200, full = false) {
-        if (!this._enabled || Main.layoutManager._startingUp)
+        if (!this._enabled || Main.layoutManager._startingUp || this._screenCover)
             return;
 
         if (Me.run.timeouts.reset)
@@ -595,7 +621,7 @@ export default class VShell extends Extension.Extension {
         // Options for workspace switcher
         Meta.Workspace.prototype.get_neighbor = this._getNeighbor;
 
-        // Delay search so it doesn't make the search view transition stuttering
+         // Delay search so it doesn't make the search view transition stuttering
         // 150 is the default value in GNOME Shell, but the search feels laggy
         // Of course there is some overload for fast keyboard typist
         if (opt.SEARCH_VIEW_ANIMATION)

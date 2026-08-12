@@ -39,6 +39,8 @@ import {Switcher} from './switcher.js';
 import {CoverflowSwitcher} from './coverflowSwitcher.js';
 import {TimelineSwitcher} from './timelineSwitcher.js';
 
+import {ExtensionSettingKeys} from './settings.js';
+
 const POSITION_TOP = 1;
 const POSITION_BOTTOM = 7;
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
@@ -47,6 +49,16 @@ const DESKTOP_TOUCHPAD_SCHEMA = 'org.gnome.desktop.peripherals.touchpad';
 const KEY_NATURAL_SCROLL = 'natural-scroll';
 
 const TRANSITION_TYPE = 'easeOutQuad';
+
+const keys = ExtensionSettingKeys;
+
+const dkeys = [
+    KEY_TEXT_SCALING_FACTOR,
+];
+
+const touchpadkeys = [
+    KEY_NATURAL_SCROLL,
+];
 
 const modes = [
     Clutter.AnimationMode.EASE_IN_BOUNCE,
@@ -132,7 +144,6 @@ class AbstractPlatform {
             raise_mouse_over: true,
             switcher_looping_method: 'Flip Stack',
             switch_application_behaves_like_switch_windows: false,
-            blur_radius: 0,
             desaturate_factor: 0.0,
             tint_color: (0., 0., 0.),
             switcher_background_color: (0., 0., 0.),
@@ -224,69 +235,6 @@ export class PlatformGnomeShell extends AbstractPlatform {
         if (this._touchpadSettings === null) {
             this._touchpadSettings = new Gio.Settings({ schema_id: DESKTOP_TOUCHPAD_SCHEMA });
         }
-
-        let keys = [
-            "animation-time",
-            "randomize-animation-times",
-            "dim-factor",
-            "position",
-            "icon-style",
-            "icon-has-shadow",
-            "overlay-icon-size",
-            "overlay-icon-opacity",
-            "offset",
-            "hide-panel",
-            "enforce-primary-monitor",
-            "easing-function",
-            "current-workspace-only",
-            "switch-per-monitor",
-            "skip-minimized-windows",
-            "switcher-style",
-            "preview-to-monitor-ratio",
-            "coverflow-preview-scaling-factor",
-            "timeline-preview-distance",
-            "timeline-preview-angle",
-            "timeline-preview-tilt-angle",
-            "timeline-preview-scaling-factor",
-            "timeline-preview-scale-with-distance",
-            "bind-to-switch-applications",
-            "bind-to-switch-windows",
-            "perspective-correction-method",
-            "highlight-mouse-over",
-            "raise-mouse-over",
-            "desaturate-factor",
-            "blur-radius",
-            "switcher-looping-method",
-            "switch-application-behaves-like-switch-windows",
-            "use-tint",
-            "tint-color",
-            "tint-blend",
-            "tint-use-theme-color",
-            "switcher-background-color",
-            "use-glitch-effect",
-            "invert-swipes",
-            "highlight-color",
-            "highlight-use-theme-color",
-            "coverflow-switch-applications",
-            "coverflow-switch-applications-on-all-workspaces",
-            "coverflow-switch-windows",
-            "coverflow-switch-windows-on-all-workspaces",
-            "prefs-default-width",
-            "prefs-default-height",
-            "verbose-logging",
-            "icon-add-remove-effects",
-            "coverflow-window-angle",
-            "coverflow-window-offset-width",
-            "start-with-next",
-        ];
-
-        let dkeys = [
-            KEY_TEXT_SCALING_FACTOR,
-        ];
-
-        let touchpadkeys = [
-            KEY_NATURAL_SCROLL,
-        ];
 
         this._connections = [];
         for (let key of keys) {
@@ -419,7 +367,6 @@ export class PlatformGnomeShell extends AbstractPlatform {
                 highlight_use_theme_color: settings.get_boolean("highlight-use-theme-color"),
                 raise_mouse_over: settings.get_boolean("raise-mouse-over"),
                 desaturate_factor: settings.get_double("desaturate-factor") === 1.0 ? 0.999 : settings.get_double("desaturate-factor"),
-                blur_radius: settings.get_double("blur-radius"),
                 switcher_looping_method: settings.get_string("switcher-looping-method"),
                 switch_application_behaves_like_switch_windows: settings.get_boolean("switch-application-behaves-like-switch-windows"),
                 tint_color: settings.get_value("tint-color").deep_unpack(),
@@ -571,12 +518,8 @@ export class PlatformGnomeShell extends AbstractPlatform {
     initBackground() {
         this._backgroundGroup = new Meta.BackgroundGroup();
         this._backgroundGroup.set_name("coverflow-alt-tab-background-group");
-        Main.layoutManager.uiGroup.add_child(this._backgroundGroup);
-        if (this._backgroundGroup.lower_bottom) {
-            this._backgroundGroup.lower_bottom();
-        } else {
-            Main.uiGroup.set_child_below_sibling(this._backgroundGroup, null);
-        }
+        Main.uiGroup.add_child(this._backgroundGroup);
+        Main.uiGroup.set_child_above_sibling(this._backgroundGroup, global.window_group);
 
         this._backgroundShade = new Clutter.Actor({
             opacity: 0,
@@ -595,7 +538,7 @@ export class PlatformGnomeShell extends AbstractPlatform {
 
         this._backgroundGroup.add_child(this._backgroundShade);
         this._backgroundGroup.set_child_above_sibling(this._backgroundShade, null);
-
+        this._backgroundGroup.opacity = 0;
         this._backgroundGroup.hide();
         for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
             new Background.BackgroundManager({
@@ -638,6 +581,11 @@ export class PlatformGnomeShell extends AbstractPlatform {
             this._logger.error(e);
         }
         this._backgroundGroup.show();
+        this.tween(this._backgroundGroup, {
+            opacity: 255,
+            time: this._settings.animation_time,
+            transition: 'easeInOutQuint',
+        });
         this.tween(this._backgroundShade, {
             opacity: 255,
             time: this._settings.animation_time,
@@ -681,6 +629,11 @@ export class PlatformGnomeShell extends AbstractPlatform {
             this._logger.error(e);
         }
 
+        this.tween(this._backgroundGroup, {
+            opacity: 0,
+            time: this._settings.animation_time,
+            transition: 'easeInOutQuint',
+        });
         this.tween(this._backgroundShade, {
             time: this._settings.animation_time * 0.95,
             transition: 'easeInOutQuint',
@@ -696,7 +649,7 @@ export class PlatformGnomeShell extends AbstractPlatform {
     getPanels() {
         let panels = [];
         for (let child of Main.layoutManager.uiGroup.get_children()) {
-            if (child.get_name() === "panelBox") {
+            if (child.get_name() === "panelBox" || child.get_name() === "dashtodockContainer") {
                 panels.push(child);
             }
         }

@@ -21,16 +21,16 @@ function update -d "Updates many package managers."
     cancel -a -x # Deletes cups temp files (it leaves shit around ¬¬)
   end
 
-  update-apt
+  # update-apt
   update-dnf
   update-flatpak
   update-nix $_flag_debug
-  update-brew
+  # update-brew
   update-pip3
-  update-tlmgr
+  # update-tlmgr
   update-rustup
-  update-flutter
-  update-doom
+  # update-flutter
+  # update-doom
 
   if test (date -u +%u) = 1
     if not test -e ~/.local/state/nixgc

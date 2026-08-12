@@ -56,6 +56,7 @@ export const Options = class Options {
             showAppsIconPosition: ['int', 'show-app-icon-position'],
             wsThumbnailScale: ['int', 'ws-thumbnail-scale'],
             wsThumbnailScaleAppGrid: ['int', 'ws-thumbnail-scale-appgrid'],
+            wsThumbnailScaleSearch: ['int', 'ws-thumbnail-scale-search'],
             secWsThumbnailScale: ['int', 'secondary-ws-thumbnail-scale'],
             showSearchEntry: ['boolean', 'show-search-entry'],
             centerSearch: ['boolean', 'center-search'],
@@ -145,7 +146,7 @@ export const Options = class Options {
             alwaysActivateSelectedWindow: ['boolean', 'always-activate-selected-window'],
             winPreviewSecBtnAction: ['int', 'win-preview-sec-mouse-btn-action'],
             winPreviewMidBtnAction: ['int', 'win-preview-mid-mouse-btn-action'],
-            winPreviewShowCloseButton: ['boolean', 'win-preview-show-close-button'],
+            winPreviewCloseButton: ['int', 'win-preview-close-button'],
             windowIconClickAction: ['int', 'window-icon-click-action'],
             winPreviewHeightCompensation: ['int', 'win-preview-height-compensation'],
             overlayKeyPrimary: ['int', 'overlay-key-primary'],
@@ -156,7 +157,6 @@ export const Options = class Options {
             clickEmptyClose: ['boolean', 'click-empty-close'],
             highlightingStyle: ['int', 'highlighting-style'],
 
-            delayStartup: ['boolean', 'delay-startup'],
             appGridPerformance: ['boolean', 'app-grid-performance'],
             smoothOverviewAnimation: ['boolean', 'smooth-overview-animation'],
             newWindowMonitorFix: ['boolean', 'new-window-monitor-fix'],
@@ -415,12 +415,14 @@ export const Options = class Options {
         this.SHOW_WST_LABELS_ON_HOVER = this.get('showWsTmbLabelsOnHover');
         this.CLOSE_WS_BUTTON_MODE = this.get('closeWsButtonMode');
 
-        // thumbnailsBox scale must be above 0 to avoid scale issues
-        this.TMB_ZERO_SCALE = 0.01;
-        this.MAX_THUMBNAIL_SCALE = this.get('wsThumbnailScale') / 100 + this.TMB_ZERO_SCALE;
-        this.MAX_THUMBNAIL_SCALE_APPGRID = this.get('wsThumbnailScaleAppGrid') / 100 + this.TMB_ZERO_SCALE;
-        this.MAX_THUMBNAIL_SCALE_STABLE = this.MAX_THUMBNAIL_SCALE === this.MAX_THUMBNAIL_SCALE_APPGRID;
-        this.SEC_MAX_THUMBNAIL_SCALE = this.get('secWsThumbnailScale') / 100 + this.TMB_ZERO_SCALE;
+        this.MAX_THUMBNAIL_SCALE = this.get('wsThumbnailScale') / 100;
+        this.MAX_THUMBNAIL_SCALE_APPGRID = this.get('wsThumbnailScaleAppGrid') / 100;
+        this.MAX_THUMBNAIL_SCALE_SEARCH = this.get('wsThumbnailScaleSearch') / 100;
+        this.SHOW_WS_TMB_WIN_PICKER = !!this.MAX_THUMBNAIL_SCALE;
+        this.SHOW_WS_TMB_SEARCH = !!this.MAX_THUMBNAIL_SCALE_SEARCH;
+        this.SHOW_WS_TMB_APPGRID = !!this.MAX_THUMBNAIL_SCALE_APPGRID;
+        this.MAX_THUMBNAIL_SCALE_STABLE = this.MAX_THUMBNAIL_SCALE === this.MAX_THUMBNAIL_SCALE_APPGRID === this.MAX_THUMBNAIL_SCALE_SEARCH;
+        this.SEC_MAX_THUMBNAIL_SCALE = this.get('secWsThumbnailScale') / 100;
 
         this.WS_PREVIEW_SCALE = this.get('wsPreviewScale') / 100;
         this.SEC_WS_PREVIEW_SCALE = this.get('secWsPreviewScale') / 100;
@@ -562,9 +564,9 @@ export const Options = class Options {
         this.WS_SW_POPUP_MODE = this.get('wsSwPopupMode');
 
         this.WS_ANIMATION = this.get('workspaceAnimation');
-        // Animation needs ws thumbnails
-        if (!this.SHOW_WS_TMB || this.MAX_THUMBNAIL_SCALE === this.TMB_ZERO_SCALE ||
-            this.MAX_THUMBNAIL_SCALE_APPGRID === this.TMB_ZERO_SCALE)
+        // WS animation needs ws thumbnails
+        if (!this.SHOW_WS_TMB || !this.MAX_THUMBNAIL_SCALE ||
+            !this.MAX_THUMBNAIL_SCALE_APPGRID)
             this.WS_ANIMATION = 0;
         this.WS_ANIMATION_SINGLE = this.WS_ANIMATION === 1;
         this.WS_ANIMATION_ALL = this.WS_ANIMATION === 2;
@@ -599,8 +601,10 @@ export const Options = class Options {
         this.ALWAYS_ACTIVATE_SELECTED_WINDOW = this.get('alwaysActivateSelectedWindow');
         this.WIN_PREVIEW_SEC_BTN_ACTION = this.get('winPreviewSecBtnAction');
         this.WIN_PREVIEW_MID_BTN_ACTION = this.get('winPreviewMidBtnAction');
-        this.SHOW_CLOSE_BUTTON = this.get('winPreviewShowCloseButton');
         this.WINDOW_ICON_CLICK_ACTION = this.get('windowIconClickAction');
+        this.SHOW_CLOSE_BUTTON = this.get('winPreviewCloseButton');
+        this.SHOW_SELECTED_CLOSE_BUTTON = this.SHOW_CLOSE_BUTTON === 1;
+        this.ALWAYS_SHOW_CLOSE_BUTTON = this.SHOW_CLOSE_BUTTON === 2;
 
         this.OVERLAY_KEY_PRIMARY = this.get('overlayKeyPrimary');
         this.OVERLAY_KEY_SECONDARY = this.get('overlayKeySecondary');
@@ -616,7 +620,6 @@ export const Options = class Options {
         this.HIGHLIGHT_UNDERLINE = this.HIGHLIGHTING_STYLE === 1;
         this.HIGHLIGHT_NONE = this.HIGHLIGHTING_STYLE === 2;
 
-        this.DELAY_STARTUP = this.get('delayStartup');
         this.SMOOTH_OVERVIEW_ANIMATION = this.get('smoothOverviewAnimation');
 
         this.SEARCH_ENTRY_POSITION_TOP = this.SHOW_SEARCH_ENTRY;

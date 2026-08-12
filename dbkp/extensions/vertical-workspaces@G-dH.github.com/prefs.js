@@ -306,6 +306,24 @@ export default class VShell extends ExtensionPreferences {
             )
         );
 
+        const wsThumbnailSearchScaleAdjustment = new Gtk.Adjustment({
+            upper: 30,
+            lower: 0,
+            step_increment: 1,
+            page_increment: 1,
+        });
+
+        const wsThumbnailSearchScale = itemFactory.newScale(wsThumbnailSearchScaleAdjustment);
+        wsThumbnailSearchScale.add_mark(13, Gtk.PositionType.TOP, null);
+        optionList.push(
+            itemFactory.getRowWidget(
+                _('Workspace Thumbnails Max Scale - Search'),
+                _('Allows you to set different thumbnails scale when the Search view is active'),
+                wsThumbnailSearchScale,
+                'wsThumbnailScaleSearch'
+            )
+        );
+
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workspace Preview')
@@ -820,14 +838,17 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Show Close Window Button'),
-                _('Allows you to hide close window button'),
-                itemFactory.newSwitch(),
-                'winPreviewShowCloseButton',
-                null,
+                _('Allows you to hide close window button or show it for all windows which is useful on touch-screen devices'),
+                itemFactory.newDropDown(),
+                'winPreviewCloseButton',
+                [
+                    [_('Selected Window (Default)'), 1],
+                    [_('All Windows'), 2],
+                    [_('Hide'), 0],
+                ],
                 'windowPreviewModule'
             )
         );
-
 
         optionList.push(
             itemFactory.getRowWidget(
@@ -2430,15 +2451,6 @@ export default class VShell extends ExtensionPreferences {
         optionList.push(
             itemFactory.getRowWidget(
                 _('Workarounds / Hacks')
-            )
-        );
-
-        optionList.push(
-            itemFactory.getRowWidget(
-                _('Delay at Startup'),
-                _("If you encounter issues during GNOME Shell startup after logging in, which could be caused by V-Shell's incompatibility with another extension, try enabling this option. When enabled, V-Shell is activated after the startup is complete. It will activate automatically when Dash to Dock, Ubuntu Dock or Dash to Panel extensions are detected."),
-                itemFactory.newSwitch(),
-                'delayStartup'
             )
         );
 

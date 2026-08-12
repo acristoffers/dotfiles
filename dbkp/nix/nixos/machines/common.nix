@@ -249,7 +249,7 @@ rec {
     description = "Álan Crístoffer e Sousa";
     group = "alan";
     extraGroups = [
-      "libvirtd"
+      # "libvirtd"
       "networkmanager"
       "render"
       "samba"
@@ -320,7 +320,7 @@ rec {
   programs.neovim.defaultEditor = true;
   programs.neovim.enable = true;
   programs.xwayland.enable = true;
-  programs.virt-manager.enable = true;
+  programs.virt-manager.enable = false;
 
   qt.enable = true;
   qt.platformTheme = "qt5ct";
@@ -354,8 +354,8 @@ rec {
         dns_enabled = true;
       };
     };
-    libvirtd.enable = true;
-    spiceUSBRedirection.enable = true;
+    # libvirtd.enable = true;
+    # spiceUSBRedirection.enable = true;
   };
 
   systemd.services.NetworkManager-wait-online.enable = false;
