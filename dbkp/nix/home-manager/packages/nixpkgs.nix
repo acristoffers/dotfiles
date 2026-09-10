@@ -107,7 +107,6 @@ with pkgs; [
   signal-desktop
   spotify
   starship
-  steam
   taplo
   telegram-desktop
   termdown

@@ -6,7 +6,7 @@ fish_config theme choose "Catppuccin"
 alias bell "echo -e '\a'"
 alias btop "btop -p 0"
 alias lg lazygit
-alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
+# alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
 alias tree "exa --tree"
 alias twine "twine --config-file $XDG_CONFIG_HOME/pypirc"
 alias v nvim

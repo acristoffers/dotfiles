@@ -14,6 +14,8 @@
 
   services.desktopManager.cosmic.enable = false;
 
+  programs.steam.enable = true;
+
   # services.displayManager.autoLogin = {
   #   enable = true;
   #   user = "alan";

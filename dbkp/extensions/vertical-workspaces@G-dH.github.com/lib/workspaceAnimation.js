@@ -200,6 +200,10 @@ const MonitorGroup = {
             this._container.add_child(group);
             group.set_position(x, y);
 
+            if (opt.PANEL_POSITION_TOP)
+                // Hide the overlapping wallpaper when animation is vertical and panel is visible on the top position
+                this._container.set_child_below_sibling(group, null);
+
             if (vertical)
                 y += this.baseDistance;
             else if (Clutter.get_default_text_direction() === Clutter.TextDirection.RTL)
@@ -294,10 +298,10 @@ const MonitorGroup = {
     property_baseDistance: {
         get() {
             const primaryMonitor = this._monitor.index === Main.layoutManager.primaryIndex;
-            // Height needs to be compensated even if panel is hidden
-            const spacing = opt.WORKSPACE_MIN_SPACING * St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            const spacing = 0 // opt.WORKSPACE_MIN_SPACING * St.ThemeContext.get_for_stage(global.stage).scale_factor;
             if (global.workspace_manager.layout_rows === -1)
-                return this._monitor.height + spacing + (primaryMonitor ? Main.panel.height : 0);
+                // Height needs to be compensated if panel is hidden
+                return this._monitor.height + spacing + (primaryMonitor && opt.PANEL_MODE ? Main.panel.height : 0);
             else
                 return this._monitor.width + spacing;
         },

@@ -7,5 +7,5 @@ function merge-pdfs
   end
   set output $argv[1]
   set inputs $argv[2..-1]
-  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite "-sOutputFile=$output" $inputs
+  nix run nixpkgs#ghostscript -- -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite "-sOutputFile=$output" $inputs
 end
