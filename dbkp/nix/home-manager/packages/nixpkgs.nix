@@ -7,17 +7,13 @@ with pkgs; [
   appstream
   aria2
   blesh
-  brave
   cacert
   claude-agent-acp
   claude-code
   cowsay
   crosspipe
   curl
-  dconf-editor
   delta
-  digikam
-  discord
   doggo
   duf
   dust
@@ -25,11 +21,8 @@ with pkgs; [
   elmPackages.elm-format
   elmPackages.elm-json
   elmPackages.elm-live
-  emacs
-  emacs-all-the-icons-fonts
   emacs.pkgs.cask
   epstool
-  espanso-wayland
   expect
   fastfetch
   fd
@@ -41,7 +34,6 @@ with pkgs; [
   fishPlugins.fzf-fish
   fishPlugins.puffer
   flatpak-builder
-  fractal
   gawk
   gdu
   gh
@@ -50,12 +42,9 @@ with pkgs; [
   git-lfs
   git-spice
   glab
-  gnome-extension-manager
   gnome-extensions-cli
-  gnome-sound-recorder
   gnugrep
   gnumake
-  gnupg
   gnused
   gnutar
   go
@@ -66,21 +55,16 @@ with pkgs; [
   htop
   hunspell
   imagemagick
-  inkscape
   ispell
   jq
-  kdePackages.elisa
-  keepassxc
   killall
   lazydocker
   ledger
   less
-  maestral-gui
   man-pages
   mdcat
   mediainfo
   moreutils
-  mplayer
   nerd-fonts.inconsolata
   nerd-fonts.jetbrains-mono
   nerd-fonts.meslo-lg
@@ -93,7 +77,6 @@ with pkgs; [
   openssl
   p7zip
   pandoc
-  papers
   peaclock
   pstree
   rage
@@ -101,14 +84,10 @@ with pkgs; [
   ripgrep
   rsync
   rustup
-  sabnzbd
   shellcheck
   shfmt
-  signal-desktop
-  spotify
   starship
   taplo
-  telegram-desktop
   termdown
   tmux
   tokei # counts code lines
@@ -118,7 +97,6 @@ with pkgs; [
   unzip
   uutils-coreutils-noprefix
   uv
-  vlc
   watch
   watchman
   wget
@@ -127,5 +105,4 @@ with pkgs; [
   yq # for a tmux plugin
   zip
   zlib
-  zotero
 ]

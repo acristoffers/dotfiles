@@ -30,13 +30,6 @@
         name: scottames/ghostty
         state: enabled
 
-    - name: Add the flathub flatpak repository remote
-      become: true
-      community.general.flatpak_remote:
-        name: flathub
-        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-        state: present
-
     ################################################################################
     ##                                                                            ##
     ##                              Install Packages                              ##
@@ -145,14 +138,14 @@
     ##                                                                            ##
     ################################################################################
 
-    - name: Ensure locale is generated
-      community.general.locale_gen:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - en_US.UTF-8
-        - fr_FR.UTF-8
-        - pt_BR.UTF-8
+    # - name: Ensure locale is generated
+    #   community.general.locale_gen:
+    #     name: "{{ item }}"
+    #     state: present
+    #   loop:
+    #     - en_US.UTF-8
+    #     - fr_FR.UTF-8
+    #     - pt_BR.UTF-8
 
     ################################################################################
     ##                                                                            ##
@@ -163,8 +156,8 @@
     - name: Configure nix
       ansible.builtin.command: "{{ item }}"
       loop:
-        - nix-channel --add https://github.com/nix-community/home-manager/archive/release-25.11.tar.gz home-manager
-        - nix-channel --add https://nixos.org/channels/nixos-25.11 nixos
+        - nix-channel --add https://github.com/nix-community/home-manager/archive/release-26.05.tar.gz home-manager
+        - nix-channel --add https://nixos.org/channels/nixos-26.05 nixos
         - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
         - nix-channel --update
 
@@ -188,7 +181,7 @@
       failed_when: dbkp_restore.rc != 0
 
     - name: Run home-manager installation
-      ansible.builtin.command: nix run home-manager/release-25.11 -- init --switch ~/.config/nix/home-manager
+      ansible.builtin.command: nix run home-manager/release-26.05 -- init --switch ~/.config/nix/home-manager
       register: hm
       changed_when: hm.rc == 0
       failed_when: hm.rc != 0

@@ -5,12 +5,9 @@ with pkgs; [
   cloud-utils # for growpart
   dex # Excutes .desktop files
   gnupatch
-  gource # version control visualization
   libnotify
-  kdePackages.okular
   lsb-release
   openjdk21
-  sirikali
   # texlive.combined.scheme-full
   wl-clipboard
   wl-clipboard-x11

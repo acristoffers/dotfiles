@@ -1,0 +1,30 @@
+pkgs:
+
+with pkgs; [
+  brave
+  dconf-editor
+  digikam
+  discord
+  emacs
+  emacs-all-the-icons-fonts
+  espanso-wayland
+  fractal
+  gnome-extension-manager
+  gnome-sound-recorder
+  gource
+  inkscape
+  kdePackages.elisa
+  kdePackages.okular
+  keepassxc
+  maestral-gui
+  mplayer
+  papers
+  sabnzbd
+  signal-desktop
+  sirikali
+  spotify
+  steam
+  telegram-desktop
+  vlc
+  zotero
+]

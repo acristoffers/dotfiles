@@ -101,6 +101,7 @@
           homeConfigurations = {
             "alan" = homeConfigForUser "alan" [ ./home.nix ];
             "alan@LPTP-eSousa" = homeConfigForUser "alan" [ ./workstation.nix ];
+            "alan@Atlas" = homeConfigForUser "alan" [ ./atlas.nix ];
           };
         };
       }
