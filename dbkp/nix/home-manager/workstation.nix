@@ -86,17 +86,18 @@ in
     lazygit = pkgs.lib.mkForce (import ./programs/workstation/lazygit.nix { inherit config; inherit pkgs; });
   };
 
-  home.packages = with inputs; [
+  home.packages = with inputs; with pkgs; [
     (flakePackage zen-browser "default")
-    (pkgs.writeShellScriptBin "clang-format-18" ''exec ${pkgs.llvmPackages_18.clang-tools}/bin/clang-format "$@"'')
-    pkgs.aria2
-    pkgs.aspell
-    pkgs.aspellDicts.en
-    pkgs.aspellDicts.en-computers
-    pkgs.datamash
-    pkgs.foxglove-studio
-    pkgs.nushellPlugins.formats
-    pkgs.poetry
+    (writeShellScriptBin "clang-format-18" ''exec ${llvmPackages_18.clang-tools}/bin/clang-format "$@"'')
+    aria2
+    aspell
+    aspellDicts.en
+    aspellDicts.en-computers
+    brave
+    datamash
+    foxglove-studio
+    nushellPlugins.formats
+    poetry
   ];
 
   # xdg.desktopEntries."com.mitchellh.ghostty" = {
