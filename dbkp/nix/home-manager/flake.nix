@@ -49,24 +49,6 @@
     herdr.url = "github:ogulcancelik/herdr/v0.7.5";
     herdr.inputs.nixpkgs.follows = "nixpkgs";
 
-    # dms.url = "github:AvengeMedia/DankMaterialShell/stable";
-    # dms.inputs.nixpkgs.follows = "nixpkgs";
-    #
-    # hyprland-guiutils.url = "github:hyprwm/hyprland-guiutils";
-    # hyprland-guiutils.inputs.nixpkgs.follows = "nixpkgs";
-    #
-    # dms-plugins.url = "github:AvengeMedia/dms-plugins";
-    # dms-plugins.flake = false;
-    #
-    # dms-emoji-launcher.url = "github:devnullvoid/dms-emoji-launcher";
-    # dms-emoji-launcher.flake = false;
-    #
-    # dms-world-clock.url = "github:rochacbruno/WorldClock";
-    # dms-world-clock.flake = false;
-    #
-    # dms-grimblast.url = "github:TaylanTatli/dms-plugins";
-    # dms-grimblast.flake = false;
-
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -85,7 +67,6 @@
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
-              # inputs.dms.homeModules.dank-material-shell
               ./common.nix
             ]
             ++ extra-modules;
@@ -99,7 +80,7 @@
         formatter = pkgs.nixpkgs-fmt;
         packages = {
           homeConfigurations = {
-            "alan" = homeConfigForUser "alan" [ ./home.nix ];
+            "alan" = homeConfigForUser "alan" [ ./elemental.nix ];
             "alan@LPTP-eSousa" = homeConfigForUser "alan" [ ./workstation.nix ];
             "alan@Atlas" = homeConfigForUser "alan" [ ./atlas.nix ];
           };

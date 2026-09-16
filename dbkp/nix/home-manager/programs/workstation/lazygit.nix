@@ -9,7 +9,6 @@
         "Álan e Sousa" = "#F28C28";
         "Álan Crístoffer e Sousa" = "#F28C28";
         "Álan Crístoffer" = "#F28C28";
-        # Coworkers
         "Andres Gutierrez" = "#FF79C6";
         "Anthony Welte" = "#8BE9FD";
         "Antonin Renoir" = "#50FA7B";

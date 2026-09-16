@@ -45,7 +45,6 @@
     zinit light zsh-users/zsh-syntax-highlighting
     zinit light Aloxaf/fzf-tab
 
-    # Emacs mode
     bindkey -e
     bindkey '^p' history-search-backward
     bindkey '^n' history-search-forward

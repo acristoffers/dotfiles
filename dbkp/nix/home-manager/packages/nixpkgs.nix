@@ -1,7 +1,7 @@
 pkgs:
 
 with pkgs; [
-  (lib.lowPrio coreutils-full) # only use the ones uutils doesn't have yet
+  (lib.lowPrio coreutils-full)
   ansible
   any-nix-shell
   appstream
@@ -50,7 +50,7 @@ with pkgs; [
   go
   gspell
   gum
-  hjson # accepts broken json
+  hjson
   hledger
   htop
   hunspell
@@ -90,7 +90,7 @@ with pkgs; [
   taplo
   termdown
   tmux
-  tokei # counts code lines
+  tokei
   tree
   tridactyl-native
   uglify-js
@@ -102,7 +102,7 @@ with pkgs; [
   wget
   which
   yamlfmt
-  yq # for a tmux plugin
+  yq
   zip
   zlib
 ]

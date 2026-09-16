@@ -1,6 +1,15 @@
 { config, inputs, pkgs, username, ... }:
 
+let
+  flakePackage = flake: pkgName:
+    if flake.packages ? ${pkgs.stdenv.hostPlatform.system} then
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.${pkgName}
+    else
+      null;
+in
 rec {
+  _module.args.flakePackage = flakePackage;
+
   nix.package = pkgs.nixVersions.latest;
 
   nix.settings = {
@@ -20,10 +29,10 @@ rec {
   home.stateVersion = "26.05";
   home.username = username;
   home.homeDirectory = "/home/${username}";
-  home.packages = import ./packages/common.nix {
+  home.packages = (import ./packages/common.nix {
     inherit inputs;
     inherit pkgs;
-  };
+  }) ++ [ (flakePackage inputs.zen-browser "default") ];
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   fonts.fontconfig.enable = true;
 
@@ -44,8 +53,6 @@ rec {
     "tmux".source = ./dotfiles/tmux;
     "tridactyl".source = ./dotfiles/tridactyl;
     "herdr/config.toml".source = ./dotfiles/herdr/config.toml;
-    # "hypr" = { source = ./dotfiles/hyprland; recursive = true; };
-    # "xdg-desktop-portal/hyprland-portals.conf".source = ./dotfiles/hyprland-portals.conf;
   };
 
   programs = {
@@ -78,27 +85,4 @@ rec {
       gtk-key-theme-name = "Emacs";
     };
   };
-
-  # home.pointerCursor = {
-  #   package = pkgs.vimix-cursors;
-  #   name = "Vimix-cursors";
-  #   size = 16;
-  #   x11.enable = true;
-  #   gtk.enable = true;
-  #   hyprcursor.enable = true;
-  # };
-
-  # systemd.user.services.uwsm-gnome-keyring = {
-  #   Unit = {
-  #     Description = "Import GNOME Keyring env into UWSM";
-  #     After = [ "graphical-session-pre.target" ];
-  #   };
-  #
-  #   Service = {
-  #     Type = "oneshot";
-  #     ExecStart = "${home.homeDirectory}/.config/hypr/bin/export-environment";
-  #   };
-  #
-  #   Install.WantedBy = [ "graphical-session.target" ];
-  # };
 }

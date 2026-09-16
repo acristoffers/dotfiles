@@ -1,30 +1,7 @@
-{ config, pkgs, inputs, username, ... }:
+{ config, pkgs, username, ... }:
 
 let
   home = "/home/${username}";
-  # Mock the activation so I can take only the configuration from DankMaterialShell.
-  # This avoids installing applications that would screw the Fedora environment.
-  # mock = inputs.home-manager.lib.homeManagerConfiguration {
-  #   inherit pkgs;
-  #   modules = [
-  #     inputs.dms.homeModules.dank-material-shell
-  #     (
-  #       { ... }: {
-  #         home.username = config.home.username;
-  #         home.homeDirectory = config.home.homeDirectory;
-  #         home.stateVersion = config.home.stateVersion;
-  #         programs = {
-  #           dank-material-shell = import ./programs/danklinuxshell.nix { inherit inputs; inherit config; inherit pkgs; systemd = false; };
-  #         };
-  #       }
-  #     )
-  #   ];
-  # };
-  flakePackage = flake: pkgName:
-    if flake.packages ? ${pkgs.stdenv.hostPlatform.system} then
-      flake.packages.${pkgs.stdenv.hostPlatform.system}.${pkgName}
-    else
-      null;
 in
 {
   home.file = {
@@ -60,34 +37,18 @@ in
     '';
   };
 
-  # Remove target= because nix will append ".config/" to it automatically if it exists, turning
-  # ~/.config/path into ~/.config/.config/path
-  # xdg.stateFile = pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.stateFile;
-
   xdg.configFile = {
     "git/allowed_ssh_signers".source = pkgs.lib.mkForce ./dotfiles/git/workstation/allowed_ssh_signers;
     "git/attributes".source = pkgs.lib.mkForce ./dotfiles/git/workstation/attributes;
     "git/gitconfig.workstation".source = pkgs.lib.mkForce ./dotfiles/git/workstation/config;
     "tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl-workstation;
-    # "hypr/conf/host.conf".text = ''
-    #   bind = $mod, S, exec, run-or-raise --launch com.slack.Slack.desktop --class com.slack.Slack
-    #   bind = $mod, R, exec, run-or-raise --launch foxglove-studio.wayland.desktop --class Foxglove
-    #   bind = $mod, T, exec, run-or-raise --launch webots-fhs.desktop --class Webots
-    #
-    #   workspace = 1, persistent:true, monitor:HDMI-A-1
-    #   workspace = 2, persistent:true, monitor:HDMI-A-1
-    #   workspace = 3, persistent:true, monitor:HDMI-A-1
-    #   workspace = 4, persistent:true, monitor:DP-3
-    #   workspace = 5, persistent:true, monitor:eDP-1
-    # '';
-  }; # // pkgs.lib.mapAttrs (_: inner: builtins.removeAttrs inner [ "target" ]) mock.config.xdg.configFile;
+  };
 
   programs = {
     lazygit = pkgs.lib.mkForce (import ./programs/workstation/lazygit.nix { inherit config; inherit pkgs; });
   };
 
-  home.packages = with inputs; with pkgs; [
-    (flakePackage zen-browser "default")
+  home.packages = with pkgs; [
     (writeShellScriptBin "clang-format-18" ''exec ${llvmPackages_18.clang-tools}/bin/clang-format "$@"'')
     aria2
     aspell
@@ -99,32 +60,6 @@ in
     nushellPlugins.formats
     poetry
   ];
-
-  # xdg.desktopEntries."com.mitchellh.ghostty" = {
-  #   name = "Ghostty";
-  #   type = "Application";
-  #   comment = "A terminal emulator";
-  #   exec = "nixGLIntel ghostty";
-  #   icon = "com.mitchellh.ghostty";
-  #   terminal = false;
-  #   startupNotify = true;
-  #   categories = [ "System" "TerminalEmulator" ];
-  #   settings = {
-  #     Keywords = "terminal;tty;pty;";
-  #     X-GNOME-UsesNotifications = "true";
-  #     X-TerminalArgExec = "-e";
-  #     X-TerminalArgTitle = "--title=";
-  #     X-TerminalArgAppId = "--class=";
-  #     X-TerminalArgDir = "--working-directory=";
-  #     X-TerminalArgHold = "--wait-after-command";
-  #   };
-  #   actions = {
-  #     new-window = {
-  #       name = "New Window";
-  #       exec = "nixGLIntel ghostty";
-  #     };
-  #   };
-  # };
 
   xdg.desktopEntries."foxglove-studio.wayland" = {
     name = "Foxglove Studio";
