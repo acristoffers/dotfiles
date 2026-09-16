@@ -20,6 +20,11 @@ let
   #     )
   #   ];
   # };
+  flakePackage = flake: pkgName:
+    if flake.packages ? ${pkgs.stdenv.hostPlatform.system} then
+      flake.packages.${pkgs.stdenv.hostPlatform.system}.${pkgName}
+    else
+      null;
 in
 {
   home.file = {
@@ -81,7 +86,8 @@ in
     lazygit = pkgs.lib.mkForce (import ./programs/workstation/lazygit.nix { inherit config; inherit pkgs; });
   };
 
-  home.packages = [
+  home.packages = with inputs; [
+    (flakePackage zen-browser "default")
     (pkgs.writeShellScriptBin "clang-format-18" ''exec ${pkgs.llvmPackages_18.clang-tools}/bin/clang-format "$@"'')
     pkgs.aria2
     pkgs.aspell
