@@ -67,7 +67,7 @@
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [
-              ./common.nix
+              ./machines/common.nix
             ]
             ++ extra-modules;
             extraSpecialArgs = {
@@ -80,9 +80,9 @@
         formatter = pkgs.nixpkgs-fmt;
         packages = {
           homeConfigurations = {
-            "alan" = homeConfigForUser "alan" [ ./elemental.nix ];
-            "alan@LPTP-eSousa" = homeConfigForUser "alan" [ ./workstation.nix ];
-            "alan@Atlas" = homeConfigForUser "alan" [ ./atlas.nix ];
+            "alan" = homeConfigForUser "alan" [ ./machines/elemental.nix ];
+            "alan@LPTP-eSousa" = homeConfigForUser "alan" [ ./machines/workstation.nix ];
+            "alan@Atlas" = homeConfigForUser "alan" [ ./machines/atlas.nix ];
           };
         };
       }

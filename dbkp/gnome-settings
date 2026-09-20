@@ -36,7 +36,7 @@ window-is-maximized=false
 window-width=1693
 
 [com/mattjakeman/ExtensionManager]
-height=1080
+height=1395
 width=843
 
 [com/usebottles/bottles]
@@ -136,6 +136,11 @@ show-properties=true
 window-maximized=false
 window-size=[2544, 1395]
 
+[org/gnome/Ptyxis]
+default-profile-uuid='b00463c4b21f1bb582b878486aa2a513'
+profile-uuids=['b00463c4b21f1bb582b878486aa2a513']
+window-size=(uint32 140, uint32 69)
+
 [org/gnome/Showtime/State]
 is-maximized=false
 
@@ -219,7 +224,7 @@ panel-id='world'
 size=(843, 459)
 
 [org/gnome/control-center]
-last-panel='sound'
+last-panel='system'
 window-state=(843, 1395, false)
 
 [org/gnome/desktop/a11y/applications]
@@ -273,7 +278,7 @@ automatic-timezone=false
 
 [org/gnome/desktop/input-sources]
 current=uint32 0
-mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple')]
+mru-sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple'), ('ibus', 'typing-booster')]
 per-window=false
 show-all-sources=true
 sources=[('xkb', 'us'), ('xkb', 'us+intl'), ('xkb', 'ru+phonetic_mac'), ('xkb', 'gr+simple'), ('ibus', 'typing-booster')]
@@ -477,7 +482,7 @@ application-id='us.zoom.Zoom.desktop'
 application-id='zen.desktop'
 
 [org/gnome/desktop/peripherals/keyboard]
-numlock-state=false
+numlock-state=true
 
 [org/gnome/desktop/peripherals/touchpad]
 natural-scroll=true
@@ -655,6 +660,7 @@ window-width=843
 current-tab='resources'
 maximized=false
 network-total-in-bits=false
+resources-mem-expanded=true
 show-dependencies=false
 show-whose-processes='user'
 window-height=1395
@@ -679,6 +685,7 @@ y=180
 enable-fingerprint-authentication=true
 enable-password-authentication=true
 enable-smartcard-authentication=false
+enable-switchable-authentication=false
 
 [org/gnome/maps]
 last-viewed-location=[47.857000000000021, 2.2670599999999865]
@@ -781,6 +788,10 @@ ignore-phase2-ca-cert=false
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
 
+[org/gnome/nm-applet/eap/d1ba98e9-0c79-3f2b-b43b-c53fc30ab779]
+ignore-ca-cert=false
+ignore-phase2-ca-cert=false
+
 [org/gnome/nm-applet/eap/d9f53e8f-83d4-4084-abc9-f156073552be]
 ignore-ca-cert=false
 ignore-phase2-ca-cert=false
@@ -819,7 +830,7 @@ highlight-color='yellow'
 highlight-stroke=2.0
 pen-color='blue'
 pen-stroke=1.0
-show-sidebar=true
+show-sidebar=false
 sidebar-page='thumbnails'
 sizing-mode='automatic'
 text-color='blue'
@@ -877,7 +888,7 @@ last-folder-path='/home/alan/Developer/GitHub/kwin-rectangle/contents/ui'
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Graduação/Iniciação Científica/Tanques'
 
 [org/gnome/portal/filechooser/net.thunderbird.Thunderbird]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/.var/app/org.mozilla.thunderbird_esr/.thunderbird/iibv4ar6.default-release'
 
 [org/gnome/portal/filechooser/okular]
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Classes/TP-ROS/sujet/build'
@@ -931,7 +942,7 @@ last-folder-path='/home/alan/Downloads/Documents'
 last-folder-path='/home/alan/Documents/Dropbox/Universidade/Doutorado/Code/ros/videos'
 
 [org/gnome/portal/filechooser/zen]
-last-folder-path='/home/alan/Downloads'
+last-folder-path='/home/alan/Developer/GitHub/gnome-rectangle/result'
 
 [org/gnome/rhythmbox]
 maximized=false
@@ -959,7 +970,7 @@ locations=['file:///home/alan/Music']
 
 [org/gnome/settings-daemon/plugins/color]
 night-light-enabled=false
-night-light-last-coordinates=(45.719314581262829, 4.9776199999999999)
+night-light-last-coordinates=(45.7104, 4.9776199999999999)
 
 [org/gnome/settings-daemon/plugins/housekeeping]
 donation-reminder-last-shown=int64 1767809893151839
@@ -971,12 +982,12 @@ screensaver=['<Shift><Super>l']
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0]
 binding='<Super>v'
-command="zen -new-tab 'https://search.brave.com'"
+command="zen-browser -new-tab 'https://search.brave.com'"
 name='Firefox New Search'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
 binding='<Super>y'
-command="zen -new-tab 'https://youtube.com'"
+command="zen-browser -new-tab 'https://youtube.com'"
 name='Firefox Youtube'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
@@ -1012,13 +1023,13 @@ enabled-connections=['ada996dd-e4dc-4155-b228-af9be04580d6']
 
 [org/gnome/shell]
 always-show-log-out=true
-app-picker-layout=[{'org.gnome.Contacts.desktop': <{'position': <0>}>, 'org.gnome.Weather.desktop': <{'position': <1>}>, 'org.gnome.clocks.desktop': <{'position': <2>}>, 'org.gnome.Maps.desktop': <{'position': <3>}>, 'org.gnome.Snapshot.desktop': <{'position': <4>}>, 'org.gnome.Extensions.desktop': <{'position': <5>}>, 'org.gnome.Calculator.desktop': <{'position': <6>}>, 'htop.desktop': <{'position': <7>}>, 'org.gnome.Settings.desktop': <{'position': <8>}>, 'kvantummanager.desktop': <{'position': <9>}>, 'cups.desktop': <{'position': <10>}>, 'Utilities': <{'position': <11>}>, 'nvim.desktop': <{'position': <12>}>, 'nixos-manual.desktop': <{'position': <13>}>, 'qt5ct.desktop': <{'position': <14>}>, 'qt6ct.desktop': <{'position': <15>}>, 'org.gnome.Software.desktop': <{'position': <16>}>, 'org.gnome.TextEditor.desktop': <{'position': <17>}>, 'org.gnome.Tour.desktop': <{'position': <18>}>, 'virt-manager.desktop': <{'position': <19>}>, 'xterm.desktop': <{'position': <20>}>, 'org.gnome.Calendar.desktop': <{'position': <21>}>, 'org.gnome.Loupe.desktop': <{'position': <22>}>, 'org.gnome.Music.desktop': <{'position': <23>}>, 'org.gnome.Epiphany.desktop': <{'position': <24>}>, 'btop.desktop': <{'position': <25>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <26>}>, 'org.kde.digikam.desktop': <{'position': <27>}>, 'org.kde.elisa.desktop': <{'position': <28>}>, 'emacs.desktop': <{'position': <29>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <30>}>, 'org.inkscape.Inkscape.desktop': <{'position': <31>}>, 'org.keepassxc.KeePassXC.desktop': <{'position': <32>}>, 'kitty.desktop': <{'position': <33>}>, 'org.kde.okular.desktop': <{'position': <34>}>, 'org.gnome.Papers.desktop': <{'position': <35>}>, 'io.github.mhogomchungu.sirikali.desktop': <{'position': <36>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <37>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <38>}>, 'org.wezfurlong.wezterm.desktop': <{'position': <39>}>, 'org.gnome.Decibels.desktop': <{'position': <40>}>, 'brave-browser.desktop': <{'position': <41>}>, 'org.gnome.Characters.desktop': <{'position': <42>}>, 'org.gnome.Console.desktop': <{'position': <43>}>, 'io.github.dp0sk.Crosspipe.desktop': <{'position': <44>}>, 'discord.desktop': <{'position': <45>}>, 'org.gnome.SimpleScan.desktop': <{'position': <46>}>, 'emacsclient.desktop': <{'position': <47>}>, 'org.gnome.font-viewer.desktop': <{'position': <48>}>, 'org.gnome.NetworkDisplays.desktop': <{'position': <49>}>, 'org.gnome.Yelp.desktop': <{'position': <50>}>, 'org.gnome.Logs.desktop': <{'position': <51>}>, 'mplayer.desktop': <{'position': <52>}>, 'org.kde.showfoto.desktop': <{'position': <53>}>, 'signal.desktop': <{'position': <54>}>, 'spotify.desktop': <{'position': <55>}>, 'steam.desktop': <{'position': <56>}>, 'org.gnome.Showtime.desktop': <{'position': <57>}>, 'vlc.desktop': <{'position': <58>}>, 'me.acristoffers.void.desktop': <{'position': <59>}>, 'zen.desktop': <{'position': <60>}>, 'zotero.desktop': <{'position': <61>}>}]
+app-picker-layout=[{'org.gnome.Contacts.desktop': <{'position': <0>}>, 'org.gnome.Weather.desktop': <{'position': <1>}>, 'org.gnome.clocks.desktop': <{'position': <2>}>, 'org.gnome.Maps.desktop': <{'position': <3>}>, 'org.gnome.Snapshot.desktop': <{'position': <4>}>, 'org.gnome.Calculator.desktop': <{'position': <5>}>, 'htop.desktop': <{'position': <6>}>, 'org.gnome.Settings.desktop': <{'position': <7>}>, 'Utilities': <{'position': <8>}>, 'nvim.desktop': <{'position': <9>}>, 'qt5ct.desktop': <{'position': <10>}>, 'qt6ct.desktop': <{'position': <11>}>, 'org.gnome.Software.desktop': <{'position': <12>}>, 'org.gnome.TextEditor.desktop': <{'position': <13>}>, 'org.gnome.Tour.desktop': <{'position': <14>}>, 'org.gnome.Calendar.desktop': <{'position': <15>}>, 'org.gnome.Loupe.desktop': <{'position': <16>}>, 'btop.desktop': <{'position': <17>}>, 'ca.desrt.dconf-editor.desktop': <{'position': <18>}>, 'org.kde.digikam.desktop': <{'position': <19>}>, 'org.kde.elisa.desktop': <{'position': <20>}>, 'emacs.desktop': <{'position': <21>}>, 'com.mattjakeman.ExtensionManager.desktop': <{'position': <22>}>, 'org.inkscape.Inkscape.desktop': <{'position': <23>}>, 'org.keepassxc.KeePassXC.desktop': <{'position': <24>}>, 'org.kde.okular.desktop': <{'position': <25>}>, 'org.gnome.Papers.desktop': <{'position': <26>}>, 'io.github.mhogomchungu.sirikali.desktop': <{'position': <27>}>, 'org.gnome.SoundRecorder.desktop': <{'position': <28>}>, 'org.gnome.SystemMonitor.desktop': <{'position': <29>}>, 'org.wezfurlong.wezterm.desktop': <{'position': <30>}>, 'org.gnome.Decibels.desktop': <{'position': <31>}>, 'brave-browser.desktop': <{'position': <32>}>, 'org.gnome.Characters.desktop': <{'position': <33>}>, 'io.github.dp0sk.Crosspipe.desktop': <{'position': <34>}>, 'discord.desktop': <{'position': <35>}>, 'org.gnome.SimpleScan.desktop': <{'position': <36>}>, 'emacsclient.desktop': <{'position': <37>}>, 'org.gnome.font-viewer.desktop': <{'position': <38>}>, 'org.gnome.Yelp.desktop': <{'position': <39>}>, 'org.gnome.Logs.desktop': <{'position': <40>}>, 'mplayer.desktop': <{'position': <41>}>, 'org.kde.showfoto.desktop': <{'position': <42>}>, 'signal.desktop': <{'position': <43>}>, 'spotify.desktop': <{'position': <44>}>, 'steam.desktop': <{'position': <45>}>, 'org.gnome.Showtime.desktop': <{'position': <46>}>, 'vlc.desktop': <{'position': <47>}>, 'me.acristoffers.void.desktop': <{'position': <48>}>, 'zen.desktop': <{'position': <49>}>, 'zotero.desktop': <{'position': <50>}>, 'org.gnome.Boxes.desktop': <{'position': <51>}>, 'org.fedoraproject.MediaWriter.desktop': <{'position': <52>}>, 'org.mozilla.firefox.desktop': <{'position': <53>}>, 'libreoffice-calc.desktop': <{'position': <54>}>, 'libreoffice-impress.desktop': <{'position': <55>}>, 'libreoffice-writer.desktop': <{'position': <56>}>, 'maestral.desktop': <{'position': <57>}>, "No Man's Sky.desktop": <{'position': <58>}>, 'org.freedesktop.MalcontentControl.desktop': <{'position': <59>}>, 'org.gnome.Ptyxis.desktop': <{'position': <60>}>, 'net.thunderbird.Thunderbird.desktop': <{'position': <61>}>, 'zen-browser.desktop': <{'position': <62>}>, 'Horizon Forbidden West Complete Edition.desktop': <{'position': <63>}>, 'The Witcher Enhanced Edition.desktop': <{'position': <64>}>}]
 command-history=['gl', 'r', 'lgh', 'lg']
 disable-user-extensions=false
 disabled-extensions=['trayIconsReloaded@selfmade.pl', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'background-logo@fedorahosted.org', 'activities-filled-pill@verdre', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'gnome-ui-tune@itstime.tech', 'no-overview@fthx', 'noannoyance-fork@vrba.dev', 'windowIsReady_Remover@nunofarruca@gmail.com', 'light-style@gnome-shell-extensions.gcampax.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']
 enabled-extensions=['gTile@vibou', 'quick-lang-switch@ankostis.gmail.com', 'input-source-binder@mifishe.github.com', 'improvedosk@nick-shmyrev.dev', 'gnome-rectangle@acristoffers.me', 'huanghaohhoa@163.com', 'gsconnect@andyholmes.github.io', 'mediacontrols@cliffniff.github.com', 'notification-timeout@chlumskyvaclav.gmail.com', 'inputmethod-shortcuts@osamu.debian.org', 'impatience@gfxmonk.net', 'CoverflowAltTab@palatis.blogspot.com', 'caffeine@patapon.info', 'burn-my-windows@schneegans.github.com', 'appindicatorsupport@rgcjonas.gmail.com', 'blur-my-shell@aunetx', 'gjsosk@vishram1123.com', 'windowgestures@extension.amarullz.com', 'smart-auto-move@khimaros.com', 'vertical-workspaces@G-dH.github.com', 'auto-move-windows@gnome-shell-extensions.gcampax.github.com', 'rectangle@acristoffers.me', 'quick-settings-avatar@d-go', 'clipboard-indicator@tudmotu.com', 'transparent-top-bar@zhanghai.me', 'run-or-raise@edvard.cz']
 favorite-apps=['org.gnome.Nautilus.desktop', 'app.zen_browser.zen.desktop', 'com.mitchellh.ghostty.desktop', 'com.discordapp.Discord.desktop', 'org.telegram.desktop.desktop', 'org.signal.Signal.desktop', 'org.gnome.Fractal.desktop', 'org.mozilla.Thunderbird.desktop']
-last-selected-power-profile='power-saver'
+last-selected-power-profile='performance'
 looking-glass-history=['r', 'env', 'GLib', 'GLib.getenv', 'GLib.getenv()', 'GLib.listenv', 'GLib.listenv()', 'GLib.getenv("LD_LIBRARY_PATH")', 'GLib.getenv("LD_LIBRARY_EXTRA_PATH")', 'obj = {}', 'obj.?haha', 'obj.haha=1', 'obj?.haha', 'obj.haha = null', "obj?.haha ?? 'nuulll'", "obj?.hahe ?? 'nuulll'", "obj.hahe ?? 'nuulll'", 'Meta', "import Meta from 'gi://Meta';", 'Meta.Display.get_n_monitors()', 'Meta.Display', 'Meta.Display()', 'global.display', 'global.display.get_n_monitors()', 'global.display.get_monitor_neighbor_index(0, Dir.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.RIGHT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.LEFT)', 'global.display.get_monitor_neighbor_index(0, Meta.DisplayDirection.TOP)', 'global.display.get_current_monitor', 'a = [1,2,3]', 'function b(a,b,c) { return a+b+c }', 'b(...a)', 'r(15)(...a)', 'const currentMonitor = global.display.get_current_monitor()             const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'const currentMonitor = global.display.get_current_monitor()        ;     const targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMonitor = global.display.get_current_monitor()         ; targetMonitor = global.display.get_monitor_neighbor_index(currentMonitor, rs)', 'currentMontior', 'global.display.get_current_monitor()', 'Meta.DisplayDirection', 'global.display.get_monitor_neighbor_index(1, Meta.DisplayDirection.LEFT)', 'Boolean("false")', '[] == null', 'GtkBuilder.registerClass', "import Adw from 'gi:/adw'", "import Adw from 'gi://Adw';", 'Adw', 'Gtk']
 remember-mount-password=false
 welcome-dialog-last-shown-version='43.0'
@@ -1088,6 +1099,7 @@ disable-down-arrow=true
 display-mode=0
 history-size=10000
 move-item-first=false
+next-history-clear=-1
 preview-size=10
 private-mode-binding=['<Control>F8']
 toggle-menu=['<Super>semicolon']
@@ -1375,12 +1387,16 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1789026407
+check-timestamp=int64 1789400368
+download-updates=false
+download-updates-notify=false
 first-run=false
-flatpak-purge-timestamp=int64 1789004743
-install-timestamp=int64 1786215342
+flatpak-purge-timestamp=int64 1789809757
+install-timestamp=int64 1789449409
 online-updates-timestamp=int64 1678549560
-update-notification-timestamp=int64 1786215554
+packagekit-historical-updates-timestamp=uint64 1789449409
+security-timestamp=int64 1789802619143772
+update-notification-timestamp=int64 1789890128
 
 [org/gnome/system/location]
 enabled=true

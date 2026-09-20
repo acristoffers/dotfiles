@@ -38,14 +38,14 @@ in
   };
 
   xdg.configFile = {
-    "git/allowed_ssh_signers".source = pkgs.lib.mkForce ./dotfiles/git/workstation/allowed_ssh_signers;
-    "git/attributes".source = pkgs.lib.mkForce ./dotfiles/git/workstation/attributes;
-    "git/gitconfig.workstation".source = pkgs.lib.mkForce ./dotfiles/git/workstation/config;
-    "tridactyl".source = pkgs.lib.mkForce ./dotfiles/tridactyl-workstation;
+    "git/allowed_ssh_signers".source = pkgs.lib.mkForce ../dotfiles/git/workstation/allowed_ssh_signers;
+    "git/attributes".source = pkgs.lib.mkForce ../dotfiles/git/workstation/attributes;
+    "git/gitconfig.workstation".source = pkgs.lib.mkForce ../dotfiles/git/workstation/config;
+    "tridactyl".source = pkgs.lib.mkForce ../dotfiles/tridactyl-workstation;
   };
 
   programs = {
-    lazygit = pkgs.lib.mkForce (import ./programs/workstation/lazygit.nix { inherit config; inherit pkgs; });
+    lazygit = pkgs.lib.mkForce (import ../programs/workstation/lazygit.nix { inherit config; inherit pkgs; });
   };
 
   home.packages = with pkgs; [

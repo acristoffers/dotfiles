@@ -1,0 +1,8 @@
+#!/usr/bin/env fish
+
+if string match -qr '\$' $DBUS_SESSION_BUS_ADDRESS
+  set -x DBUS_SESSION_BUS_ADDRESS "unix:path=/run/user/$(id -u)/bus"
+end
+
+set -x | cut -f1 -d' ' | xargs systemctl --user import-environment
+set -x | cut -f1 -d' ' | dbus-update-activation-environment --systemd
