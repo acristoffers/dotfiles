@@ -13,8 +13,7 @@ in
     "${home}/.bashrc".text = ''
       export EDITOR=nvim
       export PATH=$PATH:/opt/bin:$HOME/.nix-profile/bin:/usr/local/bin:/usr/bin
-      [ -f /opt/ros/humble/setup.bash ] && source /opt/ros/humble/setup.bash
-      [ -f /opt/ros/jazzy/setup.bash ] && source /opt/ros/jazzy/setup.bash
+      [ -f /opt/ros/lyrical/setup.bash ] && source /opt/ros/lyrical/setup.bash
       [ -d /opt/bin ] && PATH=''${PATH}:/opt/bin
       alias v=nvim
 
@@ -26,7 +25,6 @@ in
       eval "$(starship init bash)"
 
       eval "$(fzf --bash)"
-      source ~/.local/share/fzf-tab-completion/bash/fzf-bash-completion.sh
       [[ $- == *i* ]] && bind -x '"\t": fzf_bash_completion'
 
       [[ $- == *i* ]] && bind '"\C-x\C-e":edit-and-execute-command'
