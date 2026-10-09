@@ -56,7 +56,6 @@ in
     datamash
     foxglove-studio
     nushellPlugins.formats
-    opencode
     poetry
   ];
 
