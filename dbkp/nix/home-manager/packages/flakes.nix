@@ -19,4 +19,5 @@ with inputs; builtins.filter (x: x != null) ([
   (flakePackage void "void-gui")
   (flakePackage wbproto-formatter "default")
   (flakePackage herdr "default")
+  (flakePackage tuicr "default")
 ])
