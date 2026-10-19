@@ -55,6 +55,7 @@ in
     brave
     datamash
     foxglove-studio
+    gnome-extension-manager
     nushellPlugins.formats
     poetry
   ];

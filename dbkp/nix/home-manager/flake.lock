@@ -997,11 +997,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1792134285,
-        "narHash": "sha256-xY0y5rWiDCvLxhDSOrbmTRAp6SAXEWzw84Jlx1ytquo=",
+        "lastModified": 1792393889,
+        "narHash": "sha256-cWofl4XMERRtQ4ltk/J0ZITUww6yNLlaeO8hjuHKPvg=",
         "owner": "agavra",
         "repo": "tuicr",
-        "rev": "da33555aa40f0a42281e4016a42cda978b5f1764",
+        "rev": "475846bf71b44d9853d6d668e1a7c90c500f6f4d",
         "type": "github"
       },
       "original": {
