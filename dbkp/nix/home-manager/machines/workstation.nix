@@ -52,7 +52,6 @@ in
     aspell
     aspellDicts.en
     aspellDicts.en-computers
-    brave
     datamash
     foxglove-studio
     gnome-extension-manager

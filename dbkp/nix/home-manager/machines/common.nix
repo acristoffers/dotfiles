@@ -32,7 +32,7 @@ rec {
   home.packages = (import ../packages/common.nix {
     inherit inputs;
     inherit pkgs;
-  }) ++ [ (flakePackage inputs.zen-browser "default") ];
+  });
   home.sessionVariables.NIXOS_OZONE_WL = "1";
   fonts.fontconfig.enable = true;
 
