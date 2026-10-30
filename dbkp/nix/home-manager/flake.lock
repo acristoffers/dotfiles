@@ -228,11 +228,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1792699673,
-        "narHash": "sha256-53DdIum4jz0vYAL0l0mxg1MSjdKL5NDMvL/jG5T25WY=",
+        "lastModified": 1793337825,
+        "narHash": "sha256-biFdtDIRCWG+tomyraMKM4CE/tMmpXGXLXRpWII0ehA=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "08a9518340e19487bd5fdf96963583fb32f0c41f",
+        "rev": "cf0ab14aed55315a53de668bc1bbcf4a13ce0ddd",
         "type": "github"
       },
       "original": {
@@ -391,11 +391,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1790164742,
-        "narHash": "sha256-q5U5dCO/ez4PiSoTS6h/rVJHIXZ6u9LbkvrBlErR8Pc=",
+        "lastModified": 1791952306,
+        "narHash": "sha256-0f/CnB7s/URokTYWV/rbJuOzFTGLi+4obIL9izPmxX8=",
         "owner": "harrisoncramer",
         "repo": "gitlab.nvim",
-        "rev": "0af8e71fd508fe755ee9a7c9dba6d709b17a8842",
+        "rev": "0228b3b9aad2bf091fc72534c23a2751e7d649de",
         "type": "github"
       },
       "original": {
@@ -477,11 +477,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792438572,
-        "narHash": "sha256-5mQQOcggBRBXB7NlzUxO0dbvQN4euJOISjNybrtfxPk=",
+        "lastModified": 1792818383,
+        "narHash": "sha256-199i7ubVSXTMl+0AAlL7cVCXSjcI+jWByMcimYjeMX0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "24f8f8e786f87d6a818e1746cb2389bf922afdab",
+        "rev": "24f2190587513b9c2f73db112a17844ae912d965",
         "type": "github"
       },
       "original": {
@@ -632,11 +632,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1792615934,
-        "narHash": "sha256-MlvRfa1O5Cqc2/a+gG+l9TSuowEoCKCmrJ1d9oAVm0I=",
+        "lastModified": 1793183032,
+        "narHash": "sha256-56mFMf8heLNfYhcgbrh4GpN5x+G9JOfTFXZC3n6w0qM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36",
+        "rev": "08d3a97586f6b6343b3b5e799980773629432610",
         "type": "github"
       },
       "original": {
@@ -697,11 +697,11 @@
     "nu-scripts": {
       "flake": false,
       "locked": {
-        "lastModified": 1792654138,
-        "narHash": "sha256-DZRjNKgmkcjB3TYCAlPiA7UU91Z4z1QTCw7UA2d29K8=",
+        "lastModified": 1792843086,
+        "narHash": "sha256-Lx44zQPldtkF3haks6E5DtZIBKLveafgE4HtwbX2yt4=",
         "owner": "nushell",
         "repo": "nu_scripts",
-        "rev": "0a85f069dabbf8792ff60eb98946669533055e46",
+        "rev": "02cb1a2bfb8f7b6977af6914dbe44f450d6f9df2",
         "type": "github"
       },
       "original": {
@@ -730,11 +730,11 @@
         "zls": "zls"
       },
       "locked": {
-        "lastModified": 1791902768,
-        "narHash": "sha256-d07l9MzKTwycpCK0167LN9NI8TCC/6+SLIfC+ni6rmw=",
+        "lastModified": 1792739958,
+        "narHash": "sha256-zyU/oscCY/gd9KvRkyyk+qpCPU+3XRDfrlJoHPcPAFk=",
         "owner": "acristoffers",
         "repo": "nvim-flake",
-        "rev": "594e0bbcd7d94dbb456bb74b4f108e2bdef3ec99",
+        "rev": "1f0d4069835c83bc87bd9df5c97b8af5d3fa1eff",
         "type": "github"
       },
       "original": {
@@ -996,11 +996,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1792579035,
-        "narHash": "sha256-idBoEJMFv8KQsoFaz7v5UQzM9x7bpZrxIl4AIduGnqM=",
+        "lastModified": 1793002320,
+        "narHash": "sha256-Q1VcRGTN3BO/UYTY0/SBN05v/0Dy+iEUNFshHoBjNVM=",
         "owner": "agavra",
         "repo": "tuicr",
-        "rev": "b49bb33d57fad0d33742e9b5cfedb1e54c277123",
+        "rev": "52a56e1a471960511c693f21a539c81ff934af55",
         "type": "github"
       },
       "original": {
@@ -1173,11 +1173,11 @@
         "zig-flake": "zig-flake"
       },
       "locked": {
-        "lastModified": 1790989120,
-        "narHash": "sha256-7BnT4VrhOApLVWDay7w6Jm9z/pNWc4trOLAwu+TfQLk=",
+        "lastModified": 1792631176,
+        "narHash": "sha256-16rFIFRqXicywYrTKJpYDNHPgZTtHWN6dTrbhXnwnmQ=",
         "owner": "acristoffers",
         "repo": "zls",
-        "rev": "eab2be0fd74443a27662da809b771c4ad0d2afcf",
+        "rev": "82ba5351ca8acc07f59b552cb7ba8b5fb4315722",
         "type": "github"
       },
       "original": {
