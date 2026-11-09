@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, flakePackage, ... }:
+{ config, pkgs, ... }:
 
 {
   programs = {
@@ -8,9 +8,5 @@
     };
   };
 
-  home.packages =
-    (with inputs; [
-      (flakePackage ghostty "default")
-    ])
-    ++ (import ../packages/gui.nix pkgs);
+  home.packages = import ../packages/gui.nix pkgs;
 }

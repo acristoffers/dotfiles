@@ -333,7 +333,7 @@ const WorkspaceThumbnailCommon = {
     _closeWorkspace() {
         // CLOSE_WS_BUTTON_MODE 1: single click, 2: double-click, 3: Ctrl
         if (opt.CLOSE_WS_BUTTON_MODE === 2) {
-            const doubleClickTime = Clutter.Settings.get_default().double_click_time;
+            const doubleClickTime = 400; // default double-click time
             const clickDelay = Date.now() - this._lastCloseClickTime;
             if (clickDelay > doubleClickTime) {
                 this._lastCloseClickTime = Date.now();
@@ -634,11 +634,15 @@ const ThumbnailsBoxCommon = {
             this._stateCounts[ThumbnailState[key]] = 0;
 
         this.addThumbnails(0, workspaceManager.n_workspaces);
+        this._indicator.show();
 
         this._updateShouldShow();
     },
 
     _animateReorder() {
+        if (!this.visible)
+            return;
+
         // Store the original position of each thumbnail
         // so it can be used while thumbnails are still transitioning
         // from the previous reorder.
@@ -1213,7 +1217,7 @@ const ThumbnailsBoxHorizontal = {
         let indicatorLeftFullBorder = indicatorThemeNode.get_padding(St.Side.LEFT) + indicatorThemeNode.get_border_width(St.Side.LEFT);
         let indicatorRightFullBorder = indicatorThemeNode.get_padding(St.Side.RIGHT) + indicatorThemeNode.get_border_width(St.Side.RIGHT);
 
-        let x = box.x1;
+        let x = rtl ? 0 : box.x1;
 
         if (this._dropPlaceholderPos === -1) {
             this._dropPlaceholder.allocate_preferred_size(

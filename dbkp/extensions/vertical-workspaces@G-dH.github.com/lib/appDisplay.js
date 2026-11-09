@@ -213,6 +213,8 @@ export const AppDisplayModule = class {
             if (!this._appGridLayoutConId)
                 this._appGridLayoutConId = global.settings.connect('changed::app-picker-layout', this._updateLayout.bind(this));
 
+            // Prevent indicators visibility if there's only one page
+            _appDisplay._pageIndicators.opacity = 0;
             this._repopulateAppDisplay();
 
             _appDisplay.setGridPageNulling(!opt.APP_GRID_REMEMBER_PAGE);
@@ -1161,7 +1163,7 @@ const AppGridCommon = {
 
 const FolderIcon = {
     after__init() {
-        this.button_mask = St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE;
+        this.button_mask = 1 | 2 | 3; // St.ButtonMask.ONE/PRIMARY | TWO/MIDDLE | THREE/SECONDARY
     },
 
     // Add support for dropping folder on workspace preview and workspace thumbnails
@@ -1500,7 +1502,7 @@ const AppFolderDialog = {
         if (opt.APP_FOLDER_REMOVE_BUTTON) {
             this._removeButton = new St.Button({
                 style_class: 'icon-button edit-folder-button',
-                button_mask: St.ButtonMask.ONE,
+                button_mask: 1, // St.ButtonMask.ONE/PRIMARY
                 toggle_mode: false,
                 reactive: true,
                 can_focus: true,
@@ -1524,7 +1526,7 @@ const AppFolderDialog = {
         if (opt.APP_FOLDER_CLOSE_BUTTON) {
             this._closeButton = new St.Button({
                 style_class: 'icon-button edit-folder-button',
-                button_mask: St.ButtonMask.ONE,
+                button_mask: 1, // St.ButtonMask.ONE/PRIMARY
                 toggle_mode: false,
                 reactive: true,
                 can_focus: true,
@@ -1546,7 +1548,7 @@ const AppFolderDialog = {
 
     _onRemoveFolder() {
         const clickInterval = Date.now() - this._removeButton._lastClick;
-        const doubleClick = clickInterval < Clutter.Settings.get_default().double_click_time;
+        const doubleClick = clickInterval < 400; // default double-click time
         const shouldRemoveFolder =
             opt.APP_FOLDER_REMOVE_BUTTON === 1 ||
             (opt.APP_FOLDER_REMOVE_BUTTON === 2 && doubleClick);

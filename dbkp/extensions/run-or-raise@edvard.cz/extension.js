@@ -90,6 +90,12 @@ class App {
      * @type {Set<Accelerator>}
      */
     this.unblock_later = new Set()
+
+    /**
+     * Actions still waiting for a launched window to focus.
+     * @type {Set<Action>}
+     */
+    this.watching_actions = new Set()
   }
 
   enable() {
@@ -228,9 +234,20 @@ class App {
 
   disable() {
     this.accelerators.forEach(actions => actions.disconnect()) // ungrab the accelerators
-    global.display.disconnect(this.handler_accelerator_activated) // stop listening to the accelerators, none left
+    // handlers are not set if enable() failed to read the shortcuts
+    if (this.handler_accelerator_activated) {
+      global.display.disconnect(this.handler_accelerator_activated) // stop listening to the accelerators, none left
+      this.handler_accelerator_activated = null
+    }
     this.layered_mode_stop()
-    this.keymap.disconnect(this.handler_state_changed) // stop listening to keyboard-locks changes
+    if (this.handler_state_changed) {
+      this.keymap.disconnect(this.handler_state_changed) // stop listening to keyboard-locks changes
+      this.handler_state_changed = null
+    }
+    this.accelerators.forEach(actions =>
+      actions.forEach(action => action.destroy()),
+    )
+    this.watching_actions.forEach(action => action.destroy()) // e.g. layered or D-Bus actions not in accelerators
   }
 
   get_state() {
@@ -294,13 +311,16 @@ class App {
     // When listeren gets a key (which is not a modifier) this means
     // the user has written a key was not grabbed as a layered accelerator.
     // → Stop listening to layered accelerators.
-    this.handler_layered.connect_after("key-press-event", (_, event) =>
-      MODIFIERS.includes(event.get_key_symbol())
-        ? null
-        : this.layered_mode_stop(),
+    this.handler_layered_key_press = this.handler_layered.connect_after(
+      "key-press-event",
+      (_, event) =>
+        MODIFIERS.includes(event.get_key_symbol())
+          ? null
+          : this.layered_mode_stop(),
     )
-    this.handler_layered.connect("key-focus-out", () =>
-      this.layered_mode_stop(),
+    this.handler_layered_key_focus_out = this.handler_layered.connect(
+      "key-focus-out",
+      () => this.layered_mode_stop(),
     )
   }
 
@@ -320,6 +340,8 @@ class App {
     this.unblock_later.clear()
 
     if (this.handler_layered) {
+      this.handler_layered.disconnect(this.handler_layered_key_press)
+      this.handler_layered.disconnect(this.handler_layered_key_focus_out)
       this.handler_layered.destroy()
       this.handler_layered = null
     }
@@ -334,7 +356,11 @@ export default class RunOrRaiseExtension extends Extension {
   }
 
   enable() {
-    const seat = Clutter.get_default_backend().get_default_seat()
+    // GNOME 51 removed Clutter.get_default_backend()
+    const backend = Clutter.get_default_backend
+      ? Clutter.get_default_backend()
+      : global.stage.context.get_backend()
+    const seat = backend.get_default_seat()
     const keymap = seat.get_keymap()
     this.app = new App(this.getSettings(), seat, keymap)
     this.app.enable()

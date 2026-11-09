@@ -894,6 +894,37 @@ const WorkspacesDisplayCommon = {
         return Main.wm.handleWorkspaceScroll(event);
     },
 
+    prepareToEnterOverview() {
+        this.show();
+        this._updateWorkspacesViews();
+
+        Main.overview.connectObject(
+            'windows-restacked', this._onRestacked.bind(this),
+            'scroll-event', this._onScrollEvent.bind(this), this);
+
+        // This connection has been removed from GNOME since 51.1
+        // The connection is removed in this.vfunc_hide()
+        global.stage.connectObject(
+            'key-press-event', this._onKeyPressEvent.bind(this), this);
+    },
+
+    vfunc_hide() {
+        Main.overview.disconnectObject(this);
+        global.stage.disconnectObject(this);
+
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].destroy();
+        this._workspacesViews = [];
+
+        this._leavingOverview = false;
+
+        St.Widget.prototype.vfunc_hide.bind(this)();
+    },
+
+    vfunc_navigate_focus(from, direction) {
+        this._onKeyPressEvent(null, Clutter.get_current_event());
+    },
+
     _onKeyPressEvent(actor, event) {
         const controlsManager = Main.overview._overview.controls;
         const symbol = event.get_key_symbol();

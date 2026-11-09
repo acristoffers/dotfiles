@@ -49,6 +49,13 @@ export class Action {
      * @type {String}
      */
     this.shortcut = this._set_shortcut(shortcut_bare)
+
+    /**
+     * Main loop sources and window actors of a pending focus watch, see _focus_next_created_window
+     */
+    this._focus_timeout_id = null
+    this._poll_timeout_id = null
+    this._first_frame_actors = new Set()
   }
 
   get_layered_action() {
@@ -293,12 +300,134 @@ export class Action {
     if (this.mode.get(Mode.VERBOSE)) {
       this.debug("running:", this.command)
     }
+    // Wayland denies focus to windows spawned without an activation token
+    // (true even for GNOME's own custom keybindings, e.g. the system
+    // Ctrl+Alt+T terminal shortcut) and to already-running single-instance
+    // apps trying to raise their own existing window (e.g. Krusader on a
+    // second trigger). The shell process itself may focus any window
+    // regardless of token, so watch for the next conforming window to be
+    // created, or an existing one to demand attention, and activate it
+    // directly instead of relying on the launched process's own token.
+    this._focus_next_created_window()
+
     const app = Shell.AppSystem.get_default().lookup_app(this.command)
     if (app !== null) {
       return app.activate()
     }
     const [, argv] = GLib.shell_parse_argv(this.command)
     return Gio.Subprocess.new(argv, Gio.SubprocessFlags.NONE)
+  }
+
+  _focus_next_created_window() {
+    // a previous launch may still be watching; start over
+    this._stop_focus_watch()
+    this.app.watching_actions.add(this)
+
+    global.display.connectObject(
+      "window-created",
+      (display, window) => {
+        // window-created fires before the window is fully composited: its
+        // wm_class/title may still be unset, it has no workspace yet, and
+        // activating it too early silently fails to restack (Mutter logs
+        // "meta_window_set_stack_position_no_sync: assertion
+        // 'window->stack_position >= 0' failed" and nothing visibly
+        // happens). Wait for the compositor's first-frame instead of
+        // guessing with a timer.
+        const actor = window.get_compositor_private()
+        const tryFocus = () => {
+          this._poll_conforming(window, 20, () => {
+            this.focus_window(window)
+            this._stop_focus_watch()
+          })
+        }
+        if (actor) {
+          this._first_frame_actors.add(actor)
+          actor.connectObject(
+            "first-frame",
+            () => {
+              actor.disconnectObject(this)
+              this._first_frame_actors.delete(actor)
+              tryFocus()
+            },
+            this,
+          )
+        } else {
+          tryFocus()
+        }
+      },
+      // A single-instance app already running (e.g. Krusader on a second
+      // trigger) creates no new window at all — it just asks its existing
+      // window to be raised, which Mutter denies without a token and instead
+      // reports as "wants attention" (the same mechanism behind the "window
+      // is ready" tray notification). Catch that case too.
+      "window-demands-attention",
+      (display, window) => {
+        if (this.is_conforming(window)) {
+          this.focus_window(window)
+          this._stop_focus_watch()
+        }
+      },
+      this,
+    )
+    // give up after 10s so we don't leak the listener if nothing matches
+    this._focus_timeout_id = GLib.timeout_add_seconds(
+      GLib.PRIORITY_DEFAULT,
+      10,
+      () => {
+        this._focus_timeout_id = null
+        this._stop_focus_watch()
+        return GLib.SOURCE_REMOVE
+      },
+    )
+  }
+
+  /**
+   * Disconnect the listeners and remove the main loop sources
+   * set up by _focus_next_created_window.
+   */
+  _stop_focus_watch() {
+    global.display.disconnectObject(this)
+    this._first_frame_actors.forEach(actor => actor.disconnectObject(this))
+    this._first_frame_actors.clear()
+    if (this._focus_timeout_id) {
+      GLib.source_remove(this._focus_timeout_id)
+      this._focus_timeout_id = null
+    }
+    if (this._poll_timeout_id) {
+      GLib.source_remove(this._poll_timeout_id)
+      this._poll_timeout_id = null
+    }
+    this.app.watching_actions.delete(this)
+  }
+
+  destroy() {
+    this._stop_focus_watch()
+  }
+
+  _poll_conforming(window, attemptsLeft, onMatch) {
+    // window-created fires before the window is fully managed (no
+    // workspace assigned yet), and Main.activateWindow() throws
+    // "window.get_workspace() is null" if called that early
+    if (this._poll_timeout_id) {
+      GLib.source_remove(this._poll_timeout_id)
+      this._poll_timeout_id = null
+    }
+    if (this.is_conforming(window) && window.get_workspace()) {
+      onMatch()
+      return
+    }
+    if (attemptsLeft <= 0) {
+      this.debug(
+        "Gave up waiting for window to conform:",
+        window.get_wm_class(),
+      )
+      return
+    }
+    this._poll_timeout_id = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 100, () => {
+      this._poll_timeout_id = null
+      this._poll_conforming(window, attemptsLeft - 1, onMatch)
+      return GLib.SOURCE_REMOVE
+    })
   }
 
   /**

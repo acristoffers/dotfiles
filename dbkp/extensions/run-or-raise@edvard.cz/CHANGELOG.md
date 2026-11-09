@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 49 (2026-09-29)
+- fix: GNOME 51 support, `Clutter.get_default_backend()` was removed (#104)
+
+## 47 (2026-09-25)
+- fix: force-focus the launched/raised window on Wayland instead of relying on its activation token, which GNOME denies even for its own keybindings
+
 ## 45 (2026-04-23)
 - enh: Apply minimize-when-unfocused to raise modes
 - fix: remove `affectsInputRegion` parameter from `addChrome()`, unsupported in GNOME Shell 50+

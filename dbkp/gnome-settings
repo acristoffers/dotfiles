@@ -478,6 +478,9 @@ application-id='thunderbird.desktop'
 [org/gnome/desktop/notifications/application/us-zoom-zoom]
 application-id='us.zoom.Zoom.desktop'
 
+[org/gnome/desktop/notifications/application/zen-browser]
+application-id='zen-browser.desktop'
+
 [org/gnome/desktop/notifications/application/zen]
 application-id='zen.desktop'
 
@@ -869,6 +872,9 @@ last-folder-path='/home/alan/.var/app/com.usebottles.bottles/data/bottles/bottle
 [org/gnome/portal/filechooser/com.valvesoftware.Steam]
 last-folder-path='/var/lib/flatpak/exports/share/applications'
 
+[org/gnome/portal/filechooser/discord]
+last-folder-path='/home/alan/Documents/Dropbox/Documentos/Texto/CV/credit-mutuel'
+
 [org/gnome/portal/filechooser/eu.betterbird.Betterbird]
 last-folder-path='/home/alan/.var/app/org.mozilla.Thunderbird/.thunderbird/7cs5kb7f.default-default'
 
@@ -927,7 +933,7 @@ last-folder-path='/home/alan/Documents/Dropbox/Documentos/Criptografados'
 last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.firefox]
-last-folder-path='/home/alan/Pictures'
+last-folder-path='/home/alan/Downloads'
 
 [org/gnome/portal/filechooser/org.mozilla.thunderbird_esr]
 last-folder-path='/home/alan/Downloads'
@@ -1193,7 +1199,7 @@ sync-frequency=100
 sync-mode='RESTORE'
 
 [org/gnome/shell/extensions/vertical-workspaces]
-aaa-loading-profile=true
+aaa-loading-profile=false
 activate-settings-window=2
 always-activate-selected-window=false
 animation-speed-factor=100
@@ -1387,16 +1393,16 @@ locations=[<(uint32 2, <('Vancouver', 'CYVR', false, [(0.85841109795478021, -2.1
 document-type='photo'
 
 [org/gnome/software]
-check-timestamp=int64 1789400368
+check-timestamp=int64 1793813495
 download-updates=false
 download-updates-notify=false
 first-run=false
-flatpak-purge-timestamp=int64 1789809757
-install-timestamp=int64 1789449409
+flatpak-purge-timestamp=int64 1794131168
+install-timestamp=int64 1793813798
 online-updates-timestamp=int64 1678549560
-packagekit-historical-updates-timestamp=uint64 1789449409
-security-timestamp=int64 1789802619143772
-update-notification-timestamp=int64 1789890128
+packagekit-historical-updates-timestamp=uint64 1793813798
+security-timestamp=int64 1793293399289986
+update-notification-timestamp=int64 1793813437
 
 [org/gnome/system/location]
 enabled=true
@@ -1645,6 +1651,11 @@ vm-window-size=(2385, 1270)
 [org/virt-manager/virt-manager/vms/c839b5c783cc492eab838e2c4334662e]
 autoconnect=1
 vm-window-size=(1024, 837)
+
+[org/virt-manager/virt-manager/vms/d1a9d583f0d840f3ba407b20e24f55c8]
+autoconnect=1
+resize-guest=1
+vm-window-size=(2544, 1358)
 
 [org/virt-manager/virt-manager/vms/dc0954fc879641e58765b7b57b7fca8b]
 autoconnect=1

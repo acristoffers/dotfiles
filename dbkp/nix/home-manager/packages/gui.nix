@@ -1,7 +1,6 @@
 pkgs:
 
 with pkgs; [
-  brave
   dconf-editor
   digikam
   discord

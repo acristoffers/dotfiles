@@ -40,9 +40,6 @@ set -e LC_ALL
 set -x fish_greeting ""
 set -x LSCOLORS gxfxcxdxbxeggdbgagacad
 
-if fd steam-bwrap /nix/store | rg -v drv
-  alias steam "eval (fd steam-bwrap /nix/store | rg -v drv)"
-end
 
 if not set -q IN_NIX_SHELL; or set -q FULL_NIX_SHELL
   if not set -q FULL_NIX_SHELL
