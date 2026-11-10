@@ -5,31 +5,33 @@
   settings = {
     gui = {
       nerdFontsVersion = "3";
-      authorColors = {
-        "Álan e Sousa" = "#F28C28";
-        "Álan Crístoffer e Sousa" = "#F28C28";
-        "Álan Crístoffer" = "#F28C28";
-        "Andres Gutierrez" = "#FF79C6";
-        "Anthony Welte" = "#8BE9FD";
-        "Antonin Renoir" = "#50FA7B";
-        "Etienne Clairis" = "#BD93F9";
-        "Ganesh Harishankarlaldas" = "#FF5555";
-        "Guillaume Bourgeois" = "#F1FA8C";
-        "Guillermo Herrera" = "#6272A4";
-        "Khadidja Ouldamer" = "#44475A";
-        "Samuele Portanti" = "#FFB86C";
-      };
-      branchColors = {
-        "bugfix" = "yellow";
-        "chore" = "#F28C28";
-        "experimental" = "#8BE9FD";
-        "feat" = "green";
-        "feature" = "green";
-        "fix" = "yellow";
-        "hotfix" = "red";
-        "refactor" = "green";
-        "support" = "#F28C28";
-        "integration" = "#8BE9FD";
+      theme = {
+        authorColors = {
+          "Álan e Sousa" = "#F28C28";
+          "Álan Crístoffer e Sousa" = "#F28C28";
+          "Álan Crístoffer" = "#F28C28";
+          "Andres Gutierrez" = "#FF79C6";
+          "Anthony Welte" = "#8BE9FD";
+          "Antonin Renoir" = "#50FA7B";
+          "Etienne Clairis" = "#BD93F9";
+          "Ganesh Harishankarlaldas" = "#FF5555";
+          "Guillaume Bourgeois" = "#F1FA8C";
+          "Guillermo Herrera" = "#6272A4";
+          "Khadidja Ouldamer" = "#44475A";
+          "Samuele Portanti" = "#FFB86C";
+        };
+        branchColorPatterns = {
+          "^bugfix(/|$)" = "yellow";
+          "^chore(/|$)" = "#F28C28";
+          "^experimental(/|$)" = "#8BE9FD";
+          "^feat(/|$)" = "green";
+          "^feature(/|$)" = "green";
+          "^fix(/|$)" = "yellow";
+          "^hotfix(/|$)" = "red";
+          "^refactor(/|$)" = "green";
+          "^support(/|$)" = "#F28C28";
+          "^integration(/|$)" = "#8BE9FD";
+        };
       };
     };
     customCommands = [
@@ -102,10 +104,10 @@
     ];
     git = {
       mainBranches = [ "main" "master" "develop" ];
-      pagers = [
+      diffRenderers = [
         {
           colorArg = "always";
-          pager = "delta --dark --paging=never";
+          command = "delta --dark --paging=never";
         }
       ];
     };
